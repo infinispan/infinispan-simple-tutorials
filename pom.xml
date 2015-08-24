@@ -12,7 +12,7 @@
             <dependency>
                 <groupId>org.infinispan</groupId>
                 <artifactId>infinispan-bom</artifactId>
-                <version>8.0.0.Beta3</version>
+                <version>8.0.0.CR1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
