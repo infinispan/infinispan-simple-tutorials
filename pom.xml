@@ -19,6 +19,14 @@
         </dependencies>
     </dependencyManagement>
 
+    <dependencies>
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>transaction-api</artifactId>
+            <version>1.1</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -42,12 +50,19 @@
     
     <modules>
        <module>map</module>
+       <module>distributed</module>
+       <module>replicated</module>
        <module>jcache</module>
        <module>functional</module>
        <module>spark</module>
        <module>spring</module>
        <module>tx</module>
        <module>distexec</module>
+       <module>streams</module>
+       <module>remote</module>
+       <module>scripting</module>
+       <module>query</module>
+       <module>listen</module>
     </modules>
 </project>
 
