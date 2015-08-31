@@ -48,3 +48,5 @@ IspnCliQL.tokens
 .DS_Store
 # Checkstlye in Eclipse
 .checkstyle
+# Native build
+build
