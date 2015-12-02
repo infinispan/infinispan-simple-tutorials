@@ -50,3 +50,6 @@ IspnCliQL.tokens
 .checkstyle
 # Native build
 build
+# node.js dependency directory
+# https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
+node_modules

@@ -1,0 +1,15 @@
+{
+  "name": "infinispan-simple-tutorials-js",
+  "version": "0.0.1",
+  "description": "Infinispan Javascript client simple tutorial",
+  "main": "index.js",
+  "author": "Galder Zamarreño",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/infinispan/infinispan-simple-tutorials"
+  },
+  "dependencies": {
+    "infinispan": "^0.0.1"
+  }
+}
