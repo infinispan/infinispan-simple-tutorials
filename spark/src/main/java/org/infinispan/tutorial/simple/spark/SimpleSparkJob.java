@@ -20,14 +20,14 @@ import java.util.Properties;
 public class SimpleSparkJob {
 
    public static void main(String[] args) throws UnknownHostException {
-      // Obtain the local address
-      String localAddress = InetAddress.getLocalHost().getHostAddress();
+      // Obtain the Infinispan address
+      String infinispanAddress = args[0];
 
       // Adjust log levels
       Logger.getLogger("org").setLevel(Level.WARN);
 
       // Create the remote cache manager
-      Configuration build = new ConfigurationBuilder().addServer().host(localAddress).build();
+      Configuration build = new ConfigurationBuilder().addServer().host(infinispanAddress).build();
       RemoteCacheManager remoteCacheManager = new RemoteCacheManager(build);
 
       // Obtain the remote cache
@@ -45,7 +45,7 @@ public class SimpleSparkJob {
 
       // Create InfinispanRDD
       Properties properties = new Properties();
-      properties.put("infinispan.client.hotrod.server_list", localAddress);
+      properties.put("infinispan.client.hotrod.server_list", infinispanAddress);
 
       JavaPairRDD<Integer, Temperature> infinispanRDD = InfinispanJavaRDD.createInfinispanRDD(jsc, properties);
 

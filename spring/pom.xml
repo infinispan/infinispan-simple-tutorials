@@ -18,7 +18,7 @@
       </dependency>
       <dependency>
         <groupId>org.infinispan</groupId>
-        <artifactId>infinispan-spring4</artifactId>
+        <artifactId>infinispan-spring4-embedded</artifactId>
       </dependency>
     </dependencies>
 </project>
