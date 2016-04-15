@@ -7,12 +7,16 @@
 
     <name>Infinispan Tutorial: Simple tutorials</name>
 
+    <properties>
+       <version.infinispan>8.2.1.Final</version.infinispan>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.infinispan</groupId>
                 <artifactId>infinispan-bom</artifactId>
-                <version>8.2.1.Final</version>
+                <version>${version.infinispan}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

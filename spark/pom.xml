@@ -11,6 +11,11 @@
     </parent>
     <name>Infinispan Simple Tutorials: Apache Spark integration</name>
 
+    <properties>
+        <version.spark-connector>0.3</version.spark-connector>
+        <version.spark>1.6.0</version.spark>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -27,12 +32,12 @@
         <dependency>
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-spark_2.10</artifactId>
-            <version>0.2</version>
+            <version>${version.spark-connector}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_2.10</artifactId>
-            <version>1.5.2</version>
+            <version>${version.spark}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
