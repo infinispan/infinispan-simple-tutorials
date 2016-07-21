@@ -16,7 +16,7 @@ SPARK_VERSION=$(get_mvn_variable "version.spark")
 INFINISPAN_VERSION=$(get_mvn_variable "version.infinispan")
 
 echo "Launching containers..."
-INFINISPAN_ID=$(docker run -v $PWD:/usr/local/code -ti -d gustavonalle/infinispan-server:$INFINISPAN_VERSION)
+INFINISPAN_ID=$(docker run -v $PWD:/usr/local/code -ti -d jboss/infinispan-server:$INFINISPAN_VERSION)
 SPARK_ID=$(docker run -v $PWD:/usr/local/code -ti -d gustavonalle/spark:$SPARK_VERSION)
 
 wait_for_ispn $INFINISPAN_ID
