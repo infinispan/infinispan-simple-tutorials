@@ -26,7 +26,7 @@ public class InfinispanQuery {
       cache.put("person2", new Person("William", "Wordsworth"));
       cache.put("person3", new Person("John", "Milton"));
       // Obtain a query factory for the cache
-      QueryFactory<?> queryFactory = Search.getQueryFactory(cache);
+      QueryFactory queryFactory = Search.getQueryFactory(cache);
       // Construct a query
       Query query = queryFactory.from(Person.class).having("name").eq("William").toBuilder().build();
       // Execute the query
