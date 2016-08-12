@@ -8,7 +8,7 @@
     <name>Infinispan Tutorial: Simple tutorials</name>
 
     <properties>
-       <version.infinispan>8.2.3.Final</version.infinispan>
+       <version.infinispan>9.0.0.Alpha4</version.infinispan>
     </properties>
 
     <dependencyManagement>
