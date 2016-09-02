@@ -69,6 +69,7 @@
        <module>query</module>
        <module>listen</module>
        <module>remote-listen</module>
+       <module>kubernetes</module>
     </modules>
 </project>
 
