@@ -10,15 +10,16 @@ namespace Infinispan.Tutorial
 {
     public class Simple
     {
-        static void main() {
+        static void Main() {
             // Create a configuration for a locally-running server
             ConfigurationBuilder builder = new ConfigurationBuilder();
-            conf = builder.AddServers("127.0.0.1:11222").Build();
+            Configuration conf = builder.AddServers("127.0.0.1:11222").Build();
             // Initialize the remote cache manager
-            remoteManager = new RemoteCacheManager(conf, new DefaultSerializer());
+            RemoteCacheManager remoteManager = new RemoteCacheManager(conf);
             // Connect to the server
             remoteManager.Start();
             // Store a value
+            IRemoteCache<string,string> cache=remoteManager.GetCache<string, string>();
             cache.Put("key", "value");
             // Retrieve the value and print it out
             Console.WriteLine("key = {0}", cache.Get("key"));
