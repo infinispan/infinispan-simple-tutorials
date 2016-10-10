@@ -4,12 +4,12 @@
             xmlns="urn:infinispan:config:8.2">
 
     <jgroups>
-        <stack-file name="udp" path="jgroups-udp.xml" />
-        <stack-file name="tcp" path="jgroups-tcp.xml" />
+        <stack-file name="udp" path="jgroups-udp.xml"/>
+        <stack-file name="tcp" path="jgroups-tcp.xml"/>
     </jgroups>
 
     <cache-container default-cache="local-sample-app" statistics="true">
-        <jmx domain="org.infinispan" />
+        <jmx domain="org.infinispan"/>
         <local-cache name="local-sample-from-xml" simple-cache="false">
             <eviction max-entries="2000" strategy="LIRS" thread-policy="PIGGYBACK"/>
             <store-as-binary keys="true" values="true"/>
