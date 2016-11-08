@@ -23,5 +23,5 @@ wait_for_ispn $INFINISPAN_ID
 INFINISPAN_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $INFINISPAN_ID)
 
 echo "Server started, running job"
-docker exec -t $SPARK_ID /usr/local/spark/bin/spark-shell --jars /usr/local/code/target/infinispan-simple-tutorials-spark-1.0.0-SNAPSHOT.jar --class org.infinispan.tutorial.simple.spark.SimpleSparkJob $INFINISPAN_ADDRESS --packages org.infinispan:infinispan-spark_2.11:$CONNECTOR_VERSION --conf spark.io.compression.codec=lz4
+docker exec -t $SPARK_ID /usr/local/spark/bin/spark-submit --packages org.infinispan:infinispan-spark_2.11:$CONNECTOR_VERSION --conf spark.io.compression.codec=lz4 --class org.infinispan.tutorial.simple.spark.SimpleSparkJob /usr/local/code/target/infinispan-simple-tutorials-spark-1.0.0-SNAPSHOT.jar $INFINISPAN_ADDRESS
 docker kill $INFINISPAN_ID $SPARK_ID
