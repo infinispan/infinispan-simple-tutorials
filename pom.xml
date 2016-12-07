@@ -60,6 +60,7 @@
        <module>functional</module>
        <module>spark</module>
        <module>spring</module>
+       <module>spring-boot</module>
        <module>tx</module>
        <module>distexec</module>
        <module>clusterexec</module>
