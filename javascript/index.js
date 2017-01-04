@@ -1,6 +1,6 @@
 var infinispan = require('infinispan');
 
-var connected = infinispan.client(11222, '127.0.0.1');
+var connected = infinispan.client({port: 11222, host: '127.0.0.1'});
 connected.then(function(client) {
   console.log("Connected");
   var putGetPromise = client.put('key', 'value').then(function () {
