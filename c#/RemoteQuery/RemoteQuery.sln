@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteQuery", "RemoteQuery.csproj", "{45ABE3BC-F933-4388-BE45-CCA9BF0D9D6A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		RelWithDebInfo|Any CPU = RelWithDebInfo|Any CPU
+		RelWithDebInfo|x64 = RelWithDebInfo|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45ABE3BC-F933-4388-BE45-CCA9BF0D9D6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45ABE3BC-F933-4388-BE45-CCA9BF0D9D6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45ABE3BC-F933-4388-BE45-CCA9BF0D9D6A}.Debug|x64.ActiveCfg = Debug|x64
+		{45ABE3BC-F933-4388-BE45-CCA9BF0D9D6A}.Debug|x64.Build.0 = Debug|x64
+		{45ABE3BC-F933-4388-BE45-CCA9BF0D9D6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45ABE3BC-F933-4388-BE45-CCA9BF0D9D6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45ABE3BC-F933-4388-BE45-CCA9BF0D9D6A}.Release|x64.ActiveCfg = Release|x64
+		{45ABE3BC-F933-4388-BE45-CCA9BF0D9D6A}.Release|x64.Build.0 = Release|x64
+		{45ABE3BC-F933-4388-BE45-CCA9BF0D9D6A}.RelWithDebInfo|Any CPU.ActiveCfg = RelWithDebInfo|Any CPU
+		{45ABE3BC-F933-4388-BE45-CCA9BF0D9D6A}.RelWithDebInfo|Any CPU.Build.0 = RelWithDebInfo|Any CPU
+		{45ABE3BC-F933-4388-BE45-CCA9BF0D9D6A}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
+		{45ABE3BC-F933-4388-BE45-CCA9BF0D9D6A}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
