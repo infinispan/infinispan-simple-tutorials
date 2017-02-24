@@ -8,7 +8,7 @@
     <name>Infinispan Tutorial: Simple tutorials</name>
 
     <properties>
-       <version.infinispan>9.0.0.Alpha4</version.infinispan>
+       <version.infinispan>9.0.0.CR2</version.infinispan>
     </properties>
 
     <dependencyManagement>
@@ -61,6 +61,7 @@
        <module>spark</module>
        <module>spring</module>
        <module>spring-boot</module>
+       <module>spring-session</module>
        <module>tx</module>
        <module>distexec</module>
        <module>clusterexec</module>
