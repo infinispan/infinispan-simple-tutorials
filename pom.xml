@@ -8,7 +8,7 @@
     <name>Infinispan Tutorial: Simple tutorials</name>
 
     <properties>
-       <version.infinispan>9.0.0.CR2</version.infinispan>
+       <version.infinispan>9.0.0.CR4</version.infinispan>
     </properties>
 
     <dependencyManagement>
