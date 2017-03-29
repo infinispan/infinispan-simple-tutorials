@@ -5,6 +5,7 @@ import org.infinispan.commons.api.functional.EntryView;
 import org.infinispan.commons.api.functional.FunctionalMap;
 import org.infinispan.commons.api.functional.MetaParam.MetaLifespan;
 import org.infinispan.commons.api.functional.Traversable;
+import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.functional.impl.FunctionalMapImpl;
 import org.infinispan.functional.impl.ReadOnlyMapImpl;
 import org.infinispan.functional.impl.ReadWriteMapImpl;
@@ -20,7 +21,8 @@ public class InfinispanFunctional {
 
    public static void main(String[] args) throws Exception {
       DefaultCacheManager cacheManager = new DefaultCacheManager();
-      AdvancedCache<String, String> cache = cacheManager.<String, String>getCache().getAdvancedCache();
+      cacheManager.defineConfiguration("local", new ConfigurationBuilder().build());
+      AdvancedCache<String, String> cache = cacheManager.<String, String>getCache("local").getAdvancedCache();
       FunctionalMapImpl<String, String> functionalMap = FunctionalMapImpl.create(cache);
       FunctionalMap.WriteOnlyMap<String, String> writeOnlyMap = WriteOnlyMapImpl.create(functionalMap);
       FunctionalMap.ReadOnlyMap<String, String> readOnlyMap = ReadOnlyMapImpl.create(functionalMap);
