@@ -12,8 +12,8 @@
     <name>Infinispan Simple Tutorials: Apache Spark integration</name>
 
     <properties>
-        <version.spark-connector>0.4</version.spark-connector>
-        <version.spark>2.0.0</version.spark>
+        <version.spark-connector>0.5</version.spark-connector>
+        <version.spark>2.1.0</version.spark>
     </properties>
 
     <build>

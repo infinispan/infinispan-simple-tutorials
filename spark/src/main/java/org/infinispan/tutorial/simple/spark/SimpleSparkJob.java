@@ -10,6 +10,7 @@ import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.Configuration;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
+import org.infinispan.spark.config.ConnectorConfiguration;
 import org.infinispan.spark.rdd.InfinispanJavaRDD;
 
 import java.io.Serializable;
@@ -44,10 +45,9 @@ public class SimpleSparkJob {
       JavaSparkContext jsc = new JavaSparkContext(conf);
 
       // Create InfinispanRDD
-      Properties properties = new Properties();
-      properties.put("infinispan.client.hotrod.server_list", infinispanAddress);
+      ConnectorConfiguration config = new ConnectorConfiguration().setServerList(infinispanAddress);
 
-      JavaPairRDD<Integer, Temperature> infinispanRDD = InfinispanJavaRDD.createInfinispanRDD(jsc, properties);
+      JavaPairRDD<Integer, Temperature> infinispanRDD = InfinispanJavaRDD.createInfinispanRDD(jsc, config);
 
       // Convert RDD to RDD of doubles
       JavaDoubleRDD javaDoubleRDD = infinispanRDD.values().mapToDouble(Temperature::getValue);
