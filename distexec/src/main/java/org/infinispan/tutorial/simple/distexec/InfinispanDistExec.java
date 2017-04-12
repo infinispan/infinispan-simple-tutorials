@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.infinispan.Cache;
 import org.infinispan.configuration.cache.CacheMode;
@@ -32,12 +33,13 @@ public class InfinispanDistExec {
       // Print out the results
       results.forEach(s -> {
          try {
-            System.out.printf("%s\n", s.get());
+            System.out.printf("%s\n", s.get(100, TimeUnit.MILLISECONDS));
          } catch (Exception e) {
          }
       });
       // Shuts down the cache manager and all associated resources
       cacheManager.stop();
+      System.exit(0);
    }
 
 }

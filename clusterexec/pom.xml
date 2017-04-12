@@ -10,7 +10,31 @@
         <artifactId>infinispan-simple-tutorials</artifactId>
     </parent>
     <name>Infinispan Simple Tutorials: Cluster Exec</name>
-    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>-Djava.net.preferIPv4Stack=true</argument>
+                        <argument>-Djava.util.logging.config.file=src/main/resources/logging.properties</argument>
+                        <argument>-classpath</argument>
+                        <classpath />
+                        <argument>org.infinispan.tutorial.simple.clusterexec.InfinispanClusterExec</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <dependencies>
       <dependency>
         <groupId>org.infinispan</groupId>
