@@ -8,6 +8,8 @@ In order to build the tutorials you will need
 
 - JDK 8
 - Apache Maven 3.x
+- Some examples use the Infinispan Server. Download the lastest server version and run
+```bin/standalone.sh``` from the installation folder
 
 You can compile and run each individual tutorial by changing to its folder
 and invoking:

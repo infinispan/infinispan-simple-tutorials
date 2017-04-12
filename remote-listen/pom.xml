@@ -29,7 +29,7 @@
                         <argument>-Djava.util.logging.config.file=src/main/resources/logging.properties</argument>
                         <argument>-classpath</argument>
                         <classpath />
-                        <argument>org.infinispan.tutorial.simple.remote.InfinispanRemote</argument>
+                        <argument>org.infinispan.tutorial.simple.remote.listen.InfinispanRemoteListen</argument>
                     </arguments>
                 </configuration>
             </plugin>
