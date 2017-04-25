@@ -18,20 +18,20 @@
 package org.infinispan.tutorial.simple.console.commands;
 
 import org.infinispan.Cache;
-import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.tutorial.simple.configuration.PlaygroundConfiguration;
 import org.infinispan.tutorial.simple.console.UI;
 import org.infinispan.tutorial.simple.console.support.IllegalParametersException;
+import org.infinispan.tutorial.simple.domain.Value;
 
 import java.util.Iterator;
 
 public class ClearConsoleCommand implements ConsoleCommand {
 
     private static final String COMMAND_NAME = "clear";
-    private final DefaultCacheManager cacheManager;
+    private final Cache<Long, Value> cache;
 
     public ClearConsoleCommand(PlaygroundConfiguration conf) {
-        this.cacheManager = conf.getCacheManager();
+        this.cache = conf.getCache();
     }
 
     @Override
@@ -41,9 +41,8 @@ public class ClearConsoleCommand implements ConsoleCommand {
 
     @Override
     public boolean execute(UI console, Iterator<String> args) throws IllegalParametersException {
-        Cache<Object, Object> cache = cacheManager.getCache();
         cache.clear();
-        console.println("Data grid cleared.");
+        console.println("Cache cleared.");
         return true;
     }
 
