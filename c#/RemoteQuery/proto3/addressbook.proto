@@ -1,0 +1,47 @@
+syntax = "proto3";
+package quickstart;
+
+enum PersonType {
+      zero = 0;
+      id = 42;
+}
+
+/** 
+ * @Indexed
+ * @TypeId(42)
+ */
+message Person {
+   /* @Field(index=Index.YES, analyze=Analyze.YES) */
+   string name = 1;
+
+   int32 id = 2;
+
+   string email = 3;
+
+   enum PhoneType {
+      MOBILE = 0;
+      HOME = 1;
+      WORK = 2;
+   }
+
+   message PhoneNumber {
+
+      string number = 1;
+
+      PhoneType type = 2;
+   }
+
+   repeated PhoneNumber phone = 4;
+
+/** 
+ * @Indexed
+ */
+   message Memo {
+   /* @Field(index=Index.YES, analyze=Analyze.YES) */
+        string text = 1;
+   }
+   /* @Field(index=Index.YES, analyze=Analyze.YES) */
+   repeated Memo memo = 5;
+   string department = 6;
+}
+
