@@ -71,6 +71,7 @@
        <module>query</module>
        <module>listen</module>
        <module>remote-listen</module>
+       <module>playground</module>
        <module>kubernetes</module>
     </modules>
 </project>
