@@ -22,7 +22,7 @@ import org.infinispan.tutorial.simple.hibernate.cache.local.model.Person;
  * is present in the default lookup location: META-INF/persistence.xml
  *
  * Run with these properties to hide Hibernate messages:
- * -Djava.util.logging.config.file=src/main/resources/logging-app.properties
+ * -Dlog4j.configurationFile=src/main/resources/log4j2-tutorial.xml
  */
 public class InfinispanHibernateCacheLocal {
 
@@ -57,10 +57,14 @@ public class InfinispanHibernateCacheLocal {
       System.out.printf("Event entity cache miss: %d (expected 1)%n", cacheStats.getMissCount());
       System.out.printf("Event entity cache puts: %d (expected 5)%n", cacheStats.getPutCount());
 
-      // Remove cached entity, stats shoudl show a cache hit
+      // Remove cached entity, stats should show a cache hit
       cacheStats = deleteEntity(emf);
       System.out.printf("Event entity cache hits: %d (expected 4)%n", cacheStats.getHitCount());
 
+      // Add a fictional delay so that there's a small enough gap for the
+      // query result set timestamp to be later in time than the update timestamp.
+      // Deleting an entity triggers an invalidation event which updates the timestamp.
+      Thread.sleep(100);
 
       // Query entities, expect:
       // * no cache hits since query is not cached
@@ -154,6 +158,8 @@ public class InfinispanHibernateCacheLocal {
          Event event = em.find(Event.class, id);
          String newName = "Caught a Snorlax!!";
          event.setName("Caught a Snorlax!!");
+
+         System.out.printf("Updated entity: %s%n", event);
 
          return getCacheStatistics(Event.class.getName(), em);
       } catch (Throwable t) {

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration verbose="false" status="warn" packages="org.infinispan.util.logging.log4j">
+
+   <Appenders>
+      <File name="FileAppender" fileName="tutorial.log" append="false">
+         <ThresholdFilter level="error"/>
+         <!--<ThresholdFilter level="trace"/>-->
+         <PatternLayout pattern="%d %-5p [%c] (%t:%x) %m%n"/>
+      </File>
+   </Appenders>
+
+   <Loggers>
+       <Logger name="org.hibernate" level="trace" />
+       <Logger name="org.infinispan" level="trace" />
+       <Logger name="org.infinispan.factories" level="debug" />
+       <Logger name="org.infinispan.jmx" level="debug" />
+       <Logger name="org.infinispan.marshall.core" level="trace" />
+       <Logger name="com.mchange" level="warn"/>
+       <Logger name="org.jgroups" level="info"/>
+       <Logger name="org.jgroups.protocols.relay" level="trace"/>
+       <Root level="info">
+          <AppenderRef ref="FileAppender"/>
+       </Root>
+   </Loggers>
+
+</Configuration>
