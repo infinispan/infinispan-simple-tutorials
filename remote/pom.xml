@@ -39,7 +39,7 @@
     <dependencies>
         <dependency>
             <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-remote</artifactId>
+            <artifactId>infinispan-client-hotrod</artifactId>
         </dependency>
     </dependencies>
 </project>

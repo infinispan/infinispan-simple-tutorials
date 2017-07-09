@@ -39,7 +39,7 @@
     <dependencies>
         <dependency>
             <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-embedded</artifactId>
+            <artifactId>infinispan-jcache</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.cache</groupId>
