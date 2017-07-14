@@ -1,10 +1,10 @@
 package org.infinispan.tutorial.simple.functional;
 
 import org.infinispan.AdvancedCache;
-import org.infinispan.commons.api.functional.EntryView;
-import org.infinispan.commons.api.functional.FunctionalMap;
-import org.infinispan.commons.api.functional.MetaParam.MetaLifespan;
-import org.infinispan.commons.api.functional.Traversable;
+import org.infinispan.functional.EntryView;
+import org.infinispan.functional.FunctionalMap;
+import org.infinispan.functional.MetaParam.MetaLifespan;
+import org.infinispan.functional.Traversable;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.functional.impl.FunctionalMapImpl;
 import org.infinispan.functional.impl.ReadOnlyMapImpl;
