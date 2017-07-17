@@ -43,6 +43,7 @@ runTestAndExitOnError streams
 runTestAndExitOnError spring spring-caching
 runTestAndExitOnError spring spring-annotations
 runTestAndExitOnError tx
+runTestAndExitOnError counter
 
 # tests below need infinispan server in local 127.0.0.1
 runTestAndExitOnError remote

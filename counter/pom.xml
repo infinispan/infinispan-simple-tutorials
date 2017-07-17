@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>infinispan-simple-tutorials-counter</artifactId>
+    <parent>
+        <relativePath>../pom.xml</relativePath>
+        <version>1.0.0-SNAPSHOT</version>
+        <groupId>org.infinispan.tutorial.simple</groupId>
+        <artifactId>infinispan-simple-tutorials</artifactId>
+    </parent>
+    <name>Infinispan Simple Tutorials: Counters</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>-Djava.net.preferIPv4Stack=true</argument>
+                        <argument>-Djava.util.logging.config.file=src/main/resources/logging.properties</argument>
+                        <argument>-classpath</argument>
+                        <classpath />
+                        <argument>org.infinispan.tutorial.simple.counter.InfinispanCounter</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-clustered-counter</artifactId>
+            <version>${version.infinispan}</version>
+        </dependency>
+    </dependencies>
+
+
+
+
+</project>
