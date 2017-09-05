@@ -40,7 +40,7 @@ public class InfinispanHibernateCacheLocal {
       System.out.printf("Event entity cache puts: %d (expected 3)%n", eventCacheStats.getPutCount());
 
       // Find one of the persisted entities, stats should show a cache hit
-      findEntity(emf);
+      findEntity(1L, emf);
       eventCacheStats = getCacheStatistics(Event.class.getName(), emf);
       System.out.printf("Event entity cache hits: %d (expected 1)%n", eventCacheStats.getHitCount());
 
@@ -51,7 +51,7 @@ public class InfinispanHibernateCacheLocal {
       System.out.printf("Event entity cache puts: %d (expected 4)%n", eventCacheStats.getPutCount());
 
       // Find the updated entity, stats should show a cache hit
-      findEntity(emf);
+      findEntity(1L, emf);
       eventCacheStats = getCacheStatistics(Event.class.getName(), emf);
       System.out.printf("Event entity cache hits: %d (expected 3)%n", eventCacheStats.getHitCount());
 
@@ -61,7 +61,7 @@ public class InfinispanHibernateCacheLocal {
 
       // Reload evicted entity, should come from DB
       // Stats should show a cache miss and a cache put
-      findEntity(emf);
+      findEntity(1L, emf);
       eventCacheStats = getCacheStatistics(Event.class.getName(), emf);
       System.out.printf("Event entity cache miss: %d (expected 1)%n", eventCacheStats.getMissCount());
       System.out.printf("Event entity cache puts: %d (expected 5)%n", eventCacheStats.getPutCount());
@@ -152,10 +152,10 @@ public class InfinispanHibernateCacheLocal {
       }
    }
 
-   private static void findEntity(EntityManagerFactory emf) {
+   private static void findEntity(long id, EntityManagerFactory emf) {
       EntityManager em = emf.createEntityManager();
       try {
-         Event event = em.find(Event.class, 1L);
+         Event event = em.find(Event.class, id);
          System.out.printf("Found entity: %s%n", event);
       } finally {
          em.close();
