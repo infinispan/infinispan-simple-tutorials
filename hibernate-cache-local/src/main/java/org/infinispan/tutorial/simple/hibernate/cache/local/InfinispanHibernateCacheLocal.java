@@ -169,7 +169,6 @@ public class InfinispanHibernateCacheLocal {
          tx.begin();
 
          Event event = em.find(Event.class, id);
-         String newName = "Caught a Snorlax!!";
          event.setName("Caught a Snorlax!!");
 
          System.out.printf("Updated entity: %s%n", event);
