@@ -9,6 +9,7 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.stat.SecondLevelCacheStatistics;
 import org.hibernate.stat.Statistics;
 import org.infinispan.tutorial.simple.hibernate.cache.local.model.Event;
@@ -253,16 +254,12 @@ public class InfinispanHibernateCacheLocal {
 
    private static SecondLevelCacheStatistics getCacheStatistics(
          String regionName, EntityManagerFactory emf) {
-      return ((Session) emf.createEntityManager().getDelegate())
-            .getSessionFactory()
-            .getStatistics()
+      return emf.unwrap(SessionFactory.class).getStatistics()
             .getSecondLevelCacheStatistics(regionName);
    }
 
    private static Statistics getStatistics(EntityManagerFactory emf) {
-      return ((Session) emf.createEntityManager().getDelegate())
-            .getSessionFactory()
-            .getStatistics();
+      return emf.unwrap(SessionFactory.class).getStatistics();
    }
 
 }
