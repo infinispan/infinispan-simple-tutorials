@@ -57,7 +57,7 @@ public class InfinispanHibernateCacheLocal {
 
 
       // Evict entity from cache
-      evictEntity(emf);
+      evictEntity(1L, emf);
 
       // Reload evicted entity, should come from DB
       // Stats should show a cache miss and a cache put
@@ -67,7 +67,7 @@ public class InfinispanHibernateCacheLocal {
       System.out.printf("Event entity cache puts: %d (expected 5)%n", eventCacheStats.getPutCount());
 
       // Remove cached entity, stats should show a cache hit
-      deleteEntity(emf);
+      deleteEntity(1L, emf);
       eventCacheStats = getCacheStatistics(Event.class.getName(), emf);
       System.out.printf("Event entity cache hits: %d (expected 4)%n", eventCacheStats.getHitCount());
 
@@ -114,7 +114,7 @@ public class InfinispanHibernateCacheLocal {
       System.out.printf("Person entity cache puts: %d (expected 1)%n", personCacheStats.getPutCount());
 
       // Find expiring entity, stats should show a second level cache hit
-      findExpiringEntity(emf);
+      findExpiringEntity(4L, emf);
       personCacheStats = getCacheStatistics(Person.class.getName(), emf);
       System.out.printf("Person entity cache hits: %d (expected 1)%n", personCacheStats.getHitCount());
 
@@ -123,7 +123,7 @@ public class InfinispanHibernateCacheLocal {
 
       // Find expiring entity, after expiration entity should come from DB
       // Stats should show a cache miss and a cache put
-      findExpiringEntity(emf);
+      findExpiringEntity(4L, emf);
       personCacheStats = getCacheStatistics(Person.class.getName(), emf);
       System.out.printf("Person entity cache miss: %d (expected 1)%n", personCacheStats.getMissCount());
       System.out.printf("Person entity cache put: %d (expected 2)%n", personCacheStats.getPutCount());
@@ -183,22 +183,22 @@ public class InfinispanHibernateCacheLocal {
       }
    }
 
-   private static void evictEntity(EntityManagerFactory emf) {
+   private static void evictEntity(long id, EntityManagerFactory emf) {
       EntityManager em = emf.createEntityManager();
       try {
-         em.getEntityManagerFactory().getCache().evict(Event.class, 1L);
+         em.getEntityManagerFactory().getCache().evict(Event.class, id);
       } finally {
          em.close();
       }
    }
 
-   private static void deleteEntity(EntityManagerFactory emf) {
+   private static void deleteEntity(long id, EntityManagerFactory emf) {
       EntityManager em = emf.createEntityManager();
       EntityTransaction tx = em.getTransaction();
       try {
          tx.begin();
 
-         Event event = em.find(Event.class, 1L);
+         Event event = em.find(Event.class, id);
          em.remove(event);
       } catch (Throwable t) {
          tx.setRollbackOnly();
@@ -241,10 +241,10 @@ public class InfinispanHibernateCacheLocal {
       }
    }
 
-   private static void findExpiringEntity(EntityManagerFactory emf) {
+   private static void findExpiringEntity(long id, EntityManagerFactory emf) {
       EntityManager em = emf.createEntityManager();
       try {
-         Person person = em.find(Person.class, 4L);
+         Person person = em.find(Person.class, id);
          System.out.printf("Found expiring entity: %s%n", person);
       } finally {
          em.close();
