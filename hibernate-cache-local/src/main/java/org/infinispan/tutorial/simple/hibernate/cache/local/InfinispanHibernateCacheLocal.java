@@ -8,7 +8,6 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.SecondLevelCacheStatistics;
 import org.hibernate.stat.Statistics;
@@ -50,13 +49,13 @@ public class InfinispanHibernateCacheLocal {
       // Update one of the persisted entities, stats should show a cache hit and a cache put
       updateEntity(1L, emf);
       eventCacheStats = getCacheStatistics(Event.class.getName(), emf);
-      printfAssert("Event entity cache hits: %d (expected %d)%n", eventCacheStats.getHitCount(), 2);
-      printfAssert("Event entity cache puts: %d (expected %d)%n", eventCacheStats.getPutCount(), 4);
+      printfAssert("Event entity cache hits: %d (expected %d)%n", eventCacheStats.getHitCount(), 1);
+      printfAssert("Event entity cache puts: %d (expected %d)%n", eventCacheStats.getPutCount(), 1);
 
       // Find the updated entity, stats should show a cache hit
       findEntity(1L, emf);
       eventCacheStats = getCacheStatistics(Event.class.getName(), emf);
-      printfAssert("Event entity cache hits: %d (expected %d)%n", eventCacheStats.getHitCount(), 3);
+      printfAssert("Event entity cache hits: %d (expected %d)%n", eventCacheStats.getHitCount(), 1);
 
 
       // Evict entity from cache
@@ -67,12 +66,12 @@ public class InfinispanHibernateCacheLocal {
       findEntity(1L, emf);
       eventCacheStats = getCacheStatistics(Event.class.getName(), emf);
       printfAssert("Event entity cache miss: %d (expected %d)%n", eventCacheStats.getMissCount(), 1);
-      printfAssert("Event entity cache puts: %d (expected %d)%n", eventCacheStats.getPutCount(), 5);
+      printfAssert("Event entity cache puts: %d (expected %d)%n", eventCacheStats.getPutCount(), 1);
 
       // Remove cached entity, stats should show a cache hit
       deleteEntity(1L, emf);
       eventCacheStats = getCacheStatistics(Event.class.getName(), emf);
-      printfAssert("Event entity cache hits: %d (expected %d)%n", eventCacheStats.getHitCount(), 4);
+      printfAssert("Event entity cache hits: %d (expected %d)%n", eventCacheStats.getHitCount(), 1);
 
       // Add a fictional delay so that there's a small enough gap for the
       // query result set timestamp to be later in time than the update timestamp.
@@ -92,14 +91,14 @@ public class InfinispanHibernateCacheLocal {
       // * a query cache hit
       queryEntities(emf);
       stats = getStatistics(emf);
-      printfAssert("Event entity cache hits: %d (expected %d)%n", stats.getSecondLevelCacheHitCount(), 6);
+      printfAssert("Event entity cache hits: %d (expected %d)%n", stats.getSecondLevelCacheHitCount(), 2);
       printfAssert("Query cache hit: %d (expected %d)%n", stats.getQueryCacheHitCount(), 1);
 
       // Update one of the persisted entities, stats should show a cache hit and a cache put
       updateEntity(2L, emf);
       eventCacheStats = getCacheStatistics(Event.class.getName(), emf);
-      printfAssert("Event entity cache hits: %d (expected %d)%n", eventCacheStats.getHitCount(), 7);
-      printfAssert("Event entity cache puts: %d (expected %d)%n", eventCacheStats.getPutCount(), 6);
+      printfAssert("Event entity cache hits: %d (expected %d)%n", eventCacheStats.getHitCount(), 1);
+      printfAssert("Event entity cache puts: %d (expected %d)%n", eventCacheStats.getPutCount(), 1);
 
       // Repeat query after update, expect:
       // * no cache hits or puts since entities are already cached
@@ -107,8 +106,8 @@ public class InfinispanHibernateCacheLocal {
       //   any queries for that type are invalidated
       queryEntities(emf);
       stats = getStatistics(emf);
-      printfAssert("Query cache miss: %d (expected %d)%n", stats.getQueryCacheMissCount(),2);
-      printfAssert("Query cache put: %d (expected %d)%n", stats.getQueryCachePutCount(), 2);
+      printfAssert("Query cache miss: %d (expected %d)%n", stats.getQueryCacheMissCount(),1);
+      printfAssert("Query cache put: %d (expected %d)%n", stats.getQueryCachePutCount(), 1);
 
 
       // Save cache-expiring entity, stats should show a second level cache put
@@ -129,14 +128,14 @@ public class InfinispanHibernateCacheLocal {
       findExpiringEntity(4L, emf);
       personCacheStats = getCacheStatistics(Person.class.getName(), emf);
       printfAssert("Person entity cache miss: %d (expected %d)%n", personCacheStats.getMissCount(), 1);
-      printfAssert("Person entity cache put: %d (expected %d)%n", personCacheStats.getPutCount(), 2);
+      printfAssert("Person entity cache put: %d (expected %d)%n", personCacheStats.getPutCount(), 1);
 
       // Close persistence manager
       emf.close();
    }
 
    private static void persistEntities(EntityManagerFactory emf) {
-      EntityManager em = emf.createEntityManager();
+      EntityManager em = createEntityManagerWithStatsCleared(emf);
       EntityTransaction tx = em.getTransaction();
       try {
          tx.begin();
@@ -155,8 +154,14 @@ public class InfinispanHibernateCacheLocal {
       }
    }
 
-   private static void findEntity(long id, EntityManagerFactory emf) {
+   private static EntityManager createEntityManagerWithStatsCleared(EntityManagerFactory emf) {
       EntityManager em = emf.createEntityManager();
+      emf.unwrap(SessionFactory.class).getStatistics().clear();
+      return em;
+   }
+
+   private static void findEntity(long id, EntityManagerFactory emf) {
+      EntityManager em = createEntityManagerWithStatsCleared(emf);
       try {
          Event event = em.find(Event.class, id);
          System.out.printf("Found entity: %s%n", event);
@@ -166,7 +171,7 @@ public class InfinispanHibernateCacheLocal {
    }
 
    private static void updateEntity(long id, EntityManagerFactory emf) {
-      EntityManager em = emf.createEntityManager();
+      EntityManager em = createEntityManagerWithStatsCleared(emf);
       EntityTransaction tx = em.getTransaction();
       try {
          tx.begin();
@@ -187,7 +192,7 @@ public class InfinispanHibernateCacheLocal {
    }
 
    private static void evictEntity(long id, EntityManagerFactory emf) {
-      EntityManager em = emf.createEntityManager();
+      EntityManager em = createEntityManagerWithStatsCleared(emf);
       try {
          em.getEntityManagerFactory().getCache().evict(Event.class, id);
       } finally {
@@ -196,7 +201,7 @@ public class InfinispanHibernateCacheLocal {
    }
 
    private static void deleteEntity(long id, EntityManagerFactory emf) {
-      EntityManager em = emf.createEntityManager();
+      EntityManager em = createEntityManagerWithStatsCleared(emf);
       EntityTransaction tx = em.getTransaction();
       try {
          tx.begin();
@@ -215,7 +220,7 @@ public class InfinispanHibernateCacheLocal {
    }
 
    private static void queryEntities(EntityManagerFactory emf) {
-      EntityManager em = emf.createEntityManager();
+      EntityManager em = createEntityManagerWithStatsCleared(emf);
       try {
          TypedQuery<Event> query = em.createQuery("from Event", Event.class);
          query.setHint("org.hibernate.cacheable", Boolean.TRUE);
@@ -227,7 +232,7 @@ public class InfinispanHibernateCacheLocal {
    }
 
    private static void saveExpiringEntity(EntityManagerFactory emf) {
-      EntityManager em = emf.createEntityManager();
+      EntityManager em = createEntityManagerWithStatsCleared(emf);
       EntityTransaction tx = em.getTransaction();
       try {
          tx.begin();
@@ -245,7 +250,7 @@ public class InfinispanHibernateCacheLocal {
    }
 
    private static void findExpiringEntity(long id, EntityManagerFactory emf) {
-      EntityManager em = emf.createEntityManager();
+      EntityManager em = createEntityManagerWithStatsCleared(emf);
       try {
          Person person = em.find(Person.class, id);
          System.out.printf("Found expiring entity: %s%n", person);
