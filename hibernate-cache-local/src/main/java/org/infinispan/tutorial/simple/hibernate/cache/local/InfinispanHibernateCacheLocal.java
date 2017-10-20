@@ -8,6 +8,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.SecondLevelCacheStatistics;
 import org.hibernate.stat.Statistics;
@@ -137,127 +138,111 @@ public class InfinispanHibernateCacheLocal {
    }
 
    private static void persistEntities() {
-      EntityManager em = createEntityManagerWithStatsCleared();
-      EntityTransaction tx = em.getTransaction();
-      try {
-         tx.begin();
+      try(Session em = createEntityManagerWithStatsCleared()) {
+         EntityTransaction tx = em.getTransaction();
+         try {
+            tx.begin();
 
-         em.persist(new Event("Caught a pokemon!"));
-         em.persist(new Event("Hatched an egg"));
-         em.persist(new Event("Became a gym leader"));
-      } catch (Throwable t) {
-         tx.setRollbackOnly();
-         throw t;
-      } finally {
-         if (tx.isActive()) tx.commit();
-         else tx.rollback();
-
-         em.close();
+            em.persist(new Event("Caught a pokemon!"));
+            em.persist(new Event("Hatched an egg"));
+            em.persist(new Event("Became a gym leader"));
+         } catch (Throwable t) {
+            tx.setRollbackOnly();
+            throw t;
+         } finally {
+            if (tx.isActive()) tx.commit();
+            else tx.rollback();
+         }
       }
    }
 
-   private static EntityManager createEntityManagerWithStatsCleared() {
+   private static Session createEntityManagerWithStatsCleared() {
       EntityManager em = emf.createEntityManager();
       emf.unwrap(SessionFactory.class).getStatistics().clear();
-      return em;
+      return em.unwrap(Session.class);
    }
 
    private static void findEntity(long id) {
-      EntityManager em = createEntityManagerWithStatsCleared();
-      try {
+      try(Session em = createEntityManagerWithStatsCleared()) {
          Event event = em.find(Event.class, id);
          System.out.printf("Found entity: %s%n", event);
-      } finally {
-         em.close();
       }
    }
 
    private static void updateEntity(long id) {
-      EntityManager em = createEntityManagerWithStatsCleared();
-      EntityTransaction tx = em.getTransaction();
-      try {
-         tx.begin();
+      try(Session em = createEntityManagerWithStatsCleared()) {
+         EntityTransaction tx = em.getTransaction();
+         try {
+            tx.begin();
 
-         Event event = em.find(Event.class, id);
-         event.setName("Caught a Snorlax!!");
+            Event event = em.find(Event.class, id);
+            event.setName("Caught a Snorlax!!");
 
-         System.out.printf("Updated entity: %s%n", event);
-      } catch (Throwable t) {
-         tx.setRollbackOnly();
-         throw t;
-      } finally {
-         if (tx.isActive()) tx.commit();
-         else tx.rollback();
-
-         em.close();
+            System.out.printf("Updated entity: %s%n", event);
+         } catch (Throwable t) {
+            tx.setRollbackOnly();
+            throw t;
+         } finally {
+            if (tx.isActive()) tx.commit();
+            else tx.rollback();
+         }
       }
    }
 
    private static void evictEntity(long id) {
-      EntityManager em = createEntityManagerWithStatsCleared();
-      try {
+      try(Session em = createEntityManagerWithStatsCleared()) {
          em.getEntityManagerFactory().getCache().evict(Event.class, id);
-      } finally {
-         em.close();
       }
    }
 
    private static void deleteEntity(long id) {
-      EntityManager em = createEntityManagerWithStatsCleared();
-      EntityTransaction tx = em.getTransaction();
-      try {
-         tx.begin();
+      try(Session em = createEntityManagerWithStatsCleared()) {
+         EntityTransaction tx = em.getTransaction();
+         try {
+            tx.begin();
 
-         Event event = em.find(Event.class, id);
-         em.remove(event);
-      } catch (Throwable t) {
-         tx.setRollbackOnly();
-         throw t;
-      } finally {
-         if (tx.isActive()) tx.commit();
-         else tx.rollback();
-
-         em.close();
+            Event event = em.find(Event.class, id);
+            em.remove(event);
+         } catch (Throwable t) {
+            tx.setRollbackOnly();
+            throw t;
+         } finally {
+            if (tx.isActive()) tx.commit();
+            else tx.rollback();
+         }
       }
    }
 
    private static void queryEntities() {
-      EntityManager em = createEntityManagerWithStatsCleared();
-      try {
+      try(Session em = createEntityManagerWithStatsCleared()) {
          TypedQuery<Event> query = em.createQuery("from Event", Event.class);
          query.setHint("org.hibernate.cacheable", Boolean.TRUE);
          List<Event> events = query.getResultList();
          System.out.printf("Queried events: %s%n", events);
-      } finally {
-         em.close();
       }
    }
 
    private static void saveExpiringEntity() {
-      EntityManager em = createEntityManagerWithStatsCleared();
-      EntityTransaction tx = em.getTransaction();
-      try {
-         tx.begin();
+      try(Session em = createEntityManagerWithStatsCleared()) {
+         EntityTransaction tx = em.getTransaction();
+         try {
+            tx.begin();
 
-         em.persist(new Person("Satoshi"));
-      } catch (Throwable t) {
-         tx.setRollbackOnly();
-         throw t;
-      } finally {
-         if (tx.isActive()) tx.commit();
-         else tx.rollback();
-
-         em.close();
+            em.persist(new Person("Satoshi"));
+         } catch (Throwable t) {
+            tx.setRollbackOnly();
+            throw t;
+         } finally {
+            if (tx.isActive()) tx.commit();
+            else tx.rollback();
+         }
       }
    }
 
    private static void findExpiringEntity(long id) {
-      EntityManager em = createEntityManagerWithStatsCleared();
-      try {
+      try(Session em = createEntityManagerWithStatsCleared()) {
          Person person = em.find(Person.class, id);
          System.out.printf("Found expiring entity: %s%n", person);
-      } finally {
-         em.close();
       }
    }
 
