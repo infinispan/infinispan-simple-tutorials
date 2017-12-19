@@ -24,8 +24,6 @@ import org.infinispan.tutorial.simple.hibernate.cache.local.model.Person;
  *
  * Run with these properties to hide Hibernate messages:
  * -Dlog4j.configurationFile=src/main/resources/log4j2-tutorial.xml
- *
- * Run with -ea to enable assertions and verify expected behaviour.
  */
 public class InfinispanHibernateCacheLocal {
 
@@ -138,7 +136,7 @@ public class InfinispanHibernateCacheLocal {
    }
 
    private static void persistEntities() {
-      try(Session em = createEntityManagerWithStatsCleared()) {
+      try (Session em = createEntityManagerWithStatsCleared()) {
          EntityTransaction tx = em.getTransaction();
          try {
             tx.begin();
@@ -159,18 +157,21 @@ public class InfinispanHibernateCacheLocal {
    private static Session createEntityManagerWithStatsCleared() {
       EntityManager em = emf.createEntityManager();
       emf.unwrap(SessionFactory.class).getStatistics().clear();
+      // JPA's EntityManager is not AutoCloseable,
+      // but Hibernate's Session is,
+      // so unwrap it to make it easier to close after use.
       return em.unwrap(Session.class);
    }
 
    private static void findEntity(long id) {
-      try(Session em = createEntityManagerWithStatsCleared()) {
+      try (Session em = createEntityManagerWithStatsCleared()) {
          Event event = em.find(Event.class, id);
          System.out.printf("Found entity: %s%n", event);
       }
    }
 
    private static void updateEntity(long id) {
-      try(Session em = createEntityManagerWithStatsCleared()) {
+      try (Session em = createEntityManagerWithStatsCleared()) {
          EntityTransaction tx = em.getTransaction();
          try {
             tx.begin();
@@ -190,13 +191,13 @@ public class InfinispanHibernateCacheLocal {
    }
 
    private static void evictEntity(long id) {
-      try(Session em = createEntityManagerWithStatsCleared()) {
+      try (Session em = createEntityManagerWithStatsCleared()) {
          em.getEntityManagerFactory().getCache().evict(Event.class, id);
       }
    }
 
    private static void deleteEntity(long id) {
-      try(Session em = createEntityManagerWithStatsCleared()) {
+      try (Session em = createEntityManagerWithStatsCleared()) {
          EntityTransaction tx = em.getTransaction();
          try {
             tx.begin();
@@ -214,7 +215,7 @@ public class InfinispanHibernateCacheLocal {
    }
 
    private static void queryEntities() {
-      try(Session em = createEntityManagerWithStatsCleared()) {
+      try (Session em = createEntityManagerWithStatsCleared()) {
          TypedQuery<Event> query = em.createQuery("from Event", Event.class);
          query.setHint("org.hibernate.cacheable", Boolean.TRUE);
          List<Event> events = query.getResultList();
@@ -223,7 +224,7 @@ public class InfinispanHibernateCacheLocal {
    }
 
    private static void saveExpiringEntity() {
-      try(Session em = createEntityManagerWithStatsCleared()) {
+      try (Session em = createEntityManagerWithStatsCleared()) {
          EntityTransaction tx = em.getTransaction();
          try {
             tx.begin();
@@ -240,7 +241,7 @@ public class InfinispanHibernateCacheLocal {
    }
 
    private static void findExpiringEntity(long id) {
-      try(Session em = createEntityManagerWithStatsCleared()) {
+      try (Session em = createEntityManagerWithStatsCleared()) {
          Person person = em.find(Person.class, id);
          System.out.printf("Found expiring entity: %s%n", person);
       }
@@ -255,14 +256,12 @@ public class InfinispanHibernateCacheLocal {
       return emf.unwrap(SessionFactory.class).getStatistics();
    }
 
-   private static void printfAssert(String format, long actual, int expected) {
+   private static void printfAssert(String format, long actual, long expected) {
       System.out.printf(format, actual, expected);
-      assert expected == actual : errorMsgAndCloseEntityManagerFactory(actual, expected);
-   }
-
-   private static String errorMsgAndCloseEntityManagerFactory(long actual, int expected) {
-      emf.close();
-      return "Expected: " + expected + ", actual: " + actual;
+      if (expected != actual) {
+         emf.close();
+         throw new AssertionError("Expected: " + expected + ", actual: " + actual);
+      }
    }
 
 }
