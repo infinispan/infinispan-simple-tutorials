@@ -73,7 +73,7 @@
        <module>remote-listen</module>
        <module>kubernetes</module>
        <module>counter</module>
-       <module>hibernate-cache-local</module>
+       <module>hibernate-cache/local</module>
     </modules>
 </project>
 
