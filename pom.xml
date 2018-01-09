@@ -74,6 +74,7 @@
        <module>kubernetes</module>
        <module>counter</module>
        <module>hibernate-cache/local</module>
+       <module>hibernate-cache/wildfly-local</module>
     </modules>
 </project>
 
