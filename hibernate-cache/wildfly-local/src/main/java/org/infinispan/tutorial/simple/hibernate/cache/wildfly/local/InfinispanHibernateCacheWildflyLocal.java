@@ -28,8 +28,8 @@ import java.util.logging.Logger;
 @Path("/")
 public class InfinispanHibernateCacheWildflyLocal {
 
-   public static final String EVENT_REGION_NAME = "wildfly-local.war#primary." + Event.class.getName();
-   public static final String PERSON_REGION_NAME = "wildfly-local.war#primary." + Person.class.getName();
+   public static final String EVENT_REGION_NAME = "wildfly-local.war#events." + Event.class.getName();
+   public static final String PERSON_REGION_NAME = "wildfly-local.war#events." + Person.class.getName();
 
    @Inject
    private Logger log;
