@@ -75,6 +75,7 @@
        <module>counter</module>
        <module>hibernate-cache/local</module>
        <module>hibernate-cache/wildfly-local</module>
+       <module>hibernate-cache/spring-local</module>
     </modules>
 </project>
 
