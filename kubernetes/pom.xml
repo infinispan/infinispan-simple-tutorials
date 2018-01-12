@@ -20,12 +20,47 @@
         <options.useIPv4>-Djava.net.preferIPv4Stack=true</options.useIPv4>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <activation>
+                <file>
+                    <exists>/var/run/docker.sock</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>fabric8-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>resource</goal>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>fabric8-maven-plugin</artifactId>
+                    <version>3.1.11</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>fabric8-maven-plugin</artifactId>
-                <version>3.1.11</version>
                 <configuration>
                     <images>
                         <image>
@@ -54,14 +89,6 @@
                     <!-- We are not interested in creating any services -->
                     <ignoreServices>true</ignoreServices>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>resource</goal>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

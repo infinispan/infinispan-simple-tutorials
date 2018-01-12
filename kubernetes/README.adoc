@@ -51,6 +51,8 @@ mvn install
 
 Note that `target/` directory contains additional directories like `docker` (with generated Dockerfile) and `classes/META-INF/fabric8` with Kubernetes and OpenShift deployment templates.
 
+TIP: If the Docker Daemon is down, the build will omit processing Dockerfiles. Use `docker` profile to turn it on manually.
+
 == Deploying this tutorial to the Kubernetes/OpenShift
 
 This is handles automatically by Fabric8 maven plugin, just invoke:
