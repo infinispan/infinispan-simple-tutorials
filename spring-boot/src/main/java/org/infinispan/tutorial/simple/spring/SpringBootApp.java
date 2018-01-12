@@ -8,15 +8,14 @@ import org.infinispan.configuration.cache.Configuration;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.configuration.global.GlobalConfigurationBuilder;
 import org.infinispan.manager.EmbeddedCacheManager;
+import org.infinispan.spring.starter.embedded.InfinispanCacheConfigurer;
+import org.infinispan.spring.starter.embedded.InfinispanGlobalConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-
-import infinispan.autoconfigure.embedded.InfinispanCacheConfigurer;
-import infinispan.autoconfigure.embedded.InfinispanGlobalConfigurer;
 
 /**
  * This example shows how to configure Spring Boot and Infinispan

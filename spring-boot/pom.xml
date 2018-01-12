@@ -13,8 +13,8 @@
     <name>Infinispan Simple Tutorials: Spring Boot</name>
 
     <properties>
-        <spring-boot.version>1.4.0.RELEASE</spring-boot.version>
-        <infinispan.starters.version>1.0.0.Alpha1</infinispan.starters.version>
+        <spring-boot.version>1.5.9.RELEASE</spring-boot.version>
+        <infinispan.starters.version>2.0.0.Alpha1</infinispan.starters.version>
     </properties>
 
     <dependencyManagement>
@@ -32,12 +32,8 @@
     <dependencies>
         <dependency>
             <groupId>org.infinispan</groupId>
-            <artifactId>inifinispan-spring-boot-starter</artifactId>
+            <artifactId>infinispan-spring-boot-starter-embedded</artifactId>
             <version>${infinispan.starters.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-core</artifactId>
         </dependency>
     </dependencies>
 
