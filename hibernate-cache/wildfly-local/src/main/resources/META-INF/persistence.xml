@@ -21,7 +21,7 @@
          <property name="hibernate.generate_statistics" value="true" />
 
          <!-- Entity specific configuration, e.g. via property:
-            hibernate.cache.infinispan.<WAR/EAR name>#<Persistence Unit name>.<Entity FQN>.expiration.max_idle
+            hibernate.cache.infinispan.<WAR/EAR name>#<PersistenceManager Unit name>.<Entity FQN>.expiration.max_idle
          -->
          <property name="hibernate.cache.infinispan.wildfly-local.war#events.org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.model.Person.expiration.max_idle"
                    value= "1000"/>

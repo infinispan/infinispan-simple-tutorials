@@ -3,26 +3,22 @@ package org.infinispan.tutorial.simple.hibernate.cache.wildfly.local;
 import org.hibernate.Session;
 import org.hibernate.stat.SecondLevelCacheStatistics;
 import org.hibernate.stat.Statistics;
+import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.controller.PersistenceManager;
 import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.model.Event;
 import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.model.Person;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.transaction.UserTransaction;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import java.util.List;
 import java.util.logging.Logger;
 
 /**
  * Start Wildfly, then:
  *
  * mvn clean package wildfly:deploy
- * curl http://localhost:8080/wildfly-local/infinispan/hibernate-cache/entity
- * curl http://localhost:8080/wildfly-local/infinispan/hibernate-cache/query
- * curl http://localhost:8080/wildfly-local/infinispan/hibernate-cache/expiring
+ * for i in {1..15}; do curl http://localhost:8080/wildfly-local/infinispan/hibernate-cache/$i; done
  *
  */
 @Path("/")
@@ -38,187 +34,193 @@ public class InfinispanHibernateCacheWildflyLocal {
    private EntityManager em;
 
    @Inject
-   private UserTransaction userTransaction;
+   private PersistenceManager ejb;
 
    @GET
-   @Path("/hibernate-cache/entity")
+   @Path("/hibernate-cache/1")
    @Produces("application/json")
-   public String entityCache() throws Exception {
+   public String step1_persistEntities() {
+      // Persist 3 entities, stats should show 3 second level cache puts
+      ejb.persistEntities();
+      SecondLevelCacheStatistics eventCacheStats = getCacheStatistics(EVENT_REGION_NAME);
+      return printfAssert("Event entity cache puts: %d (expected %d)%n", eventCacheStats.getPutCount(), 3);
+   }
+
+   @GET
+   @Path("/hibernate-cache/2")
+   @Produces("application/json")
+   public String step2_findEntity() {
       StringBuilder out = new StringBuilder();
 
-      SecondLevelCacheStatistics eventCacheStats;
-
-      // Persist 3 entities, stats should show 3 second level cache puts
-      persistEntities();
-      eventCacheStats = getCacheStatistics(EVENT_REGION_NAME);
-      printfAssert("Event entity cache puts: %d (expected %d)%n", eventCacheStats.getPutCount(), 3, out);
-
       // Find one of the persisted entities, stats should show a cache hit
-      findEntity(1L, out);
-      eventCacheStats = getCacheStatistics(EVENT_REGION_NAME);
-      printfAssert("Event entity cache hits: %d (expected %d)%n", eventCacheStats.getHitCount(), 1, out);
-
-      // Update one of the persisted entities, stats should show a cache hit and a cache put
-      updateEntity(1L, out);
-      eventCacheStats = getCacheStatistics(EVENT_REGION_NAME);
-      printfAssert("Event entity cache hits: %d (expected %d)%n", eventCacheStats.getHitCount(), 1, out);
-      printfAssert("Event entity cache puts: %d (expected %d)%n", eventCacheStats.getPutCount(), 1, out);
-
-      // Find the updated entity, stats should show a cache hit
-      findEntity(1L, out);
-      eventCacheStats = getCacheStatistics(EVENT_REGION_NAME);
-      printfAssert("Event entity cache hits: %d (expected %d)%n", eventCacheStats.getHitCount(), 1, out);
-
-
-      // Evict entity from cache
-      evictEntity(1L);
-
-      // Reload evicted entity, should come from DB
-      // Stats should show a cache miss and a cache put
-      findEntity(1L, out);
-      eventCacheStats = getCacheStatistics(EVENT_REGION_NAME);
-      printfAssert("Event entity cache miss: %d (expected %d)%n", eventCacheStats.getMissCount(), 1, out);
-      printfAssert("Event entity cache puts: %d (expected %d)%n", eventCacheStats.getPutCount(), 1, out);
-
-      // Remove cached entity, stats should show a cache hit
-      deleteEntity(1L);
-      eventCacheStats = getCacheStatistics(EVENT_REGION_NAME);
+      ejb.findEntity(1L, out);
+      SecondLevelCacheStatistics eventCacheStats = getCacheStatistics(EVENT_REGION_NAME);
       printfAssert("Event entity cache hits: %d (expected %d)%n", eventCacheStats.getHitCount(), 1, out);
 
       return out.toString();
    }
 
    @GET
-   @Path("/hibernate-cache/query")
+   @Path("/hibernate-cache/3")
    @Produces("application/json")
-   public String queryCache() throws Exception {
+   public String step3_updateEntity() {
       StringBuilder out = new StringBuilder();
 
-      SecondLevelCacheStatistics eventCacheStats;
-      Statistics stats;
+      // Update one of the persisted entities, stats should show a cache hit and a cache put
+      ejb.updateEntity(1L, out);
+      SecondLevelCacheStatistics eventCacheStats = getCacheStatistics(EVENT_REGION_NAME);
+      printfAssert("Event entity cache hits: %d (expected %d)%n", eventCacheStats.getHitCount(), 1, out);
+      printfAssert("Event entity cache puts: %d (expected %d)%n", eventCacheStats.getPutCount(), 1, out);
+
+      return out.toString();
+   }
+
+   @GET
+   @Path("/hibernate-cache/4")
+   @Produces("application/json")
+   public String step4_findUpdatedEntity() {
+      // Find the updated entity, stats should show a cache hit
+      return step2_findEntity(); // Just repeat step 2
+   }
+
+   @GET
+   @Path("/hibernate-cache/5")
+   @Produces("application/json")
+   public String step5_evictAndFindEntity() {
+      StringBuilder out = new StringBuilder();
+
+      // Evict entity from cache
+      ejb.evictEntity(1L);
+
+      // Reload evicted entity, should come from DB
+      // Stats should show a cache miss and a cache put
+      ejb.findEntity(1L, out);
+      SecondLevelCacheStatistics eventCacheStats = getCacheStatistics(EVENT_REGION_NAME);
+      printfAssert("Event entity cache miss: %d (expected %d)%n", eventCacheStats.getMissCount(), 1, out);
+      printfAssert("Event entity cache puts: %d (expected %d)%n", eventCacheStats.getPutCount(), 1, out);
+
+      return out.toString();
+   }
+
+   @GET
+   @Path("/hibernate-cache/6")
+   @Produces("application/json")
+   public String step6_deleteEntity() {
+      StringBuilder out = new StringBuilder();
+
+      // Remove cached entity, stats should show a cache hit
+      ejb.deleteEntity(1L, out);
+      SecondLevelCacheStatistics eventCacheStats = getCacheStatistics(EVENT_REGION_NAME);
+      printfAssert("Event entity cache hits: %d (expected %d)%n", eventCacheStats.getHitCount(), 1, out);
+
+      return out.toString();
+   }
+
+   @GET
+   @Path("/hibernate-cache/7")
+   @Produces("application/json")
+   public String step7_queryEntities() {
+      StringBuilder out = new StringBuilder();
 
       // Query entities, expect:
       // * no cache hits since query is not cached
       // * a query cache miss and query cache put
-      queryEntities(out);
-      stats = getStatistics();
+      ejb.queryEntities(out);
+      Statistics stats = getStatistics();
       printfAssert("Query cache miss: %d (expected %d)%n", stats.getQueryCacheMissCount(), 1, out);
-      printfAssert("Query cache put: %d (expected %d)%n", stats.getQueryCachePutCount(), 1, out);
-
-      // Repeat query, expect:
-      // * two cache hits for the number of entities in cache
-      // * a query cache hit
-      queryEntities(out);
-      stats = getStatistics();
-      printfAssert("Event entity cache hits: %d (expected %d)%n", stats.getSecondLevelCacheHitCount(), 2, out);
-      printfAssert("Query cache hit: %d (expected %d)%n", stats.getQueryCacheHitCount(), 1, out);
-
-      // Update one of the persisted entities, stats should show a cache hit and a cache put
-      updateEntity(2L, out);
-      eventCacheStats = getCacheStatistics(EVENT_REGION_NAME);
-      printfAssert("Event entity cache hits: %d (expected %d)%n", eventCacheStats.getHitCount(), 1, out);
-      printfAssert("Event entity cache puts: %d (expected %d)%n", eventCacheStats.getPutCount(), 1, out);
-
-      // Repeat query after update, expect:
-      // * no cache hits or puts since entities are already cached
-      // * a query cache miss and query cache put, because when an entity is updated,
-      //   any queries for that type are invalidated
-      queryEntities(out);
-      stats = getStatistics();
-      printfAssert("Query cache miss: %d (expected %d)%n", stats.getQueryCacheMissCount(),1, out);
       printfAssert("Query cache put: %d (expected %d)%n", stats.getQueryCachePutCount(), 1, out);
 
       return out.toString();
    }
 
    @GET
-   @Path("/hibernate-cache/expiring")
+   @Path("/hibernate-cache/8")
    @Produces("application/json")
-   public String expiringEntityCache() throws Exception {
+   public String step8_repeatQuery() {
       StringBuilder out = new StringBuilder();
 
-      SecondLevelCacheStatistics personCacheStats;
-      
+      // Repeat query, expect:
+      // * two cache hits for the number of entities in cache
+      // * a query cache hit
+      ejb.queryEntities(out);
+      Statistics stats = getStatistics();
+      printfAssert("Event entity cache hits: %d (expected %d)%n", stats.getSecondLevelCacheHitCount(), 2, out);
+      printfAssert("Query cache hit: %d (expected %d)%n", stats.getQueryCacheHitCount(), 1, out);
+
+      return out.toString();
+   }
+
+   @GET
+   @Path("/hibernate-cache/9")
+   @Produces("application/json")
+   public String step9_updateEntity() {
+      StringBuilder out = new StringBuilder();
+
+      // Update one of the persisted entities, stats should show a cache hit and a cache put
+      ejb.updateEntity(2L, out);
+      SecondLevelCacheStatistics eventCacheStats = getCacheStatistics(EVENT_REGION_NAME);
+      printfAssert("Event entity cache hits: %d (expected %d)%n", eventCacheStats.getHitCount(), 1, out);
+      printfAssert("Event entity cache puts: %d (expected %d)%n", eventCacheStats.getPutCount(), 1, out);
+
+      return out.toString();
+   }
+
+   @GET
+   @Path("/hibernate-cache/10")
+   @Produces("application/json")
+   public String step10_repeatQueryAfterUpdate() {
+      // Repeat query after update, expect:
+      // * no cache hits or puts since entities are already cached
+      // * a query cache miss and query cache put, because when an entity is updated,
+      //   any queries for that type are invalidated
+      return step7_queryEntities();
+   }
+
+   @GET
+   @Path("/hibernate-cache/11")
+   @Produces("application/json")
+   public String step11_persistExpiringEntity() {
+      StringBuilder out = new StringBuilder();
+
       // Save cache-expiring entity, stats should show a second level cache put
-      saveExpiringEntity();
-      personCacheStats = getCacheStatistics(PERSON_REGION_NAME);
+      ejb.persistExpiringEntity();
+      SecondLevelCacheStatistics personCacheStats = getCacheStatistics(PERSON_REGION_NAME);
       printfAssert("Person entity cache puts: %d (expected %d)%n", personCacheStats.getPutCount(), 1, out);
 
+      return out.toString();
+   }
+
+   @GET
+   @Path("/hibernate-cache/12")
+   @Produces("application/json")
+   public String step12_findExpiringEntity() {
+      StringBuilder out = new StringBuilder();
+
       // Find expiring entity, stats should show a second level cache hit
-      findExpiringEntity(4L, out);
-      personCacheStats = getCacheStatistics(PERSON_REGION_NAME);
+      ejb.findExpiringEntity(4L, out);
+      SecondLevelCacheStatistics personCacheStats = getCacheStatistics(PERSON_REGION_NAME);
       printfAssert("Person entity cache hits: %d (expected %d)%n", personCacheStats.getHitCount(), 1, out);
+
+      return out.toString();
+   }
+
+   @GET
+   @Path("/hibernate-cache/13")
+   @Produces("application/json")
+   public String step13_findExpiredEntity() throws Exception {
+      StringBuilder out = new StringBuilder();
 
       // Wait long enough for entity to be expired from cache
       Thread.sleep(1100);
 
       // Find expiring entity, after expiration entity should come from DB
       // Stats should show a cache miss and a cache put
-      findExpiringEntity(4L, out);
-      personCacheStats = getCacheStatistics(PERSON_REGION_NAME);
+      ejb.findExpiringEntity(4L, out);
+      SecondLevelCacheStatistics personCacheStats = getCacheStatistics(PERSON_REGION_NAME);
       printfAssert("Person entity cache miss: %d (expected %d)%n", personCacheStats.getMissCount(), 1, out);
       printfAssert("Person entity cache put: %d (expected %d)%n", personCacheStats.getPutCount(), 1, out);
 
       return out.toString();
-   }
-
-   private void persistEntities() throws Exception {
-      clearStatistics();
-      userTransaction.begin();
-      em.persist(new Event("Caught a pokemon!"));
-      em.persist(new Event("Hatched an egg"));
-      em.persist(new Event("Became a gym leader"));
-      userTransaction.commit();
-   }
-
-   private void findEntity(long id, StringBuilder out) {
-      clearStatistics();
-      Event event = em.find(Event.class, id);
-      out.append(String.format("Found entity: %s%n", event));
-   }
-
-   private void updateEntity(long id, StringBuilder out) throws Exception {
-      clearStatistics();
-      userTransaction.begin();
-      Event event = em.find(Event.class, id);
-      event.setName("Caught a Snorlax!!");
-      out.append(String.format("Updated entity: %s%n", event));
-      userTransaction.commit();
-   }
-
-   private void evictEntity(long id) {
-      clearStatistics();
-      em.getEntityManagerFactory().getCache().evict(Event.class, id);
-   }
-
-   private void deleteEntity(long id) throws Exception {
-      clearStatistics();
-      userTransaction.begin();
-      Event event = em.find(Event.class, id);
-      em.remove(event);
-      userTransaction.commit();
-   }
-
-   private void queryEntities(StringBuilder out) {
-      clearStatistics();
-      log.info("Query entities");
-      TypedQuery<Event> query = em.createQuery("from Event", Event.class);
-      query.setHint("org.hibernate.cacheable", Boolean.TRUE);
-      List<Event> events = query.getResultList();
-      out.append(String.format("Queried events: %s%n", events));
-   }
-
-   private void saveExpiringEntity() throws Exception {
-      clearStatistics();
-      userTransaction.begin();
-      em.persist(new Person("Satoshi"));
-      userTransaction.commit();
-   }
-
-   private void findExpiringEntity(long id, StringBuilder out) {
-      clearStatistics();
-      Person person = em.find(Person.class, id);
-      out.append(String.format("Found expiring entity: %s%n", person));
    }
 
    private SecondLevelCacheStatistics getCacheStatistics(String regionName) {
@@ -230,11 +232,12 @@ public class InfinispanHibernateCacheWildflyLocal {
       return em.unwrap(Session.class).getSessionFactory().getStatistics();
    }
 
-   private void clearStatistics() {
-      em.unwrap(Session.class).getSessionFactory().getStatistics().clear();
+   private void printfAssert(String format, long actual, long expected, StringBuilder out) {
+      out.append(printfAssert(format, actual, expected));
    }
 
-   private void printfAssert(String format, long actual, long expected, StringBuilder out) {
+   private String printfAssert(String format, long actual, long expected) {
+      StringBuilder out = new StringBuilder();
       String msg = String.format(format, actual, expected);
       out.append(msg);
       if (expected != actual) {
@@ -242,6 +245,7 @@ public class InfinispanHibernateCacheWildflyLocal {
          out.append(errorMsg);
          log.severe(errorMsg);
       }
+      return out.toString();
    }
 
 }
