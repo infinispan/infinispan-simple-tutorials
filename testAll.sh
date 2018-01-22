@@ -45,6 +45,13 @@ runTestAndExitOnError spring spring-annotations
 runTestAndExitOnError tx
 runTestAndExitOnError counter
 
+cd hibernate-cache
+runTestAndExitOnError local
+runTestAndExitOnError spring-local
+cd ..
+
+read -p "Start Infinispan Server, press any key when ready..."
+
 # tests below need infinispan server in local 127.0.0.1
 runTestAndExitOnError remote
 runTestAndExitOnError remote-listen
@@ -56,6 +63,14 @@ cd javascript
 npm install
 node index.js
 cd ..
+
+read -p "Stop Infinispan Server, start Wildfly and press any key..."
+
+# tests below need wildfly in local 127.0.0.1
+cd hibernate-cache/wildfly-local
+mvn clean package wildfly:deploy
+for i in {1..15}; do curl http://localhost:8080/wildfly-local/infinispan/hibernate-cache/$i; done
+cd ../..
 
 # test below needs docker !
 echo "Docker should be installed"
