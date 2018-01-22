@@ -28,7 +28,7 @@
          <!-- Force using local configuration when only using a single node.
               Otherwise a clustered configuration is loaded. -->
          <property name="hibernate.cache.infinispan.cfg"
-                   value="org/infinispan/hibernate/cache/builder/infinispan-configs-local.xml"/>
+                   value="org/infinispan/hibernate/cache/commons/builder/infinispan-configs-local.xml"/>
 
          <!-- Generate statistics to see effects of second level cache -->
          <property name="hibernate.generate_statistics" value="true" />
