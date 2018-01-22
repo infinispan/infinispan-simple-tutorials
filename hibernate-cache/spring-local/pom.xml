@@ -12,14 +12,13 @@
    <parent>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-parent</artifactId>
-      <!--<version>1.5.9.RELEASE</version>-->
       <version>2.0.0.M7</version>
    </parent>
 
    <properties>
       <java.version>1.8</java.version>
 
-      <version.infinispan>9.2.0-SNAPSHOT</version.infinispan>
+      <version.infinispan>9.2.0.CR1</version.infinispan>
    </properties>
 
    <dependencyManagement>
@@ -59,6 +58,25 @@
          <plugin>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-maven-plugin</artifactId>
+         </plugin>
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>exec</goal>
+                  </goals>
+               </execution>
+            </executions>
+            <configuration>
+               <executable>java</executable>
+               <arguments>
+                  <argument>-classpath</argument>
+                  <classpath />
+                  <argument>org.infinispan.tutorial.simple.hibernate.cache.spring.local.InfinispanHibernateCacheSpringLocal</argument>
+               </arguments>
+            </configuration>
          </plugin>
       </plugins>
    </build>
