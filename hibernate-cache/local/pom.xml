@@ -32,8 +32,7 @@
             <configuration>
                <executable>java</executable>
                <arguments>
-                  <argument>-Djava.net.preferIPv4Stack=true</argument>
-                  <argument>-Djava.util.logging.config.file=src/main/resources/logging.properties</argument>
+                  <argument>-Dlog4j.configurationFile=src/main/resources/log4j2-tutorial.xml</argument>
                   <argument>-classpath</argument>
                   <classpath />
                   <argument>org.infinispan.tutorial.simple.hibernate.cache.local.InfinispanHibernateCacheLocal</argument>
