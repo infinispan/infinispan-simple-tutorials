@@ -1,4 +1,4 @@
-# infinispan-simple-tutorials
+# infinispan-simple-tutorials  [![Build Status](https://travis-ci.org/infinispan/infinispan-simple-tutorials.svg?branch=master)](https://travis-ci.org/infinispan/infinispan-simple-tutorials)
 Infinispan Simple Tutorials
 
 This is a collection of simple tutorials which explain how to use certain 
