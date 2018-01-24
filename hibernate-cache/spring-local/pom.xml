@@ -83,22 +83,17 @@
 
    <repositories>
       <repository>
-         <id>spring-releases</id>
-         <name>Spring Releases</name>
-         <url>https://repo.spring.io/libs-release</url>
-      </repository>
-      <repository>
-         <id>org.jboss.repository.releases</id>
-         <name>JBoss Maven Release Repository</name>
-         <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+         <id>spring-milestone</id>
+         <name>Spring Milestones</name>
+         <url>https://repo.spring.io/libs-milestone</url>
       </repository>
    </repositories>
 
    <pluginRepositories>
       <pluginRepository>
-         <id>spring-releases</id>
-         <name>Spring Releases</name>
-         <url>https://repo.spring.io/libs-release</url>
+         <id>spring-milestone</id>
+         <name>Spring Milestones</name>
+         <url>https://repo.spring.io/libs-milestone</url>
       </pluginRepository>
    </pluginRepositories>
 
