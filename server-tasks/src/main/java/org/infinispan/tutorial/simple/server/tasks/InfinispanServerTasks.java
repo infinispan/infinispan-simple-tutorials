@@ -25,6 +25,8 @@ public class InfinispanServerTasks {
       // Execute task
       String greet = cache.execute("hello-task", parameters);
       System.out.printf("Greeting = %s\n", greet);
+      // Stop the cache manager and release all resources
+      cacheManager.stop();
    }
 
    public static class HelloTask implements ServerTask<String> {
