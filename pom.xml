@@ -76,6 +76,7 @@
        <module>hibernate-cache/local</module>
        <module>hibernate-cache/wildfly-local</module>
        <module>hibernate-cache/spring-local</module>
+       <module>server-tasks</module>
     </modules>
 </project>
 
