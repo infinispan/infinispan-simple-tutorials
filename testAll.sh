@@ -56,6 +56,10 @@ read -p "Start Infinispan Server, press any key when ready..."
 runTestAndExitOnError remote
 runTestAndExitOnError remote-listen
 runTestAndExitOnError scripting
+cd server-tasks
+mvn clean package wildfly:deploy
+cd ..
+runTestAndExitOnError server-tasks
 
 # npm should be installed
 echo "NPM should be installed"
