@@ -1,1 +1,2 @@
 org.infinispan.tutorial.simple.server.tasks.InfinispanServerTasks$HelloTask
+org.infinispan.tutorial.simple.server.tasks.InfinispanServerTasks$SumValuesTask
