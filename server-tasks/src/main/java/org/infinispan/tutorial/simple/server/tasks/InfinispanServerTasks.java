@@ -18,36 +18,49 @@ import java.util.stream.IntStream;
 public class InfinispanServerTasks {
 
    public static void main(String[] args) {
-      // Create a configuration for a locally-running server
-      ConfigurationBuilder builder = new ConfigurationBuilder();
-      builder
-         .addServer().host("127.0.0.1").port(11222)
-         .marshaller(UTF8StringMarshaller.class); // Data is UTF-8 String encoded
-
-      // Connect to the server
-      RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
-
-      // Obtain the remote cache
-      RemoteCache<String, String> cache = cacheManager.getCache();
+      // Execute and data manipulation caches require different configuration
+      // This won't be necessary in the future: https://issues.jboss.org/browse/ISPN-8814
+      final RemoteCache<String, String> dataCache = getDataCache();
+      final RemoteCache<String, String> execCache = getExecCache();
 
       // Create task parameters
       Map<String, String> parameters = new HashMap<>();
       parameters.put("name", "developer");
 
       // Execute hello task
-      String greet = cache.execute("hello-task", parameters);
+      String greet = execCache.execute("hello-task", parameters);
       System.out.printf("Greeting = %s\n", greet);
 
       // Store some values and compute the sum
       int range = 10;
       IntStream.range(0, range).boxed().forEach(
-         i -> cache.put(i + "-key", i + "-value")
+         i -> dataCache.put(i + "-key", i + "-value")
       );
-      int result = cache.execute("sum-values-task", Collections.emptyMap());
+      int result = execCache.execute("sum-values-task", Collections.emptyMap());
       System.out.printf("Sum of values = %d\n", result);
 
       // Stop the cache manager and release all resources
-      cacheManager.stop();
+      dataCache.getRemoteCacheManager().stop();
+      execCache.getRemoteCacheManager().stop();
+   }
+
+   public static RemoteCache<String,String> getDataCache() {
+      // Create a configuration for a locally-running server
+      ConfigurationBuilder builder = new ConfigurationBuilder();
+      builder
+         .addServer().host("127.0.0.1").port(11222)
+         .marshaller(UTF8StringMarshaller.class);
+
+      RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
+      return cacheManager.getCache();
+   }
+
+   public static RemoteCache<String,String> getExecCache() {
+      ConfigurationBuilder builder = new ConfigurationBuilder();
+      builder.addServer().host("127.0.0.1").port(11222);
+
+      RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
+      return cacheManager.getCache();
    }
 
    public static class HelloTask implements ServerTask<String> {
