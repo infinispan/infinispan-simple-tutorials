@@ -25,8 +25,8 @@ public class InfinispanStreams {
       IntStream.range(0, range).boxed().forEach(i -> cache.put(i + "-key", i + "-value"));
       // Map and reduce the keys
       int result = cache.keySet().stream()
-         .map((Serializable & Function<String, Integer>) e -> Integer.valueOf(e.substring(0, e.indexOf("-"))))
-              .collect(CacheCollectors.serializableCollector(() -> Collectors.summingInt(i -> i.intValue())));
+         .map(e -> Integer.valueOf(e.substring(0, e.indexOf("-"))))
+              .collect(() -> Collectors.summingInt(i -> i.intValue()));
       System.out.printf("Result = %d\n", result);
       // Stop the cache manager and release all resources
       cacheManager.stop();
