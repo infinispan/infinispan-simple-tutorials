@@ -78,6 +78,7 @@
        <module>hibernate-cache/spring-local</module>
        <module>server-tasks</module>
        <module>multimap</module>
+       <module>lock</module>
     </modules>
 </project>
 
