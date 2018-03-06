@@ -44,6 +44,7 @@ runTestAndExitOnError spring spring-caching
 runTestAndExitOnError spring spring-annotations
 runTestAndExitOnError tx
 runTestAndExitOnError counter
+runTestAndExitOnError multimap
 
 cd hibernate-cache
 runTestAndExitOnError local
