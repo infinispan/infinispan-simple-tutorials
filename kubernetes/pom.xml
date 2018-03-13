@@ -18,6 +18,8 @@
         <options.debug>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8787</options.debug>
         <!-- Not sure, what's your configuration, so let's use IPv4 just in case -->
         <options.useIPv4>-Djava.net.preferIPv4Stack=true</options.useIPv4>
+        <!-- This allows redeploying when using Fabric8 Maven Plugin -->
+        <fabric8.openshift.trimImageInContainerSpec>true</fabric8.openshift.trimImageInContainerSpec>
     </properties>
 
     <profiles>
