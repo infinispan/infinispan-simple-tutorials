@@ -52,7 +52,9 @@ public class InfinispanServerTasks {
          .marshaller(UTF8StringMarshaller.class);
 
       RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
-      return cacheManager.getCache();
+      final RemoteCache<String, String> cache = cacheManager.getCache();
+      cache.clear();
+      return cache;
    }
 
    public static RemoteCache<String,String> getExecCache() {
