@@ -18,7 +18,8 @@
    <properties>
       <java.version>1.8</java.version>
 
-      <version.infinispan>9.2.0.CR1</version.infinispan>
+      <!-- TODO remove when Spring Boot supports Hibernate 5.3/Infinispan 5.3 -->
+      <version.infinispan>9.2.5.Final</version.infinispan>
    </properties>
 
    <dependencyManagement>
