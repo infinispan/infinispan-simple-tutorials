@@ -57,6 +57,8 @@ read -p "Start Infinispan Server, press any key when ready..."
 # tests below need infinispan server in local 127.0.0.1
 runTestAndExitOnError remote
 runTestAndExitOnError remote-listen
+runTestAndExitOnError remote-tx
+runTestAndExitOnError remote-counter
 runTestAndExitOnError scripting
 cd server-tasks
 mvn clean package wildfly:deploy

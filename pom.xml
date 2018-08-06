@@ -79,6 +79,8 @@
        <module>server-tasks</module>
        <module>multimap</module>
        <module>lock</module>
+       <module>remote-tx</module>
+       <module>remote-counter</module>
     </modules>
 </project>
 
