@@ -32,7 +32,7 @@
                             <arguments>
                                 <argument>-classpath</argument>
                                 <classpath />
-                                <argument>org.infinispan.tutorial.simple.spring.SpringAnnotationConfiguration</argument>
+                                <argument>org.infinispan.tutorial.simple.spring.embedded.SpringAnnotationConfiguration</argument>
                             </arguments>
                         </configuration>
                     </execution>
@@ -46,7 +46,7 @@
                             <arguments>
                                 <argument>-classpath</argument>
                                 <classpath />
-                                <argument>org.infinispan.tutorial.simple.spring.SpringCaching</argument>
+                                <argument>org.infinispan.tutorial.simple.spring.embedded.SpringCaching</argument>
                             </arguments>
                         </configuration>
                     </execution>

@@ -1,0 +1,21 @@
+= Spring Boot tutorial
+
+This tutorial will show you how to integrate Infinispan with Spring Boot using
+link:https://github.com/infinispan/infinispan-spring-boot[Infinispan Spring Boot Starters].
+
+For more information about Spring Boot please refer to:
+* link:https://projects.spring.io/spring-boot[Spring Boot manual]
+
+== Infinispan Server Installation
+
+As indicated in the project README, this tutorial uses the client/server mode.
+
+With Docker : ```docker run -it -p 11222:11222 jboss/infinispan-server:9.3.2.Final```
+
+Or
+
+With the downloaded server : running ```bin/standalone.sh``` from the installation folder
+
+== Building instructions
+
+Invoke `mvn install spring-boot:run`.

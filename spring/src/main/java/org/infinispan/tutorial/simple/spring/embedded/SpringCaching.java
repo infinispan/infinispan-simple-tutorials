@@ -1,4 +1,4 @@
-package org.infinispan.tutorial.simple.spring;
+package org.infinispan.tutorial.simple.spring.embedded;
 
 import org.infinispan.spring.provider.SpringEmbeddedCacheManagerFactoryBean;
 import org.springframework.cache.annotation.Cacheable;
