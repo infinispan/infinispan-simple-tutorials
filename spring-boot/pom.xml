@@ -2,7 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>infinispan-simple-tutorials-spring-boot</artifactId>
     <parent>
         <relativePath>../pom.xml</relativePath>
         <version>1.0.0-SNAPSHOT</version>
@@ -10,29 +9,24 @@
         <artifactId>infinispan-simple-tutorials</artifactId>
     </parent>
 
-    <name>Infinispan Simple Tutorials: Spring Boot</name>
+    <artifactId>infinispan-simple-tutorials-spring-boot-parent</artifactId>
+    <name>Parent pom for Spring Boot modules</name>
+    <packaging>pom</packaging>
 
     <properties>
-        <spring-boot.version>1.5.9.RELEASE</spring-boot.version>
-        <infinispan.starters.version>2.0.0.Alpha1</infinispan.starters.version>
+        <spring-boot.version>2.0.3.RELEASE</spring-boot.version>
+        <infinispan.starters.version>2.0.0.Beta2</infinispan.starters.version>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-parent</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <dependency>
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-spring-boot-starter-embedded</artifactId>
+            <version>${infinispan.starters.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-spring-boot-starter-remote</artifactId>
             <version>${infinispan.starters.version}</version>
         </dependency>
     </dependencies>

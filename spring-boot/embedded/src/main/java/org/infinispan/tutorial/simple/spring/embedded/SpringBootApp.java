@@ -1,4 +1,4 @@
-package org.infinispan.tutorial.simple.spring;
+package org.infinispan.tutorial.simple.spring.embedded;
 
 import java.lang.invoke.MethodHandles;
 
@@ -62,7 +62,8 @@ public class SpringBootApp {
         Cache<Long, String> cache = cacheManager.getCache(CACHE_NAME);
         cache.put(System.currentTimeMillis(), "Infinispan");
 
-        logger.info("Values from Cache: {}", cache.entrySet());
+        logger.info("Keys from Cache: {}", cache.keySet());
+        logger.info("Values from Cache: {}", cache.values());
     }
 
 }

@@ -1,4 +1,4 @@
-package org.infinispan.tutorial.simple.spring;
+package org.infinispan.tutorial.simple.spring.embedded;
 
 import java.util.HashMap;
 import java.util.Map;

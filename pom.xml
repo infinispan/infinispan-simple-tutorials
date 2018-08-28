@@ -51,7 +51,7 @@
             </plugins>
         </pluginManagement>
     </build>
-    
+
     <modules>
        <module>map</module>
        <module>distributed</module>
@@ -61,6 +61,8 @@
        <module>spark</module>
        <module>spring</module>
        <module>spring-boot</module>
+       <module>spring-boot/embedded</module>
+       <module>spring-boot/remote</module>
        <module>spring-session</module>
        <module>tx</module>
        <module>distexec</module>
@@ -83,4 +85,3 @@
        <module>remote-counter</module>
     </modules>
 </project>
-
