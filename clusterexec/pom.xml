@@ -25,6 +25,11 @@
                 <configuration>
                     <executable>java</executable>
                     <arguments>
+                        <!--
+                          Assumes a cluster formed within the same node.
+                          Adjust JGroups bind address if creating cluster between different node.
+                        -->
+                        <argument>-Djgroups.bind_addr=127.0.0.1</argument>
                         <argument>-Djava.net.preferIPv4Stack=true</argument>
                         <argument>-Djava.util.logging.config.file=src/main/resources/logging.properties</argument>
                         <argument>-classpath</argument>
