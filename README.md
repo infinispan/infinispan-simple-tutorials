@@ -14,6 +14,16 @@ In order to build the tutorials you will need
 You can compile and run each individual tutorial by changing to its folder
 and invoking:
 
+```bash
 mvn clean package
 mvn exec:exec
+```
 
+Tutorials that involve deploying an archive to Wildfly are first deployed like this:
+
+```bash
+mvn clean package
+mvn wildfly:deploy
+```
+
+Then, check the tutorial for a particular URL to interact with.
