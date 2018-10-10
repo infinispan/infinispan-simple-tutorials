@@ -52,7 +52,7 @@
       <!-- TODO remove when Spring Boot (coming in 2.1) supports Hibernate 5.3/Infinispan 5.3 -->
       <dependency>
          <groupId>org.infinispan</groupId>
-         <artifactId>infinispan-hibernate-cache-v51</artifactId>
+         <artifactId>infinispan-hibernate-cache</artifactId>
          <version>${version.infinispan}</version>
       </dependency>
       <!-- TODO remove when Spring Boot (coming in 2.1) supports Hibernate 5.3/Infinispan 5.3 -->
