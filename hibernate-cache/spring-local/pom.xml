@@ -18,7 +18,7 @@
    <properties>
       <java.version>1.8</java.version>
 
-      <!-- TODO remove when Spring Boot (coming in 2.1) supports Hibernate 5.3/Infinispan 5.3 -->
+      <!-- TODO remove when Spring Boot (coming in 2.1) supports Hibernate 5.3 with Infinispan 9.3+ -->
       <version.infinispan>9.2.5.Final</version.infinispan>
    </properties>
 
@@ -49,19 +49,19 @@
          <scope>test</scope>
       </dependency>
 
-      <!-- TODO remove when Spring Boot (coming in 2.1) supports Hibernate 5.3/Infinispan 5.3 -->
+      <!-- TODO remove when Spring Boot (coming in 2.1) supports Hibernate 5.3 with Infinispan 9.3+ -->
       <dependency>
          <groupId>org.infinispan</groupId>
          <artifactId>infinispan-hibernate-cache</artifactId>
          <version>${version.infinispan}</version>
       </dependency>
-      <!-- TODO remove when Spring Boot (coming in 2.1) supports Hibernate 5.3/Infinispan 5.3 -->
+      <!-- TODO remove when Spring Boot (coming in 2.1) supports Hibernate 5.3 with Infinispan 9.3+ -->
       <dependency>
          <groupId>org.infinispan</groupId>
          <artifactId>infinispan-core</artifactId>
          <version>${version.infinispan}</version>
       </dependency>
-      <!-- TODO remove when Spring Boot (coming in 2.1) supports Hibernate 5.3/Infinispan 5.3 -->
+      <!-- TODO remove when Spring Boot (coming in 2.1) supports Hibernate 5.3 with Infinispan 9.3+ -->
       <dependency>
          <groupId>org.infinispan</groupId>
          <artifactId>infinispan-commons</artifactId>
