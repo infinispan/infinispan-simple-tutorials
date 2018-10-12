@@ -14,6 +14,7 @@
     <properties>
         <version.spark-connector>0.8</version.spark-connector>
         <version.spark>2.3.1</version.spark>
+        <version.infinispan>9.3.3.Final</version.infinispan>
     </properties>
 
     <build>
