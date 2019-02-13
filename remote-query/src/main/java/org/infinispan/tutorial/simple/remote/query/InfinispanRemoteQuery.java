@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.Search;
+import org.infinispan.client.hotrod.configuration.ClientIntelligence;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.impl.ConfigurationProperties;
 import org.infinispan.client.hotrod.marshall.ProtoStreamMarshaller;
@@ -31,7 +32,7 @@ public class InfinispanRemoteQuery {
       ConfigurationBuilder builder = new ConfigurationBuilder();
       builder.addServer().host("127.0.0.1")
             .port(ConfigurationProperties.DEFAULT_HOTROD_PORT)
-            .marshaller(ProtoStreamMarshaller.class);
+            .marshaller(ProtoStreamMarshaller.class); // You need to specify the marshaller
 
       // Connect to the server
       RemoteCacheManager client = new RemoteCacheManager(builder.build());
@@ -80,7 +81,7 @@ public class InfinispanRemoteQuery {
       ProtoSchemaBuilder protoSchemaBuilder = new ProtoSchemaBuilder();
       String fileName = "person.proto";
       String protoFile = protoSchemaBuilder
-            .fileName("person.proto")
+            .fileName(fileName)
             .addClass(Person.class)
             .packageName("tutorial")
             .build(ctx);
