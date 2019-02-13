@@ -3,10 +3,9 @@ package org.infinispan.tutorial.simple.remote.query;
 import static org.infinispan.query.remote.client.ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
@@ -31,7 +30,7 @@ public class InfinispanRemoteQuery {
       ConfigurationBuilder builder = new ConfigurationBuilder();
       builder.addServer().host("127.0.0.1")
             .port(ConfigurationProperties.DEFAULT_HOTROD_PORT)
-            .marshaller(ProtoStreamMarshaller.class);
+            .marshaller(ProtoStreamMarshaller.class); // You need to specify the marshaller for remote query
 
       // Connect to the server
       RemoteCacheManager client = new RemoteCacheManager(builder.build());
@@ -40,14 +39,13 @@ public class InfinispanRemoteQuery {
       RemoteCache<String, Person> personsCache = client.administration().getOrCreateCache("people", "default");
 
       // Create the persons dataset to be stored in the cache
-      Map<String, Person> persons = Stream.of(new Object[][]{
-            {"1", new Person("Oihana", "Rossignol", 2016, "Paris")},
-            {"2", new Person("Elaia", "Rossignol", 2018, "Paris")},
-            {"3", new Person("Yago", "Steiner", 2013, "Saint-Mandé")},
-            {"4", new Person("Alberto", "Steiner", 2016, "Paris")}})
-            .collect(Collectors.toMap(data -> (String) data[0], data -> (Person) data[1]));
+      Map<String, Person> persons = new HashMap<>();
+      persons.put("1", new Person("Oihana", "Rossignol", 2016, "Paris"));
+      persons.put("2", new Person("Elaia", "Rossignol", 2018, "Paris"));
+      persons.put("3", new Person("Yago", "Steiner", 2013, "Saint-Mandé"));
+      persons.put("4", new Person("Alberto", "Steiner", 2016, "Paris"));
 
-      // Create and add the marshalling configuration for Person pojo class. Note Person is an annotated POJO
+      // Create and add the Protobuf schema for Person class. Note Person is an annotated POJO
       addPersonSchema(client);
 
       // Put all the values in the cache
@@ -73,14 +71,14 @@ public class InfinispanRemoteQuery {
    }
 
    private static void addPersonSchema(RemoteCacheManager cacheManager) throws IOException {
-      // Get the serialization context
+      // Get the serialization context of the client
       SerializationContext ctx = ProtoStreamMarshaller.getSerializationContext(cacheManager);
 
-      // Use ProtoSchemaBuilder to define
+      // Use ProtoSchemaBuilder to define a Protobuf schema on the client
       ProtoSchemaBuilder protoSchemaBuilder = new ProtoSchemaBuilder();
       String fileName = "person.proto";
       String protoFile = protoSchemaBuilder
-            .fileName("person.proto")
+            .fileName(fileName)
             .addClass(Person.class)
             .packageName("tutorial")
             .build(ctx);
@@ -89,7 +87,7 @@ public class InfinispanRemoteQuery {
       RemoteCache<String, String> metadataCache =
             cacheManager.getCache(PROTOBUF_METADATA_CACHE_NAME);
 
-      // Store the configuration in the metadata cache
+      // Define the new schema on the server too
       metadataCache.put(fileName, protoFile);
    }
 }

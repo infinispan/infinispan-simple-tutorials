@@ -85,5 +85,6 @@
         <module>remote-multimap</module>
         <module>remote-query</module>
         <module>near-cache</module>
+        <module>remote-continuous-query</module>
     </modules>
 </project>

@@ -59,6 +59,9 @@ runTestAndExitOnError remote
 runTestAndExitOnError remote-listen
 runTestAndExitOnError remote-tx
 runTestAndExitOnError remote-counter
+runTestAndExitOnError remote-query
+runTestAndExitOnError remote-continuous-query
+runTestAndExitOnError remote-multimap
 runTestAndExitOnError scripting
 cd server-tasks
 mvn clean package wildfly:deploy
