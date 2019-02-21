@@ -65,7 +65,6 @@
        <module>spring-boot/remote</module>
        <module>spring-session</module>
        <module>tx</module>
-       <module>distexec</module>
        <module>clusterexec</module>
        <module>streams</module>
        <module>remote</module>
