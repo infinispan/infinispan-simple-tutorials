@@ -1,0 +1,7 @@
+apiVersion: infinispan.org/v1
+kind: Infinispan
+metadata:
+  name: example-infinispan
+spec:
+  size: 3
+  clustername: helloworldcluster
