@@ -18,8 +18,11 @@ login() {
 clean() {
   oc delete deployment infinispan-operator || true
   oc delete role infinispan-operator || true
+  oc delete rolebinding infinispan-operator || true
+  oc delete serviceaccount infinispan-operator || true
   oc delete crd infinispans.infinispan.org || true
 }
+
 
 # Deploy operator and other components
 deploy() {

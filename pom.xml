@@ -82,8 +82,7 @@
        <module>lock</module>
        <module>remote-tx</module>
        <module>remote-counter</module>
-       <module>remote-multimap</module>
-       <module>near-cache</module>
-       <module>operator</module>
+        <module>remote-multimap</module>
+        <module>near-cache</module>
     </modules>
 </project>

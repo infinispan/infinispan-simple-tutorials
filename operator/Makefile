@@ -1,8 +1,4 @@
-#IMAGE ?= jboss/infinispan-operator
-#TAG ?= latest
-#PROG  := infinispan-operator
-
-REPO_URL ?= https://raw.githubusercontent.com/infinispan/infinispan-operator/master
+REPO_URL ?= https://raw.githubusercontent.com/infinispan/infinispan-operator/0.1.0
 
 .PHONY: dep build image push run clean help
 

@@ -23,21 +23,22 @@ clean() {
 
 # Run example Infinispan cluster
 run() {
-  oc apply -f example-infinispan.yaml
+  oc apply -f ${REPO_URL}/deploy/cr/cr_minimal.yaml
 }
 
 
 # Wait for cluster to form
 wait() {
-  local podName
-  until podName=$(oc get pod -l app=infinispan-pod -o jsonpath="{.items[0].metadata.name}"); do sleep 1; echo Retrying...; done
   local expectedClusterSize=${NUM_INSTANCES}
-  local connectCmd="oc exec -it ${podName} -- /opt/jboss/infinispan-server/bin/ispn-cli.sh --connect"
   local clusterSizeCmd="/subsystem=datagrid-infinispan/cache-container=clustered/:read-attribute(name=cluster-size)"
 
+  local podName
+  local connectCmd=''
   local members=''
   while [[ "$members" != \"${expectedClusterSize}\" ]];
   do
+      until podName=$(oc get pod -l app=infinispan-pod -o jsonpath="{.items[0].metadata.name}"); do sleep 1; echo Retrying...; done
+      connectCmd="oc exec -it ${podName} -- /opt/jboss/infinispan-server/bin/ispn-cli.sh --connect"
       members=$(${connectCmd} ${clusterSizeCmd} | grep result | tr -d '\r' | awk '{print $3}')
       echo "Waiting for clusters to form (main: $members)"
       sleep 10
