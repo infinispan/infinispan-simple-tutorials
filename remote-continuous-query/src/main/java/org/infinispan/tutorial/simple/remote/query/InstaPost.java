@@ -2,7 +2,6 @@ package org.infinispan.tutorial.simple.remote.query;
 
 import java.util.Objects;
 
-import org.infinispan.protostream.annotations.ProtoDoc;
 import org.infinispan.protostream.annotations.ProtoField;
 
 /**
@@ -11,19 +10,15 @@ import org.infinispan.protostream.annotations.ProtoField;
  * <p>
  * https://blog.infinispan.org/2018/06/making-java-objects-queryable-by.html
  */
-@ProtoDoc("@Indexed")
 public final class InstaPost {
 
-   @ProtoDoc("@Field")
-   @ProtoField(number = 1, required = true)
+   @ProtoField(number = 1, defaultValue = "")
    String id;
 
-   @ProtoDoc("@Field")
-   @ProtoField(number = 2, required = true)
+   @ProtoField(number = 2, defaultValue = "")
    String user;
 
-   @ProtoDoc("@Field")
-   @ProtoField(number = 3, required = true)
+   @ProtoField(number = 3, defaultValue = "")
    String hashtag;
 
    public InstaPost() {
