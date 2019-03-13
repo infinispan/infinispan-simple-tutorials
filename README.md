@@ -27,3 +27,6 @@ mvn wildfly:deploy
 ```
 
 Then, check the tutorial for a particular URL to interact with.
+
+## To go further
+Check [Infinispan Demos](https://github.com/infinispan-demos/links) repository
