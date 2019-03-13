@@ -3,6 +3,7 @@ package org.infinispan.tutorial.simple.remote.query;
 import static org.infinispan.query.remote.client.ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -11,7 +12,6 @@ import java.util.UUID;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.Search;
-import org.infinispan.client.hotrod.configuration.ClientIntelligence;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.impl.ConfigurationProperties;
 import org.infinispan.client.hotrod.marshall.ProtoStreamMarshaller;
@@ -89,12 +89,14 @@ public class InfinispanRemoteContinuousQuery {
       ContinuousQuery<String, InstaPost> continuousQuery = Search.getContinuousQuery(instaPostsCache);
 
       // Create the continuous query listener.
+      List<InstaPost> queryPosts = new ArrayList<>();
       ContinuousQueryListener<String, InstaPost> listener =
             new ContinuousQueryListener<String, InstaPost>() {
                // This method will be executed every time new items that correspond with the query arrive
                @Override
                public void resultJoining(String key, InstaPost post) {
                   System.out.println(String.format("@%s has posted again! Hashtag: #%s", post.user, post.hashtag));
+                  queryPosts.add(post);
                }
             };
       // Clear all the listeners
@@ -111,6 +113,9 @@ public class InfinispanRemoteContinuousQuery {
          // Await a little to see results
          Thread.sleep(10);
       }
+
+      System.out.println("Total posts " + instaPostsCache.size());
+      System.out.println("Total posts by @belen_esteban " + queryPosts.size());
 
       // Remove the cache
       client.administration().removeCache(CACHE_NAME);
