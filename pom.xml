@@ -86,5 +86,6 @@
         <module>remote-query</module>
         <module>near-cache</module>
         <module>remote-continuous-query</module>
+        <module>invalidation-mode</module>
     </modules>
 </project>
