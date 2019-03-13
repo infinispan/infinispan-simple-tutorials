@@ -1,5 +1,7 @@
 package org.infinispan.tutorial.simple.remote.query;
 
+import java.util.Objects;
+
 import org.infinispan.protostream.annotations.ProtoDoc;
 import org.infinispan.protostream.annotations.ProtoField;
 
@@ -36,10 +38,25 @@ public final class InstaPost {
 
    @Override
    public String toString() {
-      return "Tag{" +
+      return "InstaPost{" +
             "id='" + id + '\'' +
-            ", value='" + user + '\'' +
+            ", user='" + user + '\'' +
             ", hashtag='" + hashtag + '\'' +
             '}';
+   }
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      InstaPost instaPost = (InstaPost) o;
+      return Objects.equals(id, instaPost.id) &&
+            Objects.equals(user, instaPost.user) &&
+            Objects.equals(hashtag, instaPost.hashtag);
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(id, user, hashtag);
    }
 }

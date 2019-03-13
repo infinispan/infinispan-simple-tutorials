@@ -65,7 +65,7 @@ public class InfinispanRemoteContinuousQuery {
       ConfigurationBuilder builder = new ConfigurationBuilder();
       builder.addServer().host("127.0.0.1")
             .port(ConfigurationProperties.DEFAULT_HOTROD_PORT)
-            .marshaller(ProtoStreamMarshaller.class); // You need to specify the marshaller
+            .marshaller(ProtoStreamMarshaller.class); // You need to specify the marshaller for remote query
 
       // Connect to the server
       RemoteCacheManager client = new RemoteCacheManager(builder.build());
@@ -93,7 +93,7 @@ public class InfinispanRemoteContinuousQuery {
             new ContinuousQueryListener<String, InstaPost>() {
                // This method will be executed every time new items that correspond with the query arrive
                @Override
-               public void resultJoining(String id, InstaPost post) {
+               public void resultJoining(String key, InstaPost post) {
                   System.out.println(String.format("@%s has posted again! Hashtag: #%s", post.user, post.hashtag));
                }
             };
@@ -112,7 +112,7 @@ public class InfinispanRemoteContinuousQuery {
          Thread.sleep(10);
       }
 
-      // Clear the cache
+      // Remove the cache
       client.administration().removeCache(CACHE_NAME);
 
       // Stop the client and release all resources
@@ -129,10 +129,10 @@ public class InfinispanRemoteContinuousQuery {
    }
 
    private static void addInstapostsSchema(RemoteCacheManager cacheManager) throws IOException {
-      // Get the serialization context
+      // Get the serialization context of the client
       SerializationContext ctx = ProtoStreamMarshaller.getSerializationContext(cacheManager);
 
-      // Use ProtoSchemaBuilder to define
+      // Use ProtoSchemaBuilder to define a Protobuf schema on the client
       ProtoSchemaBuilder protoSchemaBuilder = new ProtoSchemaBuilder();
       String fileName = "instapost.proto";
       String protoFile = protoSchemaBuilder
@@ -145,7 +145,7 @@ public class InfinispanRemoteContinuousQuery {
       RemoteCache<String, String> metadataCache =
             cacheManager.getCache(PROTOBUF_METADATA_CACHE_NAME);
 
-      // Store the configuration in the metadata cache
+      // Define the new schema on the server too
       metadataCache.putIfAbsent(fileName, protoFile);
    }
 }
