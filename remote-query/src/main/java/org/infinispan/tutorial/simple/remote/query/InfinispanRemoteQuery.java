@@ -45,7 +45,7 @@ public class InfinispanRemoteQuery {
       persons.put("3", new Person("Yago", "Steiner", 2013, "Saint-Mandé"));
       persons.put("4", new Person("Alberto", "Steiner", 2016, "Paris"));
 
-      // Create and add the marshalling configuration for Person pojo class. Note Person is an annotated POJO
+      // Create and add the Protobuf schema for Person class. Note Person is an annotated POJO
       addPersonSchema(client);
 
       // Put all the values in the cache

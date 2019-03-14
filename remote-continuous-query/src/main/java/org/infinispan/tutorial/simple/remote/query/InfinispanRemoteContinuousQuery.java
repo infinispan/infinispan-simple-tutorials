@@ -73,7 +73,7 @@ public class InfinispanRemoteContinuousQuery {
       // Get the cache, create it if needed with the default configuration
       RemoteCache<String, InstaPost> instaPostsCache = client.administration().getOrCreateCache(CACHE_NAME, "default");
 
-      // Create and add the marshalling configuration for Person pojo class. Note Person is an annotated POJO
+      // Create and add the Protobuf schema for InstaPost class. Note InstaPost is an annotated POJO
       addInstapostsSchema(client);
 
       // Get a query factory from the cache
@@ -99,8 +99,6 @@ public class InfinispanRemoteContinuousQuery {
                   queryPosts.add(post);
                }
             };
-      // Clear all the listeners
-      continuousQuery.removeAllListeners();
 
       // And the listener corresponding the query to the continuous query
       continuousQuery.addContinuousQueryListener(query, listener);
@@ -116,6 +114,9 @@ public class InfinispanRemoteContinuousQuery {
 
       System.out.println("Total posts " + instaPostsCache.size());
       System.out.println("Total posts by @belen_esteban " + queryPosts.size());
+
+      // Remove the listener. Listeners should be removed when they are no longer needed to avoid memory leaks
+      continuousQuery.removeContinuousQueryListener(listener);
 
       // Remove the cache
       client.administration().removeCache(CACHE_NAME);
