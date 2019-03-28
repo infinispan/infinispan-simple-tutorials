@@ -12,9 +12,9 @@ This tutorial shows you how to quickly create three node cluster using the Infin
 
 Installing the Infinispan Operator
 ----------------------------------
+Install the Infinispan Operator from [OperatorHub.io](https://operatorhub.io/).
 
-* Install the Infinispan Operator from [OperatorHub.io](https://operatorhub.io/).
-* Manually install the Infinispan Operator. See the [Infinispan Operator README](https://github.com/infinispan/infinispan-operator).
+Alternatively, you can build from source or use the public image to manually install the Infinispan Operator. See the [Infinispan Operator README](https://github.com/infinispan/infinispan-operator).
 
 Creating Infinispan Clusters
 ----------------------------
