@@ -25,14 +25,14 @@ Runing the Infinispan Operator Tutorial
 ---------------------------------------
 1. Install the Operator components:
 ```bash
-$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.1.0/deploy/rbac.yaml
-$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.1.0/deploy/operator.yaml
-$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.1.0/deploy/crd.yaml
+$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.2.1/deploy/rbac.yaml
+$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.2.1/deploy/operator.yaml
+$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.2.1/deploy/crd.yaml
 ``` 
 
 2. Create a 3 node Infinispan cluster:
 ```bash
-$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.1.0/deploy/cr/cr_minimal.yaml
+$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.2.1/deploy/cr/cr_minimal.yaml
 ```
 
 3. Verify that the 3 node cluster forms:
