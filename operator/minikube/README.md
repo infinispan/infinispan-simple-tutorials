@@ -24,3 +24,15 @@ $ make IMAGE=... deploy
 ```
 
 Inspect the `Makefile` and supporting scripts files to find out more about testing.
+
+Sometimes custom images might come from insecure registries.
+These can be enabled by calling:
+
+```bash
+$ minikube start --insecure-registry <host>:<port>
+```
+
+**WARNING:**
+Insecure registries might be ignore if the minikube machine already existed
+(see [issue](https://github.com/kubernetes/minikube/issues/604#issuecomment-247813764)).
+So, make sure you call `minikube delete` before starting minikube with an insecure registry.
