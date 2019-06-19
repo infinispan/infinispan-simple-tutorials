@@ -2,6 +2,10 @@ Testing This Quickstart
 -----------------------
 Use the `Makefile` and supporting scripts to test this tutorial.
 
+**NOTE:**
+It requires a running [Minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/) instance.
+Default Minikube memory/CPU settings should work fine for this tutorial.
+
 Run:
 ```bash
 $ make all
