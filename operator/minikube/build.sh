@@ -3,7 +3,6 @@
 
 set -e -x
 
-
 NAMESPACE=$1
 
 
