@@ -5,11 +5,11 @@ NAMESPACE ?= operator-testing
 
 .DEFAULT_GOAL := all
 
-## deploy:          Deploy operator on OpenShift cluster (requires cluster admin access).
+## deploy:          Deploy the Operator on an OpenShift cluster (requires cluster admin access).
 deploy:
 	./deploy.sh $(REPO) $(NAMESPACE)
 
-## run:             Run operator to create a cluster.
+## run:             Run the Operator to create a cluster.
 run:
 	./run.sh $(REPO) $(NAMESPACE)
 
@@ -17,7 +17,7 @@ run:
 build:
 	./build.sh $(NAMESPACE)
 
-## test:            Test tutorial steps.
+## test:            Test the tutorial steps.
 test:
 	./test.sh $(NAMESPACE)
 
