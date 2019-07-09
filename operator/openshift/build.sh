@@ -3,12 +3,12 @@
 
 set -e -x
 
+NAMESPACE=$1
 
-# Login as admin to default project
+
 login() {
   which oc
-  oc login -u system:admin
-  oc project default
+  oc project ${NAMESPACE}
 }
 
 

@@ -3,14 +3,16 @@
 
 set -e -x
 
-REPO_URL=$1
+REPO=$1
+NAMESPACE=$2
+
+REPO_URL=https://raw.githubusercontent.com/${REPO}
 
 
-# Login as admin to default project
 login() {
   which oc
-  oc login -u system:admin
-  oc project default
+  oc new-project ${NAMESPACE} || true
+  oc project ${NAMESPACE}
 }
 
 

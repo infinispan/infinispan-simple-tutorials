@@ -3,12 +3,12 @@
 
 set -e
 
+NAMESPACE=$1
 
-# Login as admin to default project
+
 login() {
   which oc
-  oc login -u system:admin
-  oc project default
+  oc project ${NAMESPACE}
 }
 
 
@@ -17,15 +17,19 @@ test() {
   local routeHost
   routeHost=$(oc get route example-infinispan -o jsonpath="{.spec.host}")
 
+  local pass=$(oc get secret example-infinispan-app-generated-secret \
+      -o jsonpath="{.data.password}" \
+      | base64 --decode)
+
   curl -v \
     -X POST \
-    -u infinispan:infinispan \
+    -u developer:${pass} \
     -H 'Content-type: text/plain' \
     -d 'test-value' \
     ${routeHost}/rest/default/test-key
 
   curl -v \
-    -u infinispan:infinispan \
+    -u developer:${pass} \
     ${routeHost}/rest/default/test-key
 }
 
