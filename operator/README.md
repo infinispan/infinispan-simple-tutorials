@@ -1,14 +1,14 @@
 Spinning Up Clusters with the Infinispan Operator
 =================================================
 **Authors:** Galder Zamarreño  
-**Technologies:** Infinispan, Operator, Kubernetes, OKD  
-**Summary:** Create and manage Infinispan clusters on OKD with the Infinispan Operator.  
+**Technologies:** Infinispan, Operator, Kubernetes, OKD, Red Hat OpenShift  
+**Summary:** Create and manage Infinispan clusters with the Infinispan Operator.  
 
 About This Tutorial
 -------------------
 The Infinispan Operator provides operational intelligence to simplify deploying Infinispan on Kubernetes clusters.
 
-This tutorial shows you how to quickly create three node cluster using the Infinispan Operator. You then interact with the Infinispan cluster to store and retrieve data.
+This tutorial shows you how to quickly create a three-node cluster using the Infinispan Operator. You then interact with the Infinispan cluster to store and retrieve data.
 
 Installing the Infinispan Operator
 ----------------------------------
@@ -19,16 +19,16 @@ Do one of the following to install the Infinispan Operator:
 * Install the Infinispan Operator manually, as follows:
   1. Apply the role and role bindings.
   ```
-  $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/${tag}/deploy/rbac.yaml
+  $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/rbac.yaml
   ```
-    Where `${tag}` is a tagged version for the Infinispan Operator, for example: `0.3.0`.
+    **TIP:** You can replace `0.3.0` with another tagged version of the Infinispan Operator.
   2. Apply the template for the operator.
   ```
-  $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/${tag}/deploy/operator.yaml
+  $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/operator.yaml
   ```
   3. Apply the custom resource definition for the operator.
   ```
-  $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/${tag}/deploy/crd.yaml
+  $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/crd.yaml
   ```
 
 * Build from source or use the public image to install the Infinispan Operator. See the [Infinispan Operator README](https://github.com/infinispan/infinispan-operator).
@@ -39,14 +39,22 @@ You create Infinispan clusters with custom resource definitions that specify the
 
 Running the Infinispan Operator Tutorial
 ----------------------------------------
-1. Install the Operator components:
-```bash
-$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/rbac.yaml
-$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/operator.yaml
-$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/crd.yaml
-```
+1. Install Operator components.
 
-2. Create a 3 node Infinispan cluster:
+   a. Apply the custom resource definition.
+   ```bash
+   $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/crd.yaml
+   ```
+   b. Install the RBAC resources.
+   ```bash
+   $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/rbac.yaml
+   ```
+   c. Apply the Infinispan Operator template.
+   ```bash
+   $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/operator.yaml
+   ```
+
+2. Create an Infinispan cluster with three nodes.
 ```bash
 $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/cr/cr_minimal.yaml
 ```
@@ -55,19 +63,19 @@ $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0
 ```
 $ oc get pods -l app=infinispan-pod
 NAME                                   READY     STATUS
-example-infinispan-b58cb5699-727zq     1/1       Running
-example-infinispan-b58cb5699-92gr9     1/1       Running
-example-infinispan-b58cb5699-dtd97     1/1       Running
+example-infinispan-<id_1>     1/1       Running
+example-infinispan-<id_2>     1/1       Running
+example-infinispan-<id_3>     1/1       Running
 ```
+Where `<id_*>` is the generated identifier for the pod.
 ```
 $ oc logs example-infinispan-b58cb5699-727zq
 ...
 INFO  [org.infinispan.CLUSTER] (MSC service thread 1-2)
 ISPN000094: Received new cluster view for channel cluster:
-[example-infinispan-b58cb5699-dtd97|2] (3)
-[example-infinispan-b58cb5699-dtd97,
-example-infinispan-b58cb5699-92gr9,
-example-infinispan-b58cb5699-727zq]
+[example-infinispan-<id_1>|2] (3)
+[example-infinispan-<id_1>,example-infinispan-<id_2>,
+example-infinispan-<id_3>]
 ```
 
 Connecting to Infinispan Clusters
@@ -84,15 +92,14 @@ $ export INFINISPAN_HOST=$(oc get route example-infinispan -o jsonpath="{.spec.h
 
 Storing and Retrieving Data
 ---------------------------
-1. Access to data in Infinispan is password protected.
-The default user is `developer`,
-and the password is generated on startup.
-Extract and export the password:
+Infinispan requires authentication for data access. The default user is `developer` and the Operator automatically generates a password and stores it in a secret when the cluster starts.
+
+1. Export the generated password from the secret to a local variable.
 ```
 $ export PASS=$(oc get secret example-infinispan-app-generated-secret -o jsonpath="{.data.password}" | base64 --decode)
 ```
 
-1. Store data through the HTTP endpoint.
+2. Store some data through the HTTP endpoint.
 ```
 $ curl -v \
     -X POST \
@@ -104,7 +111,7 @@ $ curl -v \
 < HTTP/1.1 200 OK
 ```
 
-2. Retrieve data.
+2. Retrieve the data from the Infinispan cluster.
 ```
 $ curl -v \
     -u developer:${PASS} \

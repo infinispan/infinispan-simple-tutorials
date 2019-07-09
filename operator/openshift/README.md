@@ -2,18 +2,21 @@ Testing This Quickstart
 -----------------------
 Use the `Makefile` and supporting scripts to test this tutorial.
 
-**NOTE:**
-It requires a running OpenShift 4.1 instance with administrator access.
+**Environment Prerequisites**
+* A running Red Hat OpenShift 4.1 cluster with administrator access.
 
-Run:
+Run the following command to test all tutorial steps:
 ```bash
 $ make all
 ```
 
-Pass `REPO` to test custom descriptors located in the given repo/branch of the Infinispan Operator as follows:
+Inspect the `Makefile` and supporting scripts files to find out more about testing.
 
+Testing Custom Descriptors
+--------------------------
+Pass the `REPO` parameter to test custom descriptors in a specific repository or branch of the Infinispan Operator.
+
+For example, run the following command:
 ```bash
 $ make REPO=myrepository/infinispan-operator/test-branch all
 ```
-
-Inspect the `Makefile` and supporting scripts files to find out more about testing.
