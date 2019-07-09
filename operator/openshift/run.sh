@@ -3,15 +3,16 @@
 
 set -e
 
-REPO_URL=$1
-NUM_INSTANCES=3
+REPO=$1
+NAMESPACE=$2
+NUM_INSTANCES=2
+
+REPO_URL=https://raw.githubusercontent.com/${REPO}
 
 
-# Login as admin to default project
 login() {
   which oc
-  oc login -u system:admin
-  oc project default
+  oc project ${NAMESPACE}
 }
 
 
@@ -40,6 +41,12 @@ wait() {
       until podName=$(oc get pod -l app=infinispan-pod -o jsonpath="{.items[0].metadata.name}"); do sleep 1; echo Retrying...; done
       connectCmd="oc exec -it ${podName} -- /opt/jboss/infinispan-server/bin/ispn-cli.sh --connect"
       members=$(${connectCmd} ${clusterSizeCmd} | grep result | tr -d '\r' | awk '{print $3}')
+      if [[ "$members" != \"${expectedClusterSize}\" ]]; then
+          # Try alternative location
+          connectCmd="oc exec -it ${podName} -- /opt/datagrid/bin/cli.sh --connect"
+          members=$(${connectCmd} ${clusterSizeCmd} | grep result | tr -d '\r' | awk '{print $3}')
+      fi
+
       echo "Waiting for clusters to form (main: $members)"
       sleep 10
   done
