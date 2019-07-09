@@ -21,7 +21,7 @@ Do one of the following to install the Infinispan Operator:
   ```
   $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/${tag}/deploy/rbac.yaml
   ```
-    Where `${tag}` is a tagged version for the Infinispan Operator, for example: `0.2.1`.
+    Where `${tag}` is a tagged version for the Infinispan Operator, for example: `0.3.0`.
   2. Apply the template for the operator.
   ```
   $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/${tag}/deploy/operator.yaml
@@ -41,14 +41,14 @@ Running the Infinispan Operator Tutorial
 ----------------------------------------
 1. Install the Operator components:
 ```bash
-$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.2.1/deploy/rbac.yaml
-$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.2.1/deploy/operator.yaml
-$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.2.1/deploy/crd.yaml
+$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/rbac.yaml
+$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/operator.yaml
+$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/crd.yaml
 ```
 
 2. Create a 3 node Infinispan cluster:
 ```bash
-$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.2.1/deploy/cr/cr_minimal.yaml
+$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/cr/cr_minimal.yaml
 ```
 
 2. Verify that the Infinispan cluster forms.
@@ -84,11 +84,19 @@ $ export INFINISPAN_HOST=$(oc get route example-infinispan -o jsonpath="{.spec.h
 
 Storing and Retrieving Data
 ---------------------------
+1. Access to data in Infinispan is password protected.
+The default user is `developer`,
+and the password is generated on startup.
+Extract and export the password:
+```
+$ export PASS=$(oc get secret example-infinispan-app-generated-secret -o jsonpath="{.data.password}" | base64 --decode)
+```
+
 1. Store data through the HTTP endpoint.
 ```
 $ curl -v \
     -X POST \
-    -u infinispan:infinispan \
+    -u developer:${PASS} \
     -H 'Content-type: text/plain' \
     -d 'test-value' \
     ${INFINISPAN_HOST}/rest/default/test-key
@@ -99,7 +107,7 @@ $ curl -v \
 2. Retrieve data.
 ```
 $ curl -v \
-    -u infinispan:infinispan \
+    -u developer:${PASS} \
     ${INFINISPAN_HOST}/rest/default/test-key
 ...
 < HTTP/1.1 200 OK
@@ -120,20 +128,3 @@ test-value
   $ oc delete serviceaccount infinispan-operator
   $ oc delete crd infinispans.infinispan.org
   ```
-
-Testing This Quickstart
------------------------
-Use the `Makefile` and supporting scripts to test this tutorial.
-
-Run:
-```bash
-$ make all
-```
-
-Pass `REPO_URL` to test snapshot images of the Infinispan Operator as follows:
-
-```bash
-$ make REPO_URL=https://raw.githubusercontent.com/galderz/infinispan-operator/t_release all
-```
-
-Inspect the `Makefile` and supporting scripts files to find out more about testing.
