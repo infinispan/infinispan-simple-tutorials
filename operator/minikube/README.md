@@ -4,7 +4,7 @@ Use the `Makefile` and supporting scripts to test this tutorial.
 
 **NOTE:**
 It requires a running [Minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/) instance.
-Default Minikube memory/CPU settings should work fine for this tutorial.
+Recommended Minikube settings are 4 CPU and 4GB of memory.
 
 Run:
 ```bash

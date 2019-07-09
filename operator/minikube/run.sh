@@ -9,6 +9,7 @@ NUM_INSTANCES=2
 
 REPO_URL=https://raw.githubusercontent.com/${REPO}
 
+
 # Delete any leftovers
 clean() {
   kubectl delete infinispan example-infinispan -n ${NAMESPACE} || true
@@ -17,11 +18,7 @@ clean() {
 
 # Run example Infinispan cluster
 run() {
-  local targetDir='../target'
-  mkdir ${targetDir} || true
-  curl -o ${targetDir}/cr_minimal.yaml ${REPO_URL}/deploy/cr/cr_minimal.yaml
-  sed -ri '/^(\s*)(image\s*:\s*jboss.*\s*$)/d' ${targetDir}/cr_minimal.yaml
-  kubectl apply -f ${targetDir}/cr_minimal.yaml -n ${NAMESPACE}
+  kubectl apply -f ${REPO_URL}/deploy/cr/cr_minimal.yaml -n ${NAMESPACE}
 }
 
 
