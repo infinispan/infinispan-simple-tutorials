@@ -5,9 +5,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.infinispan.spring.provider.SpringEmbeddedCacheManager;
-import org.infinispan.spring.provider.SpringEmbeddedCacheManagerFactoryBean;
-import org.infinispan.spring.session.configuration.EnableInfinispanEmbeddedHttpSession;
+import org.infinispan.spring.embedded.provider.SpringEmbeddedCacheManager;
+import org.infinispan.spring.embedded.provider.SpringEmbeddedCacheManagerFactoryBean;
+import org.infinispan.spring.embedded.session.configuration.EnableInfinispanEmbeddedHttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

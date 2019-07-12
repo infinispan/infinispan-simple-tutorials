@@ -1,6 +1,6 @@
 package org.infinispan.tutorial.simple.spring.embedded;
 
-import org.infinispan.spring.provider.SpringEmbeddedCacheManagerFactoryBean;
+import org.infinispan.spring.embedded.provider.SpringEmbeddedCacheManagerFactoryBean;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
