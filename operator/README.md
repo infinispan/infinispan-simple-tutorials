@@ -22,13 +22,13 @@ Do one of the following to install the Infinispan Operator:
   $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/rbac.yaml
   ```
     **TIP:** You can replace `0.3.0` with another tagged version of the Infinispan Operator.
-  2. Apply the template for the operator.
-  ```
-  $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/operator.yaml
-  ```
-  3. Apply the custom resource definition for the operator.
+  2. Apply the custom resource definition for the operator.
   ```
   $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/crd.yaml
+  ```
+  3. Apply the template for the operator.
+  ```
+  $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/operator.yaml
   ```
 
 * Build from source or use the public image to install the Infinispan Operator. See the [Infinispan Operator README](https://github.com/infinispan/infinispan-operator).
@@ -39,22 +39,7 @@ You create Infinispan clusters with custom resource definitions that specify the
 
 Running the Infinispan Operator Tutorial
 ----------------------------------------
-1. Install Operator components.
-
-   a. Apply the custom resource definition.
-   ```bash
-   $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/crd.yaml
-   ```
-   b. Install the RBAC resources.
-   ```bash
-   $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/rbac.yaml
-   ```
-   c. Apply the Infinispan Operator template.
-   ```bash
-   $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/operator.yaml
-   ```
-
-2. Create an Infinispan cluster with three nodes.
+1. Create an Infinispan cluster with three nodes.
 ```bash
 $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/cr/cr_minimal.yaml
 ```
