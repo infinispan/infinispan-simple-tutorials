@@ -10,6 +10,17 @@ The Infinispan Operator provides operational intelligence to simplify deploying 
 
 This tutorial shows you how to quickly create a three-node cluster using the Infinispan Operator. You then interact with the Infinispan cluster to store and retrieve data.
 
+Prerequisites
+-------------
+To run this tutorial, you need administrator access to a running cluster and an `oc` client on your `$PATH`.
+
+The Infinispan Operator supports the following environments:
+
+* OKD or Red Hat OpenShift 3.11 or later
+* Kubernetes 1.11 or later
+
+For local clusters, you can use Minikube 1.2.0 or later.
+
 Installing the Infinispan Operator
 ----------------------------------
 Do one of the following to install the Infinispan Operator:
@@ -22,6 +33,7 @@ Do one of the following to install the Infinispan Operator:
   $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/rbac.yaml
   ```
     **TIP:** You can replace `0.3.0` with another tagged version of the Infinispan Operator.
+
   2. Apply the custom resource definition for the operator.
   ```
   $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/crd.yaml
