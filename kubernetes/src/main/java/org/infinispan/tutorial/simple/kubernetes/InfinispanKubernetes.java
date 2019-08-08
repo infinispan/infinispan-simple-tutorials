@@ -26,7 +26,8 @@ public class InfinispanKubernetes {
 
    public static void main(String[] args) throws UnknownHostException {
       //Configure Infinispan to use default transport and Kubernetes configuration
-      GlobalConfiguration globalConfig = new GlobalConfigurationBuilder().transport()
+      GlobalConfiguration globalConfig = new GlobalConfigurationBuilder().defaultCacheName("defaultCacheName")
+	    .transport()
             .defaultTransport()
             .addProperty("configurationFile", "default-configs/default-jgroups-kubernetes.xml")
             .build();
