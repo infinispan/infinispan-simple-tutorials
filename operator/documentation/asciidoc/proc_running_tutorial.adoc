@@ -1,0 +1,58 @@
+= Running the {ispn_operator} Tutorial
+
+. Create an {brandname} cluster with three nodes.
++
+ifndef::productized[]
+[NOTE]
+====
+You create {brandname} clusters with custom resource definitions that specify the number of nodes and configuration to use. See the link:https://github.com/infinispan/infinispan-operator[{ispn_operator} README] to find out more.
+====
++
+[source,options="nowrap",subs=attributes+]
+----
+$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/cr/cr_minimal.yaml
+----
+endif::productized[]
+ifdef::productized[]
+[source,options="nowrap"]
+----
+$ cat > cr_minimal.yaml<<EOF
+apiVersion: infinispan.org/v1
+kind: Infinispan
+metadata:
+  name: example-rhdg
+spec:
+  replicas: 3
+EOF
+----
++
+. Apply the custom resource `yaml`.
++
+[source,options="nowrap"]
+----
+$ oc apply -f cr_minimal.yaml
+----
++
+endif::productized[]
++
+. Verify that the {ispn_operator} creates the pods.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ oc get pods -w
+NAME                                   READY     STATUS
+{example_pod_name}-0     1/1       Running
+{example_pod_name}-1     1/1       Running
+{example_pod_name}-2     1/1       Running
+----
++
+. Verify that the {brandname} cluster forms.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ oc logs {example_pod_name}-0 | grep ISPN000094
+...
+INFO  [org.infinispan.CLUSTER] (MSC service thread 1-2) ISPN000094: Received new cluster view for channel cluster: [{example_pod_name}-0|0] (1) [{example_pod_name}-0]
+INFO  [org.infinispan.CLUSTER] (jgroups-4,{example_pod_name}-0) ISPN000094: Received new cluster view for channel cluster: [{example_pod_name}-0|1] (2) [{example_pod_name}-0, {example_pod_name}-1]
+INFO  [org.infinispan.CLUSTER] (jgroups-3,{example_pod_name}-0) ISPN000094: Received new cluster view for channel cluster: [{example_pod_name}-0|2] (3) [{example_pod_name}-0, {example_pod_name}-1, {example_pod_name}-2]
+----

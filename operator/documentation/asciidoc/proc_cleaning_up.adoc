@@ -1,0 +1,24 @@
+You've successfully completed this tutorial!
+
+ifndef::productized[]
+Use the following commands to free up the resources that you created:
+
+[source,options="nowrap"]
+----
+$ oc delete route example-infinispan
+$ oc delete infinispan example-infinispan
+$ oc delete deployment infinispan-operator
+$ oc delete role infinispan-operator
+$ oc delete rolebinding infinispan-operator
+$ oc delete serviceaccount infinispan-operator
+$ oc delete crd infinispans.infinispan.org
+----
+endif::productized[]
+ifdef::productized[]
+Delete the OpenShift project to free up resources that you created:
+
+[source,options="nowrap"]
+----
+$ oc delete project operator-tutorial
+----
+endif::productized[]

@@ -1,0 +1,15 @@
+= Connecting to {brandname} Clusters
+
+. Expose the {brandname} service for external access.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ oc expose svc {example_pod_name}
+----
++
+. Export the host for the public route to a local variable.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ export INFINISPAN_HOST=$(oc get route {example_pod_name} -o jsonpath="{.spec.host}")
+----
