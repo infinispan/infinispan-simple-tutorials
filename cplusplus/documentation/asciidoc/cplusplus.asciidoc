@@ -1,0 +1,10 @@
+include::../../../documentation/asciidoc/attributes.adoc[]
+
+= Accessing {brandname} {infinispanversion} caches with the C{plusplus} client
+
+include::con_about.adoc[leveloffset=+1]
+
+include::proc_clone.adoc[leveloffset=+1]
+include::ref_requirements.adoc[leveloffset=+1]
+include::proc_running.adoc[leveloffset=+1]
+include::ref_class_example.adoc[leveloffset=+1]

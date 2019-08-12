@@ -1,0 +1,8 @@
+include::../../../documentation/asciidoc/attributes.adoc[]
+
+= Using the Java Streams API with Infinispan Caches
+
+include::con_about.adoc[leveloffset=+1]
+
+include::proc_clone.adoc[leveloffset=+1]
+include::ref_class_example.adoc[leveloffset=+1]

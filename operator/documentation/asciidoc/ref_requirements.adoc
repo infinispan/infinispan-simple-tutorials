@@ -1,0 +1,14 @@
+= Prerequisites
+To run this tutorial, you need administrator access to a running {k8s} cluster and an `oc` client on your `$PATH`.
+
+ifndef::productized[]
+The {ispn_operator} supports the following environments:
+
+* {okd} or {openshiftlong} 3.11 or later
+* {k8s} 1.11 or later
+
+For local clusters, you can use Minikube 1.2.0 or later.
+endif::productized[]
+ifdef::productized[]
+The {ispn_operator} is supported on {openshiftlong} 4.1 and later.
+endif::productized[]

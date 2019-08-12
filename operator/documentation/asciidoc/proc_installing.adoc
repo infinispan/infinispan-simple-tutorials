@@ -1,0 +1,60 @@
+= Installing the {ispn_operator}
+ifndef::productized[]
+Do one of the following to install the {ispn_operator}:
+
+* Install the {ispn_operator} from
+link:https://operatorhub.io/[OperatorHub.io].
+
+* Install the {ispn_operator} manually, as follows:
+. Apply the role and role bindings.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/rbac.yaml
+----
++
+[TIP]
+====
+You can replace `0.3.0` with another tagged version of the {ispn_operator}.
+====
++
+. Apply the custom resource definition for the operator.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/crd.yaml
+----
++
+. Apply the template for the operator.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/operator.yaml
+----
+
+* Build from source or use the public image to install the {ispn_operator}. See the [{ispn_operator} README](https://github.com/infinispan/infinispan-operator).
+endif::productized[]
+ifdef::productized[]
+To install the {ispn_operator}, do the following:
+
+. Create a new {openshiftshort} project.
++
+[source,bash,options="nowrap"]
+----
+$ oc new project operator-tutorial
+----
++
+. Install the {ispn_operator} in the project.
+.. Open the {openshiftshort} console.
+.. Navigate to *Catalog* > *OperatorHub*.
+.. Locate and select the {ispn_operator}.
+.. Select *Install* and then choose your namespace.
+. Verify that the {ispn_operator} is running.
++
+[source,bash,options="nowrap"]
+----
+$ oc get pods
+NAME                       READY   STATUS    RESTARTS   AGE
+infinispan-operator-<id>   1/1     Running   0          19s
+----
+endif::productized[]

@@ -1,0 +1,18 @@
+This tutorial shows you how to remotely access caches on {brandname} servers using the HotRod protocol with a C{plusplus} client.
+
+**Authors:** Vittorio Rigamonti +
+**Technologies:** {brandname}, Hot Rod `C{plusplus}` client +
+**Summary:** Simple tutorial for using the {brandname} `C{plusplus}` client.
+
+'''
+
+//Use conditional statements if you want to exclude community only content.
+//
+//Community
+ifndef::productized[]
+endif::productized[]
+
+//
+//Product
+ifdef::productized[]
+endif::productized[]

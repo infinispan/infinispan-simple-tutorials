@@ -1,0 +1,7 @@
+= Streams API Example
+
+//Set ${github_branch} in the attributes.adoc file.
+[source,java,subs=attributes+]
+----
+include::{github_raw}{github_branch}/streams/src/main/java/org/infinispan/tutorial/simple/streams/InfinispanStreams.java[]
+----

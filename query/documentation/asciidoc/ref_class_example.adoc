@@ -1,0 +1,9 @@
+= {brandname} API
+
+The following example illustrates how to use the {brandname} API:
+
+//Set ${github_raw} and ${github_branch} in attributes.adoc.
+[source,java,subs=attributes+]
+----
+include::{github_raw}{github_branch}/streams/src/main/java/org/infinispan/tutorial/simple/streams/InfinispanStreams.java[]
+----

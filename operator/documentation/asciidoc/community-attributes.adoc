@@ -1,0 +1,8 @@
+:brandname: Infinispan
+:ispn_operator: Infinispan Operator
+:infinispanversion: 10.0
+:k8s: Kubernetes
+:okd: OKD
+:example_pod_name: example-infinispan
+:openshiftlong: Red Hat OpenShift
+:openshiftshort: OpenShift

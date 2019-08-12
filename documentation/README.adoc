@@ -1,0 +1,26 @@
+= Productization for Infinispan Simple Tutorials
+
+.Building community tutorials
+[source,bash]
+----
+$ asciidoctor -a allow-uri-read -a data-uri main.asciidoc
+----
+
+.Building productized tutorials
+[source,bash]
+----
+$ asciidoctor -a allow-uri-read -a productized -a data-uri main.asciidoc
+----
+
+.Generating HTML index
+[source,bash]
+----
+$ git clone git@github.com:oraNod/rhdg-productization.git
+
+$ cd rhdg-productization/simple-tutorials
+
+# To build the community index, remove "-a productized" here:
+# https://github.com/oraNod/rhdg-productization/blob/3ed6046274d3b8440f73e6e2990a19e8f721f010/simple-tutorials/build_product_tutorials.rb#L16
+
+$ ruby build_product_tutorials.rb
+----

@@ -1,0 +1,7 @@
+= Simple C# Example
+
+//Set ${github_raw} and ${github_branch} in attributes.adoc.
+[source,java,subs=attributes+]
+----
+include::{github_raw}{github_branch}/c%23/Simple.cs[]
+----

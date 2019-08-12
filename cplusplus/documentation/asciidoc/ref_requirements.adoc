@@ -1,0 +1,6 @@
+= Prerequisites
+
+* Locally-running {brandname} server
+* C++03 plus shared_ptr TR1 support
+* CMake 2.8
+* HotRod C{plusplus} client libraries

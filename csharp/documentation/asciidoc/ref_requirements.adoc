@@ -1,0 +1,13 @@
+= Prerequisites
+
+* Locally-running {brandname} server
+* Visual Studio
+* CMake
+* HotRod C# client libraries
+
+//
+//Community
+ifndef::productized[]
+* Source at: link:https://github.com/infinispan/dotnet-client[https://github.com/infinispan/dotnet-client]
+* Install pack at: link:http://infinispan.org/hotrod-clients/[http://infinispan.org/hotrod-clients/]
+endif::productized[]

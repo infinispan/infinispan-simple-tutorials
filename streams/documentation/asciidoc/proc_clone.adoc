@@ -1,0 +1,17 @@
+= Cloning the Repository
+
+Clone the tutorials from the {brandname} repository.
+
+[source,options="nowrap",subs=attributes+]
+----
+$ git clone {github_repo}
+----
+
+//Community
+ifndef::productized[]
+* {brandname} {infinispanversion} is on the `{github_branch}` branch.
+endif::productized[]
+//Product
+ifdef::productized[]
+* {brandname} {infinispanversion} is on the `{github_branch}` branch.
+endif::productized[]

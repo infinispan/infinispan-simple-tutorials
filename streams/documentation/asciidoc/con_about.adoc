@@ -1,0 +1,18 @@
+This {brandname} tutorial shows you how to perform cache operations with the Java Streams API.
+
+**Authors:** William Burns +
+**Technologies:** {brandname}, Streams +
+**Summary:** Using the Java Streams API with {brandname} caches.
+
+'''
+
+//Use conditional statements if you want to exclude community only content.
+//
+//Community
+ifndef::productized[]
+endif::productized[]
+
+//
+//Product
+ifdef::productized[]
+endif::productized[]

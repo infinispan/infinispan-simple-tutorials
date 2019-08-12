@@ -1,0 +1,36 @@
+//This file is the index for the tutorials.
+//Used for productization but can also work with community.
+//Equivalent to infinispan.org/tutorials.
+include::attributes.adoc[]
+= {brandname} Tutorials
+
+//Product
+ifdef::productized[]
+image::red-hat-data-grid.svg[DataGrid,210,120,float=left]
+endif::productized[]
+Welcome to the {brandname} tutorials!
+
+These tutorials offer quick starts to help you master the basics and detailed
+code examples that show you how to interact with {brandname} via different APIs.
+
+'''
+
+//-
+
+{openshiftlong}::
+
+* link:tutorials/operator.html[Practice with the {brandname} Operator]
+
+//{brandname} Library Mode::
+Remote {brandname}::
+
+* link:tutorials/csharp.html[{brandname} C# Client]
+* link:tutorials/cplusplus.html[{brandname} C{plusplus} Client]
+
+//{brandname} Clusters::
+
+Cache Operations::
+
+* link:tutorials/streams.html[Perform cache operations with the Java Streams API]
+
+//{brandname} Integrations::

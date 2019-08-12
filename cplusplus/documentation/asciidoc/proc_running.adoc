@@ -1,0 +1,13 @@
+= Running the Tutorial
+
+. Build the executable.
++
+[source,options="nowrap"]
+----
+$ mkdir build
+$ cd build
+$ cmake ..
+$ cmake --build .
+----
++
+. Run `build`.

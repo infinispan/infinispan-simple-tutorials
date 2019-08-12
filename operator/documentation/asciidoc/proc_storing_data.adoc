@@ -1,0 +1,48 @@
+= Storing and Retrieving Data
+
+{brandname} requires authentication for data access. The default user is `developer` and the Operator automatically generates a password and stores it in a secret when the cluster starts.
+
+. Export the host for the public route to a local variable.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ export INFINISPAN_HOST=$(oc get route {example_pod_name}-external -o jsonpath="{.spec.host}")
+----
++
+The Operator generates authentication secrets when you create {brandname}
+clusters. The default user is `developer` and the password is a base64 encoded
+string.
++
+. Export the password for `developer` to a local variable.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ export PASS=$(oc get secret {example_pod_name}-app-generated-secret -o jsonpath="{.data.password}" | base64 --decode)
+----
++
+. Store some data through the HTTP endpoint.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ curl -v \
+    -X POST \
+    -u developer:${PASS} \
+    -H 'Content-type: text/plain' \
+    -d 'test-value' \
+    ${INFINISPAN_HOST}/rest/default/test-key
+...
+< HTTP/1.1 200 OK
+----
++
+. Retrieve the data from the {brandname} cluster.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ curl -v \
+    -u developer:${PASS} \
+    ${INFINISPAN_HOST}/rest/default/test-key
+...
+< HTTP/1.1 200 OK
+...
+test-value
+----

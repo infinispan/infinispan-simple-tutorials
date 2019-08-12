@@ -1,0 +1,8 @@
+= Installing the {brandname}
+
+. Do step one.
++
+[source,options="nowrap",subs=attributes+]
+----
+$
+----

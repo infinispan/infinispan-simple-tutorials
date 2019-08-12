@@ -1,0 +1,20 @@
+This tutorial shows you how to quickly create a three-node cluster using the
+{ispn_operator}. You then interact with the {brandname} cluster to store
+and retrieve data.
+
+**Authors:** Galder Zamarreño +
+**Technologies:** Infinispan, Operator, Kubernetes, OKD, Red Hat OpenShift +
+**Summary:** Create and manage {brandname} clusters with the {ispn_operator}.
+
+'''
+
+//Use conditional statements if you want to exclude community only content.
+//
+//Community
+ifndef::productized[]
+endif::productized[]
+
+//
+//Product
+ifdef::productized[]
+endif::productized[]

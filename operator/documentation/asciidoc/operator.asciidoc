@@ -1,0 +1,11 @@
+include::../../../documentation/asciidoc/attributes.adoc[]
+
+= Spinning Up Clusters with the {ispn_operator}
+
+include::con_about.adoc[leveloffset=+1]
+include::proc_clone.adoc[leveloffset=+1]
+include::ref_requirements.adoc[leveloffset=+1]
+include::proc_installing.adoc[leveloffset=+1]
+include::proc_running_tutorial.adoc[leveloffset=+1]
+include::proc_storing_data.adoc[leveloffset=+1]
+include::proc_cleaning_up.adoc[leveloffset=+1]
