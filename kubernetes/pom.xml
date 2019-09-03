@@ -96,7 +96,7 @@
     <dependencies>
         <dependency>
             <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-cloud</artifactId>
+            <artifactId>infinispan-core</artifactId>
         </dependency>
     </dependencies>
 </project>
