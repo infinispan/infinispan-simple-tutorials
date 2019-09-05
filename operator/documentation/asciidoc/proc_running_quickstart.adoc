@@ -1,0 +1,61 @@
+= Storing and Retrieving Data on {ProductName} Clusters
+
+.Prerequisites
+
+* Complete the procedures to create a {FullProductName} cluster with the
+{ispn_operator} and then retrieve credentials for the application user. See the
+following topics in the {ProductName} documentation:
+
+- link:https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html-single/running_the_data_grid_operator/index#spinning_up_clusters[Spinning Up Data Grid Clusters]
+- link:https://access.redhat.com/documentation/en-us/red_hat_data_grid/7.3/html-single/running_the_data_grid_operator/index#getting_credentials-cluster_auth[Retrieving Cluster Credentials]
+
+.Procedure
+
+. Expose the {ProductName} service for external access.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ oc expose svc example-rhdg
+----
++
+. Create local variables for the public route and credentials.
+.. Export the host for the public route to a local variable.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ export DATAGRID_HOST=$(oc get route example-rhdg -o jsonpath="{.spec.host}")
+----
++
+.. Export the generated password from the secret to a local variable.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ export PASS=$(oc get secret example-rhdg-app-generated-secret -o jsonpath="{.data.password}" | base64 --decode)
+----
++
+. Store some data through the HTTP endpoint.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ curl -v \
+    -X POST \
+    -u developer:${PASS} \
+    -H 'Content-type: text/plain' \
+    -d 'test-value' \
+    ${DATAGRID_HOST}/rest/default/test-key
+...
+< HTTP/1.1 200 OK
+----
++
+. Retrieve the data from the {ProductName} cluster.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ curl -v \
+    -u developer:${PASS} \
+    ${DATAGRID_HOST}/rest/default/test-key
+...
+< HTTP/1.1 200 OK
+...
+test-value
+----
