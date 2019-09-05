@@ -1,0 +1,6 @@
+:ispn_operator: Data Grid Operator
+:FullProductName: Red Hat Data Grid
+:ProductName: Data Grid
+:DocInfoProductNumber: 7.3
+:openshift: Red Hat OpenShift
+:openshiftshort: OpenShift

@@ -1,0 +1,16 @@
+:toc:
+:toclevels: 3
+:numbered:
+
+include::product-attributes.adoc[]
+
+= {ispn_operator} Quickstart
+
+The {ispn_operator} provides operational intelligence and reduces management complexity for deploying {ProductName} clusters on {openshiftshort}.
+
+**Authors:** Galder Zamarreño +
+**Technologies:** {ProductName}, Operator, Kubernetes, OKD, {openshift}
+
+'''
+
+include::proc_running_quickstart.adoc[leveloffset=+1]
