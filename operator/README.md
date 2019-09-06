@@ -75,28 +75,23 @@ ISPN000094: Received new cluster view for channel cluster:
 example-infinispan-<id_3>]
 ```
 
-Connecting to Infinispan Clusters
----------------------------------
-1. Expose the Infinispan service for external access.
-```
-$ oc expose svc example-infinispan
-```
-
-2. Export the host for the public route to a local variable.
-```
-$ export INFINISPAN_HOST=$(oc get route example-infinispan -o jsonpath="{.spec.host}")
-```
-
 Storing and Retrieving Data
 ---------------------------
-Infinispan requires authentication for data access. The default user is `developer` and the Operator automatically generates a password and stores it in a secret when the cluster starts.
+Connect to your Infinispan cluster and then store some data, as follows:
 
-1. Export the generated password from the secret to a local variable.
+1. Export the host for the public route to a local variable.
+```
+$ export INFINISPAN_HOST=$(oc get route example-infinispan-external -o jsonpath="{.spec.host}")
+```
+
+  The Operator generates authentication secrets when you create Infinispan clusters. The default user is `developer` and the password is a base64 encoded string.
+
+2. Export the password for `developer` to a local variable.
 ```
 $ export PASS=$(oc get secret example-infinispan-app-generated-secret -o jsonpath="{.data.password}" | base64 --decode)
 ```
 
-2. Store some data through the HTTP endpoint.
+3. Store some data through the HTTP endpoint.
 ```
 $ curl -v \
     -X POST \
@@ -108,7 +103,7 @@ $ curl -v \
 < HTTP/1.1 200 OK
 ```
 
-2. Retrieve the data from the Infinispan cluster.
+4. Retrieve the data from the Infinispan cluster.
 ```
 $ curl -v \
     -u developer:${PASS} \
