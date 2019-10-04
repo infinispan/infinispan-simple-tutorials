@@ -8,7 +8,7 @@ About This Tutorial
 -------------------
 The Infinispan Operator provides operational intelligence to simplify deploying Infinispan on Kubernetes clusters.
 
-This tutorial shows you how to quickly create a three-node cluster using the Infinispan Operator. You then interact with the Infinispan cluster to store and retrieve data.
+This tutorial shows you how to quickly create a two-node cluster using the Infinispan Operator. You then interact with the Infinispan cluster to store and retrieve data.
 
 Prerequisites
 -------------
@@ -51,7 +51,7 @@ You create Infinispan clusters with custom resource definitions that specify the
 
 Running the Infinispan Operator Tutorial
 ----------------------------------------
-1. Create an Infinispan cluster with three pods.
+1. Create an Infinispan cluster with two pods.
 ```bash
 oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/1.0.0.Alpha4/deploy/cr/minimal/cr_minimal.yaml
 ```
