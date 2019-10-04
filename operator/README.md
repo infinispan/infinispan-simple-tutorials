@@ -29,18 +29,18 @@ Do one of the following to install the Infinispan Operator:
 
 * Install the Infinispan Operator manually, as follows:
   1. Apply the role and role bindings.
+  ```bash
+  oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/1.0.0.Alpha4/deploy/rbac.yaml
   ```
-  $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/rbac.yaml
-  ```
-    **TIP:** You can replace `0.3.0` with another tagged version of the Infinispan Operator.
+    **TIP:** You can replace `1.0.0.Alpha4` with another tagged version of the Infinispan Operator.
 
   2. Apply the custom resource definition for the operator.
-  ```
-  $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/crd.yaml
+  ```bash
+  oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/1.0.0.Alpha4/deploy/crd.yaml
   ```
   3. Apply the template for the operator.
-  ```
-  $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/operator.yaml
+  ```bash
+  oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/1.0.0.Alpha4/deploy/operator.yaml
   ```
 
 * Build from source or use the public image to install the Infinispan Operator. See the [Infinispan Operator README](https://github.com/infinispan/infinispan-operator).
@@ -53,20 +53,19 @@ Running the Infinispan Operator Tutorial
 ----------------------------------------
 1. Create an Infinispan cluster with three nodes.
 ```bash
-$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/cr/cr_minimal.yaml
+oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/1.0.0.Alpha4/deploy/cr/minimal/cr_minimal.yaml
 ```
 
 2. Verify that the Infinispan cluster forms.
-```
-$ oc get pods -l app=infinispan-pod
+```bash
+oc get pods -l app=infinispan-pod
 NAME                                   READY     STATUS
-example-infinispan-<id_1>     1/1       Running
-example-infinispan-<id_2>     1/1       Running
-example-infinispan-<id_3>     1/1       Running
+example-infinispan-0     1/1       Running
+example-infinispan-1     1/1       Running
 ```
-Where `<id_*>` is the generated identifier for the pod.
-```
-$ oc logs example-infinispan-b58cb5699-727zq
+Logs can be inspected to see if everything is fine:
+```bash
+oc logs example-infinispan-0
 ...
 INFO  [org.infinispan.CLUSTER] (MSC service thread 1-2)
 ISPN000094: Received new cluster view for channel cluster:
@@ -80,34 +79,56 @@ Storing and Retrieving Data
 Connect to your Infinispan cluster and then store some data, as follows:
 
 1. Export the host for the public route to a local variable.
-```
-$ export INFINISPAN_HOST=$(oc get route example-infinispan-external -o jsonpath="{.spec.host}")
+```bash
+export INFINISPAN_HOST=$(oc get svc example-infinispan-external -o jsonpath="{.spec.externalIPs[0]}")
 ```
 
   The Operator generates authentication secrets when you create Infinispan clusters. The default user is `developer` and the password is a base64 encoded string.
 
 2. Export the password for `developer` to a local variable.
+```bash
+oc get secret example-infinispan-generated-secret -o jsonpath="{.data.identities\.yaml}" | base64 --decode
 ```
-$ export PASS=$(oc get secret example-infinispan-app-generated-secret -o jsonpath="{.data.password}" | base64 --decode)
+Output will looks like this:
+```
+credentials:
+  - username: developer
+     password: n4Jx@Inm9IaNpQ8a
+  - username: operator
+     password: vsujrixeZ6kXsOj5
+```
+
+now export the developer password in a env var:
+```bash
+export PASS=n4Jx@Inm9IaNpQ8a
+```
+3. Create a cache (Infinispan 10.x is completely clean ad startup)
+```bash
+curl -v \
+    -X POST \
+    -u developer:${PASS} \
+    ${INFINISPAN_HOST}:11222/rest/v2/caches/test-cache
+...
+< HTTP/1.1 200 OK
 ```
 
 3. Store some data through the HTTP endpoint.
-```
-$ curl -v \
+```bash
+curl -v \
     -X POST \
     -u developer:${PASS} \
     -H 'Content-type: text/plain' \
     -d 'test-value' \
-    ${INFINISPAN_HOST}/rest/default/test-key
+    ${INFINISPAN_HOST}:11222/rest/v2/caches/test-cache/test-key
 ...
 < HTTP/1.1 200 OK
 ```
 
 4. Retrieve the data from the Infinispan cluster.
-```
-$ curl -v \
+```bash
+curl -v \
     -u developer:${PASS} \
-    ${INFINISPAN_HOST}/rest/default/test-key
+    ${INFINISPAN_HOST}:11222/rest/v2/caches/test-cache/test-key
 ...
 < HTTP/1.1 200 OK
 ...
@@ -119,11 +140,6 @@ test-value
   Use the following commands to free up the resources that you created:
 
   ```bash
-  $ oc delete route example-infinispan
-  $ oc delete infinispan example-infinispan
-  $ oc delete deployment infinispan-operator
-  $ oc delete role infinispan-operator
-  $ oc delete rolebinding infinispan-operator
-  $ oc delete serviceaccount infinispan-operator
-  $ oc delete crd infinispans.infinispan.org
-  ```
+  oc delete -f https://raw.githubusercontent.com/infinispan/infinispan-operator/1.0.0.Alpha4/deploy/cr/minimal/cr_minimal.yaml
+  oc delete -f https://raw.githubusercontent.com/infinispan/infinispan-operator/1.0.0.Alpha4/deploy/operator.yaml
+```
