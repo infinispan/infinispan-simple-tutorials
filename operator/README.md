@@ -51,19 +51,19 @@ You create Infinispan clusters with custom resource definitions that specify the
 
 Running the Infinispan Operator Tutorial
 ----------------------------------------
-1. Create an Infinispan cluster with three nodes.
+1. Create an Infinispan cluster with three pods.
 ```bash
 oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/1.0.0.Alpha4/deploy/cr/minimal/cr_minimal.yaml
 ```
 
-2. Verify that the Infinispan cluster forms.
+2. Verify that the Infinispan Operator creates the pods.
 ```bash
 oc get pods -l app=infinispan-pod
 NAME                                   READY     STATUS
 example-infinispan-0     1/1       Running
 example-infinispan-1     1/1       Running
 ```
-Logs can be inspected to see if everything is fine:
+3. Check logs to verify pods form clusters.
 ```bash
 oc logs example-infinispan-0
 ...
@@ -89,7 +89,8 @@ export INFINISPAN_HOST=$(oc get svc example-infinispan-external -o jsonpath="{.s
 ```bash
 oc get secret example-infinispan-generated-secret -o jsonpath="{.data.identities\.yaml}" | base64 --decode
 ```
-Output will looks like this:
+
+Output from the preceding command is as follows:
 ```
 credentials:
   - username: developer
@@ -98,11 +99,12 @@ credentials:
      password: vsujrixeZ6kXsOj5
 ```
 
-now export the developer password in a env var:
+3. Export the password for the developer user to a local variable.
 ```bash
 export PASS=n4Jx@Inm9IaNpQ8a
 ```
-3. Create a cache (Infinispan 10.x is completely clean ad startup)
+
+4. Create a cache (Infinispan 10.x has no default cache).
 ```bash
 curl -v \
     -X POST \
@@ -112,7 +114,7 @@ curl -v \
 < HTTP/1.1 200 OK
 ```
 
-3. Store some data through the HTTP endpoint.
+5. Store some data through the HTTP endpoint.
 ```bash
 curl -v \
     -X POST \
@@ -124,7 +126,7 @@ curl -v \
 < HTTP/1.1 200 OK
 ```
 
-4. Retrieve the data from the Infinispan cluster.
+6. Retrieve the data from the Infinispan cluster.
 ```bash
 curl -v \
     -u developer:${PASS} \
