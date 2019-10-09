@@ -78,9 +78,8 @@ Storing and Retrieving Data
 ---------------------------
 You can interact with the cluster in several way, here two interface are presented: REST and Hotrod.
 
-### Get connection parameters
-
-This makes easier to go on with the tutorial. It just set some env vars used after for connection.
+### Set Application User Credentials
+Complete the following steps to set an environment variable with the default application user credentials.
 
 1. Export the host for the public route to a local variable.
 ```bash
@@ -89,7 +88,7 @@ export INFINISPAN_HOST=$(oc get svc example-infinispan-external -o jsonpath="{.s
 
   The Operator generates authentication secrets when you create Infinispan clusters. The default user is `developer` and the password is a base64 encoded string.
 
-2. Export the password for `developer` to a local variable.
+2. Get the password for the `developer` user from the default authentication secret.
 ```bash
 oc get secret example-infinispan-generated-secret -o jsonpath="{.data.identities\.yaml}" | base64 --decode
 ```
@@ -103,15 +102,15 @@ credentials:
      password: vsujrixeZ6kXsOj5
 ```
 
-3. Export the password for the developer user to a local variable.
+3. Export the password for the `developer` user to a local variable.
 ```bash
 export PASS=n4Jx@Inm9IaNpQ8a
 ```
 
-### REST interface
-Connect to your Infinispan cluster and then store some data, as follows:
+### Connecting via REST
+Connect to your Infinispan cluster and store some data, as follows:
 
-4. Create a cache (Infinispan 10.x has no default cache).
+1. Create a cache (Infinispan 10.x has no default cache).
 ```bash
 curl -v \
     -X POST \
@@ -121,7 +120,7 @@ curl -v \
 < HTTP/1.1 200 OK
 ```
 
-5. Store some data through the HTTP endpoint.
+2. Store some data through the HTTP endpoint.
 ```bash
 curl -v \
     -X POST \
@@ -133,7 +132,7 @@ curl -v \
 < HTTP/1.1 200 OK
 ```
 
-6. Retrieve the data from the Infinispan cluster.
+3. Retrieve the data from the Infinispan cluster.
 ```bash
 curl -v \
     -u developer:${PASS} \
@@ -144,10 +143,15 @@ curl -v \
 test-value
 ```
 
-### Hotrod
-Hotrod is the binary protocol designed for Infinispan client/server interaction.
-Infinispan Hotrod clients are available in several programming languages. This tutorial provides
-a Java example, you can `cd java-client` and try a quick run like this:
+### Connecting via Hot Rod
+Hot Rod is a custom binary TCP protocol designed for Infinispan client/server interaction. Hot Rod clients are available in several programming languages but this tutorial provides a Java example for demonstration purposes.
+
+1. Change to the `java-client` directory.
+```bash
+cd java-client
+```
+
+2. Run the Hot Rod Java client as follows:
 ```bash
 mvn exec:java -Dexec.mainClass="org.infinispan.App" -Dexec.args="-h 172.30.125.152 -U developer -P ${PASS}"
 ```
