@@ -76,7 +76,11 @@ example-infinispan-<id_3>]
 
 Storing and Retrieving Data
 ---------------------------
-Connect to your Infinispan cluster and then store some data, as follows:
+You can interact with the cluster in several way, here two interface are presented: REST and Hotrod.
+
+### Get connection parameters
+
+This makes easier to go on with the tutorial. It just set some env vars used after for connection.
 
 1. Export the host for the public route to a local variable.
 ```bash
@@ -103,6 +107,9 @@ credentials:
 ```bash
 export PASS=n4Jx@Inm9IaNpQ8a
 ```
+
+### REST interface
+Connect to your Infinispan cluster and then store some data, as follows:
 
 4. Create a cache (Infinispan 10.x has no default cache).
 ```bash
@@ -137,7 +144,17 @@ curl -v \
 test-value
 ```
 
-  You've successfully completed this tutorial!
+### Hotrod
+Hotrod is the binary protocol designed for Infinispan client/server interaction.
+Infinispan Hotrod clients are available in several programming languages. This tutorial provides
+a Java example, you can `cd java-client` and try a quick run like this:
+```bash
+mvn exec:java -Dexec.mainClass="org.infinispan.App" -Dexec.args="-h 172.30.125.152 -U developer -P ${PASS}"
+```
+Client code is in `java-client/src/main/java/org/infinispan/App.java`
+
+## Conclusion
+You've successfully completed this tutorial!
 
   Use the following commands to free up the resources that you created:
 
