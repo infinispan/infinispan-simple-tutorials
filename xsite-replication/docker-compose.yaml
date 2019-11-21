@@ -1,0 +1,46 @@
+version: '3'
+
+networks:
+  mynetwork:
+    driver: bridge
+services:
+  infinispan-server-lon-1:
+    image: infinispan/server:latest
+    ports:
+      - "11222:11222"
+    container_name: ispn-lon-1
+    networks:
+      - mynetwork
+    volumes:
+      - ${PWD}:/user-config
+    command: /opt/infinispan/bin/server.sh -b SITE_LOCAL -c /user-config/infinispan-xsite.xml -Djgroups.cluster.mcast_addr=228.6.7.10 -Drelay.site=LON
+  infinispan-server-lon-2:
+    image: infinispan/server:latest
+    ports:
+      - "11221:11222"
+    container_name: ispn-lon-2
+    networks:
+      - mynetwork
+    volumes:
+      - ${PWD}:/user-config
+    command: /opt/infinispan/bin/server.sh -b SITE_LOCAL -c /user-config/infinispan-xsite.xml -Djgroups.cluster.mcast_addr=228.6.7.10 -Drelay.site=LON
+  infinispan-server-nyc-1:
+    image: infinispan/server:latest
+    ports:
+      - "31222:11222"
+    container_name: ispn-nyc-1
+    networks:
+      - mynetwork
+    volumes:
+      - ${PWD}:/user-config
+    command: /opt/infinispan/bin/server.sh -b SITE_LOCAL -c /user-config/infinispan-xsite.xml -Djgroups.cluster.mcast_addr=228.6.7.15 -Drelay.site=NYC
+  infinispan-server-nyc-2:
+    image: infinispan/server:latest
+    ports:
+      - "31223:11222"
+    container_name: ispn-nyc-2
+    networks:
+      - mynetwork
+    volumes:
+      - ${PWD}:/user-config
+    command: /opt/infinispan/bin/server.sh -b SITE_LOCAL -c /user-config/infinispan-xsite.xml -Djgroups.cluster.mcast_addr=228.6.7.15 -Drelay.site=NYC
