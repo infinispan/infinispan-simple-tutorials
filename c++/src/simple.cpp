@@ -1,13 +1,10 @@
 #include "infinispan/hotrod/ConfigurationBuilder.h"
 #include "infinispan/hotrod/RemoteCacheManager.h"
 #include "infinispan/hotrod/RemoteCache.h"
-#include "infinispan/hotrod/ScopedBuffer.h"
 #include "infinispan/hotrod/Version.h"
 
 #include <stdlib.h>
 #include <iostream>
-#include <memory>
-#include <typeinfo>
 
 using namespace infinispan::hotrod;
 
