@@ -1,18 +1,40 @@
 # Build requirements
 
-* HotRod C++ client libraries
-* C++03 plus shared_ptr TR1 support
-* CMake 2.8
+* Centos 7 (RHEL 7 should work also)
 * Infinispan server running with the default standalone configuration
 
-# Build instructions
+# Docker
+Here is a easy way to setup a Docker container running Centos 7, so you can run the
+tutorial in a confined environment.
 
-    mkdir build
-    cd build
+#### Setup the Server
+
+On the host machine download and start the server:
+
+    wget https://downloads.jboss.org/infinispan/10.0.1.Final/infinispan-server-10.0.1.Final.zip
+    unzip infinispan-server-10.0.1.Final.zip
+    cd infinispan-server-10.0.1.Final/bin
+    ./server.sh
+
+Create the default cache
+
+    curl -vvvv -X POST http://127.0.0.1:11222/rest/v2/caches/default
+
+Change to this README directory, download the client .rpm
+
+    wget https://downloads.jboss.org/infinispan/HotRodCPP/8.3.1.Final/infinispan-hotrod-cpp-8.3.1.Final-RHEL-x86_64.rpm
+Start the Centos Docker container
+
+    docker run -i -t -v $PWD:/home/infinispan/git/infinispan-simple-tutorial:Z --network="host" centos:7
+
+#### On the Container
+###### Build the client
+    cd /home/infinispan/git/infinispan-simple-tutorial/c++
+    yum install wget unzip cmake make gcc-c++ protobuf-devel cyrus-sasl-devel
+    rpm -i --force infinispan-hotrod-cpp-8.3.1.Final-RHEL-x86_64.rpm
+    mkdir build && pushd build
     cmake ..
-    cmake --build . 
+    cmake --build .
 
-# Run instructions
-
-Run the 'build' executable produced by the above
-
+###### Run the client
+    LD_LIBRARY_PATH=/usr/lib ./simple

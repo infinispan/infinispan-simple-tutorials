@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 2.6)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-set(DLLEXPORT_STATIC "HR_PROTO_EXPORT= ")
 
 project(simple)
+
+set(DLLEXPORT_STATIC "HR_PROTO_EXPORT= ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 file(GLOB cpp_files "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 

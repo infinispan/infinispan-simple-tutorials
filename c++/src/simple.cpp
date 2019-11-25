@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
     // Initialize the remote cache manager
     RemoteCacheManager cacheManager(builder.build(), false);
     // Obtain the remote cache
-    RemoteCache<std::string, std::string> cache = cacheManager.getCache<std::string, std::string>();
+    RemoteCache<std::string, std::string> cache = cacheManager.getCache<std::string, std::string>("default",false);
     // Connect to the server
     cacheManager.start();
     // Store a value
