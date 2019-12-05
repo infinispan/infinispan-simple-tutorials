@@ -1,13 +1,10 @@
 #include "infinispan/hotrod/ConfigurationBuilder.h"
 #include "infinispan/hotrod/RemoteCacheManager.h"
 #include "infinispan/hotrod/RemoteCache.h"
-#include "infinispan/hotrod/ScopedBuffer.h"
 #include "infinispan/hotrod/Version.h"
 
 #include <stdlib.h>
 #include <iostream>
-#include <memory>
-#include <typeinfo>
 
 using namespace infinispan::hotrod;
 
@@ -18,7 +15,7 @@ int main(int argc, char** argv) {
     // Initialize the remote cache manager
     RemoteCacheManager cacheManager(builder.build(), false);
     // Obtain the remote cache
-    RemoteCache<std::string, std::string> cache = cacheManager.getCache<std::string, std::string>();
+    RemoteCache<std::string, std::string> cache = cacheManager.getCache<std::string, std::string>("default",false);
     // Connect to the server
     cacheManager.start();
     // Store a value
