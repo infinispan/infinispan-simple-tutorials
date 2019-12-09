@@ -1,0 +1,243 @@
+:allow-uri-read:
+
+include::https://raw.githubusercontent.com/oraNod/infinispan-simple-tutorials/ISPN-10375/documentation/asciidoc/attributes.adoc[]
+
+= Spinning Up Clusters with the {ispn_operator}
+
+This tutorial shows you how to quickly create a three-node cluster using the
+{ispn_operator}. You then interact with the {brandname} cluster to store
+and retrieve data.
+
+**Authors:** Galder Zamarreño +
+**Technologies:** Infinispan, Operator, Kubernetes, OKD, Red Hat OpenShift +
+**Summary:** Create and manage {brandname} clusters with the {ispn_operator}.
+
+'''
+
+= Cloning the Repository
+
+Clone the tutorials from the {brandname} repository.
+
+[source,options="nowrap",subs=attributes+]
+----
+$ git clone {github_repo}
+----
+
+//Community
+ifndef::productized[]
+* {brandname} {infinispanversion} is on the `{github_branch}` branch.
+endif::productized[]
+//Product
+ifdef::productized[]
+* {brandname} {infinispanversion} is on the `{github_branch}` branch.
+endif::productized[]
+
+= Prerequisites
+To run this tutorial, you need administrator access to a running {k8s} cluster and an `oc` client on your `$PATH`.
+
+ifndef::productized[]
+The {ispn_operator} supports the following environments:
+
+* {okd} or {openshiftlong} 3.11 or later
+* {k8s} 1.11 or later
+
+For local clusters, you can use Minikube 1.2.0 or later.
+endif::productized[]
+ifdef::productized[]
+The {ispn_operator} is supported on {openshiftlong} 4.1 and later.
+endif::productized[]
+
+= Installing the {ispn_operator}
+ifndef::productized[]
+Do one of the following to install the {ispn_operator}:
+
+* Install the {ispn_operator} from
+link:https://operatorhub.io/[OperatorHub.io].
+
+* Install the {ispn_operator} manually, as follows:
+. Apply the role and role bindings.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/rbac.yaml
+----
++
+[TIP]
+====
+You can replace `0.3.0` with another tagged version of the {ispn_operator}.
+====
++
+. Apply the custom resource definition for the operator.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/crd.yaml
+----
++
+. Apply the template for the operator.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/operator.yaml
+----
+
+* Build from source or use the public image to install the {ispn_operator}. See the [{ispn_operator} README](https://github.com/infinispan/infinispan-operator).
+endif::productized[]
+ifdef::productized[]
+To install the {ispn_operator}, do the following:
+
+. Create a new {openshiftshort} project.
++
+[source,bash,options="nowrap"]
+----
+$ oc new project operator-tutorial
+----
++
+. Install the {ispn_operator} in the project.
+.. Open the {openshiftshort} console.
+.. Navigate to *Catalog* > *OperatorHub*.
+.. Locate and select the {ispn_operator}.
+.. Select *Install* and then choose your namespace.
+. Verify that the {ispn_operator} is running.
++
+[source,bash,options="nowrap"]
+----
+$ oc get pods
+NAME                       READY   STATUS    RESTARTS   AGE
+infinispan-operator-<id>   1/1     Running   0          19s
+----
+endif::productized[]
+
+= Running the {ispn_operator} Tutorial
+
+. Create an {brandname} cluster with three nodes.
++
+ifndef::productized[]
+[NOTE]
+====
+You create {brandname} clusters with custom resource definitions that specify the number of nodes and configuration to use. See the link:https://github.com/infinispan/infinispan-operator[{ispn_operator} README] to find out more.
+====
++
+[source,options="nowrap",subs=attributes+]
+----
+$ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/0.3.0/deploy/cr/cr_minimal.yaml
+----
+endif::productized[]
+ifdef::productized[]
+[source,options="nowrap"]
+----
+$ cat > cr_minimal.yaml<<EOF
+apiVersion: infinispan.org/v1
+kind: Infinispan
+metadata:
+  name: example-rhdg
+spec:
+  replicas: 3
+EOF
+----
++
+. Apply the custom resource `yaml`.
++
+[source,options="nowrap"]
+----
+$ oc apply -f cr_minimal.yaml
+----
++
+endif::productized[]
++
+. Verify that the {ispn_operator} creates the pods.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ oc get pods -w
+NAME                                   READY     STATUS
+{example_pod_name}-0     1/1       Running
+{example_pod_name}-1     1/1       Running
+{example_pod_name}-2     1/1       Running
+----
++
+. Verify that the {brandname} cluster forms.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ oc logs {example_pod_name}-0 | grep ISPN000094
+...
+INFO  [org.infinispan.CLUSTER] (MSC service thread 1-2) ISPN000094: Received new cluster view for channel cluster: [{example_pod_name}-0|0] (1) [{example_pod_name}-0]
+INFO  [org.infinispan.CLUSTER] (jgroups-4,{example_pod_name}-0) ISPN000094: Received new cluster view for channel cluster: [{example_pod_name}-0|1] (2) [{example_pod_name}-0, {example_pod_name}-1]
+INFO  [org.infinispan.CLUSTER] (jgroups-3,{example_pod_name}-0) ISPN000094: Received new cluster view for channel cluster: [{example_pod_name}-0|2] (3) [{example_pod_name}-0, {example_pod_name}-1, {example_pod_name}-2]
+----
+
+= Storing and Retrieving Data
+
+{brandname} requires authentication for data access. The default user is `developer` and the Operator automatically generates a password and stores it in a secret when the cluster starts.
+
+. Export the host for the public route to a local variable.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ export INFINISPAN_HOST=$(oc get route {example_pod_name}-external -o jsonpath="{.spec.host}")
+----
++
+The Operator generates authentication secrets when you create {brandname}
+clusters. The default user is `developer` and the password is a base64 encoded
+string.
++
+. Export the password for `developer` to a local variable.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ export PASS=$(oc get secret {example_pod_name}-app-generated-secret -o jsonpath="{.data.password}" | base64 --decode)
+----
++
+. Store some data through the HTTP endpoint.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ curl -v \
+    -X POST \
+    -u developer:${PASS} \
+    -H 'Content-type: text/plain' \
+    -d 'test-value' \
+    ${INFINISPAN_HOST}/rest/default/test-key
+...
+< HTTP/1.1 200 OK
+----
++
+. Retrieve the data from the {brandname} cluster.
++
+[source,options="nowrap",subs=attributes+]
+----
+$ curl -v \
+    -u developer:${PASS} \
+    ${INFINISPAN_HOST}/rest/default/test-key
+...
+< HTTP/1.1 200 OK
+...
+test-value
+----
+
+
+You've successfully completed this tutorial!
+
+ifndef::productized[]
+Use the following commands to free up the resources that you created:
+
+[source,options="nowrap"]
+----
+$ oc delete route example-infinispan
+$ oc delete infinispan example-infinispan
+$ oc delete deployment infinispan-operator
+$ oc delete role infinispan-operator
+$ oc delete rolebinding infinispan-operator
+$ oc delete serviceaccount infinispan-operator
+$ oc delete crd infinispans.infinispan.org
+----
+endif::productized[]
+ifdef::productized[]
+Delete the OpenShift project to free up resources that you created:
+
+[source,options="nowrap"]
+----
+$ oc delete project operator-tutorial
+----
+endif::productized[]
