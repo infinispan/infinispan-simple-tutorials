@@ -8,7 +8,7 @@ About This Tutorial
 -------------------
 The Infinispan Operator provides operational intelligence to simplify deploying Infinispan on Kubernetes clusters.
 
-This tutorial shows you how to quickly create a three-node cluster using the Infinispan Operator. You then interact with the Infinispan cluster to store and retrieve data.
+This tutorial shows you how to quickly create a two-node cluster using the Infinispan Operator. You then interact with the Infinispan cluster to store and retrieve data.
 
 Prerequisites
 -------------
@@ -52,7 +52,7 @@ You create Infinispan clusters with custom resource definitions that specify the
 
 Running the Infinispan Operator Tutorial
 ----------------------------------------
-1. Create an Infinispan cluster with three nodes.
+1. Create an Infinispan cluster with two pods.
 ```bash
 $ oc apply -f https://raw.githubusercontent.com/infinispan/infinispan-operator/1.1.0/deploy/cr/minimal/cr_minimal.yaml
 ```
@@ -90,7 +90,17 @@ $ export INFINISPAN_HOST=$(oc get service example-infinispan -o jsonpath={.spec.
 $ export PASS=$(oc get secret example-infinispan-generated-secret -o jsonpath="{.data.identities\.yaml}" | base64 --decode | yq -r .credentials[0].password)
 ```
 
-3. Store some data through the HTTP endpoint.
+3. Create a cache (Infinispan 10.x has no default cache).
+```bash
+curl -v \
+    -X POST \
+    -u developer:${PASS} \
+    ${INFINISPAN_HOST}:11222/rest/v2/caches/test-cache
+...
+< HTTP/1.1 200 OK
+```
+
+4. Store some data through the HTTP endpoint.
 ```
 $ oc exec -it example-infinispan-0 -- \
     curl -v \
@@ -98,17 +108,17 @@ $ oc exec -it example-infinispan-0 -- \
     -u developer:${PASS} \
     -H 'Content-type: text/plain' \
     -d 'test-value' \
-    ${INFINISPAN_HOST}/rest/default/test-key
+    ${INFINISPAN_HOST}:11222/rest/v2/caches/test-cache/test-key
 ...
 < HTTP/1.1 204 No Content
 ```
 
-4. Retrieve the data from the Infinispan cluster.
+5. Retrieve the data from the Infinispan cluster.
 ```
 $ oc exec -it example-infinispan-0 -- \
     curl -v \
     -u developer:${PASS} \
-    ${INFINISPAN_HOST}/rest/default/test-key
+    ${INFINISPAN_HOST}:11222/rest/v2/caches/test-cache/test-key
 ...
 < HTTP/1.1 200 OK
 ...
