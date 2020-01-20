@@ -8,7 +8,7 @@
     <name>Infinispan Tutorial: Simple tutorials</name>
 
     <properties>
-       <version.infinispan>10.0.1.Final</version.infinispan>
+       <version.infinispan>10.1.1.Final</version.infinispan>
     </properties>
 
     <dependencyManagement>
@@ -20,16 +20,18 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+               <groupId>javax.transaction</groupId>
+               <artifactId>transaction-api</artifactId>
+               <version>1.1</version>
+           </dependency>
+           <dependency>
+               <groupId>javax.cache</groupId>
+               <artifactId>cache-api</artifactId>
+               <version>1.1.0</version>
+           </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <dependencies>
-        <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>transaction-api</artifactId>
-            <version>1.1</version>
-        </dependency>
-    </dependencies>
 
     <build>
         <pluginManagement>
