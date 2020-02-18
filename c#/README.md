@@ -1,4 +1,4 @@
-# C# Infinispan Client. Tutorials
+# C# Infinispan Client Tutorials
 
 Set of simple tutorial on how to use the C# client.
 
