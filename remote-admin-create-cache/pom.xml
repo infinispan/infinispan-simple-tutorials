@@ -8,7 +8,7 @@
         <groupId>org.infinispan.tutorial.simple</groupId>
         <artifactId>infinispan-simple-tutorials</artifactId>
     </parent>
-    <name>Infinispan Simple Tutorials: Remote Administration</name>
+    <name>Infinispan Simple Tutorial: Remote Cache Administration</name>
 
     <build>
         <plugins>
