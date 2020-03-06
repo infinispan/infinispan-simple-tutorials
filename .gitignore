@@ -55,3 +55,4 @@ build
 node_modules
 # OpenShift
 openshift.local.clusterup
+javascript/package-lock.json
