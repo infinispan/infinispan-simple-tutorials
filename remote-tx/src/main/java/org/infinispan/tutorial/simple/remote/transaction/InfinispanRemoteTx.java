@@ -1,4 +1,4 @@
-package org.infinispan.tutorial.simple.remote.counter;
+package org.infinispan.tutorial.simple.remote.transaction;
 
 import javax.transaction.TransactionManager;
 

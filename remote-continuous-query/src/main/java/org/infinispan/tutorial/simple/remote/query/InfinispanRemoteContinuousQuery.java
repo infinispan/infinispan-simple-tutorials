@@ -1,6 +1,19 @@
 package org.infinispan.tutorial.simple.remote.query;
 
-import static org.infinispan.query.remote.client.ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME;
+import org.infinispan.client.hotrod.RemoteCache;
+import org.infinispan.client.hotrod.RemoteCacheManager;
+import org.infinispan.client.hotrod.Search;
+import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
+import org.infinispan.client.hotrod.impl.ConfigurationProperties;
+import org.infinispan.client.hotrod.marshall.MarshallerUtil;
+import org.infinispan.client.hotrod.marshall.ProtoStreamMarshaller;
+import org.infinispan.commons.api.CacheContainerAdmin;
+import org.infinispan.protostream.SerializationContext;
+import org.infinispan.protostream.annotations.ProtoSchemaBuilder;
+import org.infinispan.query.api.continuous.ContinuousQuery;
+import org.infinispan.query.api.continuous.ContinuousQueryListener;
+import org.infinispan.query.dsl.Query;
+import org.infinispan.query.dsl.QueryFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,18 +22,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import org.infinispan.client.hotrod.RemoteCache;
-import org.infinispan.client.hotrod.RemoteCacheManager;
-import org.infinispan.client.hotrod.Search;
-import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
-import org.infinispan.client.hotrod.impl.ConfigurationProperties;
-import org.infinispan.client.hotrod.marshall.ProtoStreamMarshaller;
-import org.infinispan.protostream.SerializationContext;
-import org.infinispan.protostream.annotations.ProtoSchemaBuilder;
-import org.infinispan.query.api.continuous.ContinuousQuery;
-import org.infinispan.query.api.continuous.ContinuousQueryListener;
-import org.infinispan.query.dsl.Query;
-import org.infinispan.query.dsl.QueryFactory;
+import static org.infinispan.query.remote.client.ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME;
 
 /**
  * The Remote Continuous Query simple tutorial.
@@ -64,14 +66,13 @@ public class InfinispanRemoteContinuousQuery {
       // Create a configuration for a locally-running server
       ConfigurationBuilder builder = new ConfigurationBuilder();
       builder.addServer().host("127.0.0.1")
-            .port(ConfigurationProperties.DEFAULT_HOTROD_PORT)
-            .marshaller(ProtoStreamMarshaller.class); // You need to specify the marshaller for remote query
+            .port(ConfigurationProperties.DEFAULT_HOTROD_PORT);
 
       // Connect to the server
       RemoteCacheManager client = new RemoteCacheManager(builder.build());
 
-      // Get the cache, create it if needed with the default configuration
-      RemoteCache<String, InstaPost> instaPostsCache = client.administration().getOrCreateCache(CACHE_NAME, "default");
+      // Get the cache, create it if needed with an existing template name
+      RemoteCache<String, InstaPost> instaPostsCache = client.administration().withFlags(CacheContainerAdmin.AdminFlag.VOLATILE).getOrCreateCache(CACHE_NAME, "org.infinispan.DIST_SYNC");
 
       // Create and add the Protobuf schema for InstaPost class. Note InstaPost is an annotated POJO
       addInstapostsSchema(client);
@@ -136,7 +137,7 @@ public class InfinispanRemoteContinuousQuery {
 
    private static void addInstapostsSchema(RemoteCacheManager cacheManager) throws IOException {
       // Get the serialization context of the client
-      SerializationContext ctx = ProtoStreamMarshaller.getSerializationContext(cacheManager);
+      SerializationContext ctx = MarshallerUtil.getSerializationContext(cacheManager);
 
       // Use ProtoSchemaBuilder to define a Protobuf schema on the client
       ProtoSchemaBuilder protoSchemaBuilder = new ProtoSchemaBuilder();
