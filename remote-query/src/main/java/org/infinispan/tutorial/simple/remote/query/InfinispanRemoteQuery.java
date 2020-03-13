@@ -1,22 +1,24 @@
 package org.infinispan.tutorial.simple.remote.query;
 
-import static org.infinispan.query.remote.client.ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME;
+import org.infinispan.client.hotrod.RemoteCache;
+import org.infinispan.client.hotrod.RemoteCacheManager;
+import org.infinispan.client.hotrod.Search;
+import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
+import org.infinispan.client.hotrod.impl.ConfigurationProperties;
+import org.infinispan.client.hotrod.marshall.MarshallerUtil;
+import org.infinispan.client.hotrod.marshall.ProtoStreamMarshaller;
+import org.infinispan.commons.api.CacheContainerAdmin;
+import org.infinispan.protostream.SerializationContext;
+import org.infinispan.protostream.annotations.ProtoSchemaBuilder;
+import org.infinispan.query.dsl.Query;
+import org.infinispan.query.dsl.QueryFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.infinispan.client.hotrod.RemoteCache;
-import org.infinispan.client.hotrod.RemoteCacheManager;
-import org.infinispan.client.hotrod.Search;
-import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
-import org.infinispan.client.hotrod.impl.ConfigurationProperties;
-import org.infinispan.client.hotrod.marshall.ProtoStreamMarshaller;
-import org.infinispan.protostream.SerializationContext;
-import org.infinispan.protostream.annotations.ProtoSchemaBuilder;
-import org.infinispan.query.dsl.Query;
-import org.infinispan.query.dsl.QueryFactory;
+import static org.infinispan.query.remote.client.ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME;
 
 /**
  * The Remote Query simple tutorial.
@@ -29,30 +31,31 @@ public class InfinispanRemoteQuery {
       // Create a configuration for a locally-running server
       ConfigurationBuilder builder = new ConfigurationBuilder();
       builder.addServer().host("127.0.0.1")
-            .port(ConfigurationProperties.DEFAULT_HOTROD_PORT)
-            .marshaller(ProtoStreamMarshaller.class); // You need to specify the marshaller for remote query
+            .port(ConfigurationProperties.DEFAULT_HOTROD_PORT);
 
       // Connect to the server
       RemoteCacheManager client = new RemoteCacheManager(builder.build());
 
-      // Get the persons cache, create it if needed with the default configuration
-      RemoteCache<String, Person> personsCache = client.administration().getOrCreateCache("people", "default");
+      // Get the people cache, create it if needed with the default configuration
+      RemoteCache<String, Person> peopleCache = client.administration()
+              .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
+              .getOrCreateCache("people-remote-query", "org.infinispan.DIST_SYNC");
 
       // Create the persons dataset to be stored in the cache
-      Map<String, Person> persons = new HashMap<>();
-      persons.put("1", new Person("Oihana", "Rossignol", 2016, "Paris"));
-      persons.put("2", new Person("Elaia", "Rossignol", 2018, "Paris"));
-      persons.put("3", new Person("Yago", "Steiner", 2013, "Saint-Mandé"));
-      persons.put("4", new Person("Alberto", "Steiner", 2016, "Paris"));
+      Map<String, Person> people = new HashMap<>();
+      people.put("1", new Person("Oihana", "Rossignol", 2016, "Paris"));
+      people.put("2", new Person("Elaia", "Rossignol", 2018, "Paris"));
+      people.put("3", new Person("Yago", "Steiner", 2013, "Saint-Mandé"));
+      people.put("4", new Person("Alberto", "Steiner", 2016, "Paris"));
 
       // Create and add the Protobuf schema for Person class. Note Person is an annotated POJO
       addPersonSchema(client);
 
       // Put all the values in the cache
-      personsCache.putAll(persons);
+      peopleCache.putAll(people);
 
       // Get a query factory from the cache
-      QueryFactory queryFactory = Search.getQueryFactory(personsCache);
+      QueryFactory queryFactory = Search.getQueryFactory(peopleCache);
 
       // Create a query with lastName parameter
       Query query = queryFactory.create("FROM tutorial.Person p where p.lastName = :lastName");
@@ -72,7 +75,7 @@ public class InfinispanRemoteQuery {
 
    private static void addPersonSchema(RemoteCacheManager cacheManager) throws IOException {
       // Get the serialization context of the client
-      SerializationContext ctx = ProtoStreamMarshaller.getSerializationContext(cacheManager);
+      SerializationContext ctx = MarshallerUtil.getSerializationContext(cacheManager);
 
       // Use ProtoSchemaBuilder to define a Protobuf schema on the client
       ProtoSchemaBuilder protoSchemaBuilder = new ProtoSchemaBuilder();
