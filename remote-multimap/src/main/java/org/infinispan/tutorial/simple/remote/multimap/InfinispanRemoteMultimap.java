@@ -6,6 +6,7 @@ import org.infinispan.client.hotrod.impl.ConfigurationProperties;
 import org.infinispan.client.hotrod.multimap.MultimapCacheManager;
 import org.infinispan.client.hotrod.multimap.RemoteMultimapCache;
 import org.infinispan.client.hotrod.multimap.RemoteMultimapCacheManagerFactory;
+import org.infinispan.commons.api.CacheContainerAdmin;
 
 /**
  * The Remote Multimap simple tutorial.
@@ -16,6 +17,8 @@ import org.infinispan.client.hotrod.multimap.RemoteMultimapCacheManagerFactory;
  */
 public class InfinispanRemoteMultimap {
 
+   private static final String PEOPLE_MULTIMAP = "people-multimap";
+
    public static void main(String[] args) throws Exception {
       // Create a configuration for a locally-running server
       ConfigurationBuilder builder = new ConfigurationBuilder();
@@ -23,13 +26,16 @@ public class InfinispanRemoteMultimap {
             .port(ConfigurationProperties.DEFAULT_HOTROD_PORT);
       // Connect to the server and create a cache
       RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
-      cacheManager.administration().getOrCreateCache("people", "default");
+      // Create people cache if needed with an existing template name
+      cacheManager.administration()
+              .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
+              .getOrCreateCache(PEOPLE_MULTIMAP, "org.infinispan.DIST_SYNC");
 
       // Retrieve the MultimapCacheManager from the CacheManager.
       MultimapCacheManager multimapCacheManager = RemoteMultimapCacheManagerFactory.from(cacheManager);
 
       // Retrieve the multimap cache.
-      RemoteMultimapCache<Integer, String> people = multimapCacheManager.get("people");
+      RemoteMultimapCache<Integer, String> people = multimapCacheManager.get(PEOPLE_MULTIMAP);
       people.put(2016, "Alberto");
       people.put(2016, "Oihana");
       people.put(2016, "Roman");

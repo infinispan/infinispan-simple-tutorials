@@ -9,6 +9,7 @@ import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.event.ClientCacheEntryCreatedEvent;
 import org.infinispan.client.hotrod.event.ClientCacheEntryModifiedEvent;
 import org.infinispan.client.hotrod.impl.ConfigurationProperties;
+import org.infinispan.commons.api.CacheContainerAdmin;
 
 public class InfinispanRemoteListen {
 
@@ -18,8 +19,10 @@ public class InfinispanRemoteListen {
       builder.addServer().host("127.0.0.1").port(ConfigurationProperties.DEFAULT_HOTROD_PORT);
       // Connect to the server
       RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
-      // Obtain the remote cache
-      RemoteCache<String, String> cache = cacheManager.getCache();
+      // Get the cache, create it if needed with an existing template name
+      RemoteCache<String, String> cache = cacheManager.administration()
+              .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
+              .getOrCreateCache("listen", "org.infinispan.DIST_SYNC");
       // Register a listener
       MyListener listener = new MyListener();
       cache.addClientListener(listener);
