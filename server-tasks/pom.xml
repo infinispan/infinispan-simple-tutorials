@@ -10,17 +10,8 @@
    </parent>
    <name>Infinispan Simple Tutorials: Server Tasks</name>
 
-   <properties>
-      <version.wildfly.maven.plugin>1.2.0.Beta1</version.wildfly.maven.plugin>
-   </properties>
-
    <build>
       <plugins>
-         <plugin>
-            <groupId>org.wildfly.plugins</groupId>
-            <artifactId>wildfly-maven-plugin</artifactId>
-            <version>${version.wildfly.maven.plugin}</version>
-         </plugin>
          <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
@@ -51,8 +42,9 @@
          <artifactId>infinispan-client-hotrod</artifactId>
       </dependency>
       <dependency>
-         <groupId>org.infinispan</groupId>
-         <artifactId>infinispan-tasks-api</artifactId>
+         <groupId>commons-httpclient</groupId>
+         <artifactId>commons-httpclient</artifactId>
+         <version>3.1</version>
       </dependency>
    </dependencies>
 

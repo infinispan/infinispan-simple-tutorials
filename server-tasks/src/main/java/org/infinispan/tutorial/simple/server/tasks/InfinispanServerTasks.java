@@ -1,122 +1,59 @@
 package org.infinispan.tutorial.simple.server.tasks;
 
-import org.infinispan.Cache;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
-import org.infinispan.commons.dataconversion.UTF8Encoder;
-import org.infinispan.commons.marshall.UTF8StringMarshaller;
-import org.infinispan.tasks.ServerTask;
-import org.infinispan.tasks.TaskContext;
+import org.infinispan.commons.api.CacheContainerAdmin;
 
-import java.util.Collections;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
+import static org.infinispan.commons.dataconversion.MediaType.APPLICATION_JAVASCRIPT_TYPE;
+import static org.infinispan.commons.util.Util.getResourceAsString;
 
 public class InfinispanServerTasks {
 
-   public static void main(String[] args) {
-      // Execute and data manipulation caches require different configuration
-      // This won't be necessary in the future: https://issues.jboss.org/browse/ISPN-8814
-      final RemoteCache<String, String> dataCache = getDataCache();
+   public static void main(String[] args) throws Exception {
+      // Upload the task using the REST API
+      uploadTask();
+
+      // Get a cache to execute the task
       final RemoteCache<String, String> execCache = getExecCache();
 
       // Create task parameters
       Map<String, String> parameters = new HashMap<>();
-      parameters.put("name", "developer");
+      parameters.put("greetee", "developer");
 
       // Execute hello task
       String greet = execCache.execute("hello-task", parameters);
       System.out.printf("Greeting = %s\n", greet);
 
-      // Store some values and compute the sum
-      int range = 10;
-      IntStream.range(0, range).boxed().forEach(
-         i -> dataCache.put(i + "-key", i + "-value")
-      );
-      int result = execCache.execute("sum-values-task", Collections.emptyMap());
-      System.out.printf("Sum of values = %d\n", result);
-
       // Stop the cache manager and release all resources
-      dataCache.getRemoteCacheManager().stop();
       execCache.getRemoteCacheManager().stop();
    }
 
-   public static RemoteCache<String,String> getDataCache() {
-      // Create a configuration for a locally-running server
-      ConfigurationBuilder builder = new ConfigurationBuilder();
-      builder
-         .addServer().host("127.0.0.1").port(11222)
-         .marshaller(UTF8StringMarshaller.class);
+   private static void uploadTask() throws IOException, InterruptedException {
+      String taskPostUrl = String.format("http://localhost:%d/rest/v2/tasks/hello-task", 11222);
+      String script = getResourceAsString("hello.js", InfinispanServerTasks.class.getClassLoader());
+      HttpClient client = new HttpClient();
+      PostMethod postMethod = new PostMethod(taskPostUrl);
+      postMethod.setRequestHeader("Content-type", APPLICATION_JAVASCRIPT_TYPE);
 
-      RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
-      final RemoteCache<String, String> cache = cacheManager.getCache();
-      cache.clear();
-      return cache;
+      postMethod.setRequestEntity(new StringRequestEntity(script, null, null));
+      client.executeMethod(postMethod);
    }
 
-   public static RemoteCache<String,String> getExecCache() {
+   private static RemoteCache<String,String> getExecCache() {
       ConfigurationBuilder builder = new ConfigurationBuilder();
       builder.addServer().host("127.0.0.1").port(11222);
 
       RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
-      return cacheManager.getCache();
+      return cacheManager.administration()
+              .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
+              .getOrCreateCache("data", "org.infinispan.DIST_SYNC");
    }
-
-   public static class HelloTask implements ServerTask<String> {
-
-      private TaskContext ctx;
-
-      @Override
-      public void setTaskContext(TaskContext ctx) {
-         this.ctx = ctx;
-      }
-
-      @Override
-      public String call() throws Exception {
-         String name = (String) ctx.getParameters().get().get("name");
-         return "Hello " + name;
-      }
-
-      @Override
-      public String getName() {
-         return "hello-task";
-      }
-
-   }
-
-   public static class SumValuesTask implements ServerTask<Integer> {
-
-      private TaskContext ctx;
-
-      @Override
-      public void setTaskContext(TaskContext ctx) {
-         this.ctx = ctx;
-      }
-
-      @Override
-      public Integer call() throws Exception {
-         Cache<String, String> cache = getCache();
-
-         return cache.keySet()
-            .stream()
-               .map(e -> Integer.valueOf(e.substring(0, e.indexOf("-"))))
-               .collect(() -> Collectors.summingInt(Integer::intValue));
-      }
-
-      @Override
-      public String getName() {
-         return "sum-values-task";
-      }
-
-      @SuppressWarnings("unchecked")
-      private Cache<String, String> getCache() {
-         return (Cache<String, String>) ctx.getCache().get()
-            .getAdvancedCache().withEncoding(UTF8Encoder.class);
-      }
-
-   }
-
 }
