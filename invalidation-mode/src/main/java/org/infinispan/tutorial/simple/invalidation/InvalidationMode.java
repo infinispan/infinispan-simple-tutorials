@@ -47,16 +47,18 @@ public class InvalidationMode {
 
    public static void main(String[] args) {
       // Create a clustered configuration and a default cache named test
-      GlobalConfiguration global = GlobalConfigurationBuilder.defaultClusteredBuilder()
-            .defaultCacheName("test")
-            .build();
-      // Clustered mode invalidation sync. Can also be async
-      Configuration config = new ConfigurationBuilder()
-            .clustering().cacheMode(CacheMode.INVALIDATION_SYNC)
-            .build();
+      GlobalConfiguration global = GlobalConfigurationBuilder.defaultClusteredBuilder().build();
 
       // Create the cache manager
-      DefaultCacheManager cacheManager = new DefaultCacheManager(global, config);
+      DefaultCacheManager cacheManager = new DefaultCacheManager(global);
+
+      // Clustered mode invalidation sync. Can also be async
+      Configuration config = new ConfigurationBuilder()
+              .clustering().cacheMode(CacheMode.INVALIDATION_SYNC)
+              .build();
+
+      // Define a cache configuration
+      cacheManager.defineConfiguration("test", config);
 
       // Retrieve the cache
       Cache<String, String> cache = cacheManager.getCache("test");
