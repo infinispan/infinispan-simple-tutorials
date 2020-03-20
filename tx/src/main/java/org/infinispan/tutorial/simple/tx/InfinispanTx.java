@@ -1,22 +1,27 @@
 package org.infinispan.tutorial.simple.tx;
 
-import javax.transaction.TransactionManager;
-
 import org.infinispan.Cache;
+import org.infinispan.commons.api.CacheContainerAdmin;
+import org.infinispan.configuration.cache.Configuration;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.transaction.TransactionMode;
 
+import javax.transaction.TransactionManager;
+
 public class InfinispanTx {
 
    public static void main(String[] args) throws Exception {
-      // Define the default cache to be transactional
+      // Construct a local cache manager
+      DefaultCacheManager cacheManager = new DefaultCacheManager();
+      // Create a transaction cache config
       ConfigurationBuilder builder = new ConfigurationBuilder();
       builder.transaction().transactionMode(TransactionMode.TRANSACTIONAL);
-      // Construct a local cache manager using the configuration we have defined
-      DefaultCacheManager cacheManager = new DefaultCacheManager(builder.build());
-      // Obtain the default cache
-      Cache<String, String> cache = cacheManager.getCache();
+      Configuration cacheConfig = builder.build();
+      // Create a cache with the config
+      Cache<String, String> cache = cacheManager.administration()
+              .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
+              .getOrCreateCache("cache", cacheConfig);
       // Obtain the transaction manager
       TransactionManager transactionManager = cache.getAdvancedCache().getTransactionManager();
       // Perform some operations within a transaction and commit it

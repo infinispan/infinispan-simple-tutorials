@@ -1,16 +1,14 @@
 package org.infinispan.tutorial.simple.lock;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.infinispan.configuration.cache.CacheMode;
-import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.configuration.global.GlobalConfigurationBuilder;
 import org.infinispan.lock.EmbeddedClusteredLockManagerFactory;
 import org.infinispan.lock.api.ClusteredLock;
 import org.infinispan.lock.api.ClusteredLockManager;
 import org.infinispan.manager.DefaultCacheManager;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class InfinispanClusteredLock {
 
@@ -18,12 +16,8 @@ public class InfinispanClusteredLock {
       // Setup up a clustered cache manager
       GlobalConfigurationBuilder global = GlobalConfigurationBuilder.defaultClusteredBuilder();
 
-      // Make the default cache a distributed synchronous one
-      ConfigurationBuilder builder = new ConfigurationBuilder();
-      builder.clustering().cacheMode(CacheMode.DIST_SYNC);
-
       // Initialize 1 cache managers
-      DefaultCacheManager cm = new DefaultCacheManager(global.build(), builder.build());
+      DefaultCacheManager cm = new DefaultCacheManager(global.build());
 
       // Initialize the clustered lock manager from the cache manager
       ClusteredLockManager clm1 = EmbeddedClusteredLockManagerFactory.from(cm);
