@@ -1,15 +1,11 @@
 package org.infinispan.tutorial.simple.streams;
 
-import java.io.Serializable;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.infinispan.Cache;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.manager.DefaultCacheManager;
-import org.infinispan.stream.CacheCollectors;
 
 public class InfinispanStreams {
 
@@ -25,8 +21,8 @@ public class InfinispanStreams {
       IntStream.range(0, range).boxed().forEach(i -> cache.put(i + "-key", i + "-value"));
       // Map and reduce the keys
       int result = cache.keySet().stream()
-         .map(e -> Integer.valueOf(e.substring(0, e.indexOf("-"))))
-              .collect(() -> Collectors.summingInt(i -> i.intValue()));
+            .map(e -> Integer.valueOf(e.substring(0, e.indexOf("-"))))
+            .collect(() -> Collectors.summingInt(i -> i.intValue()));
       System.out.printf("Result = %d\n", result);
       // Stop the cache manager and release all resources
       cacheManager.stop();
