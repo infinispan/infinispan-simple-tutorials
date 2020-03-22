@@ -70,6 +70,7 @@
        <module>clusterexec</module>
        <module>streams</module>
        <module>remote</module>
+       <module>remote-secured</module>
        <module>scripting</module>
        <module>query</module>
        <module>listen</module>
