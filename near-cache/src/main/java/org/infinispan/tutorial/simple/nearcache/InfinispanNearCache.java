@@ -22,8 +22,8 @@ public class InfinispanNearCache {
       RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
 
       // Create one remote cache with near caching disabled and one with near caching enabled
-      RemoteCache<Integer, String> numbers = cacheManager.administration().getOrCreateCache("numbers", "default");
-      RemoteCache<Integer, String> nearNumbers = cacheManager.administration().getOrCreateCache("near-numbers", "default");
+      RemoteCache<Integer, String> numbers = cacheManager.administration().getOrCreateCache("numbers", "org.infinispan.DIST_SYNC");
+      RemoteCache<Integer, String> nearNumbers = cacheManager.administration().getOrCreateCache("near-numbers", "org.infinispan.DIST_SYNC");
 
       for (int i = 1; i<= 20; i++) {
          numbers.put(i, String.valueOf(i));
