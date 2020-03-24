@@ -12,8 +12,8 @@
     <name>Infinispan Simple Tutorials: Spring-Session</name>
 
     <properties>
-        <version.spring.boot>2.1.5.RELEASE</version.spring.boot>
-        <version.spring.session>2.1.6.RELEASE</version.spring.session>
+        <version.spring.boot>2.2.5.RELEASE</version.spring.boot>
+        <version.spring.session>2.2.2.RELEASE</version.spring.session>
     </properties>
 
     <dependencyManagement>
@@ -26,24 +26,14 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-parent</artifactId>
-                <version>${version.spring.boot}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
         <dependency>
             <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-spring5-embedded</artifactId>
+            <artifactId>infinispan-spring-boot-starter-embedded</artifactId>
+            <version>2.2.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.session</groupId>
@@ -53,10 +43,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-undertow</artifactId>
+            <version>${version.spring.boot}</version>
         </dependency>
     </dependencies>
 
@@ -66,6 +53,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${version.spring.boot}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
