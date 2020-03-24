@@ -26,33 +26,21 @@ public class RemoteClientApp {
    @Autowired
    private RemoteCacheManager cacheManager;
 
-   @Autowired
-   private RemoteCache<String, String> defaultCache;
-
    public static void main(String[] args) {
       SpringApplication.run(RemoteClientApp.class, args);
    }
 
    @Bean
    @Order(1)
-   public CommandLineRunner putDataAndGetDataInTheDefaultCache(ApplicationContext ctx) {
-      return args -> {
-         defaultCache.put("key", "value");
-         logger.info("Get 'key' from injected default cache: " + defaultCache.get("key"));
-      };
-   }
-
-   @Bean
-   @Order(2)
    public CommandLineRunner createCache(ApplicationContext ctx) {
       return args -> {
-         cacheManager.administration().getOrCreateCache(NEWBORNS_CACHE_NAME, "default");
+         cacheManager.administration().getOrCreateCache(NEWBORNS_CACHE_NAME, "org.infinispan.DIST_SYNC");
          logger.info(String.format("'%s' cache has been created", NEWBORNS_CACHE_NAME));
       };
    }
 
    @Bean
-   @Order(3)
+   @Order(2)
    public CommandLineRunner putAndGetDataFromCache(ApplicationContext ctx) {
       return args -> {
          RemoteCache<String, String> cache = cacheManager.getCache(NEWBORNS_CACHE_NAME);
