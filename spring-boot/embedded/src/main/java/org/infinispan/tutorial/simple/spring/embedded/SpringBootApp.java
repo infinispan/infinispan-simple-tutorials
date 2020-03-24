@@ -36,7 +36,6 @@ public class SpringBootApp {
         logger.info("Defining Global Configuration");
         return () -> GlobalConfigurationBuilder
               .defaultClusteredBuilder()
-              .globalJmxStatistics().allowDuplicateDomains(true)
               .build();
     }
 
