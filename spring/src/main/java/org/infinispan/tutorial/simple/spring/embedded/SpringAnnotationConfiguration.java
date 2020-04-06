@@ -1,5 +1,9 @@
 package org.infinispan.tutorial.simple.spring.embedded;
 
+import org.infinispan.commons.api.CacheContainerAdmin;
+import org.infinispan.configuration.cache.ConfigurationBuilder;
+import org.infinispan.manager.EmbeddedCacheManager;
+import org.infinispan.spring.embedded.provider.SpringEmbeddedCacheManager;
 import org.infinispan.spring.embedded.provider.SpringEmbeddedCacheManagerFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
@@ -43,6 +47,11 @@ public class SpringAnnotationConfiguration {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
+        // Create a cache programmatically for the example. There is no default cache
+        EmbeddedCacheManager cacheManager = applicationContext.getBean(SpringEmbeddedCacheManager.class).getNativeCacheManager();
+        cacheManager.administration()
+              .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
+              .getOrCreateCache("default", new ConfigurationBuilder().build());
 
         CachePlayground cachePlayground = applicationContext.getBean(CachePlayground.class);
 
