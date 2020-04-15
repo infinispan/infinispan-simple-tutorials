@@ -3,6 +3,7 @@ package org.infinispan.tutorial.simple.server.tasks;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.infinispan.client.hotrod.DefaultTemplate;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
@@ -54,6 +55,6 @@ public class InfinispanServerTasks {
       RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
       return cacheManager.administration()
               .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
-              .getOrCreateCache("data", "org.infinispan.DIST_SYNC");
+              .getOrCreateCache("data", DefaultTemplate.DIST_SYNC.getTemplateName());
    }
 }

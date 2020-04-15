@@ -3,6 +3,7 @@ package org.infinispan.tutorial.simple.scripting;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.infinispan.client.hotrod.DefaultTemplate;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
@@ -21,7 +22,7 @@ public class InfinispanScripting {
       // Create a simple script which multiplies to numbers
       scriptCache.put("simple.js", "multiplicand * multiplier");
       // Obtain the remote cache
-      RemoteCache<String, Integer> cache = cacheManager.administration().getOrCreateCache("test", "org.infinispan.DIST_SYNC");
+      RemoteCache<String, Integer> cache = cacheManager.administration().getOrCreateCache("test", DefaultTemplate.DIST_SYNC.getTemplateName());
       // Create the parameters for script execution
       Map<String, Object> params = new HashMap<>();
       params.put("multiplicand", 10);
