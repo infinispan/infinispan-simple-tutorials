@@ -1,5 +1,6 @@
 package org.infinispan.tutorial.simple.remote.listen;
 
+import org.infinispan.client.hotrod.DefaultTemplate;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.annotation.ClientCacheEntryCreated;
@@ -22,7 +23,7 @@ public class InfinispanRemoteListen {
       // Get the cache, create it if needed with an existing template name
       RemoteCache<String, String> cache = cacheManager.administration()
               .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
-              .getOrCreateCache("listen", "org.infinispan.DIST_SYNC");
+              .getOrCreateCache("listen", DefaultTemplate.DIST_SYNC.getTemplateName());
       // Register a listener
       MyListener listener = new MyListener();
       cache.addClientListener(listener);

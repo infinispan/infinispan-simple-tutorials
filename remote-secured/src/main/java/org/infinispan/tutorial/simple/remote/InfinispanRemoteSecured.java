@@ -1,5 +1,6 @@
 package org.infinispan.tutorial.simple.remote;
 
+import org.infinispan.client.hotrod.DefaultTemplate;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ClientIntelligence;
@@ -10,7 +11,7 @@ import org.infinispan.commons.api.CacheContainerAdmin;
 /**
  * Run the Infinispan Server using the Docker Image
  *
- * docker run -it -p 11222:11222 -e USER="Titus Bramble" -e PASS="Shambles" infinispan/server:latest
+ * docker run -it -p 11222:11222 -e USER="Titus Bramble" -e PASS="Shambles" infinispan/server:10.1.6.Final
  */
 public class InfinispanRemoteSecured {
 
@@ -32,7 +33,8 @@ public class InfinispanRemoteSecured {
       // Connect to the server
       RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
       // Create test cache, if such does not exist
-      cacheManager.administration().withFlags(CacheContainerAdmin.AdminFlag.VOLATILE).getOrCreateCache("test", "org.infinispan.DIST_SYNC");
+      cacheManager.administration().withFlags(CacheContainerAdmin.AdminFlag.VOLATILE).getOrCreateCache("test",
+            DefaultTemplate.DIST_SYNC.getTemplateName());
       // Obtain the remote cache
       RemoteCache<String, String> cache = cacheManager.getCache("test");
       /// Store a value

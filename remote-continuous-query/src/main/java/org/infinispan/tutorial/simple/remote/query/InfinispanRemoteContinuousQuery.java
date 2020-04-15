@@ -1,5 +1,6 @@
 package org.infinispan.tutorial.simple.remote.query;
 
+import org.infinispan.client.hotrod.DefaultTemplate;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.Search;
@@ -72,7 +73,7 @@ public class InfinispanRemoteContinuousQuery {
       RemoteCacheManager client = new RemoteCacheManager(builder.build());
 
       // Get the cache, create it if needed with an existing template name
-      RemoteCache<String, InstaPost> instaPostsCache = client.administration().withFlags(CacheContainerAdmin.AdminFlag.VOLATILE).getOrCreateCache(CACHE_NAME, "org.infinispan.DIST_SYNC");
+      RemoteCache<String, InstaPost> instaPostsCache = client.administration().withFlags(CacheContainerAdmin.AdminFlag.VOLATILE).getOrCreateCache(CACHE_NAME, DefaultTemplate.DIST_SYNC.getTemplateName());
 
       // Create and add the Protobuf schema for InstaPost class. Note InstaPost is an annotated POJO
       addInstapostsSchema(client);
