@@ -1,5 +1,6 @@
 package org.infinispan.tutorial.simple.remote.query;
 
+import org.infinispan.client.hotrod.DefaultTemplate;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.Search;
@@ -39,7 +40,7 @@ public class InfinispanRemoteQuery {
       // Get the people cache, create it if needed with the default configuration
       RemoteCache<String, Person> peopleCache = client.administration()
               .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
-              .getOrCreateCache("people-remote-query", "org.infinispan.DIST_SYNC");
+              .getOrCreateCache("people-remote-query", DefaultTemplate.DIST_SYNC.getTemplateName());
 
       // Create the persons dataset to be stored in the cache
       Map<String, Person> people = new HashMap<>();

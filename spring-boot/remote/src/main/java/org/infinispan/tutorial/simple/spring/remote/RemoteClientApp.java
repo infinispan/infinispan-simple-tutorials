@@ -2,6 +2,7 @@ package org.infinispan.tutorial.simple.spring.remote;
 
 import java.lang.invoke.MethodHandles;
 
+import org.infinispan.client.hotrod.DefaultTemplate;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.slf4j.Logger;
@@ -34,7 +35,7 @@ public class RemoteClientApp {
    @Order(1)
    public CommandLineRunner createCache(ApplicationContext ctx) {
       return args -> {
-         cacheManager.administration().getOrCreateCache(NEWBORNS_CACHE_NAME, "org.infinispan.DIST_SYNC");
+         cacheManager.administration().getOrCreateCache(NEWBORNS_CACHE_NAME, DefaultTemplate.DIST_SYNC.getTemplateName());
          logger.info(String.format("'%s' cache has been created", NEWBORNS_CACHE_NAME));
       };
    }
