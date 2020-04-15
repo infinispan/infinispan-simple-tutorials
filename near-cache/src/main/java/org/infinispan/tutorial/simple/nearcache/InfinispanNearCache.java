@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Random;
 
+import org.infinispan.client.hotrod.DefaultTemplate;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
@@ -22,8 +23,8 @@ public class InfinispanNearCache {
       RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
 
       // Create one remote cache with near caching disabled and one with near caching enabled
-      RemoteCache<Integer, String> numbers = cacheManager.administration().getOrCreateCache("numbers", "org.infinispan.DIST_SYNC");
-      RemoteCache<Integer, String> nearNumbers = cacheManager.administration().getOrCreateCache("near-numbers", "org.infinispan.DIST_SYNC");
+      RemoteCache<Integer, String> numbers = cacheManager.administration().getOrCreateCache("numbers", DefaultTemplate.DIST_SYNC.getTemplateName());
+      RemoteCache<Integer, String> nearNumbers = cacheManager.administration().getOrCreateCache("near-numbers", DefaultTemplate.DIST_SYNC.getTemplateName());
 
       for (int i = 1; i<= 20; i++) {
          numbers.put(i, String.valueOf(i));

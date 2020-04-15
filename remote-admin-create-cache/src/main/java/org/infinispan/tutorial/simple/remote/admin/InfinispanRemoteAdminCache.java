@@ -1,5 +1,6 @@
 package org.infinispan.tutorial.simple.remote.admin;
 
+import org.infinispan.client.hotrod.DefaultTemplate;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.impl.ConfigurationProperties;
@@ -61,7 +62,7 @@ public class InfinispanRemoteAdminCache {
          *   [Context=TemporaryCacheWithConfigurationTemplate]ISPN100002:
          * </code>
          */
-        manager.administration().withFlags(AdminFlag.VOLATILE).getOrCreateCache("TemporaryCacheWithConfigurationTemplate", "org.infinispan.DIST_SYNC");
+        manager.administration().withFlags(AdminFlag.VOLATILE).getOrCreateCache("TemporaryCacheWithConfigurationTemplate", DefaultTemplate.DIST_SYNC.getTemplateName());
         System.out.println("Temporary cache with template exists or is created.");
     }
 

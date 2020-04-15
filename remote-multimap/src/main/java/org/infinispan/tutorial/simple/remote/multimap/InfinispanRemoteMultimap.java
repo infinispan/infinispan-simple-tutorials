@@ -1,5 +1,6 @@
 package org.infinispan.tutorial.simple.remote.multimap;
 
+import org.infinispan.client.hotrod.DefaultTemplate;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.impl.ConfigurationProperties;
@@ -29,7 +30,7 @@ public class InfinispanRemoteMultimap {
       // Create people cache if needed with an existing template name
       cacheManager.administration()
               .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
-              .getOrCreateCache(PEOPLE_MULTIMAP, "org.infinispan.DIST_SYNC");
+              .getOrCreateCache(PEOPLE_MULTIMAP, DefaultTemplate.DIST_SYNC.getTemplateName());
 
       // Retrieve the MultimapCacheManager from the CacheManager.
       MultimapCacheManager multimapCacheManager = RemoteMultimapCacheManagerFactory.from(cacheManager);
