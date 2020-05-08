@@ -10,7 +10,7 @@ For more information about Spring Boot please refer to:
 
 As indicated in the project README, this tutorial uses the client/server mode.
 
-With Docker : ```docker run -it -p 11222:11222 infispan/server:10.1.6.Final```
+With Docker : ```docker run -it -p 11222:11222 infispan/server:11.0.0.Dev05```
 
 Or
 
