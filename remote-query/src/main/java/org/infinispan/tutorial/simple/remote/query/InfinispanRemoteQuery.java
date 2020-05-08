@@ -40,7 +40,7 @@ public class InfinispanRemoteQuery {
       // Get the people cache, create it if needed with the default configuration
       RemoteCache<String, Person> peopleCache = client.administration()
               .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
-              .getOrCreateCache("people-remote-query", DefaultTemplate.DIST_SYNC.getTemplateName());
+              .getOrCreateCache("people-remote-query", DefaultTemplate.DIST_SYNC);
 
       // Create the persons dataset to be stored in the cache
       Map<String, Person> people = new HashMap<>();

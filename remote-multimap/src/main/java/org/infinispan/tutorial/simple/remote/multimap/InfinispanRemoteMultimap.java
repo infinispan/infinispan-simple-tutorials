@@ -30,7 +30,7 @@ public class InfinispanRemoteMultimap {
       // Create people cache if needed with an existing template name
       cacheManager.administration()
               .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
-              .getOrCreateCache(PEOPLE_MULTIMAP, DefaultTemplate.DIST_SYNC.getTemplateName());
+              .getOrCreateCache(PEOPLE_MULTIMAP, DefaultTemplate.DIST_SYNC);
 
       // Retrieve the MultimapCacheManager from the CacheManager.
       MultimapCacheManager multimapCacheManager = RemoteMultimapCacheManagerFactory.from(cacheManager);

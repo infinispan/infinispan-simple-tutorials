@@ -23,7 +23,7 @@ public class InfinispanRemoteListen {
       // Get the cache, create it if needed with an existing template name
       RemoteCache<String, String> cache = cacheManager.administration()
               .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
-              .getOrCreateCache("listen", DefaultTemplate.DIST_SYNC.getTemplateName());
+              .getOrCreateCache("listen", DefaultTemplate.DIST_SYNC);
       // Register a listener
       MyListener listener = new MyListener();
       cache.addClientListener(listener);

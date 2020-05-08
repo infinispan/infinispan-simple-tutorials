@@ -35,7 +35,7 @@ public class RemoteClientApp {
    @Order(1)
    public CommandLineRunner createCache(ApplicationContext ctx) {
       return args -> {
-         cacheManager.administration().getOrCreateCache(NEWBORNS_CACHE_NAME, DefaultTemplate.DIST_SYNC.getTemplateName());
+         cacheManager.administration().getOrCreateCache(NEWBORNS_CACHE_NAME, DefaultTemplate.DIST_SYNC);
          logger.info(String.format("'%s' cache has been created", NEWBORNS_CACHE_NAME));
       };
    }
