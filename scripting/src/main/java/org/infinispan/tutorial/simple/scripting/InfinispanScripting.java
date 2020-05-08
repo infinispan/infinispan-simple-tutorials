@@ -22,7 +22,7 @@ public class InfinispanScripting {
       // Create a simple script which multiplies to numbers
       scriptCache.put("simple.js", "multiplicand * multiplier");
       // Obtain the remote cache
-      RemoteCache<String, Integer> cache = cacheManager.administration().getOrCreateCache("test", DefaultTemplate.DIST_SYNC.getTemplateName());
+      RemoteCache<String, Integer> cache = cacheManager.administration().getOrCreateCache("test", DefaultTemplate.DIST_SYNC);
       // Create the parameters for script execution
       Map<String, Object> params = new HashMap<>();
       params.put("multiplicand", 10);

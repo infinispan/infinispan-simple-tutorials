@@ -62,7 +62,7 @@ public class InfinispanRemoteAdminCache {
          *   [Context=TemporaryCacheWithConfigurationTemplate]ISPN100002:
          * </code>
          */
-        manager.administration().withFlags(AdminFlag.VOLATILE).getOrCreateCache("TemporaryCacheWithConfigurationTemplate", DefaultTemplate.DIST_SYNC.getTemplateName());
+        manager.administration().withFlags(AdminFlag.VOLATILE).getOrCreateCache("TemporaryCacheWithConfigurationTemplate", DefaultTemplate.DIST_SYNC);
         System.out.println("Temporary cache with template exists or is created.");
     }
 

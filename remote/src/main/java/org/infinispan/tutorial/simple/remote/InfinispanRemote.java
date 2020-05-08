@@ -16,7 +16,7 @@ public class InfinispanRemote {
       // Connect to the server
       RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
       // Create test cache, if such does not exist
-      cacheManager.administration().withFlags(CacheContainerAdmin.AdminFlag.VOLATILE).getOrCreateCache("test", DefaultTemplate.DIST_SYNC.getTemplateName());
+      cacheManager.administration().withFlags(CacheContainerAdmin.AdminFlag.VOLATILE).getOrCreateCache("test", DefaultTemplate.DIST_SYNC);
       // Obtain the remote cache
       RemoteCache<String, String> cache = cacheManager.getCache("test");
       /// Store a value

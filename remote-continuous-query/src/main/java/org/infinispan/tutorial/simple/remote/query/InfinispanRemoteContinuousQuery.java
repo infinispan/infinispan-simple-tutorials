@@ -73,7 +73,7 @@ public class InfinispanRemoteContinuousQuery {
       RemoteCacheManager client = new RemoteCacheManager(builder.build());
 
       // Get the cache, create it if needed with an existing template name
-      RemoteCache<String, InstaPost> instaPostsCache = client.administration().withFlags(CacheContainerAdmin.AdminFlag.VOLATILE).getOrCreateCache(CACHE_NAME, DefaultTemplate.DIST_SYNC.getTemplateName());
+      RemoteCache<String, InstaPost> instaPostsCache = client.administration().withFlags(CacheContainerAdmin.AdminFlag.VOLATILE).getOrCreateCache(CACHE_NAME, DefaultTemplate.DIST_SYNC);
 
       // Create and add the Protobuf schema for InstaPost class. Note InstaPost is an annotated POJO
       addInstapostsSchema(client);

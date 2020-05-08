@@ -55,6 +55,6 @@ public class InfinispanServerTasks {
       RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
       return cacheManager.administration()
               .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
-              .getOrCreateCache("data", DefaultTemplate.DIST_SYNC.getTemplateName());
+              .getOrCreateCache("data", DefaultTemplate.DIST_SYNC);
    }
 }
