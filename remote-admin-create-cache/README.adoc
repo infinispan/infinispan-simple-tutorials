@@ -5,17 +5,8 @@
 **Summary:** Use Hot Rod Java clients to remotely create and administer caches
 on Infinispan servers.
 
-. Open `infinispan.xml` for editing under `server/conf` in the server installation directory.
-. Add the following cache configuration to create a template:
-+
-----
-<distributed-cache-configuration name="MyDistCachecConfig" mode="ASYNC">
-  <state-transfer await-initial-transfer="false"/>
-</distributed-cache-configuration>
-----
-+
-. Build and run the Hot Rod Java client:
-+
+Build and run the Hot Rod Java client as follows:
+
 ----
 $ mvn clean package
 
