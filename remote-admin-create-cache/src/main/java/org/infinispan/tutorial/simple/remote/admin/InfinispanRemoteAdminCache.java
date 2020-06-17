@@ -31,7 +31,6 @@ public class InfinispanRemoteAdminCache {
         InfinispanRemoteAdminCache client = new InfinispanRemoteAdminCache();
 
         client.createSimpleCache();
-        client.createCacheWithCacheConfiguration();
         client.createCacheWithXMLConfiguration();
 
         // Stop the Hot Rod client and release all resources.
@@ -40,30 +39,6 @@ public class InfinispanRemoteAdminCache {
 
     private void stop() {
         manager.stop();
-    }
-
-    /**
-     * Define a cache that you can use as a template in infinispan.xml.
-     * Add the distributed cache configuration to the <cache-container>.
-     * <code>
-     *    <distributed-cache-configuration name="MyDistCachecConfig" mode="ASYNC">
-     *      <state-transfer await-initial-transfer="false"/>
-     *     </distributed-cache-configuration>
-     * </code>
-     */
-    private void createCacheWithCacheConfiguration() {
-        manager.administration().getOrCreateCache("CacheWithConfigurationTemplate", "MyDistCachecConfig");
-        System.out.println("Cache with template exists or is created.");
-
-        /* Uses the distributed cache configuration to create a cache
-         * instance named MyDistCachecConfig. If the cache already exists,
-         * the server returns the following log message:
-         * <code>
-         *   [Context=TemporaryCacheWithConfigurationTemplate]ISPN100002:
-         * </code>
-         */
-        manager.administration().withFlags(AdminFlag.VOLATILE).getOrCreateCache("TemporaryCacheWithConfigurationTemplate", DefaultTemplate.DIST_SYNC);
-        System.out.println("Temporary cache with template exists or is created.");
     }
 
     /**
@@ -76,6 +51,7 @@ public class InfinispanRemoteAdminCache {
         String xml = String.format("<infinispan>" +
                                       "<cache-container>" +
                                       "<distributed-cache name=\"%s\" mode=\"SYNC\">" +
+                                        "<encoding media-type=\"application/x-protostream\"/>" +
                                         "<locking isolation=\"READ_COMMITTED\"/>" +
                                         "<transaction mode=\"NON_XA\"/>" +
                                         "<expiration lifespan=\"60000\" interval=\"20000\"/>" +
