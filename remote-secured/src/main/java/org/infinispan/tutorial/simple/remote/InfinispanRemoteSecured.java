@@ -26,7 +26,7 @@ public class InfinispanRemoteSecured {
       builder.security().authentication()
               .username("Titus Bramble")
               .password("Shambles")
-              .saslMechanism("PLAIN")
+              .saslMechanism("DIGEST-MD5")
               .realm("default")
               .serverName("infinispan");
 

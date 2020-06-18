@@ -5,7 +5,8 @@
 **Summary:** Use Hot Rod Java clients to remotely create and administer caches
 on Infinispan servers.
 
-Build and run the Hot Rod Java client as follows:
+. Add credentials to `InfinispanRemoteAdminCache.java`.
+. Build and run the Hot Rod Java client as follows:
 
 ----
 $ mvn clean package

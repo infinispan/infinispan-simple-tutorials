@@ -11,9 +11,12 @@ import org.infinispan.counter.api.StrongCounter;
 import org.infinispan.counter.api.WeakCounter;
 
 /**
- * The Remote Counter simple tutorial.
+ * Remote Counter simple tutorial.
  * <p>
- * The remote counters are available in Infinispan since version 9.2
+ * Remote counters are available as of Infinispan version 9.2.
+ *
+ * Infinispan Server includes a default property realm that requires
+ * authentication. Create some credentials before you run this tutorial.
  *
  * @author Pedro Ruivo
  */
@@ -22,7 +25,15 @@ public class InfinispanRemoteCounter {
    public static void main(String[] args) throws Exception {
       // Create a configuration for a locally-running server
       ConfigurationBuilder builder = new ConfigurationBuilder();
-      builder.addServer().host("127.0.0.1").port(ConfigurationProperties.DEFAULT_HOTROD_PORT);
+      builder.addServer()
+               .host("127.0.0.1")
+               .port(ConfigurationProperties.DEFAULT_HOTROD_PORT)
+             .security().authentication()
+               //Add user credentials.
+               .username("username")
+               .password("password")
+               .realm("default")
+               .saslMechanism("DIGEST-MD5");
 
       // Connect to the server
       RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
