@@ -7,12 +7,26 @@ import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.impl.ConfigurationProperties;
 import org.infinispan.commons.api.CacheContainerAdmin;
 
+/**
+ *
+ * Infinispan Server includes a default property realm that requires
+ * authentication. Create some credentials before you run this tutorial.
+ *
+ */
 public class InfinispanRemote {
 
    public static void main(String[] args) {
       // Create a configuration for a locally-running server
       ConfigurationBuilder builder = new ConfigurationBuilder();
-      builder.addServer().host("127.0.0.1").port(ConfigurationProperties.DEFAULT_HOTROD_PORT);
+      builder.addServer()
+               .host("127.0.0.1")
+               .port(ConfigurationProperties.DEFAULT_HOTROD_PORT)
+             .security().authentication()
+               //Add user credentials.
+               .username("username")
+               .password("password")
+               .realm("default")
+               .saslMechanism("DIGEST-MD5");
       // Connect to the server
       RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
       // Create test cache, if such does not exist

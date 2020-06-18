@@ -14,6 +14,9 @@ import org.infinispan.commons.configuration.XMLStringConfiguration;
  * To create volatile, temporary caches use "withFlags(AdminFlag.VOLATILE)".
  * Data in temporary caches is lost on full cluster restart.
  *
+ * Infinispan Server includes a default property realm that requires
+ * authentication. Create some credentials before you run this tutorial.
+ *
  * @author <a href="mailto:wfink@redhat.com">Wolf Dieter Fink</a>
  */
 public class InfinispanRemoteAdminCache {
@@ -22,7 +25,15 @@ public class InfinispanRemoteAdminCache {
     private InfinispanRemoteAdminCache() {
         // Create a configuration for a locally running server.
         ConfigurationBuilder builder = new ConfigurationBuilder();
-        builder.addServer().host("127.0.0.1").port(ConfigurationProperties.DEFAULT_HOTROD_PORT);
+        builder.addServer()
+                 .host("127.0.0.1")
+                 .port(ConfigurationProperties.DEFAULT_HOTROD_PORT)
+               .security().authentication()
+                 //Add user credentials.
+                 .username("username")
+                 .password("password")
+                 .realm("default")
+                 .saslMechanism("DIGEST-MD5");
 
         manager = new RemoteCacheManager(builder.build());
     }
