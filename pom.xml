@@ -86,10 +86,11 @@
        <module>remote-admin-create-cache</module>
        <module>remote-tx</module>
        <module>remote-counter</module>
-        <module>remote-multimap</module>
-        <module>remote-query</module>
-        <module>near-cache</module>
-        <module>remote-continuous-query</module>
-        <module>invalidation-mode</module>
+       <module>remote-multimap</module>
+       <module>remote-query</module>
+       <module>remote-per-cache</module>
+       <module>near-cache</module>
+       <module>remote-continuous-query</module>
+       <module>invalidation-mode</module>
     </modules>
 </project>
