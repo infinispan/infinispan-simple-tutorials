@@ -1,0 +1,70 @@
+= Infinispan Spring-Boot samples
+
+.Covers
+* [x] Embedded cache
+* [x] Remote cache
+* [x] Session externalisation (embedded and remote)
+* [x] https://docs.spring.io/spring-boot/docs/current/actuator-api/html/[Actuator] cache metrics
+* [x] Integration with https://prometheus.io/[Prometheus]
+
+== Building instructions
+
+Invoke `mvn clean install` for the embedded or the remote example
+
+== Running instructions
+
+=== Embedded
+
+`mvn spring-boot:run`
+
+=== Remote and Session
+
+Use docker or download and run the http://infinispan.org/download/[Infinispan Server]
+
+[source,bash]
+.Docker
+----
+docker run -it -p 11222:11222 -e USER="Titus Bramble" -e PASS="Shambles" infinispan/server
+----
+
+[source,bash]
+.Server
+----
+cd UNZIP_SERVER_PATH/bin/
+./server.sh
+----
+`mvn spring-boot:run`
+
+=== Create a cache called 'Sessions' for Remote session example
+
+When the server is running, if cache called 'sessions' does not exist, then the application
+won't start.
+To create this cache, you can log into the http://localhost:11222[web console] and use the
+interface.
+You can also use the https://infinispan.org/docs/stable/titles/cli/cli.html[CLI].
+
+== Display actuator stats
+
+You will see in ```http://localhost:8080/actuator/metrics``` a list of metrics available.
+Cache metrics are prefixed by *"cache."*
+
+http://localhost:8080/actuator/metrics
+
+Display each metric for each cache using tags. For example for the 'puts' stats in the basque-names cache:
+
+http://localhost:8080/actuator/metrics/cache.puts?tag=name:basque-names
+
+
+== Run Prometheus
+
+The `prometheus.yml` file contains the _host.docker.internal_ binding that will allow prometheus scrap the metrics
+exposed by spring actuator.
+
+Change the `YOUR_PATH` value to the folder you are running prometheus from.
+
+[source,bash]
+.Docker
+----
+docker run -d --name=prometheus -p 9090:9090 -v YOUR_PATH/infinispan-spring-boot/infinispan-spring-boot-samples/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus --config.file=/etc/prometheus/prometheus.yml
+----
+

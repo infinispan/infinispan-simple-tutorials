@@ -8,7 +8,11 @@
     <name>Infinispan Tutorial: Simple tutorials</name>
 
     <properties>
-       <version.infinispan>11.0.0.Dev05</version.infinispan>
+       <version.infinispan>11.0.0.Final</version.infinispan>
+       <version.spring.boot>2.3.0.RELEASE</version.spring.boot>
+       <version.spring.session>2.2.2.RELEASE</version.spring.session>
+       <version.infinispan.spring.boot>2.3.0.Final</version.infinispan.spring.boot>
+       <version.micrometer.registry.prometheus>1.5.2</version.micrometer.registry.prometheus>
     </properties>
 
     <dependencyManagement>
@@ -61,11 +65,12 @@
        <module>jcache</module>
        <module>functional</module>
        <module>spark</module>
-       <module>spring</module>
-       <module>spring-boot</module>
-       <module>spring-boot/embedded</module>
-       <module>spring-boot/remote</module>
-       <module>spring-session</module>
+       <module>spring-integration/spring/simple-spring</module>
+       <module>spring-integration/spring/spring-session</module>
+       <module>spring-integration/spring-boot/embedded</module>
+       <module>spring-integration/spring-boot/remote</module>
+       <module>spring-integration/spring-boot/session-embedded</module>
+       <module>spring-integration/spring-boot/session-remote</module>
        <module>tx</module>
        <module>clusterexec</module>
        <module>streams</module>
