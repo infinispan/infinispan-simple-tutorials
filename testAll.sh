@@ -63,9 +63,6 @@ runTestAndExitOnError remote-query
 runTestAndExitOnError remote-continuous-query
 runTestAndExitOnError remote-multimap
 runTestAndExitOnError scripting
-cd server-tasks
-mvn clean package wildfly:deploy
-cd ..
 runTestAndExitOnError server-tasks
 
 # npm should be installed

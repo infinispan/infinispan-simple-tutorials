@@ -14,7 +14,15 @@ public class InfinispanScripting {
    public static void main(String[] args) {
       // Create a configuration for a locally-running server
       ConfigurationBuilder builder = new ConfigurationBuilder();
-      builder.addServer().host("127.0.0.1").port(ConfigurationProperties.DEFAULT_HOTROD_PORT);
+      builder.addServer()
+            .host("127.0.0.1")
+            .port(ConfigurationProperties.DEFAULT_HOTROD_PORT)
+            .security().authentication()
+            //Add user credentials.
+            .username("username")
+            .password("password")
+            .realm("default")
+            .saslMechanism("DIGEST-MD5");
       // Connect to the server
       RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
       // Retrieve the cache containing the scripts

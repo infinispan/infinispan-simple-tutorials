@@ -11,7 +11,7 @@ import org.infinispan.commons.api.CacheContainerAdmin;
 /**
  * Run the Infinispan Server using the Docker Image
  *
- * docker run -it -p 11222:11222 -e USER="Titus Bramble" -e PASS="Shambles" infinispan/server:11.0.0.Dev05
+ * docker run -it -p 11222:11222 -e USER="Titus Bramble" -e PASS="Shambles" infinispan/server:11.0
  */
 public class InfinispanRemoteSecured {
 
