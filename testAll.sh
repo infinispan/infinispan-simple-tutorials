@@ -31,7 +31,6 @@ else
 fi
 
 runTestAndExitOnError clusterexec
-runTestAndExitOnError distexec
 runTestAndExitOnError distributed
 runTestAndExitOnError functional
 runTestAndExitOnError jcache
@@ -40,8 +39,6 @@ runTestAndExitOnError map
 runTestAndExitOnError query
 runTestAndExitOnError replicated
 runTestAndExitOnError streams
-runTestAndExitOnError spring spring-caching
-runTestAndExitOnError spring spring-annotations
 runTestAndExitOnError tx
 runTestAndExitOnError counter
 runTestAndExitOnError multimap

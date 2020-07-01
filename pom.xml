@@ -9,9 +9,9 @@
 
     <properties>
        <version.infinispan>11.0.1.Final</version.infinispan>
-       <version.spring.boot>2.3.0.RELEASE</version.spring.boot>
-       <version.spring.session>2.2.2.RELEASE</version.spring.session>
-       <version.infinispan.spring.boot>2.3.0.Final</version.infinispan.spring.boot>
+       <version.spring.boot>2.3.1.RELEASE</version.spring.boot>
+       <version.spring.session>2.3.0.RELEASE</version.spring.session>
+       <version.infinispan.spring.boot>2.3.1.Final</version.infinispan.spring.boot>
        <version.micrometer.registry.prometheus>1.5.2</version.micrometer.registry.prometheus>
     </properties>
 

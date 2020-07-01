@@ -28,7 +28,7 @@
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-core</artifactId>
-            <version>${version.spring.boot}</version>
+            <version>${version.spring.session}</version>
         </dependency>
     </dependencies>
 
