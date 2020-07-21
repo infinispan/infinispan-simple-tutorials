@@ -35,7 +35,7 @@ public class InfinispanRemotePerCache {
                .saslMechanism("DIGEST-MD5");
       //Add per-cache configuration that uses an org.infinispan cache template.
       builder.remoteCache("my-cache")
-               .templateName("org.infinispan.DIST_SYNC");
+               .templateName(DefaultTemplate.DIST_SYNC);
       //Add per-cache configuration with a cache definition in XML format.
       builder.remoteCache("another-cache")
                .configuration("<infinispan><cache-container><distributed-cache name=\"another-cache\"><encoding media-type=\"application/x-protostream\"/></distributed-cache></cache-container></infinispan>");
