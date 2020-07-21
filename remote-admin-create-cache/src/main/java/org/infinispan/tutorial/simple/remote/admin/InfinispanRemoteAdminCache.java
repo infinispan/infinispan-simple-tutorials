@@ -42,6 +42,7 @@ public class InfinispanRemoteAdminCache {
         InfinispanRemoteAdminCache client = new InfinispanRemoteAdminCache();
 
         client.createSimpleCache();
+        client.CacheWithTemplate();
         client.createCacheWithXMLConfiguration();
 
         // Stop the Hot Rod client and release all resources.
@@ -72,6 +73,15 @@ public class InfinispanRemoteAdminCache {
                                     , cacheName);
         manager.administration().getOrCreateCache(cacheName, new XMLStringConfiguration(xml));
         System.out.println("Cache with configuration exists or is created.");
+    }
+
+    /**
+     * Creates a cache named CacheWithTemplate from the org.infinispan.DIST_SYNC
+     * template.
+     */
+    private void CacheWithTemplate() {
+        manager.administration().getOrCreateCache("CacheWithTemplate", DefaultTemplate.DIST_SYNC);
+        System.out.println("Cache created from default template.");
     }
 
     /**
