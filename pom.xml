@@ -94,6 +94,7 @@
        <module>remote-multimap</module>
        <module>remote-query</module>
        <module>remote-per-cache</module>
+       <module>remote-junit5</module>
        <module>near-cache</module>
        <module>remote-continuous-query</module>
        <module>invalidation-mode</module>
