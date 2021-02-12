@@ -10,7 +10,7 @@ public class Person {
    @Field(store = Store.YES, analyze = Analyze.NO)
    String name;
 
-   @Field(store = Store.YES, analyze = Analyze.NO, indexNullAs = Field.DEFAULT_NULL_TOKEN)
+   @Field(store = Store.YES, analyze = Analyze.NO, indexNullAs = "_null_")
    String surname;
 
    public Person(String name, String surname) {
