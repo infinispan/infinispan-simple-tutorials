@@ -16,7 +16,7 @@
         <dependency>
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-spring-boot-starter-embedded</artifactId>
-            <version>${version.infinispan.spring.boot}</version>
+            <version>${version.infinispan}</version>
         </dependency>
 
         <dependency>
