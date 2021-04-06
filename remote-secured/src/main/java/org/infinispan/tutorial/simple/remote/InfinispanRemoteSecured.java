@@ -11,7 +11,7 @@ import org.infinispan.commons.api.CacheContainerAdmin;
 /**
  * Run the Infinispan Server using the Docker Image
  *
- * docker run -it -p 11222:11222 -e USER="Titus Bramble" -e PASS="Shambles" quay.io/infinispan/server:12.0
+ * docker run -it -p 11222:11222 -e USER="admin" -e PASS="pass" infinispan/server:12.0
  */
 public class InfinispanRemoteSecured {
 
@@ -24,8 +24,8 @@ public class InfinispanRemoteSecured {
 
       //Configure the security properties
       builder.security().authentication()
-              .username("Titus Bramble")
-              .password("Shambles")
+              .username("admin")
+              .password("pass")
               .saslMechanism("DIGEST-MD5")
               .realm("default")
               .serverName("infinispan");
