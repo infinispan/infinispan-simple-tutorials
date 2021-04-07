@@ -46,7 +46,7 @@ public class InfinispanServerTasks {
       String script = getResourceAsString("hello.js", InfinispanServerTasks.class.getClassLoader());
       HttpClient client = new HttpClient();
       client.getParams().setAuthenticationPreemptive(true);
-      Credentials credentials = new UsernamePasswordCredentials("username", "password");
+      Credentials credentials = new UsernamePasswordCredentials("admin", "password");
       client.getState().setCredentials(AuthScope.ANY, credentials);
 
       PostMethod postMethod = new PostMethod(taskPostUrl);
@@ -63,7 +63,7 @@ public class InfinispanServerTasks {
             .port(ConfigurationProperties.DEFAULT_HOTROD_PORT)
             .security().authentication()
             //Add user credentials.
-            .username("username")
+            .username("admin")
             .password("password")
             .realm("default")
             .saslMechanism("DIGEST-MD5");
