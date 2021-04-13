@@ -39,7 +39,7 @@ public class InfinispanRemoteQuery {
                .port(ConfigurationProperties.DEFAULT_HOTROD_PORT)
              .security().authentication()
                //Add user credentials.
-               .username("username")
+               .username("admin")
                .password("password")
                .realm("default")
                .saslMechanism("DIGEST-MD5");

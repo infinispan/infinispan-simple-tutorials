@@ -81,7 +81,7 @@ $ export INFINISPAN_HOST='https://'$(oc get service example-infinispan -o jsonpa
 $ export PASS=$(oc get secret example-infinispan-generated-secret -o jsonpath="{.data.identities\.yaml}" | base64 --decode | yq -r .credentials[0].password)
 ```
 
-3. Create a cache (Infinispan 10.x has no default cache).
+3. Create a cache (Infinispan 12.x has no default cache).
 ```bash
 $ oc exec -it example-infinispan-0 -- \
 curl -v \

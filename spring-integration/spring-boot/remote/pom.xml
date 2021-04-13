@@ -36,6 +36,16 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${version.spring.boot}</version>
         </dependency>
+        <dependency>
+            <groupId>org.infinispan.protostream</groupId>
+            <artifactId>protostream-processor</artifactId>
+            <version>${version.protostream}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-remote-query-client</artifactId>
+            <version>${version.infinispan}</version>
+        </dependency>
     </dependencies>
 
     <build>
