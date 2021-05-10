@@ -8,7 +8,7 @@
     <name>Infinispan Tutorial: Simple tutorials</name>
 
     <properties>
-       <version.infinispan>12.1.1.Final</version.infinispan>
+       <version.infinispan>12.1.2.Final</version.infinispan>
        <version.protostream>4.4.0.Final</version.protostream>
        <version.spring.boot>2.4.3</version.spring.boot>
        <version.spring.session>2.4.2</version.spring.session>
