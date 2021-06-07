@@ -1,5 +1,7 @@
 package org.infinispan.tutorial.simple.spring.session;
 
+import org.infinispan.client.hotrod.RemoteCacheManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 @SessionAttributes("greetings")
 public class WebController {
+
     @GetMapping("/greeting")
     public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
                            Model model, HttpSession session) {

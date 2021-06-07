@@ -1,22 +1,27 @@
 package org.infinispan.tutorial.simple.spring.remote;
 
-import java.io.Serializable;
+import org.infinispan.protostream.annotations.ProtoFactory;
+import org.infinispan.protostream.annotations.ProtoField;
+
 import java.util.Objects;
 
-public class BasqueName implements Serializable {
+public class BasqueName {
 
    private final int id;
    private final String name;
 
+   @ProtoFactory
    public BasqueName(int id, String name) {
       this.id = id;
       this.name = name;
    }
 
+   @ProtoField(value = 1, required = true)
    public int getId() {
       return id;
    }
 
+   @ProtoField(value = 2, required = true)
    public String getName() {
       return this.name;
    }
