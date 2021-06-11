@@ -43,13 +43,13 @@ public class Reader {
    @Scheduled(fixedDelay = 1000)
    public void createOne() {
       int id = this.random.nextInt(Data.NAMES.size());
-      this.repository.create(id, Data.NAMES.get(id));
+      this.repository.create(Integer.toString(id), Data.NAMES.get(id));
    }
 
    @Scheduled(fixedDelay = 3000)
    public void removeOne() {
       int id = this.random.nextInt(Data.NAMES.size());
-      this.repository.removeById(id);
+      this.repository.removeById(Integer.toString(id));
    }
 
    @Scheduled(fixedDelay = 1000)

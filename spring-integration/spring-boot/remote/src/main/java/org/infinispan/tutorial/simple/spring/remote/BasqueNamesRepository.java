@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class BasqueNamesRepository {
 
    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
-   private Map<Integer, BasqueName> database = new HashMap<>();
+   private Map<String, BasqueName> database = new HashMap<>();
 
    @Cacheable
    public BasqueName findById(int id) {
@@ -23,13 +23,13 @@ public class BasqueNamesRepository {
       return database.get(id);
    }
 
-   public void create(int id, String name) {
+   public void create(String id, String name) {
       logger.info("Call database to CREATE name by id '" + id + "'");
       database.put(id, new BasqueName(id, name));
    }
 
    @CacheEvict
-   public void removeById(int id) {
+   public void removeById(String id) {
       logger.info("Call database to REMOVE name by id '" + id + "'");
       database.remove(id);
    }

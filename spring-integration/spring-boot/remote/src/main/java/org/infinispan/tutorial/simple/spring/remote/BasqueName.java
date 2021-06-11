@@ -7,17 +7,17 @@ import java.util.Objects;
 
 public class BasqueName {
 
-   private final int id;
+   private final String id;
    private final String name;
 
    @ProtoFactory
-   public BasqueName(int id, String name) {
+   public BasqueName(String id, String name) {
       this.id = id;
       this.name = name;
    }
 
    @ProtoField(value = 1, required = true)
-   public int getId() {
+   public String getId() {
       return id;
    }
 
@@ -32,7 +32,7 @@ public class BasqueName {
       if (this == o) return true;
       if (o == null || getClass() != o.getClass()) return false;
       BasqueName that = (BasqueName) o;
-      return id == that.id &&
+      return Objects.equals(id, that.id) &&
             Objects.equals(name, that.name);
    }
 
