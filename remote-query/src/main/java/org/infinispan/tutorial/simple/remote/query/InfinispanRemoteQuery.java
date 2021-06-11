@@ -1,20 +1,15 @@
 package org.infinispan.tutorial.simple.remote.query;
 
-import org.infinispan.client.hotrod.DefaultTemplate;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.Search;
+import org.infinispan.client.hotrod.configuration.ClientIntelligence;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.impl.ConfigurationProperties;
-import org.infinispan.client.hotrod.marshall.MarshallerUtil;
-import org.infinispan.client.hotrod.marshall.ProtoStreamMarshaller;
-import org.infinispan.commons.api.CacheContainerAdmin;
-import org.infinispan.protostream.SerializationContext;
-import org.infinispan.protostream.annotations.ProtoSchemaBuilder;
+import org.infinispan.protostream.GeneratedSchema;
 import org.infinispan.query.dsl.Query;
 import org.infinispan.query.dsl.QueryFactory;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,9 +26,12 @@ import static org.infinispan.query.remote.client.ProtobufMetadataManagerConstant
  */
 public class InfinispanRemoteQuery {
 
+   private static String CACHE_NAME = "people-remote-query";
+
    public static void main(String[] args) throws Exception {
       // Create a configuration for a locally-running server
       ConfigurationBuilder builder = new ConfigurationBuilder();
+      builder.clientIntelligence(ClientIntelligence.BASIC);
       builder.addServer()
                .host("127.0.0.1")
                .port(ConfigurationProperties.DEFAULT_HOTROD_PORT)
@@ -43,14 +41,22 @@ public class InfinispanRemoteQuery {
                .password("password")
                .realm("default")
                .saslMechanism("DIGEST-MD5");
+      builder.remoteCache(CACHE_NAME)
+              .configuration("<distributed-cache name=\"" + CACHE_NAME + "\">" +
+                      "<encoding media-type=\"application/x-protostream\"/>" +
+                      "</distributed-cache>");
+
+      // Add the Protobuf serialization context in the client
+      builder.addContextInitializer(new QuerySchemaBuilderImpl());
 
       // Connect to the server
       RemoteCacheManager client = new RemoteCacheManager(builder.build());
 
+      // Create and add the Protobuf schema in the server
+      addPersonSchema(client);
+
       // Get the people cache, create it if needed with the default configuration
-      RemoteCache<String, Person> peopleCache = client.administration()
-              .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
-              .getOrCreateCache("people-remote-query", DefaultTemplate.DIST_SYNC);
+      RemoteCache<String, Person> peopleCache = client.getCache(CACHE_NAME);
 
       // Create the persons dataset to be stored in the cache
       Map<String, Person> people = new HashMap<>();
@@ -58,9 +64,6 @@ public class InfinispanRemoteQuery {
       people.put("2", new Person("Elaia", "Rossignol", 2018, "Paris"));
       people.put("3", new Person("Yago", "Steiner", 2013, "Saint-Mandé"));
       people.put("4", new Person("Alberto", "Steiner", 2016, "Paris"));
-
-      // Create and add the Protobuf schema for Person class. Note Person is an annotated POJO
-      addPersonSchema(client);
 
       // Put all the values in the cache
       peopleCache.putAll(people);
@@ -75,7 +78,7 @@ public class InfinispanRemoteQuery {
       query.setParameter("lastName", "Rossignol");
 
       // Execute the query
-      List<Person> rossignols = query.list();
+      List<Person> rossignols = query.execute().list();
 
       // Print the results
       System.out.println(rossignols);
@@ -84,24 +87,13 @@ public class InfinispanRemoteQuery {
       client.stop();
    }
 
-   private static void addPersonSchema(RemoteCacheManager cacheManager) throws IOException {
-      // Get the serialization context of the client
-      SerializationContext ctx = MarshallerUtil.getSerializationContext(cacheManager);
-
-      // Use ProtoSchemaBuilder to define a Protobuf schema on the client
-      ProtoSchemaBuilder protoSchemaBuilder = new ProtoSchemaBuilder();
-      String fileName = "person.proto";
-      String protoFile = protoSchemaBuilder
-            .fileName(fileName)
-            .addClass(Person.class)
-            .packageName("tutorial")
-            .build(ctx);
-
+   private static void addPersonSchema(RemoteCacheManager cacheManager) {
       // Retrieve metadata cache
       RemoteCache<String, String> metadataCache =
             cacheManager.getCache(PROTOBUF_METADATA_CACHE_NAME);
 
       // Define the new schema on the server too
-      metadataCache.put(fileName, protoFile);
+      GeneratedSchema schema = new QuerySchemaBuilderImpl();
+      metadataCache.put(schema.getProtoFileName(), schema.getProtoFile());
    }
 }
