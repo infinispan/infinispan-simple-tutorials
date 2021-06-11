@@ -1,5 +1,6 @@
 package org.infinispan.tutorial.simple.remote.query;
 
+import org.infinispan.protostream.annotations.ProtoFactory;
 import org.infinispan.protostream.annotations.ProtoField;
 
 /**
@@ -20,10 +21,7 @@ public final class Person {
    @ProtoField(number = 4)
    String bornIn;
 
-   public Person() {
-      // An accessible no-arg constructor is required for Protostream to be able to instantiate this
-   }
-
+   @ProtoFactory
    public Person(String firstName, String lastName, int bornYear, String bornIn) {
       this.firstName = firstName;
       this.lastName = lastName;
