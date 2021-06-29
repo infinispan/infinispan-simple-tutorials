@@ -1,6 +1,17 @@
 var infinispan = require('infinispan');
 
-var connected = infinispan.client({port: 11222, host: '127.0.0.1'},  {cacheName: 'javascriptTutorial'});
+var connected = infinispan.client({port: 11222, host: '127.0.0.1'},
+    {
+      cacheName: 'my-cache',
+      clientIntelligence: 'BASIC',
+      authentication: {
+        enabled: true,
+        saslMechanism: 'DIGEST-MD5',
+        userName: 'admin',
+        password: 'password'
+      }
+    }
+);
 connected.then(function(client) {
   console.log("Connected");
   var putGetPromise = client.put('key', 'value').then(function () {
