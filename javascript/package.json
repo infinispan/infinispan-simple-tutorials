@@ -10,6 +10,6 @@
     "url": "https://github.com/infinispan/infinispan-simple-tutorials"
   },
   "dependencies": {
-    "infinispan": "^0.7.0"
+    "infinispan": "^0.9.0"
   }
 }
