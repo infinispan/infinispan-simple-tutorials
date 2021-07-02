@@ -1,16 +1,15 @@
 package org.infinispan.tutorial.simple.query;
 
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
+
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
 @Indexed
 public class Person {
-   @Field(store = Store.YES, analyze = Analyze.NO)
+   @KeywordField
    String name;
 
-   @Field(store = Store.YES, analyze = Analyze.NO, indexNullAs = "_null_")
+   @KeywordField
    String surname;
 
    public Person(String name, String surname) {
