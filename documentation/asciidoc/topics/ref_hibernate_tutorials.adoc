@@ -1,0 +1,42 @@
+[id='hibernate-tutorials_{context}']
+= Hibernate tutorials
+
+You can run these tutorials directly in your IDE or from the command line as follows:
+
+[source,bash,options="nowrap",subs=attributes+]
+----
+$ mvn clean package
+$ mvn exec:exec
+----
+
+Tutorials that involve deploying an archive to Wildfly are first deployed like this:
+
+[source,bash,options="nowrap",subs=attributes+]
+----
+$ mvn clean package
+$ mvn wildfly:deploy
+----
+
+[%header,cols=2*]
+|===
+|Tutorial link
+|Description
+
+|link:{repository}/integrations/hibernate/local[Hibernate local]
+|Demonstrates how {brandname} Embedded and Hibernate work.
+
+|link:{repository}/integrations/hibernate/spring-local[Hibernate and Spring local]
+|Demonstrates how Spring, Hibernate and {brandname} work.
+
+|link:{repository}/integrations/spring-boot/wildfly-local[Hibernate and WildFly local]
+|Demonstrates how Wildfly and {brandname} work.
+
+|===
+
+[discrete]
+== {brandname} documentation
+
+You can find more resources in our documentation at:
+
+* link:{dev_docs}#ispn_modules[{brandname} WildFly modules]
+* link:{hibernate_docs}[Hibernate Second-Level Caching]

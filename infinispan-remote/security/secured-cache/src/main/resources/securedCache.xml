@@ -1,0 +1,6 @@
+<distributed-cache name="securedCache">
+    <encoding media-type="application/x-protostream"/>
+    <security>
+        <authorization enabled="true" roles="deployer" />
+    </security>
+</distributed-cache>

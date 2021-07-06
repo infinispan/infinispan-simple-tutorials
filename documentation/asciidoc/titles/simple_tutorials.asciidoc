@@ -1,0 +1,29 @@
+//Directory attributes
+:stories: ../stories
+:topics: ../topics
+
+//Doc attributes
+//Community
+:community:
+include::{topics}/attributes/community-attributes.adoc[]
+//Downstream
+//include::{topics}/attributes/downstream-attributes.adoc[]
+//:downstream:
+
+//Title attributes
+:toc2:
+:icons: font
+:toclevels: 3
+:numbered:
+:sectanchors:
+
+//Title
+= {brandname} {tutorials}
+
+Run these code examples that demonstrate {brandname} capabilities and show you how to start using {brandname} caches with your applications.
+
+[preface]
+include::{topics}/proc_building_and_running.adoc[leveloffset=+1]
+
+//User stories
+include::stories.adoc[]

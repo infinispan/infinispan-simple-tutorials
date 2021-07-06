@@ -1,0 +1,28 @@
+[id='building-and-running_{context}']
+= Building and running the tutorials
+Install the required Java and Maven versions before you build and run {brandname} {tutorials}.
+
+.Java
+
+* Embedded caches require Java 8 at a minimum but Java 11 is recommended.
+* {brandname} Server requires Java 11 as the minimum version.
+
+.Maven
+
+To build the tutorials you must use https://maven.apache.org/[Maven] 3.x or greater.
+
+.Procedure
+
+. Clone the link:{repository}[{brandname} {tutorials}] repository.
++
+[source,bash,options="nowrap",subs=attributes+]
+----
+$ git clone {repository_ssh}
+----
+
+. Run the following command from the root directory:
++
+[source,bash,options="nowrap",subs=attributes+]
+----
+$ mvn clean install -DskipTests=true
+----

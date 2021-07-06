@@ -1,0 +1,68 @@
+[id='hotrod-java-tutorials_{context}']
+= Hot Rod Java client tutorials
+
+* Hot Rod Java clients require JDK 8 or later. However, {brandname} recommends using Java 11 at a minimum.
+
+[%header,cols=2*]
+|===
+|Tutorial link
+|Description
+
+|link:{repository}/infinispan-remote/cache[Remote cache use example]
+|The simplest code example that demonstrates how a remote distributed cache works.
+
+|link:{repository}/infinispan-remote/per-cache-configuration[Per cache configuration]
+|Demonstrates how to configure caches dynamically when we connect to the {brandname} Server.
+
+|link:{repository}/infinispan-remote/near-cache[Near caches]
+|Demonstrates how configure near caching to improve the read performance in remote caches.
+
+|link:{repository}/infinispan-remote/cache-admin-api[Cache Admin API]
+|Demonstrates how to use the Administration API to create caches and cache templates dynamically.
+
+|link:{repository}/infinispan-remote/listeners[Client listeners]
+|Detect when data changes in a remote cache with Client Listeners.
+
+|link:{repository}/infinispan-remote/query[Query]
+|Demonstrates how to query remote cache values.
+
+|link:{repository}/infinispan-remote/continuous-query[Continuous query]
+|Demonstrates how to use Continuous Query and remote caches.
+
+|link:{repository}/infinispan-remote/transactions[Transactions]
+|Demonstrates how remote transactions work.
+
+|link:{repository}/infinispan-remote/security/secured-cache[Secured caches]
+|Demonstrates how to configure caches that have authorization enabled.
+
+|link:{repository}/infinispan-remote/security/tls-authorization[TLS authorization]
+|Demonstrates how to connect to {brandname} Server with TLS authorization.
+
+|link:{repository}/infinispan-remote/counter[Counters]
+|Demonstrates how remote counters work.
+
+|link:{repository}/infinispan-remote/multimap[Multimap]
+|Demonstrates how remote multimap works.
+
+|link:{repository}/infinispan-remote/tasks[Task execution]
+|Demonstrates how to register server tasks and how to execute them from the Hot Rod client.
+
+|link:{repository}/infinispan-remote/junit5[JUnit 5 and Testcontainers]
+|Demonstrates how to use the {brandname} and JUnit 5 extension.
+
+|===
+
+[discrete]
+== {brandname} documentation
+
+You can find more resources for Hot Rod Java clients in our documentation at:
+
+* link:{hotrod_docs}#creating-caches-hotrod_hotrod-client-configuration[Admin API]
+* link:{dev_docs}#continuous_queries-querying[Continuous queries]
+* link:{dev_docs}#creating_ickle_queries-querying[Creating Ickle queries]
+* link:{hotrod_docs}#remotecache_countermanager-hotrod-client-api[Remote CounterManager]
+* link:{dev_docs}#clustered_counters[Clustered counters]
+* link:{hotrod_docs}#creating_event_listeners[Creating Event listeners]
+* link:{dev_docs}#multimap_cache[Multimap API]
+* link:{documentation}/hotrod_java/hotrod_java.html#near-caches-hotrod-client-configuration[Near caches]
+* link:{rest_docs}#rest_v2_tasks[Registering scripts with REST]

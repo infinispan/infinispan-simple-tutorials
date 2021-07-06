@@ -1,0 +1,74 @@
+[id='spring-tutorials_{context}']
+= Spring and Spring Boot tutorials
+
+[NOTE]
+====
+The examples using the {brandname} Server require a running server. Check remote examples
+to learn how to run a local {brandname} Server.
+====
+
+.Run Spring example
+[source,bash,options="nowrap",subs=attributes+]
+----
+$ mvn package exec:exec
+----
+
+.Run Spring Boot examples
+[source,bash,options="nowrap",subs=attributes+]
+----
+$ mvn spring-boot:run
+----
+
+.Display actuator stats
+
+You will see in `http://localhost:8080/actuator/metrics` a list of metrics available.
+Cache metrics are prefixed by *"cache."*
+Display each metric for each cache using tags. For example for the 'puts' stats in the basque-names cache:
+
+`http://localhost:8080/actuator/metrics/cache.puts?tag=name:basque-names`
+
+.Run Prometheus
+
+The `prometheus.yml` file contains the _host.docker.internal_ binding that will allow prometheus scrap the metrics
+exposed by spring actuator.
+
+Change the `YOUR_PATH` value to the folder you are running prometheus from.
+
+.Docker
+[source,bash,options="nowrap",subs=attributes+]
+----
+$ docker run -d --name=prometheus -p 9090:9090 -v YOUR_PATH/infinispan-spring-boot/infinispan-spring-boot-samples/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus --config.file=/etc/prometheus/prometheus.yml
+----
+
+[%header,cols=2*]
+|===
+|Tutorial link
+|Description
+
+|link:{repository}/integrations/spring-boot/cache-remote[Spring Boot and Spring Cache remote mode]
+|Demonstrates how to use Spring Caches with Spring Boot and the {brandname} Server.
+
+|link:{repository}/integrations/spring-boot/session-remote[Spring Boot and Spring Session remote mode]
+|Demonstrates how to use Spring Session with Spring Boot and the {brandname} Server.
+
+|link:{repository}/integrations/spring-boot/cache-embedded[Spring Boot and Spring Cache embedded mode]
+|Demonstrates how to use Spring Caches with Spring Boot and {brandname} Embedded.
+
+|link:{repository}/integrations/spring-boot/session-embedded[Spring Boot and Spring Session embedded mode]
+|Demonstrates how to use Spring Session with Spring Boot and {brandname} Embedded.
+
+|link:{repository}/integrations/spring/spring-cache[Spring cache embedded without Spring Boot]
+|Demonstrates how to use Spring Cache and {brandname} Embedded without Spring Boot.
+
+|link:{repository}/integrations/spring/spring-session[Spring session embedded without Spring Boot]
+|Demonstrates how to use Spring Session and {brandname} Embedded without Spring Boot.
+
+|===
+
+[discrete]
+== {brandname} documentation
+
+You can find more resources in our documentation at:
+
+* link:{spring_docs}[Using {brandname} with Spring]
+* link:{sb_starter}[{brandname} Spring Boot Starter]

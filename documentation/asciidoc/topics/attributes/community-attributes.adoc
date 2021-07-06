@@ -1,0 +1,64 @@
+:brandname: Infinispan
+:tutorials: Code Tutorials
+:repository: https://github.com/infinispan/infinispan-simple-tutorials
+:repository_ssh: git@github.com:infinispan/infinispan-simple-tutorials.git
+:operator: https://infinispan.org/docs/infinispan-operator/
+
+:plusplus: ++
+
+//Doc Home
+:doc_home: https://infinispan.org/documentation/
+
+:stable_documentation: https://infinispan.org/docs/stable/titles
+:client_documentation: https://infinispan.org/docs/hotrod-clients
+
+//Configuration Guide
+:config_docs: {stable_documentation}/configuring/configuring.html
+
+//Cache encoding and marshalling
+:encoding_docs: {stable_documentation}/encoding/encoding.html
+
+//CLI
+:cli_docs: {stable_documentation}/cli/cli.html
+
+//Dev
+:dev_docs: {stable_documentation}/developing/developing.html
+
+//Embedded
+:library_docs: {stable_documentation}/embedding/embedding.html
+
+//REST
+:rest_docs: {stable_documentation}/rest/rest.html
+
+//Server
+:server_docs: {stable_documentation}/server/server.html
+
+//SB Starter
+:sb_starter: {stable_documentation}/spring_boot/starter.html
+
+//Hot Rod Java client
+:hotrod_docs: {stable_documentation}/hotrod_java/hotrod_java.html
+
+//Hot Rod C++ client
+:hotrod_cpp_docs: {client_documentation}/cpp/latest/cpp_client.html
+
+//Hot Rod .NET client
+:hotrod_dotnet_docs: {client_documentation}/dotnet/latest/dotnet_client.html
+
+//Hot Rod NodeJS client
+:hotrod_js_docs: {client_documentation}/js/latest/js_client.html
+
+//Upgrading
+:upgrade_docs: {stable_documentation}/upgrading/upgrading.html
+
+//Cross-Site REPL
+:xsite_docs: {stable_documentation}/xsite/xsite.html
+
+//Security Guide
+:security_docs: {stable_documentation}/security/security.html
+
+//Spring Guide
+:spring_docs: {stable_documentation}/spring/spring.html
+
+//Hibernate Guide
+:hibernate_docs: {stable_documentation}/hibernate/hibernate.html

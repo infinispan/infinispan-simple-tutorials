@@ -1,0 +1,39 @@
+[id='hotrod-js-tutorials_{context}']
+= Hot Rod Node.JS client tutorials
+
+[discrete]
+== Prerequisites
+
+* Node.js 12 or 14
+
+.Build
+[source,bash]
+----
+npm install
+----
+
+[discrete]
+== Running the example
+
+Create a cache named `my-cache` using the http://localhost:11222/[{brandname} Console].
+
+
+.'my-cache' cache configuration
+[source,json]
+----
+"distributed-cache": {
+  "mode": "SYNC",
+    "encoding": {
+    "media-type": "text/plain"
+    },
+  "statistics": true
+}
+----
+
+.Execution
+[source,bash]
+----
+node index.js
+----
+
+Check with the Infinispan Console http://localhost:11222/console/my-cach[the `my-cache` cache detail].
