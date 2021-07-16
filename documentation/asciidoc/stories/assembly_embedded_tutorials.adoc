@@ -1,0 +1,11 @@
+[id='embedded-tutorials']
+:context: embedded-cache-tutorials
+= Embedded caches
+
+Add {brandname} as a dependency to your Java project and use embedded caches that increase application performance and give you capabilities to handle complex use cases.
+
+include::{topics}/ref_embedded_tutorials.adoc[leveloffset=+1]
+
+// Restore the parent context.
+ifdef::parent-context[:context: {parent-context}]
+ifndef::parent-context[:!context:]

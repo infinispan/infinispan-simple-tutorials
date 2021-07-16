@@ -1,0 +1,35 @@
+[id='cross-site-replication_{context}']
+= Cross-site replication
+
+Learn how to set up two clusters locally and using {brandname} cross site replication.
+
+link:{repository}/infinispan-remote/cross-site-replication[Cross site replication tutorial]
+
+In this tutorial, you start two {brandname} clusters, LON and NY, that provide backups for each other.
+This tutorial demonstrates {brandname} cross-site replication capabilities locally using docker-compose.
+In production environments, {brandname} cluster backups are typically located in different data centers.
+
+[WARNING]
+====
+Make sure you have `docker` and `docker-compose` installed locally.
+====
+
+.Steps
+. Run `docker-compose up`. The docker-compose yaml creates the LON and NYC clusters using the `infinispan-xsite.xml` file.
+Access the console of the `LON` cluster site at `http://localhost:11222/console`.
+
+. Access the console of the `NYC` cluster site at `http://localhost:31222/console`.
+
+. Run `./create-data.sh` to create some sample data. The script creates a cache named `xsiteCache` in the LON cluster that defines the NYC site as a backup.
+It is also worth noting that cache topologies can be different when using cross-site replication. In this
+example, the cache in LON is distributed while the cache in NYC is replicated.
+
+[TIP]
+====
+To go further use the {brandname} Console or the REST API, add launch additional Cross-Site operations.
+====
+
+[role="_additional-resources"]
+.Additional resources
+* link:{xsite_docs}[Cross-Site Replication Guide]
+* link:{rest_docs}#rest_v2_cache_operations[REST API: Cross-Site Replication]

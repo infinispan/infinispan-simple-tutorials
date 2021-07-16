@@ -8,7 +8,7 @@
     <name>Infinispan Tutorial: Simple tutorials</name>
 
     <properties>
-       <version.infinispan>12.1.6.Final</version.infinispan>
+       <version.infinispan>13.0.0.Dev02</version.infinispan>
        <version.protostream>4.4.1.Final</version.protostream>
        <version.spring.boot>2.4.3</version.spring.boot>
        <version.spring.session>2.4.2</version.spring.session>
@@ -45,8 +45,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.8.1</version>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
+                        <source>11</source>
+                        <target>11</target>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -59,45 +59,44 @@
     </build>
 
     <modules>
-       <module>map</module>
-       <module>distributed</module>
-       <module>replicated</module>
-       <module>jcache</module>
-       <module>functional</module>
-       <module>spark</module>
-       <module>spring-integration/spring/simple-spring</module>
-       <module>spring-integration/spring/spring-session</module>
-       <module>spring-integration/spring-boot/embedded</module>
-       <module>spring-integration/spring-boot/remote</module>
-       <module>spring-integration/spring-boot/session-embedded</module>
-       <module>spring-integration/spring-boot/session-remote</module>
-       <module>tx</module>
-       <module>clusterexec</module>
-       <module>streams</module>
-       <module>remote</module>
-       <module>security/remote-secured</module>
-       <module>security/tls-authorization</module>
-       <module>scripting</module>
-       <module>query</module>
-       <module>listen</module>
-       <module>remote-listen</module>
-       <module>kubernetes</module>
-       <module>counter</module>
-       <module>hibernate-cache/local</module>
-       <module>hibernate-cache/wildfly-local</module>
-       <module>hibernate-cache/spring-local</module>
-       <module>server-tasks</module>
-       <module>multimap</module>
-       <module>lock</module>
-       <module>remote-admin-create-cache</module>
-       <module>remote-tx</module>
-       <module>remote-counter</module>
-       <module>remote-multimap</module>
-       <module>remote-query</module>
-       <module>remote-per-cache</module>
-       <module>remote-junit5</module>
-       <module>near-cache</module>
-       <module>remote-continuous-query</module>
-       <module>invalidation-mode</module>
+        <module>infinispan-remote/connect-to-infinispan-server</module>
+        <module>infinispan-remote/cache-admin-api</module>
+        <module>infinispan-remote/cache</module>
+        <module>infinispan-remote/continuous-query</module>
+        <module>infinispan-remote/counter</module>
+        <module>infinispan-remote/junit5</module>
+        <module>infinispan-remote/listeners</module>
+        <module>infinispan-remote/multimap</module>
+        <module>infinispan-remote/near-cache</module>
+        <module>infinispan-remote/per-cache-configuration</module>
+        <module>infinispan-remote/query</module>
+        <module>infinispan-remote/security/secured-cache</module>
+        <module>infinispan-remote/security/tls-authorization</module>
+        <module>infinispan-remote/tasks</module>
+        <module>infinispan-remote/transactions</module>
+        <module>infinispan-embedded/cache-distributed</module>
+        <module>infinispan-embedded/cache-invalidated</module>
+        <module>infinispan-embedded/cache-replicated</module>
+        <module>infinispan-embedded/clusterexec</module>
+        <module>infinispan-embedded/counter</module>
+        <module>infinispan-embedded/functional</module>
+        <module>infinispan-embedded/jcache</module>
+        <module>infinispan-embedded/kubernetes</module>
+        <module>infinispan-embedded/listeners</module>
+        <module>infinispan-embedded/lock</module>
+        <module>infinispan-embedded/map</module>
+        <module>infinispan-embedded/multimap</module>
+        <module>infinispan-embedded/query</module>
+        <module>infinispan-embedded/streams</module>
+        <module>infinispan-embedded/transactions</module>
+        <module>integrations/hibernate/local</module>
+        <module>integrations/hibernate/spring-local</module>
+        <module>integrations/hibernate/wildfly-local</module>
+        <module>integrations/spring/spring-cache</module>
+        <module>integrations/spring/spring-session</module>
+        <module>integrations/spring-boot/cache-remote</module>
+        <module>integrations/spring-boot/session-remote</module>
+        <module>integrations/spring-boot/cache-embedded</module>
+        <module>integrations/spring-boot/session-embedded</module>
     </modules>
 </project>

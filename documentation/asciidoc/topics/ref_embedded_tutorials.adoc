@@ -1,0 +1,69 @@
+[id='embedded-tutorials_{context}']
+= Embedded cache tutorials
+
+You can run embedded cache tutorials directly in your IDE or from the command line as follows:
+
+[source,bash,options="nowrap",subs=attributes+]
+----
+$ mvn clean package exec:exec
+----
+
+[%header,cols=2*]
+|===
+|Tutorial link
+|Description
+
+|link:{repository}/infinispan-embedded/cache-distributed[Distributed caches]
+|Demonstrates how Distributed Caches work.
+
+|link:{repository}/infinispan-embedded/cache-replicated[Replicated caches]
+|Demonstrates how Replicated Caches work.
+
+|link:{repository}/infinispan-embedded/cache-invalidated[Invalidated caches]
+|Demonstrates how Invalidated Caches work.
+
+|link:{repository}/infinispan-embedded/transactions[Transactions]
+|Demonstrates how transactions work.
+
+|link:{repository}/infinispan-embedded/streams[Streams]
+|Demonstrates how Distributed Streams work.
+
+|link:{repository}/infinispan-embedded/jcache[JCache integration]
+|Demonstrates how JCache works.
+
+|link:{repository}/infinispan-embedded/functional[Functional Maps]
+|Demonstrates how Functional Map API works.
+
+|link:{repository}/infinispan-embedded/map[Map API]
+|Demonstrates how the Map API works with {brandname} caches.
+
+|link:{repository}/infinispan-embedded/multimap[Multimap]
+|Demonstrates how to use Multimap.
+
+|link:{repository}/infinispan-embedded/query[Queries]
+|Uses {brandname} Query to perform full-text queries on cache values.
+
+|link:{repository}/infinispan-embedded/listeners[Clustered Listeners]
+|Detects when data changes in an embedded cache with Clustered Listeners.
+
+|link:{repository}/infinispan-embedded/counter[Counters]
+|Demonstrates how to use an embedded Clustered Counter.
+
+|link:{repository}/infinispan-embedded/lock[Clustered Locks]
+|Demonstrates how to use an embedded Clustered Lock.
+
+|link:{repository}/infinispan-embedded/clusterexec[Clustered execution]
+|Demonstrates how to use an embedded Clustered Counter.
+
+|link:{repository}/infinispan-embedded/kubernetes[Kubernetes]
+|Demonstrates how to deploy {brandname} Embedded in Kubernetes.
+However, the recommended way to use Kubernetes and {brandname} is the {brandname} Operator.
+|===
+
+[discrete]
+== {brandname} documentation
+
+You can find more resources about embedded caches in our documentation at:
+
+* link:{library_docs}[Embedding {brandname} Caches]
+* link:{dev_docs}[{brandname} Developer Guide]

@@ -1,0 +1,7 @@
+//Reference user stories or topics.
+//Please review authoring guidelines in the Contributors Guide.
+
+include::{stories}/assembly_embedded_tutorials.adoc[leveloffset=+1]
+include::{stories}/assembly_remote_tutorials.adoc[leveloffset=+1]
+include::{stories}/assembly_spring_tutorials.adoc[leveloffset=+1]
+include::{stories}/assembly_hibernate_tutorials.adoc[leveloffset=+1]

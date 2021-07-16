@@ -1,0 +1,6 @@
+<distributed-cache name="CacheWithXMLConfiguration" mode="SYNC">"
+    <encoding media-type="application/x-protostream"/>
+    <locking isolation="READ_COMMITTED"/>
+    <transaction mode="NON_XA"/>
+    <expiration lifespan="60000" interval="20000"/>
+</distributed-cache>
