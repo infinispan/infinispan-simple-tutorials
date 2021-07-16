@@ -1,6 +1,6 @@
 :brandname: Infinispan
 :tutorials: Code Tutorials
-:repository: https://github.com/infinispan/infinispan-simple-tutorials
+:repository: https://github.com/infinispan/infinispan-simple-tutorials/tree/main
 :repository_ssh: git@github.com:infinispan/infinispan-simple-tutorials.git
 :operator: https://infinispan.org/docs/infinispan-operator/
 

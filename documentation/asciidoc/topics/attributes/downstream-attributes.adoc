@@ -1,6 +1,6 @@
 :brandname: Data Grid
 :tutorials: Code Tutorials
-:repository: https://github.com/redhat-developer/redhat-datagrid-tutorials
+:repository: https://github.com/redhat-developer/redhat-datagrid-tutorials/tree/main
 :repository_ssh: git@github.com:redhat-developer/redhat-datagrid-tutorials.git
 
 :plusplus: ++
