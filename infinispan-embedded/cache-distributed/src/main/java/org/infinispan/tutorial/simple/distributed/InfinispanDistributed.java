@@ -31,7 +31,9 @@ public class InfinispanDistributed {
       // Display the current cache contents for the whole cluster
       cache.entrySet().forEach(entry -> System.out.printf("%s = %s\n", entry.getKey(), entry.getValue()));
       // Display the current cache contents for this node
-      cache.getAdvancedCache().withFlags(Flag.SKIP_REMOTE_LOOKUP).entrySet()
+      // Note: By default numOwners=2, so in a cluster with 2 nodes, each node owns all the keys:
+      // some of the keys as "primary owner" and some keys as "backup owner"
+      cache.getAdvancedCache().withFlags(Flag.CACHE_MODE_LOCAL).entrySet()
             .forEach(entry -> System.out.printf("%s = %s\n", entry.getKey(), entry.getValue()));
       // Stop the cache manager and release all resources
       cacheManager.stop();
