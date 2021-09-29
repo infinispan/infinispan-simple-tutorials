@@ -16,8 +16,8 @@ we will handle the JIRA lifecycle.
 
 To contribute, use GitHub Pull Requests, from your **own** fork.
 
-* The `main` branch uses the latest release of Infinispan (developent or final version)
-* The `x.x.x` branch uses the latest stable release correspoonding the name of the branch.
+* The `main` branch uses the latest release of Infinispan (development or final version)
+* The `x.x.x` branch uses the latest stable release corresponding the name of the branch.
 
 All contributions must target the `main` branch.
 

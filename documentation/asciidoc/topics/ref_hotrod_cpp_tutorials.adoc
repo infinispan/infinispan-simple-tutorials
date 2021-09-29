@@ -17,9 +17,9 @@ tutorial in a confined environment.
 
 On the host machine download and start the server:
 
-    wget https://downloads.jboss.org/infinispan/10.0.1.Final/infinispan-server-10.0.1.Final.zip
-    unzip infinispan-server-10.0.1.Final.zip
-    cd infinispan-server-10.0.1.Final/bin
+    wget https://downloads.jboss.org/infinispan/13.0.0.CR2/infinispan-server-13.0.0.CR2.zip
+    unzip infinispan-server-13.0.0.CR2.Final.zip
+    cd infinispan-server-13.0.0.CR2.Final/bin
     ./server.sh
 
 Create the default cache
