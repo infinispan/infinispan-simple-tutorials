@@ -1,0 +1,7 @@
+<replicated-cache name="xsiteCache" statistics="true">
+  <encoding media-type="application/x-protostream"/>
+  <backups>
+    <backup site="NYC" strategy="SYNC" failure-policy="WARN"/>
+  </backups>
+</replicated-cache>
+

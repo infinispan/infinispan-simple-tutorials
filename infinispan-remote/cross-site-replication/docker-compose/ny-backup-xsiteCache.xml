@@ -1,0 +1,4 @@
+<distributed-cache name="xsiteCache" statistics="true">
+  <encoding media-type="application/x-protostream"/>
+</distributed-cache>
+

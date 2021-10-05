@@ -1,5 +1,0 @@
-<infinispan>
-  <cache-container>
-    <distributed-cache name="xsiteCache" statistics="true"/>
-  </cache-container>
-</infinispan>
