@@ -1,9 +1,0 @@
-<infinispan>
-  <cache-container>
-    <replicated-cache name="xsiteCache" statistics="true">
-      <backups>
-        <backup site="NYC" strategy="SYNC" failure-policy="WARN"/>
-      </backups>
-    </replicated-cache>
-  </cache-container>
-</infinispan>
