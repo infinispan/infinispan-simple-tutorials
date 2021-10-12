@@ -55,9 +55,12 @@ $ mvn clean package exec:exec
 |link:{repository}/infinispan-embedded/clusterexec[Clustered execution]
 |Demonstrates how to use an embedded Clustered Counter.
 
+ifdef::community[]
 |link:{repository}/infinispan-embedded/kubernetes[Kubernetes]
 |Demonstrates how to deploy {brandname} Embedded in Kubernetes.
 However, the recommended way to use Kubernetes and {brandname} is the {brandname} Operator.
+endif::community[]
+
 |===
 
 [discrete]
@@ -67,3 +70,4 @@ You can find more resources about embedded caches in our documentation at:
 
 * link:{library_docs}[Embedding {brandname} Caches]
 * link:{dev_docs}[{brandname} Developer Guide]
+* link:{query_docs}[Querying {brandname} caches]

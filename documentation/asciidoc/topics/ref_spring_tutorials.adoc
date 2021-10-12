@@ -3,11 +3,10 @@
 
 [NOTE]
 ====
-The examples using the {brandname} Server require a running server. Check remote examples
-to learn how to run a local {brandname} Server.
+These code tutorials use {brandname} Server and require at least one running instance.
 ====
 
-.Run Spring example
+.Run Spring examples
 [source,bash,options="nowrap",subs=attributes+]
 ----
 $ mvn package exec:exec
@@ -19,25 +18,25 @@ $ mvn package exec:exec
 $ mvn spring-boot:run
 ----
 
-.Display actuator stats
+.Displaying actuator statistics
 
-You will see in `http://localhost:8080/actuator/metrics` a list of metrics available.
-Cache metrics are prefixed by *"cache."*
-Display each metric for each cache using tags. For example for the 'puts' stats in the basque-names cache:
+Navigate to `http://localhost:8080/actuator/metrics` in your browser to display a list of available metrics.
+Cache metrics are prefixed with *"cache."*
+Display each metric for each cache using tags.
+For example for the 'puts' stats in the basque-names cache:
 
 `http://localhost:8080/actuator/metrics/cache.puts?tag=name:basque-names`
 
-.Run Prometheus
+.Collecting statistics with Prometheus
 
-The `prometheus.yml` file contains the _host.docker.internal_ binding that will allow prometheus scrap the metrics
-exposed by spring actuator.
+The `prometheus.yml` file in this project contains a _host.docker.internal_ binding that allows Prometheus to scrap metrics that the Spring actuator exposes.
 
-Change the `YOUR_PATH` value to the folder you are running prometheus from.
+Change the `YOUR_PATH` value in the following command to the directory where Prometheus is running and then run:
 
-.Docker
+.Podman
 [source,bash,options="nowrap",subs=attributes+]
 ----
-$ docker run -d --name=prometheus -p 9090:9090 -v YOUR_PATH/infinispan-spring-boot/infinispan-spring-boot-samples/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus --config.file=/etc/prometheus/prometheus.yml
+$ podman run -d --name=prometheus -p 9090:9090 -v YOUR_PATH/integrations/spring-boot/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus --config.file=/etc/prometheus/prometheus.yml
 ----
 
 [%header,cols=2*]
