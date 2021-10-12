@@ -57,12 +57,7 @@
 
 You can find more resources for Hot Rod Java clients in our documentation at:
 
-* link:{hotrod_docs}#creating-caches-hotrod_hotrod-client-configuration[Admin API]
-* link:{dev_docs}#continuous_queries-querying[Continuous queries]
-* link:{dev_docs}#creating_ickle_queries-querying[Creating Ickle queries]
-* link:{hotrod_docs}#remotecache_countermanager-hotrod-client-api[Remote CounterManager]
-* link:{dev_docs}#clustered_counters[Clustered counters]
-* link:{hotrod_docs}#creating_event_listeners[Creating Event listeners]
-* link:{dev_docs}#multimap_cache[Multimap API]
-* link:{documentation}/hotrod_java/hotrod_java.html#near-caches-hotrod-client-configuration[Near caches]
-* link:{rest_docs}#rest_v2_tasks[Registering scripts with REST]
+* link:{hotrod_docs}[Hot Rod Java client guide]
+* link:{query_docs}[Querying {brandname} caches]
+* link:{dev_docs}[Developer guide]
+* link:{rest_docs}[REST API]

@@ -3,6 +3,7 @@
 :repository: https://github.com/infinispan/infinispan-simple-tutorials/tree/main
 :repository_ssh: git@github.com:infinispan/infinispan-simple-tutorials.git
 :operator: https://infinispan.org/docs/infinispan-operator/
+:download_url: https://infinispan.org/download/
 
 :plusplus: ++
 
@@ -29,6 +30,9 @@
 
 //REST
 :rest_docs: {stable_documentation}/rest/rest.html
+
+//Query
+:query_docs: {stable_documentation}/query/query.html
 
 //Server
 :server_docs: {stable_documentation}/server/server.html

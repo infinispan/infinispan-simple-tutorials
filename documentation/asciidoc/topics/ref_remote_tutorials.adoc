@@ -3,12 +3,14 @@
 
 To run these tutorials you need at least one locally running instance of {brandname} Server.
 
+ifdef::community[]
 To run the Server as a container image, visit the "Get Started" page
 in the {brandname} Website:
 
 link:https://infinispan.org/get-started/[Get Started with {brandname}]
+endif::community[]
 
-You can always link:https://infinispan.org/download/[download] the latest server distribution and run from the downloaded files:
+You can link:{download_url}[download] the distribution and run the following commands:
 
 [source,bash,options="nowrap",subs=attributes+]
 ----
@@ -16,12 +18,13 @@ $ ./bin/cli.sh user create admin -p "password"
 $ ./bin/server.sh
 ----
 
-.{brandname} credentials and permission
-
+[NOTE]
+====
 {brandname} Server enables authentication and authorization by default.
 Creating a user named `admin` gives you administrative access to Infinispan Server.
-You can find more details about users and permissions in link:{server_docs}#creating-users_quickstart[Creating and Modifying Users]
+====
 
+.Building and running remote cache tutorials
 You can build and run remote cache tutorials directly in your IDE or from the command line as follows:
 
 [source,bash,options="nowrap",subs=attributes+]
