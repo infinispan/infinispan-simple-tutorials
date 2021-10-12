@@ -9,6 +9,9 @@
     "type": "git",
     "url": "https://github.com/infinispan/infinispan-simple-tutorials"
   },
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "infinispan": "^0.9.0"
   }
