@@ -15,14 +15,9 @@ tutorial in a confined environment.
 [discrete]
 === Setup the Server
 
-On the host machine download and start the server:
+On the host machine, start at least one {brandname} Server instance.
 
-    wget https://downloads.jboss.org/infinispan/13.0.0.CR2/infinispan-server-13.0.0.CR2.zip
-    unzip infinispan-server-13.0.0.CR2.Final.zip
-    cd infinispan-server-13.0.0.CR2.Final/bin
-    ./server.sh
-
-Create the default cache
+Create a default cache
 
     curl -vvvv -X POST http://127.0.0.1:11222/rest/v2/caches/default
 
