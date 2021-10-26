@@ -1,0 +1,3 @@
+<distributed-cache name="jsonCache">
+    <encoding media-type="application/json"/>
+</distributed-cache>

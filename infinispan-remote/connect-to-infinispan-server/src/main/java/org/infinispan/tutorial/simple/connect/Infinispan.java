@@ -3,6 +3,7 @@ package org.infinispan.tutorial.simple.connect;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ClientIntelligence;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
+import org.infinispan.client.hotrod.configuration.NearCacheMode;
 import org.infinispan.client.hotrod.impl.ConfigurationProperties;
 
 /**
@@ -55,7 +56,7 @@ public class Infinispan {
     * @return a connected RemoteCacheManager
     */
    public static final RemoteCacheManager connect() {
-     ConfigurationBuilder builder = connectionConfig();
+      ConfigurationBuilder builder = connectionConfig();
 
       RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
 
