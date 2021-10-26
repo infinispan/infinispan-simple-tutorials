@@ -1,0 +1,3 @@
+<distributed-cache name="xmlCache">
+    <encoding media-type="application/xml"/>
+</distributed-cache>

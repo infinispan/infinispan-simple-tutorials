@@ -69,6 +69,7 @@
         <module>infinispan-remote/security/tls-authorization</module>
         <module>infinispan-remote/tasks</module>
         <module>infinispan-remote/transactions</module>
+        <module>infinispan-remote/encoding</module>
         <module>infinispan-embedded/cache-distributed</module>
         <module>infinispan-embedded/cache-invalidated</module>
         <module>infinispan-embedded/cache-replicated</module>

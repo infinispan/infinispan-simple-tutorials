@@ -20,6 +20,9 @@
 |link:{repository}/infinispan-remote/cache-admin-api[Cache Admin API]
 |Demonstrates how to use the Administration API to create caches and cache templates dynamically.
 
+|link:{repository}/infinispan-remote/encoding[Encoding]
+|Demonstrates how encoding of caches work.
+
 |link:{repository}/infinispan-remote/listeners[Client listeners]
 |Detect when data changes in a remote cache with Client Listeners.
 
@@ -58,6 +61,7 @@
 You can find more resources for Hot Rod Java clients in our documentation at:
 
 * link:{hotrod_docs}[Hot Rod Java client guide]
+* link:{encoding_docs}[Marshalling and Encoding Data Guide]
 * link:{query_docs}[Querying {brandname} caches]
 * link:{dev_docs}[Developer guide]
 * link:{rest_docs}[REST API]
