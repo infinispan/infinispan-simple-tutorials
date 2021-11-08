@@ -18,7 +18,7 @@ If you attempt to generate the TLS artifacts with older Java versions, you get p
 . Build the project.
 +
 ----
-$ mvn clean package
+$ mvn -s /path/to/maven-settings.xml clean package
 ----
 +
 NOTE: The certificates are build and removed by maven with the goals clean and package.
