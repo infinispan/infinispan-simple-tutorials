@@ -29,5 +29,5 @@ You can build and run remote cache tutorials directly in your IDE or from the co
 
 [source,bash,options="nowrap",subs=attributes+]
 ----
-$ mvn -s /path/to/maven-settings.xml clean package exec:exec
+$ {clean_exec}
 ----

@@ -1,0 +1,20 @@
+//Community content
+ifdef::community[]
+:clean_package: mvn clean package
+:exec_exec: mvn exec:exec
+:clean_exec: mvn clean package exec:exec
+:clean_install: mvn clean install -DskipTests=true
+:package_exec: mvn package exec:exec
+:wildfly_deploy: mvn wildfly:deploy
+:spring_boot_run: mvn spring-boot:run
+endif::community[]
+//Downstream content
+ifdef::downstream[]
+:clean_package: mvn -s /path/to/maven-settings.xml clean package
+:exec_exec: mvn -s /path/to/maven-settings.xml exec:exec
+:clean_exec: mvn -s /path/to/maven-settings.xml clean package exec:exec
+:clean_install: mvn -s /path/to/maven-settings.xml clean install -DskipTests=true
+:package_exec: mvn -s /path/to/maven-settings.xml package exec:exec
+:wildfly_deploy: mvn -s /path/to/maven-settings.xml wildfly:deploy
+:spring_boot_run: mvn -s /path/to/maven-settings.xml spring-boot:run
+endif::downstream[]

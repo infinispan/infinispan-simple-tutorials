@@ -9,6 +9,8 @@ include::{topics}/attributes/community-attributes.adoc[]
 //Downstream
 //include::{topics}/attributes/downstream-attributes.adoc[]
 //:downstream:
+//Maven commands
+include::{topics}/attributes/mvn_commands.adoc[]
 
 //Title attributes
 :toc2:

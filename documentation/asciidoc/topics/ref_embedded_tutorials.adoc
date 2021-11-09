@@ -5,7 +5,7 @@ You can run embedded cache tutorials directly in your IDE or from the command li
 
 [source,bash,options="nowrap",subs=attributes+]
 ----
-$ mvn -s /path/to/maven-settings.xml clean package exec:exec
+$ {clean_exec}
 ----
 
 [%header,cols=2*]
