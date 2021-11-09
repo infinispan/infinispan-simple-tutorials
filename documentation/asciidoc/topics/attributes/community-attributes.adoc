@@ -1,3 +1,4 @@
+:community:
 :brandname: Infinispan
 :tutorials: Code Tutorials
 :repository: https://github.com/infinispan/infinispan-simple-tutorials/tree/main

@@ -9,13 +9,13 @@ These code tutorials use {brandname} Server and require at least one running ins
 .Run Spring examples
 [source,bash,options="nowrap",subs=attributes+]
 ----
-$ mvn -s /path/to/maven-settings.xml package exec:exec
+$ {package_exec}
 ----
 
 .Run Spring Boot examples
 [source,bash,options="nowrap",subs=attributes+]
 ----
-$ mvn -s /path/to/maven-settings.xml spring-boot:run
+$ {spring_boot_run}
 ----
 
 .Displaying actuator statistics
