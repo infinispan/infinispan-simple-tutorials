@@ -18,7 +18,7 @@ If you attempt to generate the TLS artifacts with older Java versions, you get p
 . Build the project.
 +
 ----
-$ {clean_package}
+$ mvn clean package
 ----
 +
 NOTE: The certificates are build and removed by maven with the goals clean and package.
@@ -66,7 +66,7 @@ $ $ISPN_HOME/bin/server.sh -c infinispan-uCert.xml
 +
 [source]
 ----
-$ export TEST=SIMPLE && {exec_run}
+$ export TEST=SIMPLE && mvn exec:exec@run
 ----
 . Check server logs to verify that the PUT and GET requests succeed.
 
@@ -137,7 +137,7 @@ $ $ISPN_HOME/bin/server.sh -c infinispan-uCertAuth.xml
 +
 [source]
 ----
-$ export TEST=SIMPLEAUTH1,SIMPLEAUTH2 && {exec_run}
+$ export TEST=SIMPLEAUTH1,SIMPLEAUTH2 && mvn exec:exec@run
 ----
 . Check the server logs.
 +
@@ -194,7 +194,7 @@ $ $ISPN_HOME/bin/server.sh -c infinispan-sCert.xml
 +
 [source]
 ----
-$ export TEST=CLIENT1,CLIENT2 && {exec_run}
+$ export TEST=CLIENT1,CLIENT2 && mvn exec:exec@run
 ----
 +
 . Check server logs to verify that the PUT and GET requests succeed.
@@ -266,7 +266,7 @@ $ $ISPN_HOME/bin/server.sh -c infinispan-sCertAuth.xml
 +
 [source]
 ----
-$ export TEST=CLIENT1AUTH,CLIENT2AUTH && {exec_run}
+$ export TEST=CLIENT1AUTH,CLIENT2AUTH && mvn exec:exec@run
 ----
 
 Client requests fail because the `<truststore-realm/>` element is now included in the security realm configuration.
@@ -291,7 +291,7 @@ Continue with the following steps to complete the tutorial:
 +
 [source]
 ----
-$ export TEST=CLIENT1AUTH,CLIENT2AUTH && {exec_run}
+$ export TEST=CLIENT1AUTH,CLIENT2AUTH && mvn exec:exec@run
 ----
 +
 . Check the server logs.
@@ -305,4 +305,4 @@ To debug failures, enable `org.wildfly.security` and `org.infinispan.security` l
 
 Note that `mvn clean` will delete the certificates, a new build will create it but they are then different and the connection to an existing server with older certificates will fail.
 
-Consider that running the client needs `mvn {exec_run}` to not fail as there are multiple executions defined.
+Consider that running the client needs `mvn exec:exec@run` to not fail as there are multiple executions defined.
