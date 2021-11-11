@@ -2,6 +2,7 @@
 ifdef::community[]
 :clean_package: mvn clean package
 :exec_exec: mvn exec:exec
+:exec_run: mvn exec:exec@run
 :clean_exec: mvn clean package exec:exec
 :clean_install: mvn clean install -DskipTests=true
 :package_exec: mvn package exec:exec
@@ -12,6 +13,7 @@ endif::community[]
 ifdef::downstream[]
 :clean_package: mvn -s /path/to/maven-settings.xml clean package
 :exec_exec: mvn -s /path/to/maven-settings.xml exec:exec
+:exec_run: mvn -s /path/to/maven-settings.xml exec:exec@run
 :clean_exec: mvn -s /path/to/maven-settings.xml clean package exec:exec
 :clean_install: mvn -s /path/to/maven-settings.xml clean install -DskipTests=true
 :package_exec: mvn -s /path/to/maven-settings.xml package exec:exec
