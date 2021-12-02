@@ -53,6 +53,9 @@
 |link:{repository}/infinispan-remote/junit5[JUnit 5 and Testcontainers]
 |Demonstrates how to use the {brandname} and JUnit 5 extension.
 
+|link:{repository}/infinispan-remote/persistence[Persistence]
+|Demonstrates how to use the {brandname} and persistent caches.
+
 |===
 
 [discrete]

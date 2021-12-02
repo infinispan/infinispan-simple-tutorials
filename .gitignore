@@ -58,3 +58,4 @@ openshift.local.clusterup
 non-java-clients/node.js/package-lock.json
 /documentation/asciidoc/titles/simple_tutorials.html
 infinispan-server-*
+library.*
