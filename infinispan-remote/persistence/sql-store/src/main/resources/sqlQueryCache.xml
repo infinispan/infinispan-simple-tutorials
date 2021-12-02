@@ -1,0 +1,28 @@
+<distributed-cache>
+    <encoding media-type="application/x-protostream"/>
+    <persistence>
+        <query-jdbc-store dialect="H2"
+                          shared="false"
+                          read-only="true"
+                          key-columns="id">
+            <connection-pool connection-url="jdbc:h2:tcp://localhost:9123/~/library;"
+                             username="infinispan"
+                             password="secret"
+                             driver="org.h2.Driver"/>
+            <schema message-name="Book" package="library"/>
+            <queries
+                    select-single="SELECT books.id, books.isbn, title, authors.name,
+                     authors.country FROM books
+                    JOIN authors ON books.author_id = authors.id
+                    WHERE books.id=:id"
+
+                    select-all="SELECT books.id, books.isbn, title, authors.name,
+                     authors.country FROM books
+                    JOIN authors ON books.author_id = authors.id"
+
+                    size="SELECT COUNT(*) FROM books
+                    JOIN authors ON books.author_id = authors.id"
+            />
+        </query-jdbc-store>
+    </persistence>
+</distributed-cache>

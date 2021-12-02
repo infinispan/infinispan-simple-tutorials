@@ -64,6 +64,7 @@
         <module>infinispan-remote/multimap</module>
         <module>infinispan-remote/near-cache</module>
         <module>infinispan-remote/per-cache-configuration</module>
+        <module>infinispan-remote/persistence/sql-store</module>
         <module>infinispan-remote/query</module>
         <module>infinispan-remote/security/secured-cache</module>
         <module>infinispan-remote/security/tls-authorization</module>
