@@ -15,16 +15,16 @@ quay.io/infinispan/server:13.0
 - Download the Infinispan Server 
 -Use the install command with the Command Line Interface (CLI) to download the required drivers to the server/lib directory, for example:
 ```shell
-./infinispan-server-13.0.2.Final/bin/cli.sh install com.h2database:h2:2.0.202
+./infinispan-server-13.0.6.Final/bin/cli.sh install com.h2database:h2:2.0.202
 ```
 - Create the user
 ```shell
-./infinispan-server-13.0.2.Final/bin/cli.sh user create admin -p password
+./infinispan-server-13.0.6.Final/bin/cli.sh user create admin -p password
 ```
 - Run the server 
 
 ```shell
-./infinispan-server-13.0.2.Final/bin/server.sh
+./infinispan-server-13.0.6.Final/bin/server.sh
  ```
 
 - Build the project
