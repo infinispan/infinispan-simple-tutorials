@@ -30,7 +30,8 @@
       </dependency>
       <dependency>
          <groupId>org.infinispan</groupId>
-         <artifactId>infinispan-hibernate-cache-v53</artifactId>
+         <artifactId>infinispan-hibernate-cache-v60</artifactId>
+         <version>14.0.0.Final</version>
       </dependency>
    </dependencies>
 

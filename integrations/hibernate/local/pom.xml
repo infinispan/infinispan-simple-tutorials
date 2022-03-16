@@ -50,7 +50,8 @@
       </dependency>
       <dependency>
          <groupId>org.infinispan</groupId>
-         <artifactId>infinispan-hibernate-cache-v53</artifactId>
+         <artifactId>infinispan-hibernate-cache-v60</artifactId>
+         <version>${version.infinispan}</version>
       </dependency>
       <dependency>
          <groupId>com.h2database</groupId>
