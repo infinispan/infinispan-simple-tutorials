@@ -32,6 +32,9 @@
 //REST
 :rest_docs: {stable_documentation}/rest/rest.html
 
+//RESP
+:resp_docs: {stable_documentation}/resp/resp-endpoint.html
+
 //Query
 :query_docs: {stable_documentation}/query/query.html
 
