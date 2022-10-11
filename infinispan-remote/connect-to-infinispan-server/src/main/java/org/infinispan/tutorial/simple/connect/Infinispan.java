@@ -3,7 +3,6 @@ package org.infinispan.tutorial.simple.connect;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ClientIntelligence;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
-import org.infinispan.client.hotrod.configuration.NearCacheMode;
 import org.infinispan.client.hotrod.impl.ConfigurationProperties;
 
 /**
@@ -15,10 +14,10 @@ public class Infinispan {
 
    public static final String USER = "admin";
    public static final String PASSWORD = "password";
+   public static final String HOST = "127.0.0.1";
+   public static final int SINGLE_PORT = ConfigurationProperties.DEFAULT_HOTROD_PORT;
 
    public static final String TUTORIAL_CACHE_NAME = "test";
-   public static final String HOST = "127.0.0.1";
-
    public static final String TUTORIAL_CACHE_CONFIG =
          "<distributed-cache name=\"CACHE_NAME\">\n"
          + "    <encoding media-type=\"application/x-protostream\"/>\n"
@@ -31,7 +30,7 @@ public class Infinispan {
     */
    public static final ConfigurationBuilder connectionConfig() {
       ConfigurationBuilder builder = new ConfigurationBuilder();
-      builder.addServer().host("127.0.0.1").port(ConfigurationProperties.DEFAULT_HOTROD_PORT).security()
+      builder.addServer().host(HOST).port(SINGLE_PORT).security()
             .authentication()
             //Add user credentials.
             .username(USER)

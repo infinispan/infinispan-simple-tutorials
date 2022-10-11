@@ -56,6 +56,10 @@
 |link:{repository}/infinispan-remote/persistence[Persistence]
 |Demonstrates how to use the {brandname} and persistent caches.
 
+
+|link:{repository}/infinispan-remote/redis-client[Redis Client]
+|Demonstrates how to use the {brandname} and Redis client to read and write using the Resp protocol.
+
 |===
 
 [discrete]
@@ -68,3 +72,4 @@ You can find more resources for Hot Rod Java clients in our documentation at:
 * link:{query_docs}[Querying {brandname} caches]
 * link:{dev_docs}[Developer guide]
 * link:{rest_docs}[REST API]
+* link:{resp_docs}[Resp Protocol]
