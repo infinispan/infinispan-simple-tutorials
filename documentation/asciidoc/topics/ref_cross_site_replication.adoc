@@ -6,8 +6,11 @@ Learn how to set up two clusters locally and using {brandname} cross site replic
 link:{repository}/infinispan-remote/cross-site-replication[Cross site replication tutorial]
 
 In this tutorial, you start two {brandname} clusters, LON and NY, that provide backups for each other.
-This tutorial demonstrates {brandname} cross-site replication capabilities locally using docker-compose.
+This tutorial demonstrates {brandname} cross-site replication capabilities locally using `docker-compose`
+or the {brandname} Operator with a local Kubernetes cluster like Minikube.
 In production environments, {brandname} cluster backups are typically located in different data centers.
+
+== Docker compose
 
 [WARNING]
 ====
@@ -24,6 +27,24 @@ Access the console of the `LON` cluster site at `http://localhost:11222/console`
 It is also worth noting that cache topologies can be different when using cross-site replication. In this
 example, the cache in LON is distributed while the cache in NYC is replicated.
 
+== Minikube and {brandname} Operator
+
+[WARNING]
+====
+Make sure you have `minikube` installed locally.
+====
+
+.Steps
+. Run *`./setup.sh`*: This script starts minikube, installs the Infinispan Operator, deploys two clusters (LON and NYC) and creates the caches.
+. Run *`./create-data.sh`*
+
+Both sites are accessible externally using the {brandname} Console through
+
+* LON `(minikube service --url example-cluster-lon-external`
+* NYC `minikube service --url example-cluster-nyc-external`
+
+The credentials are configured using Kubernetes secrets (`identities_lon.yaml` and `identities_nyc.yaml`).
+
 [TIP]
 ====
 To go further use the {brandname} Console or the REST API, add launch additional Cross-Site operations.
@@ -33,3 +54,4 @@ To go further use the {brandname} Console or the REST API, add launch additional
 .Additional resources
 * link:{xsite_docs}[Cross-Site Replication Guide]
 * link:{rest_docs}#rest_v2_cache_operations[REST API: Cross-Site Replication]
+* link:{operator}[{brandname} Operator]

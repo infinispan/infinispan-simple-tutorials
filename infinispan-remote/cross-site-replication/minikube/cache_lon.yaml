@@ -1,0 +1,16 @@
+apiVersion: infinispan.org/v2alpha1
+kind: Cache
+metadata:
+  name: mycache-site-lon
+spec:
+  clusterName: example-cluster-lon
+  name: mycache
+  template: |-
+    <distributed-cache name="mycache" mode="SYNC">
+     <encoding media-type="application/x-protostream"/>
+      <backups>
+        <backup site="NYC" strategy="SYNC" timeout="5000">
+          <take-offline after-failures="10" min-wait="10000" />
+        </backup>
+      </backups>
+    </distributed-cache>

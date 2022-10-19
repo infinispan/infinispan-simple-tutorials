@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: connect-secret-cluster-nyc
+type: Opaque
+stringData:
+  identities.yaml: |-
+    credentials:
+    - username: admin
+      password: password
