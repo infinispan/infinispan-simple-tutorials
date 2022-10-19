@@ -1,0 +1,23 @@
+apiVersion: infinispan.org/v1
+kind: Infinispan
+metadata:
+  name: example-cluster-nyc
+spec:
+  replicas: 2
+  expose:
+    type: NodePort
+    nodePort: 30001
+  security:
+    endpointSecretName: connect-secret-cluster-nyc
+  service:
+    type: DataGrid
+    sites:
+      local:
+        name: NYC
+        expose:
+          type: ClusterIP
+      locations:
+        - name: LON
+          url: infinispan+xsite://example-cluster-lon-site
+        - name: NYC
+          url: infinispan+xsite://example-cluster-nyc-site

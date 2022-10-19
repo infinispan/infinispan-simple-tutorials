@@ -9,38 +9,42 @@ services:
     ports:
       - "11222:11222"
     container_name: ispn-lon-1
+    environment:
+      USER: admin
+      PASS: password
     networks:
       - mynetwork
-    volumes:
-      - ${PWD}:/user-config
-    command: -b SITE_LOCAL -c /user-config/infinispan-xsite.xml -Djgroups.cluster.mcast_addr=228.6.7.10 -Drelay.site=LON
+    command: -c infinispan-xsite.xml -Dinfinispan.site.name=LON -Djgroups.mcast_port=46656
   infinispan-server-lon-2:
     image: quay.io/infinispan/server:14.0
     ports:
       - "11221:11222"
     container_name: ispn-lon-2
+    environment:
+      USER: admin
+      PASS: password
     networks:
       - mynetwork
-    volumes:
-      - ${PWD}:/user-config
-    command: -b SITE_LOCAL -c /user-config/infinispan-xsite.xml -Djgroups.cluster.mcast_addr=228.6.7.10 -Drelay.site=LON
+    command: -c infinispan-xsite.xml -Dinfinispan.site.name=LON -Djgroups.mcast_port=46656
   infinispan-server-nyc-1:
     image: quay.io/infinispan/server:14.0
     ports:
       - "31222:11222"
     container_name: ispn-nyc-1
+    environment:
+      USER: admin
+      PASS: password
     networks:
       - mynetwork
-    volumes:
-      - ${PWD}:/user-config
-    command: -b SITE_LOCAL -c /user-config/infinispan-xsite.xml -Djgroups.cluster.mcast_addr=228.6.7.15 -Drelay.site=NYC
+    command: -c infinispan-xsite.xml -Dinfinispan.site.name=NYC -Djgroups.mcast_port=46666
   infinispan-server-nyc-2:
     image: quay.io/infinispan/server:14.0
     ports:
       - "31223:11222"
     container_name: ispn-nyc-2
+    environment:
+      USER: admin
+      PASS: password
     networks:
       - mynetwork
-    volumes:
-      - ${PWD}:/user-config
-    command: -b SITE_LOCAL -c /user-config/infinispan-xsite.xml -Djgroups.cluster.mcast_addr=228.6.7.15 -Drelay.site=NYC
+    command: -c infinispan-xsite.xml -Dinfinispan.site.name=NYC -Djgroups.mcast_port=46666
