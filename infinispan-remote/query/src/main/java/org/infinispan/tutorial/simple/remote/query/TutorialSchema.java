@@ -4,5 +4,5 @@ import org.infinispan.protostream.GeneratedSchema;
 import org.infinispan.protostream.annotations.AutoProtoSchemaBuilder;
 
 @AutoProtoSchemaBuilder(schemaPackageName = "tutorial", includeClasses = Person.class)
-public interface QuerySchemaBuilder extends GeneratedSchema {
+public interface TutorialSchema extends GeneratedSchema {
 }
