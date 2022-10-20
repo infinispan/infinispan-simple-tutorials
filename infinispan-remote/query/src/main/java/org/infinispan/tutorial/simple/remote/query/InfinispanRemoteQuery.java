@@ -3,14 +3,13 @@ package org.infinispan.tutorial.simple.remote.query;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.Search;
-import org.infinispan.client.hotrod.configuration.ClientIntelligence;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
-import org.infinispan.client.hotrod.impl.ConfigurationProperties;
 import org.infinispan.protostream.GeneratedSchema;
 import org.infinispan.query.dsl.Query;
 import org.infinispan.query.dsl.QueryFactory;
 import org.infinispan.tutorial.simple.connect.Infinispan;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,12 +26,18 @@ import static org.infinispan.query.remote.client.ProtobufMetadataManagerConstant
  */
 public class InfinispanRemoteQuery {
 
+   public static final String INDEXED_PEOPLE_CACHE = "indexedPeopleCache";
+
    public static void main(String[] args) throws Exception {
 
       ConfigurationBuilder builder = Infinispan.connectionConfig();
 
       // Add the Protobuf serialization context in the client
-      builder.addContextInitializer(new QuerySchemaBuilderImpl());
+      builder.addContextInitializer(new TutorialSchemaImpl());
+
+      // Use indexed cache
+      URI indexedCacheURI = InfinispanRemoteQuery.class.getClassLoader().getResource("indexedCache.xml").toURI();
+      builder.remoteCache(INDEXED_PEOPLE_CACHE).configurationURI(indexedCacheURI);
 
       // Connect to the server
       RemoteCacheManager client = new RemoteCacheManager(builder.build());
@@ -41,7 +46,7 @@ public class InfinispanRemoteQuery {
       addPersonSchema(client);
 
       // Get the people cache, create it if needed with the default configuration
-      RemoteCache<String, Person> peopleCache = client.getCache(Infinispan.TUTORIAL_CACHE_NAME);
+      RemoteCache<String, Person> peopleCache = client.getCache(INDEXED_PEOPLE_CACHE);
 
       // Create the persons dataset to be stored in the cache
       Map<String, Person> people = new HashMap<>();
@@ -78,7 +83,7 @@ public class InfinispanRemoteQuery {
             cacheManager.getCache(PROTOBUF_METADATA_CACHE_NAME);
 
       // Define the new schema on the server too
-      GeneratedSchema schema = new QuerySchemaBuilderImpl();
+      GeneratedSchema schema = new TutorialSchemaImpl();
       metadataCache.put(schema.getProtoFileName(), schema.getProtoFile());
    }
 }
