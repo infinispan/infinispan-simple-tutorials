@@ -4,7 +4,7 @@ import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.exceptions.HotRodClientException;
-import org.infinispan.tutorial.simple.connect.Infinispan;
+import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 import java.net.URI;
 
@@ -16,14 +16,14 @@ import java.net.URI;
 public class InfinispanAuthorizationCache {
 
    public static void main(String[] args) throws Exception {
-      ConfigurationBuilder configurationBuilder = Infinispan.connectionConfig();
+      ConfigurationBuilder configurationBuilder = TutorialsConnectorHelper.connectionConfig();
       URI securedCacheConfig = InfinispanAuthorizationCache.class.getClassLoader().getResource("securedCache.xml").toURI();
       configurationBuilder.remoteCache("securedCache").configurationURI(securedCacheConfig);
 
       // Connect to Infinispan with an additional cache that is secured with authorization for
       // deployer role only. We are connecting with 'admin' user that has 'admin' role.
       RemoteCacheManager cacheManager = new RemoteCacheManager(configurationBuilder.build());
-      RemoteCache<String, String> cache = cacheManager.getCache(Infinispan.TUTORIAL_CACHE_NAME);
+      RemoteCache<String, String> cache = cacheManager.getCache(TutorialsConnectorHelper.TUTORIAL_CACHE_NAME);
       RemoteCache<String, String> securedCache = cacheManager.getCache("securedCache");
 
       // Store a value in a non secured cache

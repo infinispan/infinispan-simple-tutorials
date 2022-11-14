@@ -7,7 +7,7 @@ import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.protostream.GeneratedSchema;
 import org.infinispan.query.dsl.Query;
 import org.infinispan.query.dsl.QueryFactory;
-import org.infinispan.tutorial.simple.connect.Infinispan;
+import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ public class InfinispanRemoteQuery {
 
    public static void main(String[] args) throws Exception {
 
-      ConfigurationBuilder builder = Infinispan.connectionConfig();
+      ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
 
       // Add the Protobuf serialization context in the client
       builder.addContextInitializer(new TutorialSchemaImpl());

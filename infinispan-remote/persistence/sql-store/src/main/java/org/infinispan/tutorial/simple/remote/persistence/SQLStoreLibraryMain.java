@@ -2,7 +2,7 @@ package org.infinispan.tutorial.simple.remote.persistence;
 
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
-import org.infinispan.tutorial.simple.connect.Infinispan;
+import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 import java.net.URI;
 import java.util.Scanner;
@@ -17,7 +17,7 @@ public class SQLStoreLibraryMain {
       dbCreator.startDBServer("9123");
       dbCreator.createAndPopulate();
 
-      ConfigurationBuilder configurationBuilder = Infinispan.connectionConfig();
+      ConfigurationBuilder configurationBuilder = TutorialsConnectorHelper.connectionConfig();
       configurationBuilder.addContextInitializer(new TechLibrarySchemaImpl());
       URI authorsCacheURI = SQLStoreLibraryMain.class.getClassLoader().getResource("sqlTableCache.xml").toURI();
       URI booksCacheURI = SQLStoreLibraryMain.class.getClassLoader().getResource("sqlQueryCache.xml").toURI();

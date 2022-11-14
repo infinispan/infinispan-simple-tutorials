@@ -60,6 +60,9 @@
 |link:{repository}/infinispan-remote/redis-client[Redis Client]
 |Demonstrates how to use the {brandname} and Redis client to read and write using the Resp protocol.
 
+|link:{repository}/infinispan-remote/reactive-api[Reactive API]
+|Demonstrates how to use the {brandname} with the reactive API based on Mutiny.
+
 |===
 
 [discrete]
@@ -73,3 +76,4 @@ You can find more resources for Hot Rod Java clients in our documentation at:
 * link:{dev_docs}[Developer guide]
 * link:{rest_docs}[REST API]
 * link:{resp_docs}[Resp Protocol]
+* link:{mutiny_docs}[Smallrye Mutiny]

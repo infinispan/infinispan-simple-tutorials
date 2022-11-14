@@ -6,10 +6,8 @@ import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.configuration.TransactionMode;
-import org.infinispan.client.hotrod.impl.ConfigurationProperties;
 import org.infinispan.client.hotrod.transaction.lookup.RemoteTransactionManagerLookup;
-import org.infinispan.commons.configuration.XMLStringConfiguration;
-import org.infinispan.tutorial.simple.connect.Infinispan;
+import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 import java.net.URI;
 
@@ -29,7 +27,7 @@ public class InfinispanRemoteTx {
 
    public static void main(String[] args) throws Exception {
       // Create a configuration for a locally-running server
-      ConfigurationBuilder builder = Infinispan.connectionConfig();
+      ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
       // Add a transactional cache on startup
       URI cacheConfig = InfinispanRemoteTx.class.getClassLoader().getResource("simple-tx-cache.xml").toURI();
       builder.remoteCache(CACHE_NAME)

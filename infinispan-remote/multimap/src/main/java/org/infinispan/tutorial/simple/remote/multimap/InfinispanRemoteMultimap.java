@@ -4,7 +4,7 @@ import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.multimap.MultimapCacheManager;
 import org.infinispan.client.hotrod.multimap.RemoteMultimapCache;
 import org.infinispan.client.hotrod.multimap.RemoteMultimapCacheManagerFactory;
-import org.infinispan.tutorial.simple.connect.Infinispan;
+import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 /**
  * The Remote Multimap simple tutorial.
@@ -20,13 +20,13 @@ public class InfinispanRemoteMultimap {
 
    public static void main(String[] args) throws Exception {
       // Connect to the server and create a cache
-      RemoteCacheManager cacheManager = Infinispan.connect();
+      RemoteCacheManager cacheManager = TutorialsConnectorHelper.connect();
 
       // Retrieve the MultimapCacheManager from the CacheManager.
       MultimapCacheManager multimapCacheManager = RemoteMultimapCacheManagerFactory.from(cacheManager);
 
       // Retrieve the multimap cache.
-      RemoteMultimapCache<Integer, String> people = multimapCacheManager.get(Infinispan.TUTORIAL_CACHE_NAME);
+      RemoteMultimapCache<Integer, String> people = multimapCacheManager.get(TutorialsConnectorHelper.TUTORIAL_CACHE_NAME);
       people.put(2016, "Alberto");
       people.put(2016, "Oihana");
       people.put(2016, "Roman");

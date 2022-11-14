@@ -10,7 +10,7 @@ import org.infinispan.client.hotrod.impl.ConfigurationProperties;
  *
  * @author Katia Aresti, karesti@redhat.com
  */
-public class Infinispan {
+public class TutorialsConnectorHelper {
 
    public static final String USER = "admin";
    public static final String PASSWORD = "password";

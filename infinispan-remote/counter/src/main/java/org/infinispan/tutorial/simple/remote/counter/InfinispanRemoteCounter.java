@@ -7,7 +7,7 @@ import org.infinispan.counter.api.CounterManager;
 import org.infinispan.counter.api.CounterType;
 import org.infinispan.counter.api.StrongCounter;
 import org.infinispan.counter.api.WeakCounter;
-import org.infinispan.tutorial.simple.connect.Infinispan;
+import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 /**
  * Remote Counter simple tutorial.
@@ -23,7 +23,7 @@ public class InfinispanRemoteCounter {
 
    public static void main(String[] args) throws Exception {
       // Connect to the server
-      RemoteCacheManager cacheManager = Infinispan.connect();
+      RemoteCacheManager cacheManager = TutorialsConnectorHelper.connect();
 
       // Retrieve the CounterManager from the CacheManager. Each CacheManager has it own CounterManager
       CounterManager counterManager = RemoteCounterManagerFactory.asCounterManager(cacheManager);

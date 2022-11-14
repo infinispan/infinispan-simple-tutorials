@@ -1,13 +1,10 @@
 package org.infinispan.tutorial.simple.remote.admin;
 
 import org.infinispan.client.hotrod.RemoteCacheManager;
-import org.infinispan.commons.CacheConfigurationException;
-import org.infinispan.commons.CacheException;
 import org.infinispan.commons.configuration.XMLStringConfiguration;
-import org.infinispan.tutorial.simple.connect.Infinispan;
+import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,7 +22,7 @@ import java.nio.file.Paths;
  * @author <a href="mailto:wfink@redhat.com">Wolf Dieter Fink</a>
  */
 public class InfinispanRemoteAdminCache {
-    private final RemoteCacheManager manager = Infinispan.connect();
+    private final RemoteCacheManager manager = TutorialsConnectorHelper.connect();
 
     public static void main(String[] args) throws Exception {
         InfinispanRemoteAdminCache client = new InfinispanRemoteAdminCache();

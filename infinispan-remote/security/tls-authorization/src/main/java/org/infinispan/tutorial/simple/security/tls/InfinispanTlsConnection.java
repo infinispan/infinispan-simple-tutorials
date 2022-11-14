@@ -4,7 +4,7 @@ import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.impl.ConfigurationProperties;
-import org.infinispan.tutorial.simple.connect.Infinispan;
+import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +37,7 @@ public class InfinispanTlsConnection {
 
       System.out.println("  ======================= Start client(s)");
       ConfigurationBuilder builder = new ConfigurationBuilder();
-      builder.addServer().host(Infinispan.HOST)
+      builder.addServer().host(TutorialsConnectorHelper.HOST)
             .port(ConfigurationProperties.DEFAULT_HOTROD_PORT)
             .maxRetries(0);
 
