@@ -6,14 +6,14 @@ import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.commons.dataconversion.MediaType;
 import org.infinispan.commons.marshall.UTF8StringMarshaller;
-import org.infinispan.tutorial.simple.connect.Infinispan;
+import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 import java.net.URI;
 
 public class InfinispanEncodingCaches {
 
    public static void main(String[] args) throws Exception {
-      ConfigurationBuilder builder = Infinispan.connectionConfig();
+      ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
 
       URI textCacheURI = InfinispanEncodingCaches.class.getClassLoader().getResource("textCache.xml").toURI();
       URI jsonCacheURI = InfinispanEncodingCaches.class.getClassLoader().getResource("jsonCache.xml").toURI();

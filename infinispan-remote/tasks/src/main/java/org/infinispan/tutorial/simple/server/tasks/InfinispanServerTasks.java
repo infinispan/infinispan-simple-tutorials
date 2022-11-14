@@ -8,7 +8,7 @@ import org.infinispan.client.rest.RestEntity;
 import org.infinispan.client.rest.RestResponse;
 import org.infinispan.client.rest.RestURI;
 import org.infinispan.client.rest.configuration.RestClientConfigurationBuilder;
-import org.infinispan.tutorial.simple.connect.Infinispan;
+import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,13 +21,13 @@ import static org.infinispan.commons.util.Util.getResourceAsString;
 public class InfinispanServerTasks {
 
    public static void main(String[] args) throws Exception {
-      RemoteCacheManager remoteCacheManager = Infinispan.connect();
+      RemoteCacheManager remoteCacheManager = TutorialsConnectorHelper.connect();
 
       // Upload the task using the REST API
       uploadTask();
 
       // Get a cache to execute the task
-      RemoteCache<String, String> execCache = remoteCacheManager.getCache(Infinispan.TUTORIAL_CACHE_NAME);
+      RemoteCache<String, String> execCache = remoteCacheManager.getCache(TutorialsConnectorHelper.TUTORIAL_CACHE_NAME);
 
       // Create task parameters
       Map<String, String> parameters = new HashMap<>();
@@ -48,7 +48,7 @@ public class InfinispanServerTasks {
       RestURI uri = RestURI
             .create(String.format("http://localhost:%d", ConfigurationProperties.DEFAULT_HOTROD_PORT));
       RestClientConfigurationBuilder builder = uri.toConfigurationBuilder();
-      builder.security().authentication().username(Infinispan.USER).password(Infinispan.PASSWORD);
+      builder.security().authentication().username(TutorialsConnectorHelper.USER).password(TutorialsConnectorHelper.PASSWORD);
       RestClient client = RestClient.forConfiguration(builder.build());
       RestEntity scriptEntity = RestEntity.create(APPLICATION_JAVASCRIPT, script);
       CompletionStage<RestResponse> uploadScript = client.tasks()

@@ -8,17 +8,17 @@ import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.configuration.NearCacheMode;
-import org.infinispan.tutorial.simple.connect.Infinispan;
+import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 public class InfinispanNearCache {
 
    public static final String CACHE_WITH_NEAR_CACHING = "testCacheNearCaching";
 
    public static void main(String[] args) {
-      ConfigurationBuilder builder = Infinispan.connectionConfig();
+      ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
       // Add an additional cache with near caching configuration
       builder.remoteCache(CACHE_WITH_NEAR_CACHING)
-            .configuration(Infinispan.TUTORIAL_CACHE_CONFIG.replace("CACHE_NAME", CACHE_WITH_NEAR_CACHING))
+            .configuration(TutorialsConnectorHelper.TUTORIAL_CACHE_CONFIG.replace("CACHE_NAME", CACHE_WITH_NEAR_CACHING))
             .nearCacheMode(NearCacheMode.INVALIDATED)
             .nearCacheMaxEntries(20)
             .nearCacheUseBloomFilter(true);
@@ -26,7 +26,7 @@ public class InfinispanNearCache {
       // Connect to the server with the near cache configuration for the test cache
       RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
 
-      RemoteCache<Integer, String> testCache = cacheManager.getCache(Infinispan.TUTORIAL_CACHE_NAME);
+      RemoteCache<Integer, String> testCache = cacheManager.getCache(TutorialsConnectorHelper.TUTORIAL_CACHE_NAME);
       RemoteCache<Integer, String> withNearCaching = cacheManager.getCache(CACHE_WITH_NEAR_CACHING);
 
       for (int i = 1; i<= 20; i++) {

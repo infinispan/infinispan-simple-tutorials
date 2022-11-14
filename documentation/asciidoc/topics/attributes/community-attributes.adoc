@@ -67,3 +67,6 @@
 
 //Hibernate Guide
 :hibernate_docs: {stable_documentation}/hibernate/hibernate.html
+
+//Mutiny
+:mutiny_docs: https://smallrye.io/smallrye-mutiny

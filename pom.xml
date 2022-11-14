@@ -68,6 +68,7 @@
         <module>infinispan-remote/per-cache-configuration</module>
         <module>infinispan-remote/persistence/sql-store</module>
         <module>infinispan-remote/query</module>
+        <module>infinispan-remote/reactive-api</module>
         <module>infinispan-remote/security/secured-cache</module>
         <module>infinispan-remote/security/tls-authorization</module>
         <module>infinispan-remote/tasks</module>

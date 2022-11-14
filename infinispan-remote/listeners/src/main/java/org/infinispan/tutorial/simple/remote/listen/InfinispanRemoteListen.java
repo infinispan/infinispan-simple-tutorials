@@ -7,7 +7,7 @@ import org.infinispan.client.hotrod.annotation.ClientCacheEntryModified;
 import org.infinispan.client.hotrod.annotation.ClientListener;
 import org.infinispan.client.hotrod.event.ClientCacheEntryCreatedEvent;
 import org.infinispan.client.hotrod.event.ClientCacheEntryModifiedEvent;
-import org.infinispan.tutorial.simple.connect.Infinispan;
+import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 /**
  *
@@ -19,10 +19,10 @@ public class InfinispanRemoteListen {
 
    public static void main(String[] args) throws InterruptedException {
       // Connect to the server
-      RemoteCacheManager cacheManager = Infinispan.connect();
+      RemoteCacheManager cacheManager = TutorialsConnectorHelper.connect();
 
       // Get the test cache
-      RemoteCache<String, String> cache = cacheManager.getCache(Infinispan.TUTORIAL_CACHE_NAME);
+      RemoteCache<String, String> cache = cacheManager.getCache(TutorialsConnectorHelper.TUTORIAL_CACHE_NAME);
 
       // Register a listener
       MyListener listener = new MyListener();

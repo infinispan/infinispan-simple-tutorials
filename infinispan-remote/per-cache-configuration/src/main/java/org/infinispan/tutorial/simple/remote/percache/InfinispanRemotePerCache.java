@@ -4,8 +4,7 @@ import org.infinispan.client.hotrod.DefaultTemplate;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
-import org.infinispan.client.hotrod.impl.ConfigurationProperties;
-import org.infinispan.tutorial.simple.connect.Infinispan;
+import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 /**
  *
@@ -24,7 +23,7 @@ public class InfinispanRemotePerCache {
 
    public static void main(String[] args) throws Exception {
       // Create a configuration for a locally-running server
-      ConfigurationBuilder builder = Infinispan.connectionConfig();
+      ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
 
       //Add per-cache configuration that uses an org.infinispan cache template.
       builder.remoteCache("my-cache")

@@ -10,7 +10,7 @@ import org.infinispan.query.api.continuous.ContinuousQuery;
 import org.infinispan.query.api.continuous.ContinuousQueryListener;
 import org.infinispan.query.dsl.Query;
 import org.infinispan.query.dsl.QueryFactory;
-import org.infinispan.tutorial.simple.connect.Infinispan;
+import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,9 +65,9 @@ public class InfinispanRemoteContinuousQuery {
 
    public static void main(String[] args) throws Exception {
       // Connect to the server
-      RemoteCacheManager client = Infinispan.connect();
+      RemoteCacheManager client = TutorialsConnectorHelper.connect();
 
-      RemoteCache<String, InstaPost> cache = client.getCache(Infinispan.TUTORIAL_CACHE_NAME);
+      RemoteCache<String, InstaPost> cache = client.getCache(TutorialsConnectorHelper.TUTORIAL_CACHE_NAME);
 
       // Create and add the Protobuf schema for InstaPost class. Note InstaPost is an annotated POJO
       addInstapostsSchema(client);
