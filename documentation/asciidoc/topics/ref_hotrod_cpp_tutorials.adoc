@@ -5,7 +5,7 @@
 == Prerequisites
 
 * Centos 7 (RHEL 7 should work also)
-* Infinispan server running with the default standalone configuration
+* {brandname} Server running with the default standalone configuration
 
 [discrete]
 == Docker

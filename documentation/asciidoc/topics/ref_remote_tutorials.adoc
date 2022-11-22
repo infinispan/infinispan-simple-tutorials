@@ -21,7 +21,7 @@ $ ./bin/server.sh
 [NOTE]
 ====
 {brandname} Server enables authentication and authorization by default.
-Creating a user named `admin` gives you administrative access to Infinispan Server.
+Creating a user named `admin` gives you administrative access to {brandname} Server.
 ====
 
 .Building and running remote cache tutorials
