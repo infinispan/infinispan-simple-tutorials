@@ -35,7 +35,7 @@ Make sure you have `minikube` installed locally.
 ====
 
 .Steps
-. Run *`./setup.sh`*: This script starts minikube, installs the Infinispan Operator, deploys two clusters (LON and NYC) and creates the caches.
+. Run *`./setup.sh`*: This script starts minikube, installs the {brandname} Operator, deploys two clusters (LON and NYC) and creates the caches.
 . Run *`./create-data.sh`*
 
 Both sites are accessible externally using the {brandname} Console through
@@ -54,4 +54,4 @@ To go further use the {brandname} Console or the REST API, add launch additional
 .Additional resources
 * link:{xsite_docs}[Cross-Site Replication Guide]
 * link:{rest_docs}#rest_v2_cache_operations[REST API: Cross-Site Replication]
-* link:{operator}[{brandname} Operator]
+* link:{k8s_docs}[{brandname} Operator]

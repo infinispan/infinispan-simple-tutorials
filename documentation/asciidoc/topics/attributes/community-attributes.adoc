@@ -3,7 +3,7 @@
 :tutorials: Code Tutorials
 :repository: https://github.com/infinispan/infinispan-simple-tutorials/tree/main
 :repository_ssh: git@github.com:infinispan/infinispan-simple-tutorials.git
-:operator: https://infinispan.org/docs/infinispan-operator/
+:k8s_docs: https://infinispan.org/docs/infinispan-operator/main/operator.html
 :download_url: https://infinispan.org/download/
 
 :plusplus: ++
@@ -22,9 +22,6 @@
 
 //CLI
 :cli_docs: {stable_documentation}/cli/cli.html
-
-//Dev
-:dev_docs: {stable_documentation}/developing/developing.html
 
 //Embedded
 :library_docs: {stable_documentation}/embedding/embedding.html

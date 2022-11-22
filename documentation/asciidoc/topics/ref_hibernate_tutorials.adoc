@@ -38,5 +38,5 @@ $ {wildfly_deploy}
 
 You can find more resources in our documentation at:
 
-* link:{dev_docs}#ispn_modules[{brandname} WildFly modules]
+* link:{library_docs}#ispn_modules[{brandname} WildFly modules]
 * link:{hibernate_docs}[Hibernate Second-Level Caching]

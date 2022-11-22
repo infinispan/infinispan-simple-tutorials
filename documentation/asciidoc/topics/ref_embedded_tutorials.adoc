@@ -69,5 +69,4 @@ endif::community[]
 You can find more resources about embedded caches in our documentation at:
 
 * link:{library_docs}[Embedding {brandname} Caches]
-* link:{dev_docs}[{brandname} Developer Guide]
 * link:{query_docs}[Querying {brandname} caches]

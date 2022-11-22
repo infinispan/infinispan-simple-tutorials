@@ -36,4 +36,4 @@ Create a cache named `my-cache` using the http://localhost:11222/[{brandname} Co
 node index.js
 ----
 
-Check with the Infinispan Console http://localhost:11222/console/my-cach[the `my-cache` cache detail].
+Check with the {brandname} Console http://localhost:11222/console/my-cach[the `my-cache` cache detail].
