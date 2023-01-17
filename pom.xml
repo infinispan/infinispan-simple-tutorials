@@ -1,4 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.infinispan</groupId>
+        <artifactId>infinispan-build-configuration-parent</artifactId>
+        <version>14.0.6.Final</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.infinispan.tutorial.simple</groupId>
     <artifactId>infinispan-simple-tutorials</artifactId>
@@ -8,11 +13,8 @@
     <name>Infinispan Tutorial: Simple tutorials</name>
 
     <properties>
-       <version.infinispan>14.0.2.Final</version.infinispan>
-       <version.protostream>4.5.0.Final</version.protostream>
-       <version.spring.boot>2.7.0</version.spring.boot>
-       <version.spring.session>2.7.0</version.spring.session>
-       <version.micrometer.registry.prometheus>1.5.2</version.micrometer.registry.prometheus>
+       <version.infinispan>14.0.6.Final</version.infinispan>
+       <version.protostream>4.6.0.Final</version.protostream>
     </properties>
 
     <dependencyManagement>
