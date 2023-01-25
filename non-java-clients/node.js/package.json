@@ -13,6 +13,6 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "infinispan": "^0.9.0"
+    "infinispan": "^0.10.0"
   }
 }
