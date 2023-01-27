@@ -1,5 +1,6 @@
 package org.infinispan.tutorial.simple.spring.session;
 
+import jakarta.servlet.http.HttpSession;
 import org.infinispan.spring.embedded.provider.SpringEmbeddedCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.support.SimpleValueWrapper;
@@ -9,12 +10,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
+import java.util.Set;
 
 @RestController
 public class UserSessionsController {
 
     public static final String LATEST_SESSION_VALUE = "latest";
+
     @Autowired
     private SpringEmbeddedCacheManager cacheManager;
 
@@ -30,8 +32,8 @@ public class UserSessionsController {
     }
 
     @GetMapping("/sessions")
-    public String sessions() {
-        return cacheManager.getCache("sessions").getNativeCache().keySet().toString();
+    public Set<?> sessions() {
+        return cacheManager.getCache("sessions").getNativeCache().keySet();
     }
 
     @GetMapping("/sessions/{id}")

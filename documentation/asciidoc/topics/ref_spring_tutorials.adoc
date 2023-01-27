@@ -7,9 +7,19 @@ These code tutorials use {brandname} Server and require at least one running ins
 ====
 
 .Run Spring examples
+
+Two simple tutorials can be run with Spring without Spring Boot:
+
+* Test caching
 [source,bash,options="nowrap",subs=attributes+]
 ----
-$ {package_exec}
+$ {package_exec}@spring-caching
+----
+
+* Test annotations
+[source,bash,options="nowrap",subs=attributes+]
+----
+$ {package_exec}@spring-annotations
 ----
 
 .Run Spring Boot examples
@@ -58,9 +68,6 @@ $ podman run -d --name=prometheus -p 9090:9090 -v YOUR_PATH/integrations/spring-
 
 |link:{repository}/integrations/spring/spring-cache[Spring cache embedded without Spring Boot]
 |Demonstrates how to use Spring Cache and {brandname} Embedded without Spring Boot.
-
-|link:{repository}/integrations/spring/spring-session[Spring session embedded without Spring Boot]
-|Demonstrates how to use Spring Session and {brandname} Embedded without Spring Boot.
 
 |===
 
