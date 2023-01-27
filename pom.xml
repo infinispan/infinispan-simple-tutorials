@@ -14,7 +14,8 @@
 
     <properties>
        <version.infinispan>14.0.7.Final</version.infinispan>
-       <version.protostream>4.6.0.Final</version.protostream>
+       <version.protostream>4.6.1.Final</version.protostream>
+       <java.version>17</java.version>
     </properties>
 
     <dependencyManagement>
@@ -94,7 +95,6 @@
         <module>integrations/hibernate/spring-local</module>
         <module>integrations/hibernate/wildfly-local</module>
         <module>integrations/spring/spring-cache</module>
-        <module>integrations/spring/spring-session</module>
         <module>integrations/spring-boot/cache-remote</module>
         <module>integrations/spring-boot/session-remote</module>
         <module>integrations/spring-boot/cache-embedded</module>

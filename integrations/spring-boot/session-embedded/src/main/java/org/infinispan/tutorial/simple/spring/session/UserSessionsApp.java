@@ -11,13 +11,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication
 @EnableInfinispanEmbeddedHttpSession
+@SpringBootApplication
 public class UserSessionsApp {
 
     @Bean
     public InfinispanGlobalConfigurer globalCustomizer() {
-        return () -> GlobalConfigurationBuilder.defaultClusteredBuilder().build();
+        return () -> GlobalConfigurationBuilder
+              .defaultClusteredBuilder()
+              .metrics().gauges(false).histograms(false)
+              .globalState().disable()
+              .build();
     }
 
     @Bean
@@ -26,6 +30,7 @@ public class UserSessionsApp {
             final Configuration ispnConfig = new ConfigurationBuilder()
                     .clustering()
                     .cacheMode(CacheMode.DIST_SYNC)
+                    .statistics().disable()
                     .build();
 
 

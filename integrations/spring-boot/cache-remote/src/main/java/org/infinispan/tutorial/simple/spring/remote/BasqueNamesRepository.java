@@ -2,6 +2,7 @@ package org.infinispan.tutorial.simple.spring.remote;
 
 import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -18,7 +19,7 @@ public class BasqueNamesRepository {
    private Map<String, BasqueName> database = new HashMap<>();
 
    @Cacheable
-   public BasqueName findById(int id) {
+   public BasqueName findById(String id) {
       logger.info("Call database to FIND name by id '" + id + "'");
       return database.get(id);
    }
