@@ -2,7 +2,7 @@
     <parent>
         <groupId>org.infinispan</groupId>
         <artifactId>infinispan-build-configuration-parent</artifactId>
-        <version>14.0.6.Final</version>
+        <version>14.0.7.Final</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.infinispan.tutorial.simple</groupId>
@@ -13,7 +13,7 @@
     <name>Infinispan Tutorial: Simple tutorials</name>
 
     <properties>
-       <version.infinispan>14.0.6.Final</version.infinispan>
+       <version.infinispan>14.0.7.Final</version.infinispan>
        <version.protostream>4.6.0.Final</version.protostream>
     </properties>
 
