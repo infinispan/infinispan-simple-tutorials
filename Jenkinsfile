@@ -8,7 +8,12 @@ pipeline {
                 checkout scm
             }
         }
-
+        stage('Prepare') {
+            steps {
+                 script {
+                     env.JAVA_HOME = tool('JDK 17')
+                 }
+        }
         stage('Build') {
             steps {
                 script {
