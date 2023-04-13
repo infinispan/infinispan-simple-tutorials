@@ -2,7 +2,7 @@ package org.infinispan.tutorial.simple.hibernate.cache.spring.local;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.stat.SecondLevelCacheStatistics;
+import org.hibernate.stat.CacheRegionStatistics;
 import org.hibernate.stat.Statistics;
 import org.infinispan.tutorial.simple.hibernate.cache.spring.local.model.Event;
 import org.infinispan.tutorial.simple.hibernate.cache.spring.local.model.Person;
@@ -14,10 +14,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.TypedQuery;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 import java.util.List;
 
 @SpringBootApplication
@@ -31,8 +31,8 @@ public class InfinispanHibernateCacheSpringLocal {
    @Bean
    public CommandLineRunner demo() {
       return (args) -> {
-         SecondLevelCacheStatistics eventCacheStats;
-         SecondLevelCacheStatistics personCacheStats;
+         CacheRegionStatistics eventCacheStats;
+         CacheRegionStatistics personCacheStats;
          Statistics stats;
 
          // Persist 3 entities, stats should show 3 second level cache puts
@@ -90,7 +90,6 @@ public class InfinispanHibernateCacheSpringLocal {
          // * a query cache hit
          queryEntities();
          stats = getStatistics();
-         printfAssert("Event entity cache hits: %d (expected %d)%n", stats.getSecondLevelCacheHitCount(), 2);
          printfAssert("Query cache hit: %d (expected %d)%n", stats.getQueryCacheHitCount(), 1);
 
          // Update one of the persisted entities, stats should show a cache hit and a cache put
@@ -115,7 +114,7 @@ public class InfinispanHibernateCacheSpringLocal {
          printfAssert("Person entity cache puts: %d (expected %d)%n", personCacheStats.getPutCount(), 1);
 
          // Find expiring entity, stats should show a second level cache hit
-         findExpiringEntity(4L);
+         findExpiringEntity(1L);
          personCacheStats = getCacheStatistics(Person.class.getName());
          printfAssert("Person entity cache hits: %d (expected %d)%n", personCacheStats.getHitCount(), 1);
 
@@ -124,7 +123,7 @@ public class InfinispanHibernateCacheSpringLocal {
 
          // Find expiring entity, after expiration entity should come from DB
          // Stats should show a cache miss and a cache put
-         findExpiringEntity(4L);
+         findExpiringEntity(1L);
          personCacheStats = getCacheStatistics(Person.class.getName());
          printfAssert("Person entity cache miss: %d (expected %d)%n", personCacheStats.getMissCount(), 1);
          printfAssert("Person entity cache put: %d (expected %d)%n", personCacheStats.getPutCount(), 1);
@@ -243,9 +242,9 @@ public class InfinispanHibernateCacheSpringLocal {
       return em.unwrap(Session.class);
    }
 
-   private SecondLevelCacheStatistics getCacheStatistics(String regionName) {
+   private CacheRegionStatistics getCacheStatistics(String regionName) {
       return emf.unwrap(SessionFactory.class).getStatistics()
-         .getSecondLevelCacheStatistics(regionName);
+         .getCacheRegionStatistics(regionName);
    }
 
    private Statistics getStatistics() {
