@@ -10,14 +10,30 @@
    <version>1.0.0-SNAPSHOT</version>
 
    <parent>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-parent</artifactId>
-      <version>3.0.5</version>
+      <relativePath>../../../pom.xml</relativePath>
+      <version>1.0.0-SNAPSHOT</version>
+      <groupId>org.infinispan.tutorial.simple</groupId>
+      <artifactId>infinispan-simple-tutorials</artifactId>
    </parent>
 
-   <properties>
-      <java.version>1.8</java.version>
-   </properties>
+   <dependencyManagement>
+      <dependencies>
+         <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-bom</artifactId>
+            <version>${version.infinispan}</version>
+            <scope>import</scope>
+            <type>pom</type>
+         </dependency>
+         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-parent</artifactId>
+            <version>${version.spring.boot3}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
+      </dependencies>
+   </dependencyManagement>
 
    <dependencies>
       <dependency>
@@ -31,7 +47,8 @@
       <dependency>
          <groupId>org.infinispan</groupId>
          <artifactId>infinispan-hibernate-cache-v62</artifactId>
-         <version>14.0.8.Final</version>
+         <!-- Not present in BOM. See https://issues.redhat.com/browse/ISPN-14841 -->
+         <version>${version.infinispan}</version>
       </dependency>
    </dependencies>
 
@@ -40,6 +57,7 @@
          <plugin>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-maven-plugin</artifactId>
+            <version>${version.spring.boot3}</version>
          </plugin>
          <plugin>
             <groupId>org.codehaus.mojo</groupId>

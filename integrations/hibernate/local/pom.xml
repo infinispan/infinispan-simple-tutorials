@@ -12,9 +12,7 @@
    <name>Infinispan Simple Tutorials: Hibernate Cache Local</name>
 
    <properties>
-      <version.hibernate-core>6.2.0.Final</version.hibernate-core>
       <version.h2>1.3.176</version.h2>
-      <version.log4j>2.14.0</version.log4j>
    </properties>
 
    <build>
@@ -46,11 +44,12 @@
       <dependency>
          <groupId>org.hibernate</groupId>
          <artifactId>hibernate-core</artifactId>
-         <version>${version.hibernate-core}</version>
+         <version>${version.hibernate.core}</version>
       </dependency>
       <dependency>
          <groupId>org.infinispan</groupId>
          <artifactId>infinispan-hibernate-cache-v62</artifactId>
+         <!-- Not present in BOM. See https://issues.redhat.com/browse/ISPN-14841 -->
          <version>${version.infinispan}</version>
       </dependency>
       <dependency>

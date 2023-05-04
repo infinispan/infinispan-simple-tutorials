@@ -2,7 +2,7 @@
     <parent>
         <groupId>org.infinispan</groupId>
         <artifactId>infinispan-build-configuration-parent</artifactId>
-        <version>14.0.8.Final</version>
+        <version>14.0.9.Final</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.infinispan.tutorial.simple</groupId>
@@ -11,12 +11,6 @@
     <packaging>pom</packaging>
 
     <name>Infinispan Tutorial: Simple tutorials</name>
-
-    <properties>
-       <version.infinispan>14.0.8.Final</version.infinispan>
-       <version.protostream>4.6.2.Final</version.protostream>
-       <java.version>17</java.version>
-    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -41,10 +35,11 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.1</version>
+                    <version>${version.maven-compiler-plugin}</version>
                     <configuration>
-                        <source>11</source>
-                        <target>11</target>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
+                        <encoding>UTF-8</encoding>
                     </configuration>
                 </plugin>
                 <plugin>
