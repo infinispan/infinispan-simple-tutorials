@@ -28,7 +28,7 @@ $ {wildfly_deploy}
 |link:{repository}/integrations/hibernate/spring-local[Hibernate and Spring local]
 |Demonstrates how Spring, Hibernate and {brandname} work.
 
-|link:{repository}/integrations/spring-boot/wildfly-local[Hibernate and WildFly local]
+|link:{repository}/integrations/hibernate/wildfly-local[Hibernate and WildFly local]
 |Demonstrates how Wildfly and {brandname} work.
 
 |===
