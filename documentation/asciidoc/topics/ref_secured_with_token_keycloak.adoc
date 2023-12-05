@@ -1,0 +1,26 @@
+[id='secured_with_token_keycloak_{context}']
+= Token based Security Realm with Keycloak
+
+Learn how to handle security authentication in {brandname} with Keycloak.
+
+link:{repository}/infinispan-remote/infinispan-secured-keycloak[Token based security tutorial with Keycloak]
+
+In this tutorial, you start one {brandname} cluster and Keycloak.
+This tutorial demonstrates {brandname} security capabilities locally using `docker-compose`.
+
+== Docker compose
+
+[WARNING]
+====
+Make sure you have `docker` and `docker-compose` installed locally.
+====
+
+.Steps
+
+. Run `docker-compose up`. {sso} and {brandname} will start with all the necessary configuration.
+
+. Access the console at `http://localhost:11222/console`. You should be redirected to Keycloak login.
+
+. Enter 'admin/adminPassword' credentials in the login page.
+
+. You are now back in the console, logged in.
