@@ -1,5 +1,6 @@
 :community:
 :brandname: Infinispan
+:sso: Keycloak
 :tutorials: Code Tutorials
 :repository: https://github.com/infinispan/infinispan-simple-tutorials/tree/main
 :repository_ssh: git@github.com:infinispan/infinispan-simple-tutorials.git

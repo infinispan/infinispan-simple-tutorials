@@ -1,0 +1,26 @@
+version: '3.1'
+
+services:
+  keycloak:
+    image:  quay.io/keycloak/keycloak
+    volumes:
+      - ./infinispan-keycloak-realm.json:/opt/keycloak/data/import/infinispan-keycloak-realm.json
+    container_name: keycloak
+    environment:
+      KEYCLOAK_ADMIN: keycloak
+      KEYCLOAK_ADMIN_PASSWORD: keycloak
+    command: ['start-dev', '--import-realm']
+    network_mode: host
+
+  infinispan-server:
+    image: quay.io/infinispan-test/server:14.0.x
+    volumes:
+      - ./infinispan-token-realm.yaml:/user-config/infinispan-token-realm.yaml
+    depends_on:
+      - "keycloak"
+    container_name: ispn
+    environment:
+      USER: admin
+      PASS: password
+    command: -c infinispan.xml -c /user-config/infinispan-token-realm.yaml
+    network_mode: host
