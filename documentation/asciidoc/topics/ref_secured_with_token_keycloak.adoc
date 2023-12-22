@@ -24,3 +24,8 @@ Make sure you have `docker` and `docker-compose` installed locally.
 . Enter 'admin/adminPassword' credentials in the login page.
 
 . You are now back in the console, logged in.
+
+[TIP]
+If you are using Docker of Mac or Docker Desktop, `network_mode: host` might still not be supported.
+In that case, run `docker-compose -f docker-compose-no-linux.yaml up` and add `127.0.0.1  keycloak`
+to `/etc/hosts`.
