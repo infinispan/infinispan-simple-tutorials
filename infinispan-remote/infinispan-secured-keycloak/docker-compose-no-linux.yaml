@@ -1,8 +1,14 @@
 version: '3.1'
 
+networks:
+  mynetwork:
+    driver: bridge
+
 services:
   keycloak:
     image:  quay.io/keycloak/keycloak
+    ports:
+      - "8080:8080"
     volumes:
       - ./infinispan-keycloak-realm.json:/opt/keycloak/data/import/infinispan-keycloak-realm.json
     container_name: keycloak
@@ -10,17 +16,21 @@ services:
       KEYCLOAK_ADMIN: keycloak
       KEYCLOAK_ADMIN_PASSWORD: keycloak
     command: ['start-dev', '--import-realm']
-    network_mode: host
+    networks:
+      - mynetwork
 
   infinispan-server:
     image: quay.io/infinispan/server:14.0
+    ports:
+      - "11222:11222"
     volumes:
-      - ./infinispan-token-realm.yaml:/user-config/infinispan-token-realm.yaml
+      - ./infinispan-token-realm.yaml:/user-config/infinispan-token-realm-no-linux.yaml
     depends_on:
       - "keycloak"
     container_name: ispn
     environment:
       USER: admin
       PASS: password
-    command: -c infinispan.xml -c /user-config/infinispan-token-realm.yaml
-    network_mode: host
+    command: -c infinispan.xml -c /user-config/infinispan-token-realm-no-linux.yaml
+    networks:
+      - mynetwork
