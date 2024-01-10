@@ -3,9 +3,7 @@ package org.infinispan.tutorial.simple.remote.query;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.Search;
-import org.infinispan.client.hotrod.marshall.MarshallerUtil;
-import org.infinispan.protostream.SerializationContext;
-import org.infinispan.protostream.annotations.ProtoSchemaBuilder;
+import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.query.api.continuous.ContinuousQuery;
 import org.infinispan.query.api.continuous.ContinuousQueryListener;
 import org.infinispan.query.dsl.Query;
@@ -65,12 +63,14 @@ public class InfinispanRemoteContinuousQuery {
 
    public static void main(String[] args) throws Exception {
       // Connect to the server
-      RemoteCacheManager client = TutorialsConnectorHelper.connect();
+      ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
+      InstaSchemaImpl schema = new InstaSchemaImpl();
+      builder.addContextInitializer(schema);
+      RemoteCacheManager client = new RemoteCacheManager(builder.build());
+      // Create and add the Protobuf schema for InstaPost class. Note InstaPost is an annotated POJO
+      register(schema, client);
 
       RemoteCache<String, InstaPost> cache = client.getCache(TutorialsConnectorHelper.TUTORIAL_CACHE_NAME);
-
-      // Create and add the Protobuf schema for InstaPost class. Note InstaPost is an annotated POJO
-      addInstapostsSchema(client);
 
       // Get a query factory from the cache
       QueryFactory queryFactory = Search.getQueryFactory(cache);
@@ -130,24 +130,12 @@ public class InfinispanRemoteContinuousQuery {
       cache.put(id, post);
    }
 
-   private static void addInstapostsSchema(RemoteCacheManager cacheManager) throws IOException {
-      // Get the serialization context of the client
-      SerializationContext ctx = MarshallerUtil.getSerializationContext(cacheManager);
-
-      // Use ProtoSchemaBuilder to define a Protobuf schema on the client
-      ProtoSchemaBuilder protoSchemaBuilder = new ProtoSchemaBuilder();
-      String fileName = "instapost.proto";
-      String protoFile = protoSchemaBuilder
-            .fileName(fileName)
-            .addClass(InstaPost.class)
-            .packageName("tutorial")
-            .build(ctx);
-
+   private static void register(InstaSchemaImpl schema, RemoteCacheManager cacheManager) throws IOException {
       // Retrieve metadata cache
       RemoteCache<String, String> metadataCache =
             cacheManager.getCache(PROTOBUF_METADATA_CACHE_NAME);
 
-      // Define the new schema on the server too
-      metadataCache.putIfAbsent(fileName, protoFile);
+      // register the new schema on the server too
+      metadataCache.putIfAbsent(schema.getProtoFileName(), schema.getProtoFile());
    }
 }

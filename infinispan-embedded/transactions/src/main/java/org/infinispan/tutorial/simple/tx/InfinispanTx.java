@@ -1,13 +1,12 @@
 package org.infinispan.tutorial.simple.tx;
 
+import jakarta.transaction.TransactionManager;
 import org.infinispan.Cache;
 import org.infinispan.commons.api.CacheContainerAdmin;
 import org.infinispan.configuration.cache.Configuration;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.transaction.TransactionMode;
-
-import javax.transaction.TransactionManager;
 
 public class InfinispanTx {
 

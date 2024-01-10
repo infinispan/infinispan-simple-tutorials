@@ -2,6 +2,7 @@ package org.infinispan.tutorial.simple.remote.query;
 
 import java.util.Objects;
 
+import org.infinispan.protostream.annotations.ProtoFactory;
 import org.infinispan.protostream.annotations.ProtoField;
 
 /**
@@ -25,6 +26,7 @@ public final class InstaPost {
       // An accessible no-arg constructor is required for Protostream to be able to instantiate this
    }
 
+   @ProtoFactory
    public InstaPost(String id, String user, String hashtag) {
       this.id = id;
       this.user = user;
