@@ -13,7 +13,7 @@ services:
     network_mode: host
 
   infinispan-server:
-    image: quay.io/infinispan/server:14.0
+    image: quay.io/infinispan/server:15.0
     volumes:
       - ./infinispan-token-realm.yaml:/user-config/infinispan-token-realm.yaml
     depends_on:

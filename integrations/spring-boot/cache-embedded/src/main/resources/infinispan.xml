@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<infinispan xmlns="urn:infinispan:config:14.0">
+<infinispan>
     <cache-container>
         <jmx domain="infinispan.embedded.example"/>
         <local-cache name="basque-names" statistics="true"/>
