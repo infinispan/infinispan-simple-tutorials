@@ -71,6 +71,7 @@
         <module>infinispan-remote/transactions</module>
         <module>infinispan-remote/encoding</module>
         <module>infinispan-remote/redis-client</module>
+        <module>infinispan-remote/cross-site-replication</module>
         <module>infinispan-embedded/cache-distributed</module>
         <module>infinispan-embedded/cache-invalidated</module>
         <module>infinispan-embedded/cache-replicated</module>
