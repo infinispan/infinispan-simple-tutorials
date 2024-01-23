@@ -55,8 +55,11 @@ public class TutorialsConnectorHelper {
     * @return a connected RemoteCacheManager
     */
    public static final RemoteCacheManager connect() {
-      ConfigurationBuilder builder = connectionConfig();
+      // Return the connected cache manager
+      return connect(connectionConfig());
+   }
 
+   public static final RemoteCacheManager connect(ConfigurationBuilder builder) {
       RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
 
       // Clear the cache in case it already exists from a previous running tutorial
