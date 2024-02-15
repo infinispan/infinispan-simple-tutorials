@@ -1,0 +1,56 @@
+[id='embedded-kubernetes_tutorial_{context}']
+= Kubernetes and Openshift tutorial
+
+This tutorial contains instructions on how to run Infinispan library mode (as a microservice) in Kubernetes/OpenShift.
+
+Prerequisites: Maven and Docker daemon running in the background.
+
+[discrete]
+== Prerequisites
+
+- A running Openshift or Kubernetes cluster
+
+[discrete]
+== Building the tutorial
+
+This tutorial is built using the maven command:
+
+[source,bash]
+----
+mvn package
+----
+
+Note that `target/` directory contains additional directories like `docker` (with generated Dockerfile) and `classes/META-INF/jkube` with Kubernetes and OpenShift deployment templates.
+
+TIP: If the Docker Daemon is down, the build will omit processing Dockerfiles. Use `docker` profile to turn it on manually.
+
+[discrete]
+== Deploying the tutorial to Kubernetes
+
+This is handle by the JKube maven plugin, just invoke:
+
+[source,bash]
+----
+mvn k8s:build k8s:push k8s:resource k8s:apply -Doptions.image=<IMAGE_NAME> # <1>
+----
+<1> `IMAGE_NAME` must be replaced with the FQN of the container to deploy to Kubernetes. This container must be created
+in a repository that you have permissions to push to and is accessible from within your Kubernetes cluster.
+
+[discrete]
+== Viewing and scaling up
+
+Everything should be up and running at this point. Now login into the OpenShift or Kubernetes cluster and scale the application
+
+[source,bash]
+----
+kubectl scale --replicas=3  deployment/$(kubectl get rs --namespace=myproject | grep infinispan | awk '{print $1}') --namespace=myproject
+----
+
+[discrete]
+== Undeploying the tutorial
+
+This is handled by the JKube maven plugin, just invoke:
+
+```
+mvn k8s:undeploy
+```
