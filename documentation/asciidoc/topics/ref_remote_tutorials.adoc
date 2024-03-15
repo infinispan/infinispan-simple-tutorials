@@ -2,6 +2,9 @@
 = Remote cache tutorials
 
 To run these tutorials you need at least one locally running instance of {brandname} Server.
+Each tutorial will try to connect to a running server in `localhost:11222` with
+`admin/password` credentials. However, if a Docker instance is found, and the server is not running,
+tutorials will spin up a local server with `Testcontainers`.
 
 ifdef::community[]
 To run the Server as a container image, visit the "Get Started" page

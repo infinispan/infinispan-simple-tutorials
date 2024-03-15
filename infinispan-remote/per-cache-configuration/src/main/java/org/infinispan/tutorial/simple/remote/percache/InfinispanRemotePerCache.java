@@ -36,7 +36,7 @@ public class InfinispanRemotePerCache {
             InfinispanRemotePerCache.class.getClassLoader().getResource("cacheConfig.xml").toURI());
 
       // Connect to the server
-      try (RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build())) {
+      try (RemoteCacheManager cacheManager = TutorialsConnectorHelper.connect(builder)) {
          // Obtain a remote cache that does not exist.
          // Rather than return null, create the cache from a template.
          RemoteCache<String, String> cache = cacheManager.getCache("my-cache");

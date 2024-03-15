@@ -24,7 +24,7 @@ public class SQLStoreLibraryMain {
       configurationBuilder.remoteCache(AUTHORS_CACHE).configurationURI(authorsCacheURI);
       configurationBuilder.remoteCache(BOOKS_CACHE).configurationURI(booksCacheURI);
 
-      RemoteCacheManager cacheManager = new RemoteCacheManager(configurationBuilder.build());
+      RemoteCacheManager cacheManager = TutorialsConnectorHelper.connect(configurationBuilder);
       ProtostreamSchemaUploader schemaUploader = new ProtostreamSchemaUploader(cacheManager);
       System.out.println("Register proto schema in the server...");
       schemaUploader.registerSchema();
@@ -46,7 +46,7 @@ public class SQLStoreLibraryMain {
       cacheManager.administration().removeCache(AUTHORS_CACHE);
       cacheManager.administration().removeCache(BOOKS_CACHE);
       schemaUploader.unregisterSchema();
-      cacheManager.stop();
+      TutorialsConnectorHelper.stop(cacheManager);
       dbCreator.stopDBServer();
    }
 }

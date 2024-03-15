@@ -24,7 +24,7 @@ public class InfinispanNearCache {
             .nearCacheUseBloomFilter(true);
 
       // Connect to the server with the near cache configuration for the test cache
-      RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
+      RemoteCacheManager cacheManager = TutorialsConnectorHelper.connect(builder);
 
       RemoteCache<Integer, String> testCache = cacheManager.getCache(TutorialsConnectorHelper.TUTORIAL_CACHE_NAME);
       RemoteCache<Integer, String> withNearCaching = cacheManager.getCache(CACHE_WITH_NEAR_CACHING);

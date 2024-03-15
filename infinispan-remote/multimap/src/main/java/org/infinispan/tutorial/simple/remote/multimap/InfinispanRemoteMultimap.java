@@ -40,7 +40,7 @@ public class InfinispanRemoteMultimap {
       }).join();
 
       // Stop the cache manager and release all resources
-      cacheManager.stop();
+      TutorialsConnectorHelper.stop(cacheManager);
    }
 
 }

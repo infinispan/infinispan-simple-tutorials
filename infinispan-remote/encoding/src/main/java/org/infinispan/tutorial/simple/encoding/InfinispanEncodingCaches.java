@@ -23,7 +23,7 @@ public class InfinispanEncodingCaches {
       builder.remoteCache("jsonCache").configurationURI(jsonCacheURI);
       builder.remoteCache("xmlCache").configurationURI(xmlCacheURI);
 
-      RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
+      RemoteCacheManager cacheManager = TutorialsConnectorHelper.connect(builder);
       RemoteCache<String, String> textCache = cacheManager.getCache("textCache");
       RemoteCache<String, String> jsonCache = cacheManager.getCache("jsonCache")
             .withDataFormat(DataFormat.builder()

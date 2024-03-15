@@ -36,7 +36,7 @@ public class InfinispanRemoteListen {
       // Remove listener
       cache.removeClientListener(listener);
       // Stop the cache manager and release all resources
-      cacheManager.stop();
+      TutorialsConnectorHelper.stop(cacheManager);
    }
 
    @ClientListener

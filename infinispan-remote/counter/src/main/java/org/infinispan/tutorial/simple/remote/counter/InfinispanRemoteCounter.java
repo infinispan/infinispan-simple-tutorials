@@ -99,7 +99,7 @@ public class InfinispanRemoteCounter {
       System.out.println("Counter-3 value is " + counter3.getValue());
 
       // Stop the cache manager and release all resources
-      cacheManager.stop();
+      TutorialsConnectorHelper.stop(cacheManager);
    }
 
 }

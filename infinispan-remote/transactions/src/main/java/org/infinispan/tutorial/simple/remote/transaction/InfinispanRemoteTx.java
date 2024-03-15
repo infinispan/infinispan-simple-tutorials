@@ -38,7 +38,7 @@ public class InfinispanRemoteTx {
             .transactionMode(TransactionMode.NON_XA);
 
       // Connect to the server
-      RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
+      RemoteCacheManager cacheManager = TutorialsConnectorHelper.connect(builder);
       RemoteCache<String, String> cache = cacheManager.getCache(CACHE_NAME);
 
       // Obtain the transaction manager
@@ -58,7 +58,7 @@ public class InfinispanRemoteTx {
       // Display the current cache contents
       System.out.printf("key1 = %s\nkey2 = %s\n", cache.get("key1"), cache.get("key2"));
       // Stop the cache manager and release all resources
-      cacheManager.stop();
+      TutorialsConnectorHelper.stop(cacheManager);
    }
 
 }
