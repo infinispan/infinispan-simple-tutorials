@@ -1,7 +1,7 @@
 package org.infinispan.tutorial.simple.remote.admin;
 
 import org.infinispan.client.hotrod.RemoteCacheManager;
-import org.infinispan.commons.configuration.XMLStringConfiguration;
+import org.infinispan.commons.configuration.StringConfiguration;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 import java.io.IOException;
@@ -36,18 +36,18 @@ public class InfinispanRemoteAdminCache {
     }
 
     private void stop() {
-        manager.stop();
+        TutorialsConnectorHelper.stop(manager);
     }
 
     /**
      * Creates a cache named CacheWithXMLConfiguration and uses the
-     * XMLStringConfiguration() method to pass the cache definition as
+     * StringConfiguration() method to pass the cache definition as
      * valid infinispan.xml.
      */
     private void createCacheWithXMLConfiguration() throws IOException {
         String cacheName = "CacheWithXMLConfiguration";
         String xml = Files.readString(Paths.get(this.getClass().getClassLoader().getResource("CacheWithXMLConfiguration.xml").getPath()));
-        manager.administration().getOrCreateCache(cacheName, new XMLStringConfiguration(xml));
+        manager.administration().getOrCreateCache(cacheName, new StringConfiguration(xml));
         System.out.println("Cache with configuration exists or is created.");
     }
 
@@ -59,7 +59,7 @@ public class InfinispanRemoteAdminCache {
         Path path = Paths.get(this.getClass().getClassLoader().getResource("cacheTemplate.xml").getPath());
         String xmlTemplate = Files.readString(path);
         try {
-            manager.administration().createTemplate("template", new XMLStringConfiguration(xmlTemplate));
+            manager.administration().createTemplate("template", new StringConfiguration(xmlTemplate));
         } catch (Exception ce) {
             // If the
             System.out.println(ce.getMessage());

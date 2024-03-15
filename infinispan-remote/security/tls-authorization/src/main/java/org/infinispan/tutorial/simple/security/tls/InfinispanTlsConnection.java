@@ -49,7 +49,7 @@ public class InfinispanTlsConnection {
    private static void testSslConfig(ConfigurationBuilder builder) {
       RemoteCacheManager cacheManager = null;
       try {
-         cacheManager = new RemoteCacheManager(builder.build());
+         cacheManager = TutorialsConnectorHelper.connect(builder);
          RemoteCache<String, String> cache = cacheManager.getCache("secured");
          System.out.println("    = connection success");
          cache.put("test", "test");

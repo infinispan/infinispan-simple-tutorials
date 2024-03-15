@@ -4,6 +4,7 @@ import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ClientIntelligence;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.impl.ConfigurationProperties;
+import org.infinispan.server.test.core.InfinispanContainer;
 
 /**
  * Utility class for the simple tutorials in client server mode.
@@ -30,14 +31,15 @@ public class TutorialsConnectorHelper {
     */
    public static final ConfigurationBuilder connectionConfig() {
       ConfigurationBuilder builder = new ConfigurationBuilder();
-      builder.addServer().host(HOST).port(SINGLE_PORT).security()
+      builder.security()
             .authentication()
             //Add user credentials.
             .username(USER)
             .password(PASSWORD);
 
-      // Docker 4 Mac Workaround. Don't use BASIC intelligence in production
-      builder.clientIntelligence(ClientIntelligence.BASIC);
+      // ### Docker 4 Mac Workaround. Don't use BASIC intelligence in production
+      /* ### ALERT!! Don't add this line in production by default */ builder.clientIntelligence(ClientIntelligence.BASIC);
+      // ### Docker 4 Mac Workaround. Don't use BASIC intelligence in production
 
       // Make sure the remote cache is available.
       // If the cache does not exist, the cache will be created
@@ -59,14 +61,48 @@ public class TutorialsConnectorHelper {
       return connect(connectionConfig());
    }
 
+   static InfinispanContainer infinispanContainer;
+
    public static final RemoteCacheManager connect(ConfigurationBuilder builder) {
-      RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
 
-      // Clear the cache in case it already exists from a previous running tutorial
-      cacheManager.getCache(TUTORIAL_CACHE_NAME).clear();
+      RemoteCacheManager cacheManager = null;
+      try {
+         builder.addServer().host(HOST).port(SINGLE_PORT);
+         cacheManager = new RemoteCacheManager(builder.build());
+         // Clear the cache in case it already exists from a previous running tutorial
+         cacheManager.getCache(TUTORIAL_CACHE_NAME).clear();
+      } catch (Exception ex) {
+         System.out.println("Unable to connect to a running server in localhost:11222. Try test containers");
+         if (cacheManager != null) {
+            cacheManager.stop();
+         }
+         cacheManager = null;
+      }
 
+      if (cacheManager == null) {
+         try {
+            infinispanContainer = new InfinispanContainer();
+            infinispanContainer.withUser(USER);
+            infinispanContainer.withPassword(PASSWORD);
+            infinispanContainer.start();
+            builder.addServer().host(HOST).port(infinispanContainer.getFirstMappedPort());
+            cacheManager = new RemoteCacheManager(builder.build());
+            // Clear the cache in case it already exists from a previous running tutorial
+            cacheManager.getCache(TUTORIAL_CACHE_NAME).clear();
+         } catch (Exception ex) {
+            System.out.println("Infinispan Server start with Testcontainers failed. Exit");
+            System.exit(0);
+         }
+      }
       // Return the connected cache manager
       return cacheManager;
+   }
+
+   public static void stop(RemoteCacheManager cacheManager) {
+      cacheManager.stop();
+      if (infinispanContainer != null) {
+         infinispanContainer.stop();
+      }
    }
 
 }

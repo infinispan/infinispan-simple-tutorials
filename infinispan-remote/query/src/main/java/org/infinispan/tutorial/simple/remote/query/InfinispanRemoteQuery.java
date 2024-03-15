@@ -2,11 +2,9 @@ package org.infinispan.tutorial.simple.remote.query;
 
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
-import org.infinispan.client.hotrod.Search;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
+import org.infinispan.commons.api.query.Query;
 import org.infinispan.protostream.GeneratedSchema;
-import org.infinispan.query.dsl.Query;
-import org.infinispan.query.dsl.QueryFactory;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 import java.net.URI;
@@ -40,7 +38,7 @@ public class InfinispanRemoteQuery {
       builder.remoteCache(INDEXED_PEOPLE_CACHE).configurationURI(indexedCacheURI);
 
       // Connect to the server
-      RemoteCacheManager client = new RemoteCacheManager(builder.build());
+      RemoteCacheManager client = TutorialsConnectorHelper.connect(builder);
 
       // Create and add the Protobuf schema in the server
       addPersonSchema(client);
@@ -58,23 +56,20 @@ public class InfinispanRemoteQuery {
       // Put all the values in the cache
       peopleCache.putAll(people);
 
-      // Get a query factory from the cache
-      QueryFactory queryFactory = Search.getQueryFactory(peopleCache);
-
       // Create a query with lastName parameter
-      Query query = queryFactory.create("FROM tutorial.Person p where p.lastName = :lastName");
+      Query<Person> query = peopleCache.query("FROM tutorial.Person p where p.lastName = :lastName");
 
       // Set the parameter value
       query.setParameter("lastName", "Rossignol");
 
       // Execute the query
-      List<Person> rossignols = query.execute().list();
+      List<Person> queryResult = query.execute().list();
 
       // Print the results
-      System.out.println(rossignols);
+      System.out.println(queryResult);
 
       // Stop the client and release all resources
-      client.stop();
+      TutorialsConnectorHelper.stop(client);
    }
 
    private static void addPersonSchema(RemoteCacheManager cacheManager) {

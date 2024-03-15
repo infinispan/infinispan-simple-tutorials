@@ -22,7 +22,7 @@ public class InfinispanAuthorizationCache {
 
       // Connect to Infinispan with an additional cache that is secured with authorization for
       // deployer role only. We are connecting with 'admin' user that has 'admin' role.
-      RemoteCacheManager cacheManager = new RemoteCacheManager(configurationBuilder.build());
+      RemoteCacheManager cacheManager = TutorialsConnectorHelper.connect(configurationBuilder);
       RemoteCache<String, String> cache = cacheManager.getCache(TutorialsConnectorHelper.TUTORIAL_CACHE_NAME);
       RemoteCache<String, String> securedCache = cacheManager.getCache("securedCache");
 
@@ -37,7 +37,7 @@ public class InfinispanAuthorizationCache {
       }
 
       // Stop the cache manager and release all resources
-      cacheManager.stop();
+      TutorialsConnectorHelper.stop(cacheManager);
    }
 
 }

@@ -35,7 +35,7 @@ public class InfinispanRemoteSwitchCluster {
          // Connecting to NYC http://localhost:31222/console/cache/xsiteCache
          // hello (copied from LON) and hello-nyc both exist in NYC
          // hello exists in LON, but hello-nyc is absent because replication is active-passive from LON to NYC
-         client.stop();
+         TutorialsConnectorHelper.stop(client);
       }
    }
 

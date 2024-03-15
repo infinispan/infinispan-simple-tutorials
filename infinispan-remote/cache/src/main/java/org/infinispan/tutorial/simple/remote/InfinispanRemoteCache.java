@@ -24,7 +24,7 @@ public class InfinispanRemoteCache {
       // Retrieve the value and print it out
       System.out.printf("key = %s\n", cache.get("key"));
       // Stop the cache manager and release all resources
-      cacheManager.stop();
+      TutorialsConnectorHelper.stop(cacheManager);
    }
 
 }

@@ -1,8 +1,8 @@
 package org.infinispan.tutorial.simple.remote.query;
 
 import org.infinispan.protostream.GeneratedSchema;
-import org.infinispan.protostream.annotations.AutoProtoSchemaBuilder;
+import org.infinispan.protostream.annotations.ProtoSchema;
 
-@AutoProtoSchemaBuilder(schemaPackageName = "tutorial", includeClasses = Person.class)
+@ProtoSchema(schemaPackageName = "tutorial", includeClasses = Person.class)
 public interface TutorialSchema extends GeneratedSchema {
 }

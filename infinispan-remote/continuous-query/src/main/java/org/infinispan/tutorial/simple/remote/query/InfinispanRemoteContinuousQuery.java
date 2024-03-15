@@ -66,7 +66,7 @@ public class InfinispanRemoteContinuousQuery {
       ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
       InstaSchemaImpl schema = new InstaSchemaImpl();
       builder.addContextInitializer(schema);
-      RemoteCacheManager client = new RemoteCacheManager(builder.build());
+      RemoteCacheManager client = TutorialsConnectorHelper.connect(builder);
       // Create and add the Protobuf schema for InstaPost class. Note InstaPost is an annotated POJO
       register(schema, client);
 
@@ -91,7 +91,7 @@ public class InfinispanRemoteContinuousQuery {
                // This method will be executed every time new items that correspond with the query arrive
                @Override
                public void resultJoining(String key, InstaPost post) {
-                  System.out.println(String.format("@%s has posted again! Hashtag: #%s", post.user, post.hashtag));
+                  System.out.println(String.format("@%s has posted again! Hashtag: #%s", post.user(), post.hashtag()));
                   queryPosts.add(post);
                }
             };
@@ -118,7 +118,7 @@ public class InfinispanRemoteContinuousQuery {
       client.administration().removeCache(CACHE_NAME);
 
       // Stop the client and release all resources
-      client.stop();
+      TutorialsConnectorHelper.stop(client);
    }
 
    private static void addRandomPost(RemoteCache<String, InstaPost> cache) {
