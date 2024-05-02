@@ -94,6 +94,7 @@
         <module>integrations/hibernate/wildfly-local</module>
         <module>integrations/spring/spring-cache</module>
         <module>integrations/spring-boot/cache-remote</module>
+        <module>integrations/spring-boot/cache-remote-reactor</module>
         <module>integrations/spring-boot/session-remote</module>
         <module>integrations/spring-boot/cache-embedded</module>
         <module>integrations/spring-boot/session-embedded</module>

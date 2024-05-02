@@ -1,22 +1,22 @@
 //Community content
 ifdef::community[]
-:clean_package: mvn clean package
-:exec_exec: mvn exec:exec
-:exec_run: mvn exec:exec@run
-:clean_exec: mvn clean package exec:exec
-:clean_install: mvn clean install -DskipTests=true
-:package_exec: mvn package exec:exec
-:wildfly_deploy: mvn wildfly:deploy
-:spring_boot_run: mvn spring-boot:run
+:clean_package: ./mvnw clean package
+:exec_exec: ./mvnw exec:exec
+:exec_run: ./mvnw exec:exec@run
+:clean_exec: ./mvnw clean package exec:exec
+:clean_install: ./mvnw clean install -DskipTests=true
+:package_exec: ./mvnw package exec:exec
+:wildfly_deploy: ./mvnw wildfly:deploy
+:spring_boot_run: ./mvnw spring-boot:run
 endif::community[]
 //Downstream content
 ifdef::downstream[]
-:clean_package: mvn -s /path/to/maven-settings.xml clean package
-:exec_exec: mvn -s /path/to/maven-settings.xml exec:exec
-:exec_run: mvn -s /path/to/maven-settings.xml exec:exec@run
-:clean_exec: mvn -s /path/to/maven-settings.xml clean package exec:exec
-:clean_install: mvn -s /path/to/maven-settings.xml clean install -DskipTests=true
-:package_exec: mvn -s /path/to/maven-settings.xml package exec:exec
-:wildfly_deploy: mvn -s /path/to/maven-settings.xml wildfly:deploy
-:spring_boot_run: mvn -s /path/to/maven-settings.xml spring-boot:run
+:clean_package: ./mvnw -s /path/to/maven-settings.xml clean package
+:exec_exec: ./mvnw -s /path/to/maven-settings.xml exec:exec
+:exec_run: ./mvnw -s /path/to/maven-settings.xml exec:exec@run
+:clean_exec: ./mvnw -s /path/to/maven-settings.xml clean package exec:exec
+:clean_install: ./mvnw -s /path/to/maven-settings.xml clean install -DskipTests=true
+:package_exec: ./mvnw -s /path/to/maven-settings.xml package exec:exec
+:wildfly_deploy: ./mvnw -s /path/to/maven-settings.xml wildfly:deploy
+:spring_boot_run: ./mvnw -s /path/to/maven-settings.xml spring-boot:run
 endif::downstream[]
