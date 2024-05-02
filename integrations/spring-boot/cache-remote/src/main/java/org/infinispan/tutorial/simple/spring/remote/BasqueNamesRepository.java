@@ -18,7 +18,7 @@ public class BasqueNamesRepository {
    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
    private Map<String, BasqueName> database = new HashMap<>();
 
-   @Cacheable
+   @Cacheable()
    public BasqueName findById(String id) {
       logger.info("Call database to FIND name by id '" + id + "'");
       return database.get(id);

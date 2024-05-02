@@ -57,6 +57,9 @@ $ podman run -d --name=prometheus -p 9090:9090 -v YOUR_PATH/integrations/spring-
 |link:{repository}/integrations/spring-boot/cache-remote[Spring Boot and Spring Cache remote mode]
 |Demonstrates how to use Spring Caches with Spring Boot and the {brandname} Server.
 
+|link:{repository}/integrations/spring-boot/cache-remote-reactor[Spring Boot, Spring Cache, Reactor and Infinispan Server]
+|Demonstrates how to use Spring Caches with Spring Boot Reactor and the {brandname} Server.
+
 |link:{repository}/integrations/spring-boot/session-remote[Spring Boot and Spring Session remote mode]
 |Demonstrates how to use Spring Session with Spring Boot and the {brandname} Server.
 

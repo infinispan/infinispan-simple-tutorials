@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     def mvnHome = tool 'Maven'
-                    sh "${mvnHome}/bin/mvn clean install -Dmaven.test.failure.ignore=true"
+                    sh "./mvnw clean install -Dmaven.test.failure.ignore=true"
                     junit '**/target/*-reports/*.xml'
                 }
             }

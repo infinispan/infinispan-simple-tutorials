@@ -17,7 +17,7 @@ This tutorial is built using the maven command:
 
 [source,bash]
 ----
-mvn package
+./mvnw package
 ----
 
 Note that `target/` directory contains additional directories like `docker` (with generated Dockerfile) and `classes/META-INF/jkube` with Kubernetes and OpenShift deployment templates.
