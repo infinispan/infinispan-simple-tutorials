@@ -1,0 +1,3 @@
+<distributed-cache name="basque-names">
+    <encoding media-type="application/x-protostream"/>
+</distributed-cache>
