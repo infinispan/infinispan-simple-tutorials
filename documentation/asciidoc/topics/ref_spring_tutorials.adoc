@@ -11,18 +11,21 @@ These code tutorials use {brandname} Server and require at least one running ins
 Two simple tutorials can be run with Spring without Spring Boot:
 
 * Test caching
+
 [source,bash,options="nowrap",subs=attributes+]
 ----
 $ {package_exec}@spring-caching
 ----
 
 * Test annotations
+
 [source,bash,options="nowrap",subs=attributes+]
 ----
 $ {package_exec}@spring-annotations
 ----
 
-.Run Spring Boot examples
+To run the Spring Boot tutorials, use the following command.
+
 [source,bash,options="nowrap",subs=attributes+]
 ----
 $ {spring_boot_run}
