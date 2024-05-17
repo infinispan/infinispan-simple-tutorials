@@ -5,13 +5,11 @@ import java.util.List;
 
 import org.infinispan.Cache;
 import org.infinispan.commons.api.CacheContainerAdmin;
+import org.infinispan.commons.api.query.Query;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.configuration.cache.IndexStorage;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
-import org.infinispan.query.Search;
-import org.infinispan.query.dsl.Query;
-import org.infinispan.query.dsl.QueryFactory;
 
 public class InfinispanQuery {
 
@@ -35,10 +33,8 @@ public class InfinispanQuery {
          cache.put("person1", new Person("William", "Shakespeare"));
          cache.put("person2", new Person("William", "Wordsworth"));
          cache.put("person3", new Person("John", "Milton"));
-         // Obtain a query factory for the cache
-         QueryFactory queryFactory = Search.getQueryFactory(cache);
          // Construct a query
-         Query<Person> query = queryFactory.create("from org.infinispan.tutorial.simple.query.Person where name = 'William'");
+         Query<Person> query = cache.query("from org.infinispan.tutorial.simple.query.Person where name = 'William'");
          // Execute the query
          List<Person> matches = query.execute().list();
          // List the results
