@@ -2,12 +2,10 @@ package org.infinispan.tutorial.simple.remote.query;
 
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
-import org.infinispan.client.hotrod.Search;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
-import org.infinispan.query.api.continuous.ContinuousQuery;
-import org.infinispan.query.api.continuous.ContinuousQueryListener;
-import org.infinispan.query.dsl.Query;
-import org.infinispan.query.dsl.QueryFactory;
+import org.infinispan.commons.api.query.ContinuousQuery;
+import org.infinispan.commons.api.query.ContinuousQueryListener;
+import org.infinispan.commons.api.query.Query;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 import java.io.IOException;
@@ -72,17 +70,14 @@ public class InfinispanRemoteContinuousQuery {
 
       RemoteCache<String, InstaPost> cache = client.getCache(TutorialsConnectorHelper.TUTORIAL_CACHE_NAME);
 
-      // Get a query factory from the cache
-      QueryFactory queryFactory = Search.getQueryFactory(cache);
-
       // Create a query with lastName parameter
-      Query query = queryFactory.create("FROM tutorial.InstaPost p where p.user = :userName");
+      Query<InstaPost> query = cache.query("FROM tutorial.InstaPost p where p.user = :userName");
 
       // Set the parameter value
       query.setParameter("userName", "belen_esteban");
 
       // Create the continuous query
-      ContinuousQuery<String, InstaPost> continuousQuery = Search.getContinuousQuery(cache);
+      ContinuousQuery<String, InstaPost> continuousQuery = cache.continuousQuery();
 
       // Create the continuous query listener.
       List<InstaPost> queryPosts = new ArrayList<>();
