@@ -38,8 +38,6 @@ import org.infinispan.manager.DefaultCacheManager;
  * .persistence().addClusterLoader().remoteCallTimeout(500).build();
  * </code>
  * <p>
- * For more detailed explanations, go to the user guide:
- * <a href="http://infinispan.org/docs/stable/user_guide/user_guide.html#invalidation_mode">Invalidation Mode</a>
  *
  * @author Katia Aresti, karesti@redhat.com
  */
