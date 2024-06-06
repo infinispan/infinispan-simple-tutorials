@@ -71,3 +71,6 @@
 
 //Mutiny
 :mutiny_docs: https://smallrye.io/smallrye-mutiny
+
+//Observability
+:observability_docs: {stable_documentation}/server/server.html#opentelemetry-tracing

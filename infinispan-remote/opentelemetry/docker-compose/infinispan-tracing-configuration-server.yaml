@@ -1,0 +1,9 @@
+infinispan:
+        cacheContainer:
+                statistics: true
+                tracing:
+                        collector-endpoint: "http://jaeger:4318"
+                        enabled: true
+                        exporter-protocol: "OTLP"
+                        service-name: "infinispan-server"
+                        security: false
