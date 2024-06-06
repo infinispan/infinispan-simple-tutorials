@@ -1,0 +1,41 @@
+version: '3'
+
+networks:
+  mynetwork:
+    driver: bridge
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:1.57
+    ports:
+      - "16686:16686"
+      - "4318:4318"
+    container_name: jaeger
+    environment:
+      - LOG_LEVEL=debug
+    networks:
+      - mynetwork
+  infinispan-tracing:
+    image: quay.io/infinispan/server:15.0
+    ports:
+      - "11222:11222"
+    container_name: infinispan-tracing
+    environment:
+      USER: admin
+      PASS: password
+    volumes:
+      - ./infinispan-tracing-configuration-server.yaml:/user-config/infinispan-tracing-configuration-server.yaml
+#    command: -c infinispan.xml -c /user-config/infinispan-tracing-configuration-server.yaml
+    command: -c infinispan-xsite.xml -c /user-config/infinispan-tracing-configuration-server.yaml -Dinfinispan.site.name=LON -Djgroups.mcast_port=46656
+    networks:
+      - mynetwork
+  infinispan-server-nyc-1:
+    image: quay.io/infinispan/server:15.0
+    ports:
+      - "31222:11222"
+    container_name: infinispan-tracing-backup
+    environment:
+      USER: admin
+      PASS: password
+    command: -c infinispan-xsite.xml -Dinfinispan.site.name=NYC -Djgroups.mcast_port=46666
+    networks:
+      - mynetwork
