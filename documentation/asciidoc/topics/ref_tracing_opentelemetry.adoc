@@ -1,0 +1,28 @@
+[id='tracing_{context}']
+= Tracing with OpenTelemetry
+
+Learn how to set up a server with traces enabled.
+
+link:{repository}/infinispan-remote/opentelemetry[Tracing and OpenTelemetry tutorial]
+
+In this tutorial, you start a {brandname} server with tracing enabled. Tracing is done
+using Jaeger.
+This tutorial demonstrates {brandname} observability capabilities locally using `docker-compose`.
+
+== Docker compose
+
+[WARNING]
+====
+Make sure you have `docker` and `docker-compose` or `podman` and `podman-compose` installed locally.
+====
+
+.Steps
+. Run `docker-compose up`. The docker-compose yaml creates the {brandname} cluster using the `infinispan-tracing-configuration-server.yaml` file that
+sets up the tracing configuration.
+Access the console of at `http://localhost:11222/console` with admin/password.
+. Run the `InfinispanRemoteOpenTelemetry` main class
+. Check Jaeger console and visualize the traced spans at `http://localhost:16686/`
+
+[role="_additional-resources"]
+.Additional resources
+* link:{observability_docs}[Tracing configuration]
