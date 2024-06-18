@@ -9,7 +9,7 @@ import org.infinispan.protostream.annotations.Proto;
  * With this method, you don't need to define a protobuf file and a marshaller for the object.
  */
 @Proto
-@Indexed
+@Indexed(keyEntity = "tutorial.PersonKey")
 public record Person(@Keyword(projectable = true, sortable = true, normalizer = "lowercase", indexNullAs = "unnamed", norms = false)
                      String firstName,
                      @Keyword(projectable = true, sortable = true, normalizer = "lowercase", indexNullAs = "unnamed", norms = false)

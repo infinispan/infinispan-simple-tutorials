@@ -5,6 +5,9 @@ import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.commons.api.query.Query;
 import org.infinispan.protostream.GeneratedSchema;
+import org.infinispan.query.Search;
+import org.infinispan.query.dsl.impl.BaseQueryFactory;
+import org.infinispan.server.resp.commands.connection.SELECT;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 import java.net.URI;
@@ -44,33 +47,71 @@ public class InfinispanRemoteQuery {
       addPersonSchema(client);
 
       // Get the people cache, create it if needed with the default configuration
-      RemoteCache<String, Person> peopleCache = client.getCache(INDEXED_PEOPLE_CACHE);
+      RemoteCache<PersonKey, Person> peopleCache = client.getCache(INDEXED_PEOPLE_CACHE);
 
       // Create the persons dataset to be stored in the cache
-      Map<String, Person> people = new HashMap<>();
-      people.put("1", new Person("Oihana", "Rossignol", 2016, "Paris"));
-      people.put("2", new Person("Elaia", "Rossignol", 2018, "Paris"));
-      people.put("3", new Person("Yago", "Steiner", 2013, "Saint-Mandé"));
-      people.put("4", new Person("Alberto", "Steiner", 2016, "Paris"));
+      Map<PersonKey, Person> people = new HashMap<>();
+      people.put(new PersonKey("1", "hgranger"),
+              new Person("Hermione", "Granger", 1990, "London"));
+      people.put(new PersonKey("2", "hpotter"),
+              new Person("Harry", "Potter", 1991, "Godric's Hollow"));
+      people.put(new PersonKey("3", "rwesley"),
+              new Person("Ron", "Wesley", 1990, "London"));
+      people.put(new PersonKey("4", "dmalfoy"),
+              new Person("Draco", "Malfoy", 1989, "London"));
 
       // Put all the values in the cache
       peopleCache.putAll(people);
+      // Query all
+      Query<Person> query = peopleCache.query("FROM tutorial.Person");
+      List<Person> queryResult = query.execute().list();
+      // Print the results
+      System.out.println("SIZE " + queryResult.size());
+      System.out.println(queryResult);
 
       // Create a query with lastName parameter
-      Query<Person> query = peopleCache.query("FROM tutorial.Person p where p.lastName = :lastName");
-
+      System.out.println("== Query on values");
+      query = peopleCache.query("FROM tutorial.Person p where p.lastName = :lastName");
       // Set the parameter value
-      query.setParameter("lastName", "Rossignol");
-
+      query.setParameter("lastName", "Granger");
       // Execute the query
-      List<Person> queryResult = query.execute().list();
-
+      queryResult = query.execute().list();
       // Print the results
+      System.out.println(queryResult);
+
+      // Create a query by key
+      System.out.println("== Query by key values");
+      query = peopleCache.query("FROM tutorial.Person p where p.key.pseudo = 'dmalfoy'");
+      // Execute the query
+      queryResult = query.execute().list();
+      // Print the results queryResult
+      System.out.println(queryResult);
+
+      // Create a query with projection
+      System.out.println("== Query with key and values projection");
+      Query<Object[]> queryProjection = peopleCache.query("SELECT p.key.pseudo, p.firstName, p.lastName FROM tutorial.Person p where p.bornIn = 'London'");
+      // Execute the queryProjection
+      List<PersonDTO> queryResultProjection = queryProjection.execute().list()
+              .stream()
+              .map(r -> new PersonDTO(r[0] + "", r[1] + " " + r[2]))
+              .toList();
+      // Print the results queryResultProjection
+      System.out.println(queryResultProjection);
+
+      query = peopleCache.query("DELETE FROM tutorial.Person p where p.key.pseudo = 'dmalfoy'");
+      System.out.println("== DELETE count:" + query.execute().count().value());
+      // Query all
+      query = peopleCache.query("FROM tutorial.Person");
+      queryResult = query.execute().list();
+      // Print the results
+      System.out.println("SIZE " + queryResult.size());
       System.out.println(queryResult);
 
       // Stop the client and release all resources
       TutorialsConnectorHelper.stop(client);
    }
+
+   record PersonDTO(String pseudo, String fullName){}
 
    private static void addPersonSchema(RemoteCacheManager cacheManager) {
       // Retrieve metadata cache
