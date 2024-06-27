@@ -2,6 +2,7 @@ package org.infinispan.tutorial.simple.reactive;
 
 import org.infinispan.api.Infinispan;
 import org.infinispan.api.mutiny.MutinyCache;
+import org.infinispan.commons.util.OS;
 import org.infinispan.hotrod.configuration.ClientIntelligence;
 import org.infinispan.hotrod.configuration.HotRodConfigurationBuilder;
 
@@ -22,8 +23,12 @@ public class InfinispanReactiveApi {
    public static void main(String[] args) {
       // New API Connection
       HotRodConfigurationBuilder builder = new HotRodConfigurationBuilder();
+      if (OS.getCurrentOs().equals(OS.MAC_OS) || OS.getCurrentOs().equals(OS.WINDOWS)) {
+         // This is for DEV MODE LOCAL !! Don't add this in production, you will hit performance issues
+         builder.clientIntelligence(ClientIntelligence.BASIC);
+      }
+
       builder
-            .clientIntelligence(ClientIntelligence.BASIC)
             .addServer().host(HOST).port(SINGLE_PORT)
             .security().authentication()
             .username(USER)
