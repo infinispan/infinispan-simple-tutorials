@@ -12,7 +12,7 @@ public enum SSLConfig {
          System.out.println("  - Try to access the server with simple tls server keystore");
          builder
                .security()
-               .ssl()
+               .ssl().hostnameValidation(false)
                .trustStoreFileName("server-truststore.pfx")
                .trustStorePassword("trustSecret".toCharArray());
          return builder;
@@ -23,7 +23,7 @@ public enum SSLConfig {
       public ConfigurationBuilder addConfig(ConfigurationBuilder builder) {
          System.out.println("  - Try to access the server with simple tls server keystore and client1 authentication");
          builder.security()
-               .ssl()
+               .ssl().hostnameValidation(false)
                .trustStoreFileName("server-truststore.pfx")
                .trustStorePassword("trustSecret".toCharArray())
                .keyStoreFileName("client1-keystore.pfx").keyStorePassword("Client1secret".toCharArray())
@@ -36,7 +36,7 @@ public enum SSLConfig {
       public ConfigurationBuilder addConfig(ConfigurationBuilder builder) {
          System.out.println("  - Try to access the server with simple tls server keystore and client2 authentication");
          builder.security()
-               .ssl()
+               .ssl().hostnameValidation(false)
                .trustStoreFileName("server-truststore.pfx")
                .trustStorePassword("trustSecret".toCharArray())
                .keyStoreFileName("client2-keystore.pfx").keyStorePassword("Client2secret".toCharArray())
@@ -52,7 +52,7 @@ public enum SSLConfig {
          // Create a configuration for a locally-running server
          builder
                .security()
-               .ssl()
+               .ssl().hostnameValidation(false)
                .trustStoreFileName("server_truststore.p12")
                .trustStorePassword("ServerTrustsecret".toCharArray())
                .keyStoreFileName("client1_keystore.p12")
@@ -66,7 +66,7 @@ public enum SSLConfig {
       public ConfigurationBuilder addConfig(ConfigurationBuilder builder) {
          System.out.println("\n\n  - Try to access the server with a signed tls server and client2 keystore");
          builder.security()
-               .ssl()
+               .ssl().hostnameValidation(false)
                .trustStoreFileName("server_truststore.p12")
                .trustStorePassword("ServerTrustsecret".toCharArray())
                .keyStoreFileName("client2_keystore.p12")
@@ -79,7 +79,7 @@ public enum SSLConfig {
       public ConfigurationBuilder addConfig(ConfigurationBuilder builder) {
          System.out.println("\n\n  - Try to access the server with a signed tls server and client1 keystore with Authorization");
          builder.security()
-               .ssl()
+               .ssl().hostnameValidation(false)
                .trustStoreFileName("server_truststore.p12")
                .trustStorePassword("ServerTrustsecret".toCharArray())
                .keyStoreFileName("client1_keystore.p12")
@@ -94,7 +94,7 @@ public enum SSLConfig {
       public ConfigurationBuilder addConfig(ConfigurationBuilder builder) {
          System.out.println("\n\n  - Try to access the server with a signed tls server and client2 keystore with Authorization");
          builder.security()
-               .ssl().trustStoreFileName("server_truststore.p12")
+               .ssl().hostnameValidation(false).trustStoreFileName("server_truststore.p12")
                .trustStorePassword("ServerTrustsecret".toCharArray())
                .keyStoreFileName("client2_keystore.p12")
                .keyStorePassword("Client2secret".toCharArray());
