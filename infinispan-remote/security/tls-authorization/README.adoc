@@ -106,7 +106,7 @@ The `infinispan-uCertAuth.xml` configuration applies the following changes:
 ----
 <cache-container>
   <security>
-    <authorization>
+    <authorization group-only-mapping="false">
       <common-name-role-mapper/>
       <!-- In this example `Client1` and `Client2` correspond to the `cn` field in client certificates -->
       <role name="Client1" permissions="ALL"/>
@@ -212,7 +212,7 @@ The `infinispan-sCertAuth.xml` configuration applies the following changes:
 ----
 <cache-container>
   <security>
-    <authorization>
+    <authorization group-only-mapping="false">
       <!-- In this example `Client1` and `Client2` correspond to the `cn` field in client certificates -->
       <common-name-role-mapper/>
       <role name="Client1" permissions="ALL"/>

@@ -8,7 +8,7 @@
    <cache-container name="default" statistics="true">
       <transport cluster="${infinispan.cluster.name:cluster}" stack="${infinispan.cluster.stack:tcp}" node-name="${infinispan.node.name:}"/>
       <security>
-         <authorization>
+         <authorization group-only-mapping="false">
             <!-- In this example `Client1` and `Client2` correspond to the `cn` field in client certificates -->
             <common-name-role-mapper/>
             <role name="Client1" permissions="ALL"/>
@@ -21,6 +21,10 @@
          <security>
             <authorization/>
          </security>
+      </distributed-cache>
+      <!-- Added for passing container check -->
+      <distributed-cache name="test" mode="SYNC">
+         <encoding media-type="application/x-protostream"/>
       </distributed-cache>
    </cache-container>
 
@@ -60,6 +64,8 @@
          </security-realms>
       </security>
 
-      <endpoints socket-binding="default" security-realm="default" require-ssl-client-auth="true"/>
+      <endpoints>
+         <endpoint socket-binding="default" security-realm="default" require-ssl-client-auth="true"/>
+      </endpoints>
    </server>
 </infinispan>

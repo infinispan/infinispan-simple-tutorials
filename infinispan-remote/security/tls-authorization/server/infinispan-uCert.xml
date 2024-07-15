@@ -14,6 +14,10 @@
       <distributed-cache name="secured" mode="SYNC">
          <encoding media-type="application/x-protostream"/>
       </distributed-cache>
+      <!-- Added for passing container check -->
+      <distributed-cache name="test" mode="SYNC">
+         <encoding media-type="application/x-protostream"/>
+      </distributed-cache>
    </cache-container>
 
    <server xmlns="urn:infinispan:server:15.0">
