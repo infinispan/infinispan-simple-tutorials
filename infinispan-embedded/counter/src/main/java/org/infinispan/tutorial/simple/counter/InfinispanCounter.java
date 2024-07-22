@@ -17,29 +17,24 @@ import org.infinispan.manager.DefaultCacheManager;
  */
 public class InfinispanCounter {
 
+   static DefaultCacheManager cm1;
+   static CounterManager counterManager;
+   static StrongCounter counter1;
+   static StrongCounter counter2;
+   static WeakCounter counter3;
+
    public static void main(String[] args) throws Exception {
-      // Setup up a clustered cache manager
-      GlobalConfigurationBuilder global = GlobalConfigurationBuilder.defaultClusteredBuilder();
-      // Create the counter configuration builder
-      CounterManagerConfigurationBuilder builder = global.addModule(CounterManagerConfigurationBuilder.class);
+      InfinispanCounter infinispanCounter = new InfinispanCounter();
+      infinispanCounter.createCounterManager();
+      infinispanCounter.createAndManipulateCounters();
+      infinispanCounter.stopCounterManager();
+   }
 
-      // Create 3 counters.
-      // The first counter is bounded to 10 (upper-bound).
-      builder.addStrongCounter().name("counter-1").upperBound(10).initialValue(1);
-      // The second counter is unbounded
-      builder.addStrongCounter().name("counter-2").initialValue(2);
-      // And finally, the third counter is a weak counter.
-      builder.addWeakCounter().name("counter-3").initialValue(3);
-      // Initialize the cache manager
-      DefaultCacheManager cacheManager = new DefaultCacheManager(global.build());
-
-      // Retrieve the CounterManager from the CacheManager. Each CacheManager has it own CounterManager
-      CounterManager counterManager = EmbeddedCounterManagerFactory.asCounterManager(cacheManager);
-
+   public void createAndManipulateCounters() throws Exception {
       // StrongCounter provides the higher consistency. Its value is known during the increment/decrement and it may be bounded.
       // Bounded counters are aimed for uses cases where a limit is needed.
-      StrongCounter counter1 = counterManager.getStrongCounter("counter-1");
-      // All methods returns a CompletableFuture. So you can do other work while the counter value is being computed.
+      counter1 = counterManager.getStrongCounter("counter-1");
+      // All methods return a CompletableFuture. So you can do other work while the counter value is being computed.
       counter1.getValue().thenAccept(value -> System.out.println("Counter-1 initial value is " + value)).get();
 
       // Try to add more than the upper-bound
@@ -60,12 +55,12 @@ public class InfinispanCounter {
       }).get();
 
       // Similar to counter-1, counter-2 is a strong counter but it is unbounded. It will never throw the CounterOutOfBoundsException
-      StrongCounter counter2 = counterManager.getStrongCounter("counter-2");
+      counter2 =  counterManager.getStrongCounter("counter-2");
 
       // All counters allow a listener to be registered.
       // The handle can be used to remove the listener
       counter2.addListener(event -> System.out
-            .println("Counter-2 event: oldValue=" + event.getOldValue() + " newValue=" + event.getNewValue()));
+              .println("Counter-2 event: oldValue=" + event.getOldValue() + " newValue=" + event.getNewValue()));
 
       // Adding MAX_VALUE won't throws an exception. But the all the increments won't have any effect since we can store
       //any value larger the MAX_VALUE
@@ -73,7 +68,7 @@ public class InfinispanCounter {
 
       // Conditional operations are allowed in strong counters
       counter2.compareAndSet(Long.MAX_VALUE, 0)
-            .thenAccept(aBoolean -> System.out.println("Counter-2 CAS result is " + aBoolean)).get();
+              .thenAccept(aBoolean -> System.out.println("Counter-2 CAS result is " + aBoolean)).get();
       counter2.getValue().thenAccept(value -> System.out.println("Counter-2 value is " + value)).get();
 
       // Reset the counter to its initial value (2)
@@ -81,7 +76,7 @@ public class InfinispanCounter {
       counter2.getValue().thenAccept(value -> System.out.println("Counter-2 initial value is " + value)).get();
 
       // Retrieve counter-3
-      WeakCounter counter3 = counterManager.getWeakCounter("counter-3");
+      counter3 = counterManager.getWeakCounter("counter-3");
       // Weak counter doesn't have its value available during updates. This makes the increment faster than the StrongCounter
       // Its value is computed lazily and stored locally.
       // Its main use case is for uses-case where faster increments are needed.
@@ -89,9 +84,34 @@ public class InfinispanCounter {
 
       // Check the counter value.
       System.out.println("Counter-3 value is " + counter3.getValue());
+   }
 
-      // Stop the cache manager and release all resources
-      cacheManager.stop();
+   public void createCounterManager() {
+      // Setup up a clustered cache manager
+      GlobalConfigurationBuilder global = GlobalConfigurationBuilder.defaultClusteredBuilder();
+      // Create the counter configuration builder
+      CounterManagerConfigurationBuilder builder = global.addModule(CounterManagerConfigurationBuilder.class);
+      // Create 3 counters.
+      // The first counter is bounded to 10 (upper-bound).
+      builder.addStrongCounter().name("counter-1").upperBound(10).initialValue(1);
+      // The second counter is unbounded
+      builder.addStrongCounter().name("counter-2").initialValue(2);
+      // And finally, the third counter is a weak counter.
+      builder.addWeakCounter().name("counter-3").initialValue(3);
+
+      // Initialize the cache manager
+      cm1 = new DefaultCacheManager(global.build());
+
+      // Retrieve the CounterManager from the CacheManager. Each CacheManager has it own CounterManager
+      counterManager = EmbeddedCounterManagerFactory.asCounterManager(cm1);
+   }
+
+   public void stopCounterManager() {
+      if (cm1 != null) {
+         // Stop the cache manager and release all resources
+         cm1.stop();
+         cm1 = null;
+      }
    }
 
 }
