@@ -43,23 +43,11 @@ import org.infinispan.manager.DefaultCacheManager;
  */
 public class InvalidationMode {
 
+   static DefaultCacheManager cacheManager;
+   static Cache<String, String> cache;
+   
    public static void main(String[] args) {
-      // Create a clustered configuration and a default cache named test
-      GlobalConfiguration global = GlobalConfigurationBuilder.defaultClusteredBuilder().build();
-
-      // Create the cache manager
-      DefaultCacheManager cacheManager = new DefaultCacheManager(global);
-
-      // Clustered mode invalidation sync. Can also be async
-      Configuration config = new ConfigurationBuilder()
-              .clustering().cacheMode(CacheMode.INVALIDATION_SYNC)
-              .build();
-
-      // Define a cache configuration
-      cacheManager.defineConfiguration("test", config);
-
-      // Retrieve the cache
-      Cache<String, String> cache = cacheManager.getCache("test");
+      createCacheManagerAndInitCache();
 
       Scanner scanner = new Scanner(System.in);
       String next = "";
@@ -98,11 +86,36 @@ public class InvalidationMode {
       // Goodbye!
       System.out.println("Good bye");
 
-      // Stop the cache manager
-      cacheManager.stop();
+      stopCacheManager();
    }
 
-   private static void putKeyValue(Scanner scanner, Cache<String, String> cache) {
+   static void createCacheManagerAndInitCache() {
+      // Create a clustered configuration and a default cache named test
+      GlobalConfiguration global = GlobalConfigurationBuilder.defaultClusteredBuilder().build();
+
+      // Create the cache manager
+      cacheManager = new DefaultCacheManager(global);
+
+      // Clustered mode invalidation sync. Can also be async
+      Configuration config = new ConfigurationBuilder()
+              .clustering().cacheMode(CacheMode.INVALIDATION_SYNC)
+              .build();
+
+      // Define a cache configuration
+      cacheManager.defineConfiguration("test", config);
+
+      // Retrieve the cache
+      cache = cacheManager.getCache("test");
+   }
+
+   public static void stopCacheManager() {
+      if (cacheManager != null) {
+         // Stop the cache manager
+         cacheManager.stop();
+      }
+   }
+
+   static void putKeyValue(Scanner scanner, Cache<String, String> cache) {
       System.out.println("# p - Put key/value \n");
       String key = readUserInput("Enter a key: ", scanner);
       System.out.println("\n");
@@ -112,7 +125,7 @@ public class InvalidationMode {
       System.out.println(String.format("[%s, %s] added", key, value));
    }
 
-   private static void putForExternalReadKeyValue(Scanner scanner, Cache<String, String> cache) {
+   static void putForExternalReadKeyValue(Scanner scanner, Cache<String, String> cache) {
       System.out.println("# pe - Put for external read key/value \n");
       String key = readUserInput("Enter a key: ", scanner);
       System.out.println("\n");
@@ -123,7 +136,7 @@ public class InvalidationMode {
       System.out.println(String.format("[%s, %s] added for external read", key, value));
    }
 
-   private static void removeKey(Scanner scanner, Cache<String, String> cache) {
+   static void removeKey(Scanner scanner, Cache<String, String> cache) {
       System.out.println("# r - Remove key \n");
       String key = readUserInput("Enter a key: ", scanner);
       // Will remove the key/value pair if such exists and invalidate the key/value pair that may exist in other nodes
@@ -131,7 +144,7 @@ public class InvalidationMode {
       System.out.println(String.format("%s key has been removed", key));
    }
 
-   private static void getKey(Scanner scanner, Cache<String, String> cache) {
+   static void getKey(Scanner scanner, Cache<String, String> cache) {
       System.out.println("# g -> Get key \n");
       String key = readUserInput("Enter a key: ", scanner);
       String value = cache.get(key);
