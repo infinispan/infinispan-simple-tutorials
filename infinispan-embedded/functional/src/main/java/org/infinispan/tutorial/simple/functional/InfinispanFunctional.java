@@ -16,17 +16,22 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class InfinispanFunctional {
+   static DefaultCacheManager cacheManager;
+   static AdvancedCache<String, String> cache;
+   static FunctionalMapImpl<String, String> functionalMap;
+   static FunctionalMap.WriteOnlyMap<String, String> writeOnlyMap;
+   static FunctionalMap.ReadOnlyMap<String, String> readOnlyMap;
 
    public static void main(String[] args) throws Exception {
-      DefaultCacheManager cacheManager = new DefaultCacheManager();
-      cacheManager.defineConfiguration("local", new ConfigurationBuilder().build());
-      AdvancedCache<String, String> cache = cacheManager.<String, String>getCache("local").getAdvancedCache();
-      FunctionalMapImpl<String, String> functionalMap = FunctionalMapImpl.create(cache);
-      FunctionalMap.WriteOnlyMap<String, String> writeOnlyMap = WriteOnlyMapImpl.create(functionalMap);
-      FunctionalMap.ReadOnlyMap<String, String> readOnlyMap = ReadOnlyMapImpl.create(functionalMap);
+      createAndStartComponents();
+      manipulateFunctionalMap();
+      stop();
+   }
 
+   static void manipulateFunctionalMap() throws InterruptedException, ExecutionException {
       // Execute two parallel write-only operation to store key/value pairs
       CompletableFuture<Void> writeFuture1 = writeOnlyMap.eval("key1", "value1",
          (v, writeView) -> writeView.set(v));
@@ -70,6 +75,21 @@ public class InfinispanFunctional {
       // Finally, print out the previous entry values
       System.out.printf("Previous entry values: %n");
       previousValues.forEach(prev -> System.out.printf("%s%n", prev));
+   }
+
+   static void createAndStartComponents() {
+      cacheManager = new DefaultCacheManager();
+      cacheManager.defineConfiguration("local", new ConfigurationBuilder().build());
+      cache = cacheManager.<String, String>getCache("local").getAdvancedCache();
+      functionalMap = FunctionalMapImpl.create(cache);
+      writeOnlyMap = WriteOnlyMapImpl.create(functionalMap);
+      readOnlyMap = ReadOnlyMapImpl.create(functionalMap);
+   }
+
+   static void stop() {
+      if (cacheManager != null) {
+         cacheManager.stop();
+      }
    }
 
 }
