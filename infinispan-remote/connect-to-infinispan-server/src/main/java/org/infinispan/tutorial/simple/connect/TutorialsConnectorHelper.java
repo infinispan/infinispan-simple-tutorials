@@ -127,8 +127,10 @@ public class TutorialsConnectorHelper {
    }
 
    public static void stop(RemoteCacheManager cacheManager) {
-      cacheManager.stop();
-      stopInfinispanContainer();
+      if (cacheManager != null){
+         cacheManager.stop();
+         stopInfinispanContainer();
+      }
    }
 
 }
