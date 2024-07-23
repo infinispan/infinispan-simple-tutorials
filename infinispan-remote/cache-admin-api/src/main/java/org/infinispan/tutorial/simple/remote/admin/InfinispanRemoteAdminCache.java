@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 /**
  * The InfinispanRemoteAdminCache class shows how to remotely create caches
  * with Hot Rod Java clients using different approaches.
- * By default caches are permanent and survive cluster restarts.
+ * By default, caches are permanent and survive cluster restarts.
  * To create volatile, temporary caches use "withFlags(AdminFlag.VOLATILE)".
  * Data in temporary caches is lost on full cluster restart.
  *
@@ -22,21 +22,29 @@ import java.nio.file.Paths;
  * @author <a href="mailto:wfink@redhat.com">Wolf Dieter Fink</a>
  */
 public class InfinispanRemoteAdminCache {
-    private final RemoteCacheManager manager = TutorialsConnectorHelper.connect();
+    public static final String SIMPLE_CACHE = "SimpleCache";
+    public static final String CACHE_WITH_XMLCONFIGURATION = "CacheWithXMLConfiguration";
+    public static final String CACHE_WITH_TEMPLATE = "CacheWithTemplate";
+    static RemoteCacheManager cacheManager = TutorialsConnectorHelper.connect();
 
     public static void main(String[] args) throws Exception {
-        InfinispanRemoteAdminCache client = new InfinispanRemoteAdminCache();
+        connectToInfinispan();
 
-        client.createSimpleCache();
-        client.cacheWithTemplate();
-        client.createCacheWithXMLConfiguration();
+        createSimpleCache();
+        cacheWithTemplate();
+        createCacheWithXMLConfiguration();
 
-        // Stop the Hot Rod client and release all resources.
-        client.stop();
+        disconnect();
     }
 
-    private void stop() {
-        TutorialsConnectorHelper.stop(manager);
+    static void connectToInfinispan() {
+        // Connect to the server
+        cacheManager = TutorialsConnectorHelper.connect();
+    }
+
+    static void disconnect() {
+        // Stop the cache manager and release all resources
+        TutorialsConnectorHelper.stop(cacheManager);
     }
 
     /**
@@ -44,10 +52,9 @@ public class InfinispanRemoteAdminCache {
      * StringConfiguration() method to pass the cache definition as
      * valid infinispan.xml.
      */
-    private void createCacheWithXMLConfiguration() throws IOException {
-        String cacheName = "CacheWithXMLConfiguration";
-        String xml = Files.readString(Paths.get(this.getClass().getClassLoader().getResource("CacheWithXMLConfiguration.xml").getPath()));
-        manager.administration().getOrCreateCache(cacheName, new StringConfiguration(xml));
+    static void createCacheWithXMLConfiguration() throws IOException {
+        String xml = Files.readString(Paths.get(InfinispanRemoteAdminCache.class.getClassLoader().getResource("CacheWithXMLConfiguration.xml").getPath()));
+        cacheManager.administration().getOrCreateCache(CACHE_WITH_XMLCONFIGURATION, new StringConfiguration(xml));
         System.out.println("Cache with configuration exists or is created.");
     }
 
@@ -55,26 +62,26 @@ public class InfinispanRemoteAdminCache {
      * Creates a cache named CacheWithTemplate from the org.infinispan.DIST_SYNC
      * template.
      */
-    private void cacheWithTemplate() throws IOException {
-        Path path = Paths.get(this.getClass().getClassLoader().getResource("cacheTemplate.xml").getPath());
+    static void cacheWithTemplate() throws IOException {
+        Path path = Paths.get(InfinispanRemoteAdminCache.class.getClassLoader().getResource("cacheTemplate.xml").getPath());
         String xmlTemplate = Files.readString(path);
         try {
-            manager.administration().createTemplate("template", new StringConfiguration(xmlTemplate));
+            cacheManager.administration().createTemplate("template", new StringConfiguration(xmlTemplate));
         } catch (Exception ce) {
             // If the
             System.out.println(ce.getMessage());
         }
 
-        manager.administration().getOrCreateCache("CacheWithTemplate", "template");
+        cacheManager.administration().getOrCreateCache(CACHE_WITH_TEMPLATE, "template");
         System.out.println("Cache created from default template.");
     }
 
     /**
      * Creates a simple, local cache with no configuration.
      */
-    private void createSimpleCache() {
+    static void createSimpleCache() {
         try {
-            manager.administration().createCache("SimpleCache", (String)null);
+            cacheManager.administration().createCache(SIMPLE_CACHE, (String)null);
             System.out.println("SimpleCache created.");
         } catch (Exception e) {
             System.out.println("Expected to fail for multiple invocations as the cache exists message: " + e.getMessage());
