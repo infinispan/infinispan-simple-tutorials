@@ -14,15 +14,30 @@ import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.TU
  */
 public class InfinispanRemoteCache {
 
+   static RemoteCacheManager cacheManager;
+   static RemoteCache<String, String> cache;
+
    public static void main(String[] args) {
-      // Connect to the server
-      RemoteCacheManager cacheManager = TutorialsConnectorHelper.connect();
-      // Obtain the remote cache
-      RemoteCache<String, String> cache = cacheManager.getCache(TUTORIAL_CACHE_NAME);
-      /// Store a value
+      connectToInfinispan();
+      manipulateCache();
+      deconnect();
+   }
+
+   static void manipulateCache() {
+      // Store a value
       cache.put("key", "value");
       // Retrieve the value and print it out
       System.out.printf("key = %s\n", cache.get("key"));
+   }
+
+   static void connectToInfinispan() {
+      // Connect to the server
+      cacheManager = TutorialsConnectorHelper.connect();
+      // Obtain the remote cache
+      cache = cacheManager.getCache(TUTORIAL_CACHE_NAME);
+   }
+
+   static void deconnect() {
       // Stop the cache manager and release all resources
       TutorialsConnectorHelper.stop(cacheManager);
    }
