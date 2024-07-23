@@ -16,7 +16,7 @@ public class InfinispanRemoteCacheTest {
 
     @AfterAll
     public static void stop() {
-        InfinispanRemoteCache.deconnect();
+        InfinispanRemoteCache.disconnect();
     }
 
     @Test

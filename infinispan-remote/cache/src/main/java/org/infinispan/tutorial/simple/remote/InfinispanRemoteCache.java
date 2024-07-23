@@ -20,7 +20,7 @@ public class InfinispanRemoteCache {
    public static void main(String[] args) {
       connectToInfinispan();
       manipulateCache();
-      deconnect();
+      disconnect();
    }
 
    static void manipulateCache() {
@@ -37,7 +37,7 @@ public class InfinispanRemoteCache {
       cache = cacheManager.getCache(TUTORIAL_CACHE_NAME);
    }
 
-   static void deconnect() {
+   static void disconnect() {
       // Stop the cache manager and release all resources
       TutorialsConnectorHelper.stop(cacheManager);
    }
