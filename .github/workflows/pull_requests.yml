@@ -9,28 +9,6 @@ on:
       - main
 
 jobs:
-  jdk17:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
-
-      - name: JDK 17 Tests
-        run: mvn -B clean install artifact:compare -Dmaven.test.failure.ignore=true -Dansi.strip=true
-
-      - name: Test Logs
-        uses: actions/upload-artifact@v4
-        if: success() || failure()
-        with:
-          name: jdk17-test-results
-          path: "**/target/*-reports*/**/TEST-*.xml"
-
   jdk21:
     runs-on: ubuntu-latest
     steps:
