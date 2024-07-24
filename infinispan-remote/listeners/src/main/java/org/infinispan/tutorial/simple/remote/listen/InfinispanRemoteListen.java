@@ -9,6 +9,8 @@ import org.infinispan.client.hotrod.event.ClientCacheEntryCreatedEvent;
 import org.infinispan.client.hotrod.event.ClientCacheEntryModifiedEvent;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
+import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.TUTORIAL_CACHE_NAME;
+
 /**
  *
  * Infinispan Server includes a default property realm that requires
@@ -17,39 +19,71 @@ import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
  */
 public class InfinispanRemoteListen {
 
+   static RemoteCacheManager cacheManager;
+   static RemoteCache<String, String> cache;
+   static MyListener listener;
+
    public static void main(String[] args) throws InterruptedException {
-      // Connect to the server
-      RemoteCacheManager cacheManager = TutorialsConnectorHelper.connect();
+      connectToInfinispan();
 
-      // Get the test cache
-      RemoteCache<String, String> cache = cacheManager.getCache(TutorialsConnectorHelper.TUTORIAL_CACHE_NAME);
+      registerListener();
 
-      // Register a listener
-      MyListener listener = new MyListener();
-      cache.addClientListener(listener);
+      manipulateCache();
+
+      // Remote events are asynchronous, so wait a bit
+      Thread.sleep(1000);
+      disconnect(false);
+   }
+
+   static void manipulateCache() {
       // Store some values
       cache.put("key1", "value1");
       cache.put("key2", "value2");
       cache.put("key1", "newValue");
-      // Remote events are asynchronous, so wait a bit
-      Thread.sleep(1000);
+   }
+
+   static void registerListener() {
+      // Register a listener
+      listener = new MyListener();
+      cache.addClientListener(listener);
+   }
+
+   public static void connectToInfinispan() {
+      // Connect to the server
+      cacheManager = TutorialsConnectorHelper.connect();
+
+      // Get the test cache
+      cache = cacheManager.getCache(TUTORIAL_CACHE_NAME);
+   }
+
+   public static void disconnect(boolean removeCache) {
       // Remove listener
       cache.removeClientListener(listener);
+
+      if (removeCache) {
+         cacheManager.administration().removeCache(TUTORIAL_CACHE_NAME);
+      }
+
       // Stop the cache manager and release all resources
       TutorialsConnectorHelper.stop(cacheManager);
    }
 
    @ClientListener
    public static class MyListener {
+      StringBuilder logTrack = new StringBuilder();
 
       @ClientCacheEntryCreated
       public void entryCreated(ClientCacheEntryCreatedEvent<String> event) {
-         System.out.printf("Created %s%n", event.getKey());
+         String logMessage = String.format("Created %s%n", event.getKey());
+         logTrack.append(logMessage);
+         System.out.printf(logMessage);
       }
 
       @ClientCacheEntryModified
       public void entryModified(ClientCacheEntryModifiedEvent<String> event) {
-         System.out.printf("About to modify %s%n", event.getKey());
+         String logMessage = String.format("About to modify %s%n", event.getKey());
+         logTrack.append(logMessage);
+         System.out.printf(logMessage);
       }
 
    }
