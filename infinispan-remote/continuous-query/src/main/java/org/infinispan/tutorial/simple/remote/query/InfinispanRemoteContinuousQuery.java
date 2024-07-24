@@ -8,7 +8,6 @@ import org.infinispan.commons.api.query.ContinuousQueryListener;
 import org.infinispan.commons.api.query.Query;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -57,17 +56,29 @@ public class InfinispanRemoteContinuousQuery {
          "followme",
          "infinispan");
 
-   private static final String CACHE_NAME = "instaposts";
+   static RemoteCacheManager client;
+   static InstaSchemaImpl schema;
+   static ContinuousQuery<String, InstaPost> continuousQuery;
+   static ContinuousQueryListener<String, InstaPost> listener;
+   static List<InstaPost> queryPosts = new ArrayList<>();
+   static Random random = new Random();
 
    public static void main(String[] args) throws Exception {
-      // Connect to the server
-      ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
-      InstaSchemaImpl schema = new InstaSchemaImpl();
-      builder.addContextInitializer(schema);
-      RemoteCacheManager client = TutorialsConnectorHelper.connect(builder);
-      // Create and add the Protobuf schema for InstaPost class. Note InstaPost is an annotated POJO
-      register(schema, client);
+      connectToInfinispan();
+      createPostsAndQuery(1000, true);
+      cleanup();
+      disconnect();
+   }
 
+   private static void cleanup() {
+      // Remove the listener. Listeners should be removed when they are no longer needed to avoid memory leaks
+      continuousQuery.removeContinuousQueryListener(listener);
+
+      // Remove the cache
+      client.administration().removeCache(TutorialsConnectorHelper.TUTORIAL_CACHE_NAME);
+   }
+
+   public static void createPostsAndQuery(int size, boolean random) throws Exception {
       RemoteCache<String, InstaPost> cache = client.getCache(TutorialsConnectorHelper.TUTORIAL_CACHE_NAME);
 
       // Create a query with lastName parameter
@@ -80,24 +91,23 @@ public class InfinispanRemoteContinuousQuery {
       ContinuousQuery<String, InstaPost> continuousQuery = cache.continuousQuery();
 
       // Create the continuous query listener.
-      List<InstaPost> queryPosts = new ArrayList<>();
-      ContinuousQueryListener<String, InstaPost> listener =
-            new ContinuousQueryListener<String, InstaPost>() {
-               // This method will be executed every time new items that correspond with the query arrive
-               @Override
-               public void resultJoining(String key, InstaPost post) {
-                  System.out.println(String.format("@%s has posted again! Hashtag: #%s", post.user(), post.hashtag()));
-                  queryPosts.add(post);
-               }
-            };
+      listener =
+              new ContinuousQueryListener<>() {
+                 // This method will be executed every time new items that correspond with the query arrive
+                 @Override
+                 public void resultJoining(String key, InstaPost post) {
+                    System.out.println(String.format("@%s has posted again! Hashtag: #%s", post.user(), post.hashtag()));
+                    queryPosts.add(post);
+                 }
+              };
 
       // And the listener corresponding the query to the continuous query
       continuousQuery.addContinuousQueryListener(query, listener);
 
       // Add 1000 random posts
-      for (int i = 0; i < 1000; i++) {
+      for (int i = 0; i < size; i++) {
          // Add a post
-         addRandomPost(cache);
+         addPost(cache, random);
 
          // Await a little to see results
          Thread.sleep(10);
@@ -105,27 +115,36 @@ public class InfinispanRemoteContinuousQuery {
 
       System.out.println("Total posts " + cache.size());
       System.out.println("Total posts by @belen_esteban " + queryPosts.size());
-
-      // Remove the listener. Listeners should be removed when they are no longer needed to avoid memory leaks
-      continuousQuery.removeContinuousQueryListener(listener);
-
-      // Remove the cache
-      client.administration().removeCache(CACHE_NAME);
-
-      // Stop the client and release all resources
-      TutorialsConnectorHelper.stop(client);
    }
 
-   private static void addRandomPost(RemoteCache<String, InstaPost> cache) {
+   private static void addPost(RemoteCache<String, InstaPost> cache, boolean isRandom) {
       String id = UUID.randomUUID().toString();
-      Random random = new Random();
-      // Create the random post
-      InstaPost post = new InstaPost(id, USERS.get(random.nextInt(USERS.size())), HASHTAGS.get(random.nextInt(HASHTAGS.size())));
+      InstaPost post;
+      if (isRandom) {
+         // Create the random post
+         post = new InstaPost(id, USERS.get(random.nextInt(USERS.size())), HASHTAGS.get(random.nextInt(HASHTAGS.size())));
+      } else {
+         post = new InstaPost(id, "belen_esteban", "infinispan");
+      }
       // Put a post in the cache
       cache.put(id, post);
    }
 
-   private static void register(InstaSchemaImpl schema, RemoteCacheManager cacheManager) throws IOException {
+   public static void connectToInfinispan() {
+      ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
+      schema = new InstaSchemaImpl();
+      builder.addContextInitializer(schema);
+      client = TutorialsConnectorHelper.connect(builder);
+      // Create and add the Protobuf schema for InstaPost class. Note InstaPost is an annotated POJO
+      register(schema, client);
+   }
+
+   public static void disconnect() {
+      // Stop the client and release all resources
+      TutorialsConnectorHelper.stop(client);
+   }
+
+   private static void register(InstaSchemaImpl schema, RemoteCacheManager cacheManager) {
       // Retrieve metadata cache
       RemoteCache<String, String> metadataCache =
             cacheManager.getCache(PROTOBUF_METADATA_CACHE_NAME);
