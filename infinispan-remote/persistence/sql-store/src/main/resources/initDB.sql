@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS books;
 DROP TABLE IF EXISTS authors;
 
 CREATE TABLE authors (
-                         id     INTEGER     NOT NULL IDENTITY PRIMARY KEY,
+                         id     INT     NOT NULL PRIMARY KEY,
                          isbn   VARCHAR(30) NOT NULL,
                          name VARCHAR(30) NOT NULL,
                          country VARCHAR(30) NOT NULL
@@ -11,7 +11,7 @@ CREATE TABLE authors (
 CREATE INDEX authors_isbn ON authors (isbn);
 
 CREATE TABLE books (
-  id     INTEGER     NOT NULL IDENTITY PRIMARY KEY,
+  id     INT     NOT NULL PRIMARY KEY ,
   isbn   VARCHAR(30) NOT NULL,
   title  VARCHAR(50) NOT NULL,
   author_id INTEGER     NOT NULL
