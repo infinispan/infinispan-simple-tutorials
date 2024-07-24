@@ -25,7 +25,7 @@ public class DBCreator {
 
    public void startDBServer(String port) {
       // Windows users may need to change the URL
-      DB_URL = String.format("jdbc:h2:tcp://localhost:%s/~/library;", port);
+      DB_URL = String.format("jdbc:h2:tcp://localhost:%s/~/example;", port);
       try {
          server = org.h2.tools.Server.createTcpServer("-tcpPort", port, "-tcpAllowOthers", "-ifNotExists").start();
       } catch (SQLException throwable) {

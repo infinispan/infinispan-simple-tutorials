@@ -6,7 +6,7 @@
                 shared="false"
                 dialect="H2"
                 table-name="AUTHORS">
-            <connection-pool connection-url="jdbc:h2:tcp://localhost:9123/~/library;DB_CLOSE_DELAY=-1"
+            <connection-pool connection-url="jdbc:h2:tcp://localhost:9123/~/example;DB_CLOSE_DELAY=-1"
                              username="infinispan"
                              password="secret"
                              driver="org.h2.Driver"/>
