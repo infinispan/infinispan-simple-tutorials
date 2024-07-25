@@ -1,5 +1,6 @@
 package org.infinispan.tutorial.simple.connect;
 
+import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ClientIntelligence;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
@@ -67,13 +68,11 @@ public class TutorialsConnectorHelper {
    public static InfinispanContainer INFINISPAN_CONTAINER;
 
    public static final RemoteCacheManager connect(ConfigurationBuilder builder) {
-
       RemoteCacheManager cacheManager = null;
       try {
-         builder.addServer().host(HOST).port(SINGLE_PORT);
          cacheManager = new RemoteCacheManager(builder.build());
-         // Clear the cache in case it already exists from a previous running tutorial
-         cacheManager.getCache(TUTORIAL_CACHE_NAME).clear();
+         //ping
+         System.out.println("Get cache names: " + cacheManager.getCacheNames());
       } catch (Exception ex) {
          System.out.println("Unable to connect to a running server in localhost:11222. Try test containers");
          if (cacheManager != null) {
@@ -85,13 +84,22 @@ public class TutorialsConnectorHelper {
       if (cacheManager == null) {
          try {
             startInfinispanContainer();
-            builder.addServer().host(HOST).port(INFINISPAN_CONTAINER.getFirstMappedPort());
+            builder.addServer().host(HOST).port(INFINISPAN_CONTAINER.getMappedPort(SINGLE_PORT));
             cacheManager = new RemoteCacheManager(builder.build());
-            // Clear the cache in case it already exists from a previous running tutorial
-            cacheManager.getCache(TUTORIAL_CACHE_NAME).clear();
+            //ping
+            System.out.println("Get cache names: " + cacheManager.getCacheNames());
          } catch (Exception ex) {
             System.out.println("Infinispan Server start with Testcontainers failed. Exit");
             System.exit(0);
+         }
+      }
+      if (cacheManager != null) {
+         // Clear the cache in case it already exists from a previous running tutorial
+         RemoteCache<Object, Object> testCache = cacheManager.getCache(TUTORIAL_CACHE_NAME);
+         if (testCache != null) {
+            testCache.clear();
+         } else {
+            System.out.println("Test cache does not exist");
          }
       }
       // Return the connected cache manager
