@@ -31,7 +31,7 @@ jobs:
           curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:11222/rest/v2/container/health/status > /dev/null
 
       - name: JDK 17 Tests
-        run: mvn -B clean install artifact:compare -Dmaven.test.failure.ignore=true -Dansi.strip=true
+        run: mvn -B clean install -Dmaven.test.failure.ignore=true
 
       - name: Test Logs
         uses: actions/upload-artifact@v4
