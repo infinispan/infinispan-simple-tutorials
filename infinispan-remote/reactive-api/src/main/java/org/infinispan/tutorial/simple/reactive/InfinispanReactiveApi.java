@@ -2,6 +2,7 @@ package org.infinispan.tutorial.simple.reactive;
 
 import org.infinispan.api.Infinispan;
 import org.infinispan.api.mutiny.MutinyCache;
+import org.infinispan.api.sync.SyncCache;
 import org.infinispan.commons.util.OS;
 import org.infinispan.hotrod.configuration.ClientIntelligence;
 import org.infinispan.hotrod.configuration.HotRodConfigurationBuilder;
@@ -40,11 +41,7 @@ public class InfinispanReactiveApi {
    }
 
    static void manipulateCacheReactive() {
-      ScheduledExecutorService executor = Executors.newScheduledThreadPool(4, t -> {
-         Thread wrap = new Thread(t);
-         wrap.setDaemon(true);
-         return wrap;
-      });
+      ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
       cache.set("hello", "reactive")
               .chain(ignore -> cache.get("hello"))
@@ -53,23 +50,19 @@ public class InfinispanReactiveApi {
               .onItem().delayIt().onExecutor(executor).by(Duration.ofSeconds(1))
               .invoke(v -> System.out.printf("%s -- %s\n", LocalDateTime.now(), v))
               .await().atMost(Duration.ofSeconds(2));
+
+      executor.shutdown();
    }
 
    public static final void connect() {
       // New API Connection
       HotRodConfigurationBuilder builder = createHotRodConfigurationBuilder();
-      // Add default host/port server
-      builder.addServer().host(HOST).port(SINGLE_PORT);
-
       infinispan = null;
       try {
          infinispan = Infinispan.create(builder.build());
          clearCache();
       } catch (Exception ex) {
          System.out.println("Unable to connect to a running server in localhost:11222. Try test containers");
-         if (infinispan != null) {
-            disconnect(false);
-         }
          infinispan = null;
       }
 
@@ -77,7 +70,7 @@ public class InfinispanReactiveApi {
          try {
             TutorialsConnectorHelper.startInfinispanContainer();
             builder = createHotRodConfigurationBuilder();
-            builder.addServer().host(HOST).port(INFINISPAN_CONTAINER.getFirstMappedPort());
+            builder.addServer().host(HOST).port(INFINISPAN_CONTAINER.getMappedPort(SINGLE_PORT));
             infinispan = Infinispan.create(builder.build());
             clearCache();
          } catch (Exception ex) {
@@ -107,7 +100,10 @@ public class InfinispanReactiveApi {
    private static void clearCache() {
       if (infinispan != null) {
          // Clear the cache in case it already exists from a previous running tutorial
-         infinispan.sync().caches().get(TUTORIAL_CACHE_NAME).clear();
+         SyncCache<Object, Object> cache = infinispan.sync().caches().get(TUTORIAL_CACHE_NAME);
+         if (cache != null) {
+            cache.clear();
+         }
       }
    }
 

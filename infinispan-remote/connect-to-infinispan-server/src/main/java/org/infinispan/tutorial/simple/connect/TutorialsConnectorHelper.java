@@ -107,12 +107,16 @@ public class TutorialsConnectorHelper {
    }
 
    public static InfinispanContainer startInfinispanContainer() {
+      return startInfinispanContainer(1000);
+   }
+
+   public static InfinispanContainer startInfinispanContainer(long millis) {
       try {
          INFINISPAN_CONTAINER = new InfinispanContainer();
          INFINISPAN_CONTAINER.withUser(USER);
          INFINISPAN_CONTAINER.withPassword(PASSWORD);
          INFINISPAN_CONTAINER.start();
-         Thread.sleep(3000);
+         Thread.sleep(millis);
       } catch (Exception ex) {
          System.out.println("Unable to start Infinispan container");
          return null;
