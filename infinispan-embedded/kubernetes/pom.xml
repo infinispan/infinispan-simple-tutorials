@@ -59,7 +59,7 @@
                 <plugin>
                     <groupId>org.eclipse.jkube</groupId>
                     <artifactId>kubernetes-maven-plugin</artifactId>
-                    <version>1.16.2</version>
+                    <version>1.17.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
