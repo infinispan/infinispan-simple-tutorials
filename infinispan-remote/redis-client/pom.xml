@@ -10,7 +10,7 @@
     </parent>
     <name>Infinispan Simple Tutorials: Redis Client</name>
     <properties>
-        <jedis.version>5.1.4</jedis.version>
+        <jedis.version>5.1.5</jedis.version>
     </properties>
     <build>
         <plugins>
