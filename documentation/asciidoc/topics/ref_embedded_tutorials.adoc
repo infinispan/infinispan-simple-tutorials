@@ -22,6 +22,9 @@ $ {clean_exec}
 |link:{repository}/infinispan-embedded/cache-invalidated[Invalidated caches]
 |Demonstrates how Invalidated Caches work.
 
+|link:{repository}/infinispan-embedded/cache-alias[Cache alias]
+|Demonstrates how Cache alias work.
+
 |link:{repository}/infinispan-embedded/transactions[Transactions]
 |Demonstrates how transactions work.
 

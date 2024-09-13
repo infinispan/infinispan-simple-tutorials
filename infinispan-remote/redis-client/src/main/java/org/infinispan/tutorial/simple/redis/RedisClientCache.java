@@ -1,12 +1,11 @@
 package org.infinispan.tutorial.simple.redis;
 
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
-import org.jetbrains.annotations.NotNull;
-import redis.clients.jedis.JedisPooled;
+import redis.clients.jedis.Jedis;
 
 public class RedisClientCache {
 
-   static JedisPooled jedis = null;
+   static Jedis jedis = null;
 
    public static void main(String[] args) {
       connect();
@@ -53,13 +52,13 @@ public class RedisClientCache {
       }
    }
 
-   private static JedisPooled createJedis(int port) {
+   private static Jedis createJedis(int port) {
       String redisUri = String.format("redis://%s:%s@%s:%s",
               TutorialsConnectorHelper.USER,
               TutorialsConnectorHelper.PASSWORD,
               TutorialsConnectorHelper.HOST,
               port);
-      return new JedisPooled(redisUri);
+      return new Jedis(redisUri);
    }
 
 }
