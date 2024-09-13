@@ -11,6 +11,9 @@
 |link:{repository}/infinispan-remote/cache[Remote cache use example]
 |The simplest code example that demonstrates how a remote distributed cache works.
 
+|link:{repository}/infinispan-remote/cache-alias[Remote cache with cache alias example]
+|Demonstrates how to update a cache config to add an alias and use it to manipulate the cache.
+
 |link:{repository}/infinispan-remote/per-cache-configuration[Per cache configuration]
 |Demonstrates how to configure caches dynamically when we connect to the {brandname} Server.
 
