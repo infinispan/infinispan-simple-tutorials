@@ -4,8 +4,7 @@ Install the required Java and Maven versions before you build and run {brandname
 
 .Java
 
-* Embedded caches require Java 8 at a minimum but Java 11 is recommended.
-* {brandname} Server requires Java 11 as the minimum version.
+* {brandname} requires Java 17 as the minimum version.
 
 .Maven
 
