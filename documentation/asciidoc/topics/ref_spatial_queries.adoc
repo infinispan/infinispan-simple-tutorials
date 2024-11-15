@@ -1,0 +1,13 @@
+[id='spatial_queries_{context}']
+= Spatial queries
+
+Learn how to use spatial queries.
+
+link:{repository}/infinispan-remote/spatial-queries[Spatial queries tutorial]
+
+In this tutorial, you have a demonstration of how to use spatial queries with {brandname}.
+
+[role="_additional-resources"]
+.Additional resources
+* link:{spacial_queries_docs}[Spatial queries documentation]
+* link:{spatial_queries_blog}[Spatial queries blog]

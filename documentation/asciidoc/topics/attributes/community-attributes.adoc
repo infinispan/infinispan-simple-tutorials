@@ -14,6 +14,8 @@
 
 :stable_documentation: https://infinispan.org/docs/stable/titles
 :client_documentation: https://infinispan.org/docs/hotrod-clients
+:dev_documentation: https://infinispan.org/docs/dev/titles
+:blog: https://infinispan.org/blog
 
 //Configuration Guide
 :config_docs: {stable_documentation}/configuring/configuring.html
@@ -74,3 +76,7 @@
 
 //Observability
 :observability_docs: {stable_documentation}/server/server.html#opentelemetry-tracing
+
+//Spatial queries
+:spacial_queries_docs: {dev_documentation}/query/query.html#spatial_search_ickle-query-language
+:spatial_queries_blog: {blog}/2024/11/25/spatial-queries
