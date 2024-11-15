@@ -120,6 +120,7 @@
         <module>infinispan-remote/redis-client</module>
         <module>infinispan-remote/cross-site-replication</module>
         <module>infinispan-remote/opentelemetry</module>
+        <module>infinispan-remote/spatial-queries</module>
         <module>infinispan-embedded/cache-alias</module>
         <module>infinispan-embedded/cache-distributed</module>
         <module>infinispan-embedded/cache-invalidated</module>
