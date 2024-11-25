@@ -22,7 +22,7 @@ public class TutorialsConnectorHelper {
 
    public static final String TUTORIAL_CACHE_NAME = "test";
    public static final String TUTORIAL_CACHE_CONFIG =
-         "<distributed-cache name=\"CACHE_NAME\">\n"
+         "<distributed-cache name=\"CACHE_NAME\" statistics=\"true\">\n"
          + "    <encoding media-type=\"application/x-protostream\"/>\n"
          + "</distributed-cache>";
 
