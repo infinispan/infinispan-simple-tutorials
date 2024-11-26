@@ -3,24 +3,15 @@ package org.infinispan.tutorial.simple.reactive;
 import org.infinispan.api.Infinispan;
 import org.infinispan.api.mutiny.MutinyCache;
 import org.infinispan.api.sync.SyncCache;
-import org.infinispan.commons.util.OS;
-import org.infinispan.hotrod.configuration.ClientIntelligence;
-import org.infinispan.hotrod.configuration.HotRodConfigurationBuilder;
+import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
-import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.HOST;
-import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.INFINISPAN_CONTAINER;
-import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.PASSWORD;
-import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.SINGLE_PORT;
-import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.TUTORIAL_CACHE_CONFIG;
 import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.TUTORIAL_CACHE_NAME;
-import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.USER;
 
 public class InfinispanReactiveApi {
 
@@ -32,6 +23,13 @@ public class InfinispanReactiveApi {
       initCache();
       manipulateCacheReactive();
       disconnect(false);
+   }
+
+   static void connect() {
+      // Connect to the server
+      ConfigurationBuilder configurationBuilder = TutorialsConnectorHelper.connectionConfig();
+      infinispan = Infinispan.create(configurationBuilder.create());
+      cache = infinispan.mutiny().caches().<String, String>get(TUTORIAL_CACHE_NAME).await().atMost(Duration.ofSeconds(10));
    }
 
    static void initCache() {
@@ -52,49 +50,6 @@ public class InfinispanReactiveApi {
               .await().atMost(Duration.ofSeconds(2));
 
       executor.shutdown();
-   }
-
-   public static final void connect() {
-      // New API Connection
-      HotRodConfigurationBuilder builder = createHotRodConfigurationBuilder();
-      infinispan = null;
-      try {
-         infinispan = Infinispan.create(builder.build());
-         clearCache();
-      } catch (Exception ex) {
-         System.out.println("Unable to connect to a running server in localhost:11222. Try test containers");
-         infinispan = null;
-      }
-
-      if (infinispan == null) {
-         try {
-            TutorialsConnectorHelper.startInfinispanContainer();
-            builder = createHotRodConfigurationBuilder();
-            builder.addServer().host(HOST).port(INFINISPAN_CONTAINER.getMappedPort(SINGLE_PORT));
-            infinispan = Infinispan.create(builder.build());
-            clearCache();
-         } catch (Exception ex) {
-            System.out.println("Infinispan Server start with Testcontainers failed. Exit");
-            System.exit(0);
-         }
-      }
-   }
-
-   @NotNull
-   private static HotRodConfigurationBuilder createHotRodConfigurationBuilder() {
-      HotRodConfigurationBuilder builder = new HotRodConfigurationBuilder();
-      if (OS.getCurrentOs().equals(OS.MAC_OS) || OS.getCurrentOs().equals(OS.WINDOWS)) {
-         // This is for DEV MODE LOCAL !! Don't add this in production, you will hit performance issues
-         builder.clientIntelligence(ClientIntelligence.BASIC);
-      }
-
-      builder.security().authentication()
-              .username(USER)
-              .password(PASSWORD);
-
-      builder.remoteCache(TUTORIAL_CACHE_NAME)
-              .configuration(TUTORIAL_CACHE_CONFIG.replace("CACHE_NAME", TUTORIAL_CACHE_NAME));
-      return builder;
    }
 
    private static void clearCache() {
