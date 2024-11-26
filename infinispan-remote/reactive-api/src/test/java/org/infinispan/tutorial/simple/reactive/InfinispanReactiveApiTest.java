@@ -9,7 +9,6 @@ import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.TU
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@Disabled
 public class InfinispanReactiveApiTest {
 
     @BeforeAll
