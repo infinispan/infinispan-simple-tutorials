@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
   keycloak:
-    image:  quay.io/keycloak/keycloak
+    image:  quay.io/keycloak/keycloak:24.0.0
     volumes:
       - ./infinispan-keycloak-realm.json:/opt/keycloak/data/import/infinispan-keycloak-realm.json
     container_name: keycloak
@@ -13,7 +13,7 @@ services:
     network_mode: host
 
   infinispan-server:
-    image: quay.io/infinispan/server:15.0
+    image: quay.io/infinispan/server:15.0.8.Final
     volumes:
       - ./infinispan-token-realm.yaml:/user-config/infinispan-token-realm.yaml
     depends_on:
