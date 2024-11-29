@@ -2,7 +2,8 @@ version: '3.1'
 
 services:
   keycloak:
-    image:  quay.io/keycloak/keycloak
+    # Console fails for 25 and 26, fixed in 15.0.12.Final
+    image:  quay.io/keycloak/keycloak:24.0
     volumes:
       - ./infinispan-keycloak-realm.json:/opt/keycloak/data/import/infinispan-keycloak-realm.json
     container_name: keycloak
