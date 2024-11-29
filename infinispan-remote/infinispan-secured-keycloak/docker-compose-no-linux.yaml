@@ -6,7 +6,8 @@ networks:
 
 services:
   keycloak:
-    image:  quay.io/keycloak/keycloak
+    # Console fails for 25 and 26, fixed in 15.0.12.Final
+    image:  quay.io/keycloak/keycloak:24.0
     ports:
       - "8080:8080"
     volumes:
