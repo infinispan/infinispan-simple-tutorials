@@ -12,12 +12,6 @@ updates:
       interval: daily
     open-pull-requests-limit: 10
     target-branch: development
-  - package-ecosystem: maven
-    directory: "/"
-    schedule:
-      interval: daily
-    open-pull-requests-limit: 10
-    target-branch: 15.0
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
