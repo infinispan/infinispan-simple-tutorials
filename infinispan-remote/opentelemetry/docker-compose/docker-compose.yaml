@@ -15,7 +15,7 @@ services:
     networks:
       - mynetwork
   infinispan-tracing:
-    image: quay.io/infinispan/server:15.0
+    image: quay.io/infinispan/server:15.1
     ports:
       - "11222:11222"
     container_name: infinispan-tracing
