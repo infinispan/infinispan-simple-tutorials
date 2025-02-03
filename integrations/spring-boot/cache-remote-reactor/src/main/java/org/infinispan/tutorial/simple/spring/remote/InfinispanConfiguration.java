@@ -1,8 +1,6 @@
 package org.infinispan.tutorial.simple.spring.remote;
 
-import org.infinispan.client.hotrod.configuration.ClientIntelligence;
 import org.infinispan.commons.marshall.ProtoStreamMarshaller;
-import org.infinispan.commons.util.OS;
 import org.infinispan.spring.starter.remote.InfinispanRemoteCacheCustomizer;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 import org.springframework.context.annotation.Bean;
@@ -26,9 +24,6 @@ public class InfinispanConfiguration {
             port = TutorialsConnectorHelper.INFINISPAN_CONTAINER.getFirstMappedPort();
          }
          b.addServer().host(host).port(port);
-         if (OS.getCurrentOs().equals(OS.MAC_OS) || OS.getCurrentOs().equals(OS.WINDOWS)) {
-            b.clientIntelligence(ClientIntelligence.BASIC);
-         }
          b.security().authentication()
                  .username(TutorialsConnectorHelper.USER)
                  .password(TutorialsConnectorHelper.PASSWORD);
