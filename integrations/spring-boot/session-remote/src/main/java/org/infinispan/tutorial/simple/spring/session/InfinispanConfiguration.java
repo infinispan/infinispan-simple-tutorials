@@ -1,8 +1,6 @@
 package org.infinispan.tutorial.simple.spring.session;
 
-import org.infinispan.client.hotrod.configuration.ClientIntelligence;
 import org.infinispan.commons.marshall.ProtoStreamMarshaller;
-import org.infinispan.commons.util.OS;
 import org.infinispan.spring.starter.remote.InfinispanRemoteCacheCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
