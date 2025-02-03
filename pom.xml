@@ -106,6 +106,7 @@
         <module>infinispan-remote/continuous-query</module>
         <module>infinispan-remote/counter</module>
         <module>infinispan-remote/junit5</module>
+        <module>infinispan-remote/kotlin</module>
         <module>infinispan-remote/listeners</module>
         <module>infinispan-remote/multimap</module>
         <module>infinispan-remote/near-cache</module>
