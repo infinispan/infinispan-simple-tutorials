@@ -2,10 +2,8 @@ package org.infinispan.tutorial.simple.connect;
 
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
-import org.infinispan.client.hotrod.configuration.ClientIntelligence;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.impl.ConfigurationProperties;
-import org.infinispan.commons.util.OS;
 import org.infinispan.server.test.core.InfinispanContainer;
 
 /**
@@ -38,12 +36,6 @@ public class TutorialsConnectorHelper {
             //Add user credentials.
             .username(USER)
             .password(PASSWORD);
-
-      // ### Docker 4 Mac Workaround. Don't use BASIC intelligence in production
-      if (OS.getCurrentOs().equals(OS.MAC_OS) || OS.getCurrentOs().equals(OS.WINDOWS)) {
-         builder.clientIntelligence(ClientIntelligence.BASIC);
-      }
-      // ### Docker 4 Mac and Windows Workaround. Don't use BASIC intelligence in production
 
       // Make sure the remote cache is available.
       // If the cache does not exist, the cache will be created

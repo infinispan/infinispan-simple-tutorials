@@ -30,12 +30,6 @@ public class InfinispanConfiguration {
          b.remoteCache("sessions").configurationURI(uri);
          // Use protostream marshaller to serialize the sessions with Protobuf
          b.remoteCache("sessions").marshaller(ProtoStreamMarshaller.class);
-
-         // #### This is to avoid connectivity issues locally with docker and mac.
-         // ### Don't use client intelligence basic in production
-         if (OS.getCurrentOs().equals(OS.MAC_OS) || OS.getCurrentOs().equals(OS.WINDOWS)) {
-            b.clientIntelligence(ClientIntelligence.BASIC);
-         }
       };
    }
 }
