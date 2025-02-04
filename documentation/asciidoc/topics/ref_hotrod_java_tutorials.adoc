@@ -26,6 +26,9 @@
 |link:{repository}/infinispan-remote/encoding[Encoding]
 |Demonstrates how encoding of caches work.
 
+|link:{repository}/infinispan-remote/programmatic-protostream-marshalling[Custom marshalling]
+|Demonstrates how custom marshalling works in the context of programmatically creating Protostream schemas and marshallers. Users should generally rely on annotations based generated Protostream marshallers unless exceptional circumstances require manual creation.
+
 |link:{repository}/infinispan-remote/listeners[Client listeners]
 |Detect when data changes in a remote cache with Client Listeners.
 
@@ -44,9 +47,6 @@
 |link:{repository}/infinispan-remote/security/tls-authorization[TLS authorization]
 |Demonstrates how to connect to {brandname} Server with TLS authorization.
 
-|link:{repository}/infinispan-remote/counter[Counters]
-|Demonstrates how remote counters work.
-
 |link:{repository}/infinispan-remote/multimap[Multimap]
 |Demonstrates how remote multimap works.
 
@@ -58,7 +58,6 @@
 
 |link:{repository}/infinispan-remote/persistence[Persistence]
 |Demonstrates how to use the {brandname} and persistent caches.
-
 
 |link:{repository}/infinispan-remote/redis-client[Redis Client]
 |Demonstrates how to use the {brandname} and Redis client to read and write using the Resp protocol.
