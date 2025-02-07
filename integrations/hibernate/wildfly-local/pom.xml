@@ -20,7 +20,7 @@
       <java.version>1.8</java.version>
 
       <version.server.bom>17.0.1.Final</version.server.bom>
-      <version.wildfly.maven.plugin>5.1.1.Final</version.wildfly.maven.plugin>
+      <version.wildfly.maven.plugin>5.1.2.Final</version.wildfly.maven.plugin>
    </properties>
 
    <dependencyManagement>
