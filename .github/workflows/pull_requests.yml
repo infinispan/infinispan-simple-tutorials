@@ -6,13 +6,15 @@ on:
       - main
       - development
       - 14.0.x
-      - 15.0
+      - 15.0.x
+      - 15.1.x
   pull_request:
     branches:
       - main
       - development
       - 14.0.x
-      - 15.0
+      - 15.0.x
+      - 15.1.x
 
 jobs:
   test:
@@ -30,7 +32,7 @@ jobs:
       - if: github.base_ref == 'main' || github.ref_name == 'main'
         name: Start Infinispan Server Latest Version
         run: |
-          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:15.1
+          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:15.2
           # Wait for server to startup
           curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:11222/rest/v2/container/health/status > /dev/null
 
@@ -40,6 +42,13 @@ jobs:
           docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan-test/server:main
           # Wait for server to startup
           curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:11222/rest/v2/container/health/status > /dev/null
+
+      - if: github.base_ref == '15.1.x' || github.ref_name == '15.1.x'
+        name: Start Infinispan Server Latest Version
+        run: |
+          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:15.1
+          # Wait for server to startup
+          curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:11222/rest/v2/cache-managers/default/health/status > /dev/null
 
       - if: github.base_ref == '15.0.x' || github.ref_name == '15.0.x'
         name: Start Infinispan Server Latest Version

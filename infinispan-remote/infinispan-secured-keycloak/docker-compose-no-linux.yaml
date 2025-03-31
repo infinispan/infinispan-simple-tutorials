@@ -6,7 +6,7 @@ networks:
 
 services:
   keycloak:
-    image:  quay.io/keycloak/keycloak:26.0
+    image:  quay.io/keycloak/keycloak:26
     ports:
       - "8080:8080"
     volumes:
@@ -20,7 +20,7 @@ services:
       - mynetwork
 
   infinispan-server:
-    image: quay.io/infinispan/server:15.1
+    image: quay.io/infinispan/server:15.2
     ports:
       - "11222:11222"
     volumes:
