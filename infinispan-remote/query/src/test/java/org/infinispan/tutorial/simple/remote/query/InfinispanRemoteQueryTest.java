@@ -28,13 +28,16 @@ public class InfinispanRemoteQueryTest {
     public void testRemoteQuery() {
         assertNotNull(InfinispanRemoteQuery.client);
         assertNotNull(InfinispanRemoteQuery.peopleCache);
+        assertNotNull(InfinispanRemoteQuery.teamCache);
+        InfinispanRemoteQuery.peopleCache.clear();
+        InfinispanRemoteQuery.teamCache.clear();
 
-        List<Person> people = InfinispanRemoteQuery.queryAll();
+        List<Person> people = InfinispanRemoteQuery.queryAllPeople();
         assertEquals(0, people.size());
 
-        InfinispanRemoteQuery.addDataToCache();
+        InfinispanRemoteQuery.addDataToPeopleCache();
 
-        people = InfinispanRemoteQuery.queryAll();
+        people = InfinispanRemoteQuery.queryAllPeople();
         assertEquals(4, people.size());
 
         List<Person> peopleFiltered = InfinispanRemoteQuery.queryWithWhereStatementOnValues();
@@ -57,5 +60,11 @@ public class InfinispanRemoteQueryTest {
         // Malfoy has been removed
         peopleFilteredByKey = InfinispanRemoteQuery.queryByKey();
         assertEquals(0, peopleFilteredByKey.size());
+
+        // Count teams before adding values
+        assertEquals(0, InfinispanRemoteQuery.countAllTeam());
+        InfinispanRemoteQuery.addDataToTeamCache();
+        assertEquals(3, InfinispanRemoteQuery.countAllTeam());
+        InfinispanRemoteQuery.queryWithScoreAndFilterOnNestedValues();
     }
 }
