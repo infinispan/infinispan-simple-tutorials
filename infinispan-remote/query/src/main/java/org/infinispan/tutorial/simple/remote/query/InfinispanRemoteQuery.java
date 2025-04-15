@@ -8,6 +8,7 @@ import org.infinispan.protostream.GeneratedSchema;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,23 +26,27 @@ import static org.infinispan.query.remote.client.ProtobufMetadataManagerConstant
 public class InfinispanRemoteQuery {
 
    public static final String INDEXED_PEOPLE_CACHE = "indexedPeopleCache";
+   public static final String INDEXED_TEAM_CACHE = "indexedTeamCache";
    static RemoteCacheManager client;
    static RemoteCache<PersonKey, Person> peopleCache;
+   static RemoteCache<String, Team> teamCache;
 
    public static void main(String[] args) throws Exception {
       connectToInfinispan();
-
-      addDataToCache();
-      queryAll();
+      addDataToPeopleCache();
+      queryAllPeople();
       queryWithWhereStatementOnValues();
       queryByKey();
       queryWithProjection();
       deleteByQuery();
 
+      addDataToTeamCache();
+      countAllTeam();
+      queryWithScoreAndFilterOnNestedValues();
       disconnect(false);
    }
 
-   static List<Person> queryAll() {
+   static List<Person> queryAllPeople() {
       // Query all
       Query<Person> query = peopleCache.query("FROM tutorial.Person");
       List<Person> queryResult = query.execute().list();
@@ -49,6 +54,19 @@ public class InfinispanRemoteQuery {
       System.out.println("SIZE " + queryResult.size());
       System.out.println(queryResult);
       return queryResult;
+   }
+
+   static Long countAllTeam() {
+      // Query all
+      Query<Object[]> query = teamCache.query("select count(t) FROM tutorial.Team t");
+      List<Object[]> queryResult = query.execute().list();
+      // Print the results
+      if (queryResult.size() > 0) {
+         System.out.println("COUNT " + queryResult.get(0)[0]);
+         return (Long) queryResult.get(0)[0];
+      }
+      System.out.println("No team found");
+      return 0L;
    }
 
    static List<Person> deleteByQuery() {
@@ -101,6 +119,31 @@ public class InfinispanRemoteQuery {
       return queryResult;
    }
 
+   static void queryWithScoreAndFilterOnNestedValues() {
+      System.out.println("== Query and filter on nested values of the team");
+      Query<Team> query = teamCache.query("FROM tutorial.Team t join t.players p where p.bornIn = :bornIn");
+      // Set the parameter value
+      query.setParameter("bornIn", "London");
+      List<Team> teamsWithPeopleFromLondon = query.execute().list();
+      System.out.println("There are only 2 teams " + teamsWithPeopleFromLondon.size());
+      System.out.println(teamsWithPeopleFromLondon);
+
+      // Get the score
+      Query<Object[]> queryWithProjectionAndScore = teamCache.query("select t.teamName, score(t) FROM tutorial.Team t where t.points=88");
+      List<Object[]> results = queryWithProjectionAndScore.execute().list();
+      System.out.println("Team with 88 points: " + results.size());
+      System.out.println("Team name: " + results.get(0)[0]);
+      System.out.println("Score: " + results.get(0)[1]);
+
+      // With filter in nested values
+      Query<Object[]> queryProjection = teamCache.query("select t.teamName, score(t) FROM tutorial.Team t join t.players p where p.lastName = :lastName");
+      queryProjection.setParameter("lastName", "Granger");
+      results = queryProjection.execute().list();
+      System.out.println("Hermione number of teams: " + results.size());
+      System.out.println("Hermione team name: " + results.get(0)[0]);
+   }
+
+
    static void connectToInfinispan() throws Exception {
       ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
 
@@ -109,7 +152,9 @@ public class InfinispanRemoteQuery {
 
       // Use indexed cache
       URI indexedCacheURI = InfinispanRemoteQuery.class.getClassLoader().getResource("indexedCache.xml").toURI();
+      URI teamCacheURI = InfinispanRemoteQuery.class.getClassLoader().getResource("teamCache.xml").toURI();
       builder.remoteCache(INDEXED_PEOPLE_CACHE).configurationURI(indexedCacheURI);
+      builder.remoteCache(INDEXED_TEAM_CACHE).configurationURI(teamCacheURI);
 
       // Connect to the server
       client = TutorialsConnectorHelper.connect(builder);
@@ -119,9 +164,10 @@ public class InfinispanRemoteQuery {
 
       // Get the people cache, create it if needed with the default configuration
       peopleCache = client.getCache(INDEXED_PEOPLE_CACHE);
+      teamCache = client.getCache(INDEXED_TEAM_CACHE);
    }
 
-   static void addDataToCache() {
+   static void addDataToPeopleCache() {
       // Create the persons dataset to be stored in the cache
       Map<PersonKey, Person> people = new HashMap<>();
       people.put(new PersonKey("1", "hgranger"),
@@ -135,6 +181,34 @@ public class InfinispanRemoteQuery {
 
       // Put all the values in the cache
       peopleCache.putAll(people);
+   }
+
+   static void addDataToTeamCache() {
+      // Create the persons dataset to be stored in the cache
+      Map<String, Team> teams = new HashMap<>();
+
+      Team team1 = new Team("Heroic team", 900, Arrays.asList(
+              new Person("Hermione", "Granger", 1990, "London"),
+              new Person("Neville", "Longbottom", 1990, "Manchester"),
+              new Person("Luna", "Lovegood", 1991, "London")
+      ));
+
+      Team team2 = new Team("Villains team", 88, Arrays.asList(
+              new Person("Draco", "Malfoy", 1988, "London"),
+              new Person("Bellatrix", "Lestrange", 1955, "Bristol"),
+              new Person("Dolores", "Umbridge", 1950, "Bristol")
+      ));
+
+      Team team3 = new Team("I don't care team", 1500, Arrays.asList(
+              new Person("Lavender", "Brown", 1990, "Bristol"),
+              new Person("Seamus", "Finnigan", 1990, "Manchester")
+      ));
+
+      teams.put("1", team1);
+      teams.put("2", team2);
+      teams.put("3", team3);
+
+      teamCache.putAll(teams);
    }
 
    public static void disconnect(boolean removeCaches) {

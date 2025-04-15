@@ -24,12 +24,10 @@ public class InfinispanRemotePerCacheTest {
     public void testRemotePerCacheConfiguration() {
         assertNotNull(InfinispanRemotePerCache.cacheManager);
         assertNull(InfinispanRemotePerCache.cache);
-        assertNull(InfinispanRemotePerCache.anotherCache);
         assertNull(InfinispanRemotePerCache.uriCache);
 
         InfinispanRemotePerCache.manipulateCaches();
         assertNotNull(InfinispanRemotePerCache.cache);
-        assertNotNull(InfinispanRemotePerCache.anotherCache);
         assertNotNull(InfinispanRemotePerCache.uriCache);
     }
 }
