@@ -33,7 +33,6 @@ public class InfinispanRemoteSwitchCluster {
       cache.put("hello", "world");
       printCluster("LON", cache);
       System.out.println("hello " + cache.get("hello") + " from LON");
-      client.switchToCluster("NYC");
       printCluster("NYC", cache);
       System.out.println("hello " + cache.get("hello") + " from NYC");
       cache.put("hello-nyc", "world");
@@ -56,7 +55,9 @@ public class InfinispanRemoteSwitchCluster {
       cache = client.administration()
               // this cache should exist if you start with docker-compose and run the create-data.sh script
               .getOrCreateCache(XSITE_CACHE, new StringConfiguration("<distributed-cache/>"));
-
+      client.switchToCluster("NYC");
+      client.administration().getOrCreateCache(XSITE_CACHE, new StringConfiguration("<distributed-cache/>"));
+      client.switchToDefaultCluster();
    }
 
    public static void disconnect(boolean removeCache) {

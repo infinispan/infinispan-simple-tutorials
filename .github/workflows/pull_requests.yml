@@ -4,13 +4,13 @@ on:
   push:
     branches:
       - main
+      - 15.0.x
       - development
-      - 14.0.x
   pull_request:
     branches:
       - main
+      - 15.0.x
       - development
-      - 14.0.x
 
 jobs:
   test:
@@ -26,26 +26,32 @@ jobs:
           cache: maven
 
       - if: github.base_ref == 'main' || github.ref_name == 'main'
-        name: Start Infinispan Server Latest Version
+        name: Start Infinispan Server Latest Stable Version
         run: |
-          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:15.0
+          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:15.2 -c infinispan-xsite.xml -Dinfinispan.site.name=LON -Djgroups.mcast_port=46656
+          docker run -d -p 31223:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:15.2 -c infinispan-xsite.xml -Dinfinispan.site.name=NYC -Djgroups.mcast_port=46666
           # Wait for server to startup
           curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:11222/rest/v2/container/health/status > /dev/null
+          curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:31223/rest/v2/container/health/status > /dev/null
 
       - if: github.base_ref == 'development' || github.ref_name == 'development'
-        name: Start Infinispan Server Latest Version
+        name: Start Infinispan Server Latest Development Version
         run: |
-          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan-test/server:main
+          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan-test/server:main -c infinispan-xsite.xml -Dinfinispan.site.name=LON -Djgroups.mcast_port=46656
+          docker run -d -p 31223:11222 -e USER="admin" -e PASS="password" quay.io/infinispan-test/server:main -c infinispan-xsite.xml -Dinfinispan.site.name=NYC -Djgroups.mcast_port=46666
+
           # Wait for server to startup
           curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:11222/rest/v2/container/health/status > /dev/null
+          curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:31223/rest/v2/container/health/status > /dev/null
 
-      - if: github.base_ref == '14.0.x' || github.ref_name == '14.0.x'
-        name: Start Infinispan Server Latest Version
+      - if: github.base_ref == '15.0.x' || github.ref_name == '15.0.x'
+        name: Start Infinispan Server Latest 15.0 LTS Version
         run: |
-          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:14.0
+          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:15.0 -c infinispan-xsite.xml -Dinfinispan.site.name=LON -Djgroups.mcast_port=46656
+          docker run -d -p 31223:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:15.0 -c infinispan-xsite.xml -Dinfinispan.site.name=NYC -Djgroups.mcast_port=46666
           # Wait for server to startup
-          curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:11222/rest/v2/cache-managers/default/health/status > /dev/null
-      
+          curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:11222/rest/v2/container/health/status > /dev/null
+          curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:31223/rest/v2/container/health/status > /dev/null
 
       - name: JDK 17 Tests
         run: ./mvnw -B clean install -Dmaven.test.failure.ignore=true
