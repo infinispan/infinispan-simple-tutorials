@@ -2,6 +2,9 @@ package org.infinispan.tutorial.simple.remote.junit5;
 
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
+import org.infinispan.commons.util.Version;
+import org.infinispan.server.test.core.ServerRunMode;
+import org.infinispan.server.test.core.TestSystemPropertyNames;
 import org.infinispan.server.test.junit5.InfinispanServerExtension;
 import org.infinispan.server.test.junit5.InfinispanServerExtensionBuilder;
 import org.junit.jupiter.api.Test;
@@ -16,7 +19,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CachingServiceTest {
 
    @RegisterExtension
-   static InfinispanServerExtension infinispanServerExtension = InfinispanServerExtensionBuilder.server();
+   static InfinispanServerExtension infinispanServerExtension = buildExtension();
+
+   static InfinispanServerExtension buildExtension() {
+      if (Version.getUnbrandedVersion().contains("SNAPSHOT")) {
+         // In our dev branch, we need to build with the latest main branch image.
+         return InfinispanServerExtensionBuilder
+                 .config()
+                 .numServers(1)
+                 .runMode(ServerRunMode.CONTAINER)
+                 .property(TestSystemPropertyNames.INFINISPAN_TEST_SERVER_BASE_IMAGE_NAME, "quay.io/infinispan-test/server:main")
+                 .build();
+      }
+
+      return InfinispanServerExtensionBuilder.server();
+   }
 
    @Test
    public void testUsingRemoteCacheManager(){

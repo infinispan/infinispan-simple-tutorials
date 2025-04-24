@@ -4,6 +4,7 @@ import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.impl.ConfigurationProperties;
+import org.infinispan.commons.util.Version;
 import org.infinispan.server.test.core.InfinispanContainer;
 
 /**
@@ -23,7 +24,6 @@ public class TutorialsConnectorHelper {
          "<distributed-cache name=\"CACHE_NAME\" statistics=\"true\">\n"
          + "    <encoding media-type=\"application/x-protostream\"/>\n"
          + "</distributed-cache>";
-
    /**
     * Returns the configuration builder with the connection information
     *
@@ -104,13 +104,19 @@ public class TutorialsConnectorHelper {
 
    public static InfinispanContainer startInfinispanContainer(long millis) {
       try {
-         INFINISPAN_CONTAINER = new InfinispanContainer();
+         if (Version.getUnbrandedVersion().contains("SNAPSHOT")) {
+            // we are using an Infinispan Dev version, use the latest build of the image
+            INFINISPAN_CONTAINER = new InfinispanContainer("quay.io/infinispan-test/server:main");
+         } else {
+            INFINISPAN_CONTAINER = new InfinispanContainer();
+         }
          INFINISPAN_CONTAINER.withUser(USER);
          INFINISPAN_CONTAINER.withPassword(PASSWORD);
          INFINISPAN_CONTAINER.start();
          Thread.sleep(millis);
       } catch (Exception ex) {
          System.out.println("Unable to start Infinispan container");
+         stopInfinispanContainer();
          return null;
       }
       return INFINISPAN_CONTAINER;
