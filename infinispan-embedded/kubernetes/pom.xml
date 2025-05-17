@@ -98,7 +98,7 @@
                             <name>${options.image}</name>
                             <alias>infinispan</alias>
                             <build>
-                                <from>registry.access.redhat.com/ubi9/openjdk-21-runtime</from>
+                                <from>eclipse-temurin:21-jre</from>
                                 <env>
                                     <JAVA_APP_JAR>/maven/${project.artifactId}-${project.version}.jar</JAVA_APP_JAR>
                                     <JAVA_OPTS>${options.debug} ${options.useIPv4} ${options.dnsPing}</JAVA_OPTS>
