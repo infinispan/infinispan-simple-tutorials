@@ -12,7 +12,7 @@
 
     <name>Infinispan Tutorial: Simple tutorials</name>
     <properties>
-        <testcontainers.version>1.21.2</testcontainers.version>
+        <testcontainers.version>1.21.3</testcontainers.version>
         <assertj.version>3.27.3</assertj.version>
     </properties>
     <repositories>
