@@ -1,0 +1,47 @@
+name: Build nightly
+
+on:
+  schedule:
+    - cron: '0 0 * * 1-5'
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Start Infinispan Server SNAPSHOT Version
+        run: |
+          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan-test/server:main
+          # Wait for server to startup
+          curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:11222/rest/v2/container/health/status > /dev/null
+
+      - name: JDK 17 Tests
+        run: ./mvnw -B clean install -Dmaven.test.failure.ignore=true
+
+      - name: Test Logs
+        uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+          name: jdk17-test-results
+          path: "**/target/*-reports*/**/TEST-*.xml"
+
+      - name: Get thread dump on failure
+        if: failure()
+        run: docker kill $(docker ps -q) -s 3
+
+      - name: Dump docker logs on failure
+        if: failure()
+        uses: jwalton/gh-docker-logs@v2
