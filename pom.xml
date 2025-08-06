@@ -137,6 +137,7 @@
         <module>infinispan-embedded/map</module>
         <module>infinispan-embedded/multimap</module>
         <module>infinispan-embedded/query</module>
+        <module>infinispan-embedded/query-programmatic-index</module>
         <module>infinispan-embedded/streams</module>
         <module>infinispan-embedded/transactions</module>
         <module>integrations/hibernate/local</module>
