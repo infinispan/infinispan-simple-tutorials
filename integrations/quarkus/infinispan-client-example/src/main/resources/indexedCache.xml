@@ -1,0 +1,11 @@
+<distributed-cache statistics="true">
+    <encoding>
+        <key media-type="application/x-protostream"/>
+        <value media-type="application/x-protostream"/>
+    </encoding>
+    <indexing enabled="true">
+        <indexed-entities>
+            <indexed-entity>tutorial.Character</indexed-entity>
+        </indexed-entities>
+    </indexing>
+</distributed-cache>

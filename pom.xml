@@ -149,5 +149,6 @@
         <module>integrations/spring-boot/session-remote</module>
         <module>integrations/spring-boot/cache-embedded</module>
         <module>integrations/spring-boot/session-embedded</module>
+        <module>integrations/quarkus/infinispan-client-example</module>
     </modules>
 </project>
