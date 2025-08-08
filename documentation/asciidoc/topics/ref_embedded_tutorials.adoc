@@ -46,6 +46,9 @@ $ {clean_exec}
 |link:{repository}/infinispan-embedded/query[Queries]
 |Uses {brandname} Query to perform full-text queries on cache values.
 
+|link:{repository}/infinispan-embedded/query-programmatic-index[Query with programmatic index definition]
+|Uses {brandname} Query to perform full-text queries on cache values, with programmatic index definition.
+
 |link:{repository}/infinispan-embedded/listeners[Clustered Listeners]
 |Detects when data changes in an embedded cache with Clustered Listeners.
 
