@@ -19,7 +19,7 @@
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
         <quarkus.platform.version>3.26.3</quarkus.platform.version>
         <skipITs>true</skipITs>
-        <surefire-plugin.version>3.5.0</surefire-plugin.version>
+        <surefire-plugin.version>3.5.4</surefire-plugin.version>
     </properties>
     <name>Infinispan Simple Tutorials: Quarkus Infinispan Client</name>
     <dependencyManagement>
