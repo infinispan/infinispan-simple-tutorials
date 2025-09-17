@@ -1,0 +1,23 @@
+[id='reverse-proxy-nginx_{context}']
+= Reverse proxy example with NGINX
+
+Learn how to handle reverse proxy configuration in {brandname} with a NGINX.
+
+In this tutorial, you start one {brandname} cluster and NGINX using `docker-compose`.
+
+== Docker compose
+
+[WARNING]
+====
+Make sure you have `docker` and `docker-compose` installed locally.
+====
+
+.Steps
+
+. Run `docker-compose up`. NGINX and {brandname} will start with all the necessary configuration.
+
+. Access the console at `http://localhost:8080/infinispan/console/welcome`.
+
+. Enter 'admin/password' credentials in the login pop up (BASIC Authentication).
+
+. You are now logged in.
