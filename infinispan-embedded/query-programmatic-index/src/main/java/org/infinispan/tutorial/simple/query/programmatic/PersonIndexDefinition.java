@@ -1,10 +1,9 @@
 package org.infinispan.tutorial.simple.query.programmatic;
 
-import org.hibernate.search.mapper.pojo.bridge.mapping.programmatic.TypeBinder;
 import org.hibernate.search.mapper.pojo.mapping.definition.programmatic.ProgrammaticMappingConfigurationContext;
 import org.hibernate.search.mapper.pojo.mapping.definition.programmatic.TypeMappingStep;
-import org.infinispan.search.mapper.mapping.MappingConfigurationContext;
-import org.infinispan.search.mapper.mapping.ProgrammaticSearchMappingProvider;
+import org.infinispan.query.mapper.mapping.MappingConfigurationContext;
+import org.infinispan.query.mapper.mapping.ProgrammaticSearchMappingProvider;
 
 public class PersonIndexDefinition implements ProgrammaticSearchMappingProvider {
 
