@@ -12,7 +12,7 @@
    <name>Infinispan Simple Tutorials: Hibernate Cache Local</name>
 
    <properties>
-      <version.h2>2.3.232</version.h2>
+      <version.h2>2.4.240</version.h2>
    </properties>
 
    <build>
