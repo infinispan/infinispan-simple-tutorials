@@ -3,9 +3,7 @@ name: Build nightly
 on:
   schedule:
     - cron: '0 0 * * 1-5'
-  workflow_dispatch:
-    branches:
-      - development
+  workflow_dispatch: {}
 
 defaults:
   run:
@@ -13,10 +11,11 @@ defaults:
 
 jobs:
   test:
-    if: github.ref == 'refs/heads/development'
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: development   # Force checkout of the dev branch
 
       - name: Setup Java
         uses: actions/setup-java@v4
