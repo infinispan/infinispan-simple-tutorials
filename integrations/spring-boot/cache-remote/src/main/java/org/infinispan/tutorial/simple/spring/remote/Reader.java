@@ -1,16 +1,13 @@
 package org.infinispan.tutorial.simple.spring.remote;
 
-import org.infinispan.client.hotrod.RemoteCache;
+import java.lang.invoke.MethodHandles;
+import java.util.Random;
+
 import org.infinispan.client.hotrod.RemoteCacheManager;
-import org.infinispan.protostream.GeneratedSchema;
-import org.infinispan.query.remote.client.ProtobufMetadataManagerConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.lang.invoke.MethodHandles;
-import java.util.Random;
 
 @Component
 public class Reader {
@@ -26,9 +23,7 @@ public class Reader {
       random = new Random();
       this.remoteCacheManager = remoteCacheManager;
       // Upload the generated schema in the server
-      RemoteCache<String, String> metadataCache = this.remoteCacheManager.getCache(ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME);
-      GeneratedSchema schema = new BasquesNamesSchemaBuilderImpl();
-      metadataCache.put(schema.getProtoFileName(), schema.getProtoFile());
+      remoteCacheManager.administration().schemas().createOrUpdate(new BasquesNamesSchemaBuilderImpl());
    }
 
    @Scheduled(fixedDelay = 10000)
