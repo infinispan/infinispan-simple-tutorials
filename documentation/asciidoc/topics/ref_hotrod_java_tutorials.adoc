@@ -29,6 +29,9 @@
 |link:{repository}/infinispan-remote/programmatic-protostream-marshalling[Custom marshalling]
 |Demonstrates how custom marshalling works in the context of programmatically creating Protostream schemas and marshallers. Users should generally rely on annotations based generated Protostream marshallers unless exceptional circumstances require manual creation.
 
+|link:{repository}/infinispan-remote/schemas[Protostream schemas administration]
+|Demonstrates how to use the Administration API to manipulate the Protostream (protobuf format) schemas in {brandname}.
+
 |link:{repository}/infinispan-remote/listeners[Client listeners]
 |Detect when data changes in a remote cache with Client Listeners.
 
