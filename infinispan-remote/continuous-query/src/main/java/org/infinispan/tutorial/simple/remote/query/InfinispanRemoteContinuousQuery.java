@@ -1,5 +1,11 @@
 package org.infinispan.tutorial.simple.remote.query;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
@@ -7,14 +13,6 @@ import org.infinispan.commons.api.query.ContinuousQuery;
 import org.infinispan.commons.api.query.ContinuousQueryListener;
 import org.infinispan.commons.api.query.Query;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-
-import static org.infinispan.query.remote.client.ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME;
 
 /**
  * The Remote Continuous Query simple tutorial.
@@ -145,11 +143,6 @@ public class InfinispanRemoteContinuousQuery {
    }
 
    private static void register(InstaSchemaImpl schema, RemoteCacheManager cacheManager) {
-      // Retrieve metadata cache
-      RemoteCache<String, String> metadataCache =
-            cacheManager.getCache(PROTOBUF_METADATA_CACHE_NAME);
-
-      // register the new schema on the server too
-      metadataCache.putIfAbsent(schema.getProtoFileName(), schema.getProtoFile());
+      cacheManager.administration().schemas().createOrUpdate(schema);
    }
 }
