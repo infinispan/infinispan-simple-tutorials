@@ -1,6 +1,5 @@
 package org.infinispan.tutorial.simple.remote.marshalling;
 
-import static org.infinispan.query.remote.client.ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME;
 import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.TUTORIAL_CACHE_NAME;
 
 import java.time.YearMonth;
@@ -73,12 +72,7 @@ public class InfinispanProgrammaticProtostreamMarshalling {
    }
 
    private static void registerMagazineSchemaInTheServer(RemoteCacheManager cacheManager) {
-      // Retrieve metadata cache
-      RemoteCache<String, String> metadataCache =
-              cacheManager.getCache(PROTOBUF_METADATA_CACHE_NAME);
-
-      // Define the new schema on the server too
-      metadataCache.put(schema.getName(), schema.toString());
+      cacheManager.administration().schemas().createOrUpdate(schema);
    }
 
    public static void disconnect(boolean removeCaches) {

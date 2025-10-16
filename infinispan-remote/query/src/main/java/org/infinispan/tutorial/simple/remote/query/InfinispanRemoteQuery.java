@@ -4,15 +4,12 @@ import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.commons.api.query.Query;
-import org.infinispan.protostream.GeneratedSchema;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.infinispan.query.remote.client.ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME;
 
 /**
  * The Remote Query simple tutorial.
@@ -148,12 +145,6 @@ public class InfinispanRemoteQuery {
    record PersonDTO(String pseudo, String fullName){}
 
    private static void addPersonSchema(RemoteCacheManager cacheManager) {
-      // Retrieve metadata cache
-      RemoteCache<String, String> metadataCache =
-            cacheManager.getCache(PROTOBUF_METADATA_CACHE_NAME);
-
-      // Define the new schema on the server too
-      GeneratedSchema schema = new TutorialSchemaImpl();
-      metadataCache.put(schema.getProtoFileName(), schema.getProtoFile());
+      cacheManager.administration().schemas().createOrUpdate(new TutorialSchemaImpl());
    }
 }
