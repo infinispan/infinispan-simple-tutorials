@@ -43,6 +43,9 @@ $ {clean_exec}
 |link:{repository}/infinispan-embedded/multimap[Multimap]
 |Demonstrates how to use Multimap.
 
+|link:{repository}/infinispan-embedded/metrics[Metrics]
+|Demonstrates how to enable and extract metrics in {brandname}.
+
 |link:{repository}/infinispan-embedded/query[Queries]
 |Uses {brandname} Query to perform full-text queries on cache values.
 
