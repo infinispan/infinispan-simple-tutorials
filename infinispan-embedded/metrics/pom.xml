@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.infinispan.tutorial.simple</groupId>
+        <artifactId>infinispan-simple-tutorials</artifactId>
+        <version>16.0.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <name>Infinispan Simple Tutorials: Embedded Cache Metrics</name>
+    <artifactId>infinispan-simple-tutorials-embedded-metrics</artifactId>
+
+    <properties>
+        <!-- Micrometer version must be aligned with Infinispan's. -->
+        <version.micrometer>1.15.2</version.micrometer>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>java</executable>
+                    <arguments>
+                        <!--
+                          Assumes a cluster formed within the same node.
+                          Adjust JGroups bind address if creating cluster between different node.
+                        -->
+                        <argument>-Djgroups.bind_addr=127.0.0.1</argument>
+                        <argument>-Djava.net.preferIPv4Stack=true</argument>
+                        <argument>-Djava.util.logging.config.file=src/main/resources/logging.properties</argument>
+                        <argument>-classpath</argument>
+                        <classpath />
+                        <argument>org.infinispan.tutorial.simple.metrics.InfinispanCacheMetrics</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-core</artifactId>
+        </dependency>
+
+        <!-- Required to include Micrometer dependencies to scrape the metrics correctly. -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-core</artifactId>
+            <version>${version.micrometer}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>${version.micrometer}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
