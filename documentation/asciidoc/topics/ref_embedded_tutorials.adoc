@@ -28,6 +28,9 @@ $ {clean_exec}
 |link:{repository}/infinispan-embedded/transactions[Transactions]
 |Demonstrates how transactions work.
 
+|link:{repository}/infinispan-embedded/security[Cache security]
+|Demonstrates how to integrate an application with {brandname} security features.
+
 |link:{repository}/infinispan-embedded/streams[Streams]
 |Demonstrates how Distributed Streams work.
 
