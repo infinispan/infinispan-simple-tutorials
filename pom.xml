@@ -154,5 +154,6 @@
         <module>integrations/spring-boot/session-embedded</module>
         <module>integrations/quarkus/infinispan-client-example</module>
         <module>infinispan-embedded/metrics</module>
+        <module>infinispan-embedded/security</module>
     </modules>
 </project>
