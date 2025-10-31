@@ -1,7 +1,5 @@
 package org.infinispan.tutorial.simple.remote.spatial;
 
-import static org.infinispan.query.remote.client.ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME;
-
 import java.net.URI;
 import java.util.List;
 
@@ -215,13 +213,8 @@ public class InfinispanSpatialQueries {
    }
 
    private static void addProtoSchema(RemoteCacheManager cacheManager) {
-      // Retrieve metadata cache
-      RemoteCache<String, String> metadataCache =
-            cacheManager.getCache(PROTOBUF_METADATA_CACHE_NAME);
-
       // Define the new schema on the server too
-      GeneratedSchema schema = new TutorialSchemaImpl();
-      metadataCache.put(schema.getProtoFileName(), schema.getProtoFile());
+      cacheManager.administration().schemas().createOrUpdate(new TutorialSchemaImpl());
    }
 
    record RestaurantDTO(String name, Double distance){}
