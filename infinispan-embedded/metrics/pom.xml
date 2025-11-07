@@ -15,7 +15,7 @@
 
     <properties>
         <!-- Micrometer version must be aligned with Infinispan's. -->
-        <version.micrometer>1.15.5</version.micrometer>
+        <version.micrometer>1.16.0</version.micrometer>
     </properties>
 
     <build>
