@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   infinispan:
-    image: quay.io/infinispan-test/server:main
+    image: quay.io/infinispan/server:16.0
     container_name: infinispan
     environment:
       USER: admin
