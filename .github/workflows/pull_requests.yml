@@ -30,14 +30,14 @@ jobs:
           cache: maven
 
       - if: github.base_ref == 'main' || github.ref_name == 'main'
-        name: Start Infinispan Server Latest Version
+        name: Start Infinispan Server Latest Stable Version
         run: |
-          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:15.2
+          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:16.0
           # Wait for server to startup
           curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:11222/rest/v2/container/health/status > /dev/null
 
       - if: github.base_ref == 'development' || github.ref_name == 'development'
-        name: Start Infinispan Server Latest Version
+        name: Start Infinispan Server Latest Dev Version
         run: |
           docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan-test/server:main
           # Wait for server to startup

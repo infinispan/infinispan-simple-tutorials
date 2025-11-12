@@ -5,7 +5,7 @@
    <artifactId>infinispan-simple-tutorials-hibernate-cache-local</artifactId>
    <parent>
       <relativePath>../../../pom.xml</relativePath>
-      <version>16.0.0-SNAPSHOT</version>
+      <version>16.0.1</version>
       <groupId>org.infinispan.tutorial.simple</groupId>
       <artifactId>infinispan-simple-tutorials</artifactId>
    </parent>
@@ -49,8 +49,6 @@
       <dependency>
          <groupId>org.infinispan</groupId>
          <artifactId>infinispan-hibernate-cache-v62</artifactId>
-         <!-- Not present in BOM. See https://issues.redhat.com/browse/ISPN-14841 -->
-         <version>${version.infinispan}</version>
       </dependency>
       <dependency>
          <groupId>com.h2database</groupId>
