@@ -49,6 +49,7 @@
       <dependency>
          <groupId>org.infinispan</groupId>
          <artifactId>infinispan-hibernate-cache-v66</artifactId>
+         <version>${project.version}</version>
       </dependency>
       <dependency>
          <groupId>com.h2database</groupId>
