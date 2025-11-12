@@ -46,9 +46,7 @@
       </dependency>
       <dependency>
          <groupId>org.infinispan</groupId>
-         <artifactId>infinispan-hibernate-cache-v62</artifactId>
-         <!-- Not present in BOM. See https://issues.redhat.com/browse/ISPN-14841 -->
-         <version>${version.infinispan}</version>
+         <artifactId>infinispan-hibernate-cache-v66</artifactId>
       </dependency>
    </dependencies>
 

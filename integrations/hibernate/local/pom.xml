@@ -48,7 +48,7 @@
       </dependency>
       <dependency>
          <groupId>org.infinispan</groupId>
-         <artifactId>infinispan-hibernate-cache-v62</artifactId>
+         <artifactId>infinispan-hibernate-cache-v66</artifactId>
       </dependency>
       <dependency>
          <groupId>com.h2database</groupId>
