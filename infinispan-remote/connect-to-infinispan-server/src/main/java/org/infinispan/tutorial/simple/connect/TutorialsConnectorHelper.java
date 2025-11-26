@@ -5,7 +5,7 @@ import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.impl.ConfigurationProperties;
 import org.infinispan.commons.util.Version;
-import org.infinispan.server.test.core.InfinispanContainer;
+import org.infinispan.testcontainers.InfinispanContainer;
 
 /**
  * Utility class for the simple tutorials in client server mode.
