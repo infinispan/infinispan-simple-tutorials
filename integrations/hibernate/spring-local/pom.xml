@@ -7,7 +7,7 @@
    <groupId>org.infinispan.tutorial.simple</groupId>
    <name>Infinispan Simple Tutorials: Hibernate Cache Spring Local</name>
    <artifactId>infinispan-simple-tutorials-hibernate-cache-spring-local</artifactId>
-   <version>16.0.2</version>
+   <version>16.0.3</version>
 
    <parent>
       <relativePath>../../../pom.xml</relativePath>
