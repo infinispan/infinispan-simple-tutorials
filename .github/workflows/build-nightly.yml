@@ -34,7 +34,7 @@ jobs:
         run: ./mvnw -B clean install -Dmaven.test.failure.ignore=true
 
       - name: Test Logs
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: success() || failure()
         with:
           name: jdk17-test-results
