@@ -6,7 +6,7 @@
     <parent>
         <artifactId>infinispan-simple-tutorials</artifactId>
         <groupId>org.infinispan.tutorial.simple</groupId>
-        <version>16.0.1</version>
+        <version>16.0.4</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>infinispan-simple-tutorials-spatial-queries</artifactId>
