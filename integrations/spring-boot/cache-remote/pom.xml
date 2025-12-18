@@ -25,7 +25,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-parent</artifactId>
-                <version>${version.spring.boot}</version>
+                <version>${version.spring.boot4}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -42,12 +42,7 @@
     <dependencies>
         <dependency>
             <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-spring-boot3-starter-remote</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <artifactId>infinispan-spring-boot4-starter-remote</artifactId>
         </dependency>
 
         <dependency>
@@ -83,7 +78,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${version.spring.boot}</version>
+                <version>${version.spring.boot4}</version>
             </plugin>
         </plugins>
     </build>
