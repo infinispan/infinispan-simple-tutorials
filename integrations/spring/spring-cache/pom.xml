@@ -5,7 +5,7 @@
     <artifactId>infinispan-simple-tutorials-spring</artifactId>
     <parent>
         <relativePath>../../../pom.xml</relativePath>
-        <version>16.0.4</version>
+        <version>16.0.5</version>
         <groupId>org.infinispan.tutorial.simple</groupId>
         <artifactId>infinispan-simple-tutorials</artifactId>
     </parent>

@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.infinispan.tutorial.simple</groupId>
-    <version>16.0.4</version>
+    <version>16.0.5</version>
     <artifactId>quarkus-infinispan-client-example</artifactId>
     <properties>
         <compiler-plugin.version>3.13.0</compiler-plugin.version>
