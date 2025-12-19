@@ -36,7 +36,7 @@
         <dependency>
             <groupId>org.infinispan.tutorial.simple</groupId>
             <artifactId>connect-to-infinispan-server</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.infinispan</groupId>
