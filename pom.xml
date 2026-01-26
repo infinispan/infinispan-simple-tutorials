@@ -13,7 +13,7 @@
     <name>Infinispan Tutorial: Simple tutorials</name>
     <properties>
         <testcontainers.version>2.0.3</testcontainers.version>
-        <assertj.version>3.27.6</assertj.version>
+        <assertj.version>3.27.7</assertj.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.release>17</maven.compiler.release>
