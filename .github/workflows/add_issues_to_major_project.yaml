@@ -1,0 +1,30 @@
+name: Add issues to major Project
+# This GitHub Actions workflow automatically adds newly opened issues to the top-level GitHub project
+# for Infinispan releases. The value of the project is held in a GitHub organization variable.
+
+on:
+  issues:
+    types:
+      - opened
+      # Triggers the workflow when a new issue is opened in the repository.
+
+jobs:
+  add-to-project:
+    runs-on: ubuntu-latest
+    # Specifies the environment where the job will run. In this case, it uses the latest Ubuntu runner.
+
+    steps:
+      - uses: actions/add-to-project@v1.0.2
+        # Uses the `actions/add-to-project` GitHub Action to add items to a GitHub project.
+        # This action simplifies the process of adding issues or pull requests to a project board.
+
+        with:
+          project-url: ${{ vars.PROJECT_URL }}
+          # This is the URL for the '16.x' project
+          # The URL of the GitHub project where the issue or pull request should be added.
+          # Replace this URL with the correct project URL for your repository.
+
+          github-token: "${{ secrets.INFINISPAN_RELEASE_TOKEN }}"
+          # The GitHub personal access token (PAT) used to authenticate the action.
+          # The token must have the necessary permissions to modify the specified project.
+          # Store the token securely in the repository's secrets as `ADD_TO_PROJECT_PAT`.
