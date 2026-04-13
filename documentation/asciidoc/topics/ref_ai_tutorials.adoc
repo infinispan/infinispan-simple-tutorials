@@ -9,4 +9,7 @@
 |link:{repository}/infinispan-ai/langchain4j[LangChain4j]
 |Demonstrates how to use {brandname} as a vector store with LangChain4j for embedding storage and similarity search.
 
+|link:{repository}/infinispan-ai/mcp-server[MCP Server]
+|Demonstrates how to enable and use the {brandname} MCP (Model Context Protocol) endpoint to interact with caches, counters, and schemas through AI assistants.
+
 |===

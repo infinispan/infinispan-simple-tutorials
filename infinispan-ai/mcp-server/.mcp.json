@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "infinispan": {
+      "type": "http",
+      "url": "http://localhost:11222/rest/v3/mcp",
+      "headers": {
+        "Authorization": "Basic YWRtaW46cGFzc3dvcmQ="
+      }
+    }
+  }
+}
