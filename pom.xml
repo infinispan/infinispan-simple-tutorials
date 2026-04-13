@@ -165,5 +165,6 @@
         <module>integrations/quarkus/infinispan-client-example</module>
         <module>infinispan-embedded/metrics</module>
         <module>infinispan-embedded/security</module>
+        <module>infinispan-ai/langchain4j</module>
     </modules>
 </project>
