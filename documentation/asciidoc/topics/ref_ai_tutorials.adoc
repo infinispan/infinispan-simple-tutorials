@@ -1,0 +1,12 @@
+[id='ai-tutorials_{context}']
+= AI tutorials
+
+[%header,cols=2*]
+|===
+|Tutorial link
+|Description
+
+|link:{repository}/infinispan-ai/langchain4j[LangChain4j]
+|Demonstrates how to use {brandname} as a vector store with LangChain4j for embedding storage and similarity search.
+
+|===
