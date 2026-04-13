@@ -1,0 +1,10 @@
+services:
+  infinispan:
+    image: quay.io/infinispan-test/server:main
+    ports:
+      - "11222:11222"
+    environment:
+      - USER=admin
+      - PASS=password
+      - JAVA_OPTIONS=-Dorg.infinispan.feature.mcp=true
+    command: -c infinispan-dev-mode.xml

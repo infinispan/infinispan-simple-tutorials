@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__infinispan__createCache",
+      "mcp__infinispan__getCacheNames",
+      "mcp__infinispan__getCacheEntry",
+      "mcp__infinispan__setCacheEntry",
+      "mcp__infinispan__deleteCacheEntry",
+      "mcp__infinispan__queryCache",
+      "mcp__infinispan__getCounter",
+      "mcp__infinispan__getCounterNames",
+      "mcp__infinispan__increment",
+      "mcp__infinispan__decrement",
+      "mcp__infinispan__getSchemas"
+    ]
+  },
+  "enableAllProjectMcpServers": true
+}
