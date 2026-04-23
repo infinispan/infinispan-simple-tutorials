@@ -11,7 +11,7 @@
     <name>Infinispan Simple Tutorials: Kotlin</name>
 
     <properties>
-        <kotlin.version>2.1.10</kotlin.version>
+        <kotlin.version>2.3.21</kotlin.version>
     </properties>
     <build>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
