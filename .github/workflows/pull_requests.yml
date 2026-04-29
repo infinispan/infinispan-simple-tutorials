@@ -5,16 +5,12 @@ on:
     branches:
       - main
       - development
-      - 14.0.x
-      - 15.0.x
-      - 15.1.x
+      - 16.0.x
   pull_request:
     branches:
       - main
       - development
-      - 14.0.x
-      - 15.0.x
-      - 15.1.x
+      - 16.0.x
 
 jobs:
   test:
@@ -32,7 +28,7 @@ jobs:
       - if: github.base_ref == 'main' || github.ref_name == 'main'
         name: Start Infinispan Server Latest Stable Version
         run: |
-          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:16.0
+          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:16.1
           # Wait for server to startup
           curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:11222/rest/v2/container/health/status > /dev/null
 
@@ -43,27 +39,12 @@ jobs:
           # Wait for server to startup
           curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:11222/rest/v2/container/health/status > /dev/null
 
-      - if: github.base_ref == '15.1.x' || github.ref_name == '15.1.x'
+      - if: github.base_ref == '16.0.x' || github.ref_name == '16.0.x'
         name: Start Infinispan Server Latest Version
         run: |
-          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:15.1
+          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:16.0
           # Wait for server to startup
           curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:11222/rest/v2/cache-managers/default/health/status > /dev/null
-
-      - if: github.base_ref == '15.0.x' || github.ref_name == '15.0.x'
-        name: Start Infinispan Server Latest Version
-        run: |
-          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:15.0
-          # Wait for server to startup
-          curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:11222/rest/v2/cache-managers/default/health/status > /dev/null
-
-      - if: github.base_ref == '14.0.x' || github.ref_name == '14.0.x'
-        name: Start Infinispan Server Latest Version
-        run: |
-          docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:14.0
-          # Wait for server to startup
-          curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:11222/rest/v2/cache-managers/default/health/status > /dev/null
-
 
       - name: JDK 17 Tests
         run: ./mvnw -B clean install -Dmaven.test.failure.ignore=true
