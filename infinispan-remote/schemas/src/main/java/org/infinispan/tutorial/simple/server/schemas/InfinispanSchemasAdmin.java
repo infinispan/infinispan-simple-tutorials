@@ -12,8 +12,6 @@ import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
  * Demonstrates how to use the Schema Admin API in hotrod.
  * Schemas can also be manipulated via the CLI,
  * the Server Web Console or directly with the REST API.
- *
- * @since 16.0
  */
 public class InfinispanSchemasAdmin {
    static RemoteCacheManager remoteCacheManager;
