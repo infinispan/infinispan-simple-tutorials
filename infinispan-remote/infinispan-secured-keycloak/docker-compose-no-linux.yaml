@@ -21,7 +21,7 @@ services:
       - mynetwork
 
   infinispan-server:
-    image: quay.io/infinispan/server:16.0
+    image: quay.io/infinispan/server:16.1
     ports:
       - "11222:11222"
     volumes:
