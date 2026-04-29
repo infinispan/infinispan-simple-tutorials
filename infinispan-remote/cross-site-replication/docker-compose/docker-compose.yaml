@@ -38,7 +38,7 @@ services:
       - mynetwork
     command: -c infinispan-xsite.xml -Dinfinispan.site.name=NYC -Djgroups.mcast_port=46666
   infinispan-server-nyc-2:
-    image: quay.io/infinispan/server:15.0
+    image: quay.io/infinispan/server:16.0
     ports:
       - "31223:11222"
     container_name: ispn-nyc-2
