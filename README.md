@@ -1,5 +1,7 @@
 # Infinispan Simple Tutorials
 
+⭐ If you find these tutorials helpful, please star this repo, it helps others discover Infinispan!
+
 This is a collection of simple tutorials that explain how to use certain
 features of Infinispan in the most straightforward way possible.
 
