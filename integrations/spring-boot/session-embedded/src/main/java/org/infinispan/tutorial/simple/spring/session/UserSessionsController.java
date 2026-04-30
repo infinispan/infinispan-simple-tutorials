@@ -1,6 +1,7 @@
 package org.infinispan.tutorial.simple.spring.session;
 
-import jakarta.servlet.http.HttpSession;
+import java.util.Set;
+
 import org.infinispan.spring.embedded.provider.SpringEmbeddedCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.support.SimpleValueWrapper;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Set;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 public class UserSessionsController {

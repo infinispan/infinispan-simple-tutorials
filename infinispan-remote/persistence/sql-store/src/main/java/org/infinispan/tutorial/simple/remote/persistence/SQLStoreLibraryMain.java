@@ -1,11 +1,11 @@
 package org.infinispan.tutorial.simple.remote.persistence;
 
+import java.net.URI;
+import java.util.Scanner;
+
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
-
-import java.net.URI;
-import java.util.Scanner;
 
 public class SQLStoreLibraryMain {
 

@@ -1,15 +1,16 @@
 package org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.controller;
 
-import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.model.Event;
-import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.model.Person;
-import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.util.ClearStatistics;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import java.util.List;
+
+import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.model.Event;
+import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.model.Person;
+import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.util.ClearStatistics;
 
 @Stateless
 @Interceptors(ClearStatistics.class)

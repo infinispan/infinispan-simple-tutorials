@@ -1,11 +1,11 @@
 package org.infinispan.tutorial.simple.remote.marshalling;
 
-import org.infinispan.protostream.MessageMarshaller;
-
 import java.io.IOException;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.infinispan.protostream.MessageMarshaller;
 
 public class MagazineMarshaller implements MessageMarshaller<Magazine> {
     @Override

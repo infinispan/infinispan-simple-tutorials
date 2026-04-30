@@ -1,15 +1,15 @@
 package org.infinispan.tutorial.simple.remote.admin;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-
 import static org.infinispan.tutorial.simple.remote.admin.InfinispanRemoteAdminCache.CACHE_WITH_TEMPLATE;
 import static org.infinispan.tutorial.simple.remote.admin.InfinispanRemoteAdminCache.CACHE_WITH_XMLCONFIGURATION;
 import static org.infinispan.tutorial.simple.remote.admin.InfinispanRemoteAdminCache.SIMPLE_CACHE;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.io.IOException;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class InfinispanRemoteAdminCacheTest {
 

@@ -1,5 +1,7 @@
 package org.infinispan.tutorial.simple.alias;
 
+import java.util.UUID;
+
 import org.infinispan.Cache;
 import org.infinispan.commons.api.CacheContainerAdmin;
 import org.infinispan.configuration.cache.CacheMode;
@@ -7,8 +9,6 @@ import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.configuration.global.GlobalConfigurationBuilder;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManagerAdmin;
-
-import java.util.UUID;
 
 public class InfinispanCacheAlias {
    public static final String DIST_CACHE_NAME = "cache";

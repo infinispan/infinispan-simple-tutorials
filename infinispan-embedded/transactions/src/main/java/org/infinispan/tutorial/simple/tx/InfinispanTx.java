@@ -1,6 +1,7 @@
 package org.infinispan.tutorial.simple.tx;
 
-import jakarta.transaction.TransactionManager;
+import java.util.Map;
+
 import org.infinispan.Cache;
 import org.infinispan.commons.api.CacheContainerAdmin;
 import org.infinispan.configuration.cache.Configuration;
@@ -8,7 +9,7 @@ import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.transaction.TransactionMode;
 
-import java.util.Map;
+import jakarta.transaction.TransactionManager;
 
 public class InfinispanTx {
    public static final String KEY_1 = "key1";

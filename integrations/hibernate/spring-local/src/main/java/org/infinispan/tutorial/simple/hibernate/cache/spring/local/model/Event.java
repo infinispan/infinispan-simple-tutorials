@@ -6,11 +6,12 @@
  */
 package org.infinispan.tutorial.simple.hibernate.cache.spring.local.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Cacheable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import java.time.LocalDateTime;
 
 @Entity
 @Cacheable

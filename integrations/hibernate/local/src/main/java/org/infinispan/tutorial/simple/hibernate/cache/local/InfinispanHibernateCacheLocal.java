@@ -2,18 +2,18 @@ package org.infinispan.tutorial.simple.hibernate.cache.local;
 
 import java.util.List;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
-import jakarta.persistence.TypedQuery;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.CacheRegionStatistics;
 import org.hibernate.stat.Statistics;
 import org.infinispan.tutorial.simple.hibernate.cache.local.model.Event;
 import org.infinispan.tutorial.simple.hibernate.cache.local.model.Person;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
 
 /**
  * Example on how to use Infinispan as Hibernate cache provider

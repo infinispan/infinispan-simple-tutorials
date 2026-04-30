@@ -5,12 +5,13 @@ import java.util.Set;
 import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 
+import org.infinispan.client.hotrod.RemoteCache;
+import org.infinispan.tutorial.model.Character;
+
+import io.quarkus.infinispan.client.Remote;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.infinispan.client.hotrod.RemoteCache;
-import org.infinispan.tutorial.model.Character;
-import io.quarkus.infinispan.client.Remote;
 
 @ApplicationScoped
 public class CharacterSearch {

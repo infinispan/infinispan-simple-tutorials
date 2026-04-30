@@ -2,7 +2,6 @@ package org.infinispan.tutorial.simple.spring.remote;
 
 import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
