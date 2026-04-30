@@ -1,5 +1,7 @@
 package org.infinispan.tutorial.simple.reactive;
 
+import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.HOST;
+import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.SINGLE_PORT;
 import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.TUTORIAL_CACHE_NAME;
 
 import java.time.Duration;
@@ -11,6 +13,7 @@ import org.infinispan.api.Infinispan;
 import org.infinispan.api.mutiny.MutinyCache;
 import org.infinispan.api.sync.SyncCache;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
+import org.infinispan.testcontainers.InfinispanContainer;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 public class InfinispanReactiveApi {
@@ -28,7 +31,35 @@ public class InfinispanReactiveApi {
    static void connect() {
       // Connect to the server
       ConfigurationBuilder configurationBuilder = TutorialsConnectorHelper.connectionConfig();
-      infinispan = Infinispan.create(configurationBuilder.create());
+      try {
+         infinispan = Infinispan.create(configurationBuilder.create());
+         //ping
+         System.out.println("Get cache names: " + infinispan.sync().caches().names());
+      } catch (Exception ex) {
+         System.out.println("Unable to connect to a running server in localhost:11222. Try test containers");
+         if (infinispan != null) {
+            infinispan.close();
+         }
+         infinispan = null;
+      }
+
+      if (infinispan == null) {
+         try {
+            InfinispanContainer container = TutorialsConnectorHelper.startInfinispanContainer();
+            configurationBuilder.addServer().host(HOST).port(container.getMappedPort(SINGLE_PORT));
+            infinispan = Infinispan.create(configurationBuilder.create());
+            //ping
+            System.out.println("Get cache names: " + infinispan.sync().caches().names());
+         } catch (Exception ex) {
+            System.out.println("Infinispan Server start with Testcontainers failed. Exit");
+            System.exit(0);
+         }
+      }
+
+      if (infinispan == null) {
+         throw new IllegalStateException("Could not connect");
+      }
+
       cache = infinispan.mutiny().caches().<String, String>get(TUTORIAL_CACHE_NAME).await().atMost(Duration.ofSeconds(10));
    }
 
