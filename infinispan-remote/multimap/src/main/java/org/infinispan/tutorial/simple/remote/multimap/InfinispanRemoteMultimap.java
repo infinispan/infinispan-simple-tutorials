@@ -1,14 +1,14 @@
 package org.infinispan.tutorial.simple.remote.multimap;
 
+import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.TUTORIAL_CACHE_NAME;
+
+import java.util.concurrent.TimeUnit;
+
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.multimap.MultimapCacheManager;
 import org.infinispan.client.hotrod.multimap.RemoteMultimapCache;
 import org.infinispan.client.hotrod.multimap.RemoteMultimapCacheManagerFactory;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
-
-import java.util.concurrent.TimeUnit;
-
-import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.TUTORIAL_CACHE_NAME;
 
 /**
  * The Remote Multimap simple tutorial.

@@ -1,22 +1,22 @@
 package org.infinispan.tutorial.simple.functional;
 
-import org.infinispan.AdvancedCache;
-import org.infinispan.functional.EntryView;
-import org.infinispan.functional.FunctionalMap;
-import org.infinispan.functional.MetaParam.MetaLifespan;
-import org.infinispan.functional.Traversable;
-import org.infinispan.configuration.cache.ConfigurationBuilder;
-import org.infinispan.functional.impl.FunctionalMapImpl;
-import org.infinispan.functional.impl.ReadOnlyMapImpl;
-import org.infinispan.functional.impl.ReadWriteMapImpl;
-import org.infinispan.functional.impl.WriteOnlyMapImpl;
-import org.infinispan.manager.DefaultCacheManager;
-
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+
+import org.infinispan.AdvancedCache;
+import org.infinispan.configuration.cache.ConfigurationBuilder;
+import org.infinispan.functional.EntryView;
+import org.infinispan.functional.FunctionalMap;
+import org.infinispan.functional.MetaParam.MetaLifespan;
+import org.infinispan.functional.Traversable;
+import org.infinispan.functional.impl.FunctionalMapImpl;
+import org.infinispan.functional.impl.ReadOnlyMapImpl;
+import org.infinispan.functional.impl.ReadWriteMapImpl;
+import org.infinispan.functional.impl.WriteOnlyMapImpl;
+import org.infinispan.manager.DefaultCacheManager;
 
 public class InfinispanFunctional {
    static DefaultCacheManager cacheManager;

@@ -1,14 +1,14 @@
 package org.infinispan.tutorial.simple.remote;
 
+import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.TUTORIAL_CACHE_NAME;
+
+import java.net.URI;
+
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.exceptions.HotRodClientException;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
-
-import java.net.URI;
-
-import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.TUTORIAL_CACHE_NAME;
 
 /**
  * Run the Infinispan Server using the Docker Image

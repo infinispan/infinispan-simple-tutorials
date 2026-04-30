@@ -1,20 +1,21 @@
 package org.infinispan.tutorial.service;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.UUID;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.infinispan.client.hotrod.RemoteCache;
+import org.infinispan.tutorial.model.Archetype;
+import org.infinispan.tutorial.model.Character;
+
 import io.quarkus.infinispan.client.Remote;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.infinispan.client.hotrod.RemoteCache;
-import org.infinispan.tutorial.model.Archetype;
-import org.infinispan.tutorial.model.Character;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.UUID;
 
 @ApplicationScoped
 public class DataLoader {

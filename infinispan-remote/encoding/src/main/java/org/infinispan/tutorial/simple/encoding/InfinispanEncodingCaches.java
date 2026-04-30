@@ -1,5 +1,7 @@
 package org.infinispan.tutorial.simple.encoding;
 
+import java.net.URI;
+
 import org.infinispan.client.hotrod.DataFormat;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
@@ -7,8 +9,6 @@ import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.commons.dataconversion.MediaType;
 import org.infinispan.commons.marshall.UTF8StringMarshaller;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
-
-import java.net.URI;
 
 public class InfinispanEncodingCaches {
 

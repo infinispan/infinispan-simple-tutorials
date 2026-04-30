@@ -1,11 +1,11 @@
 package org.infinispan.tutorial.simple.streams;
 
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.infinispan.Cache;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.manager.DefaultCacheManager;
-
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class InfinispanStreams {
 

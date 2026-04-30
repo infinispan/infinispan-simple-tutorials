@@ -1,16 +1,16 @@
 package org.infinispan.tutorial.simple.lock;
 
-import org.infinispan.configuration.global.GlobalConfigurationBuilder;
-import org.infinispan.lock.EmbeddedClusteredLockManagerFactory;
-import org.infinispan.lock.api.ClusteredLock;
-import org.infinispan.lock.api.ClusteredLockManager;
-import org.infinispan.manager.DefaultCacheManager;
-
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.infinispan.configuration.global.GlobalConfigurationBuilder;
+import org.infinispan.lock.EmbeddedClusteredLockManagerFactory;
+import org.infinispan.lock.api.ClusteredLock;
+import org.infinispan.lock.api.ClusteredLockManager;
+import org.infinispan.manager.DefaultCacheManager;
 
 public class InfinispanClusteredLock {
 
