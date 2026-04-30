@@ -4,12 +4,12 @@
     <artifactId>infinispan-simple-tutorials-remote-junit5</artifactId>
     <parent>
         <relativePath>../../pom.xml</relativePath>
-        <version>16.2.0-SNAPSHOT</version>
+        <version>16.1.3</version>
         <groupId>org.infinispan.tutorial.simple</groupId>
         <artifactId>infinispan-simple-tutorials</artifactId>
     </parent>
     <name>Infinispan Simple Tutorials: Remote Junit 5</name>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.infinispan</groupId>

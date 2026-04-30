@@ -28,7 +28,7 @@ public class CachingServiceTest {
                  .config()
                  .numServers(1)
                  .runMode(ServerRunMode.CONTAINER)
-                 .property(TestSystemPropertyNames.INFINISPAN_TEST_SERVER_BASE_IMAGE_NAME, "quay.io/infinispan-test/server:main")
+                 .property(TestSystemPropertyNames.INFINISPAN_TEST_SERVER_BASE_IMAGE_NAME, "quay.io/infinispan/server:16.1")
                  .build();
       }
 
