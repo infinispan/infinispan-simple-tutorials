@@ -1,5 +1,7 @@
 package org.infinispan.tutorial.simple.hibernate.cache.spring.local;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.CacheRegionStatistics;
@@ -18,7 +20,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
-import java.util.List;
 
 @SpringBootApplication
 public class InfinispanHibernateCacheSpringLocal {

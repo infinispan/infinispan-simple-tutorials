@@ -11,7 +11,7 @@ public class InfinispanJCache {
    static CachingProvider jcacheProvider;
    static CacheManager cacheManager;
    static Cache<String, String> cache;
-   
+
    public static void main(String[] args) {
       createAndStartComponents();
       manipulateCache();

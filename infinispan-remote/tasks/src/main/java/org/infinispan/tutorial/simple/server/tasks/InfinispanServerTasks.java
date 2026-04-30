@@ -1,5 +1,13 @@
 package org.infinispan.tutorial.simple.server.tasks;
 
+import static org.infinispan.commons.dataconversion.MediaType.APPLICATION_JAVASCRIPT;
+import static org.infinispan.commons.util.Util.getResourceAsString;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.TimeUnit;
+
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.impl.ConfigurationProperties;
@@ -9,14 +17,6 @@ import org.infinispan.client.rest.RestResponse;
 import org.infinispan.client.rest.RestURI;
 import org.infinispan.client.rest.configuration.RestClientConfigurationBuilder;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.CompletionStage;
-import java.util.concurrent.TimeUnit;
-
-import static org.infinispan.commons.dataconversion.MediaType.APPLICATION_JAVASCRIPT;
-import static org.infinispan.commons.util.Util.getResourceAsString;
 
 public class InfinispanServerTasks {
 

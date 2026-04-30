@@ -1,11 +1,11 @@
 package org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.util;
 
-import org.hibernate.Session;
-
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
 import javax.persistence.EntityManager;
+
+import org.hibernate.Session;
 
 public class ClearStatistics {
 

@@ -1,11 +1,10 @@
 package org.infinispan.tutorial.model;
 
-import org.infinispan.api.annotations.indexing.Basic;
+import java.util.UUID;
+
 import org.infinispan.api.annotations.indexing.Indexed;
 import org.infinispan.api.annotations.indexing.Text;
 import org.infinispan.protostream.annotations.Proto;
-
-import java.util.UUID;
 
 @Proto
 @Indexed

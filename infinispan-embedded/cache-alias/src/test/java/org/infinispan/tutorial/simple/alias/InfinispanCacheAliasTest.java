@@ -1,15 +1,15 @@
 package org.infinispan.tutorial.simple.alias;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import static org.infinispan.tutorial.simple.alias.InfinispanCacheAlias.ALIAS_1;
 import static org.infinispan.tutorial.simple.alias.InfinispanCacheAlias.ALIAS_2;
 import static org.infinispan.tutorial.simple.alias.InfinispanCacheAlias.DIST_CACHE_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class InfinispanCacheAliasTest {
     InfinispanCacheAlias infinispanCacheAlias = new InfinispanCacheAlias();

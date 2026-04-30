@@ -1,12 +1,13 @@
 package org.infinispan.tutorial;
 
-import io.quarkus.test.junit.QuarkusTest;
-import jakarta.ws.rs.core.MediaType;
-import org.junit.jupiter.api.Test;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.notNullValue;
+
+import org.junit.jupiter.api.Test;
+
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.ws.rs.core.MediaType;
 
 @QuarkusTest
 public class CharactersResourceTest {

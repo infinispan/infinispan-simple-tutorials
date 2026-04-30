@@ -1,15 +1,15 @@
 package org.infinispan.tutorial.simple.remote.query;
 
+import java.net.URI;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.commons.api.query.Query;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
-
-import java.net.URI;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * The Remote Query simple tutorial.

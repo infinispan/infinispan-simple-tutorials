@@ -1,14 +1,12 @@
 package org.infinispan.tutorial.simple.remote.xsite;
 
+import java.util.stream.Collectors;
+
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.commons.configuration.StringConfiguration;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Shows how to add backup clusters to the client and how to switch manually from the default

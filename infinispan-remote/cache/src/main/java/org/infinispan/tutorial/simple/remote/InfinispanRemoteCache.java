@@ -1,10 +1,10 @@
 package org.infinispan.tutorial.simple.remote;
 
+import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.TUTORIAL_CACHE_NAME;
+
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
-
-import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.TUTORIAL_CACHE_NAME;
 
 public class InfinispanRemoteCache {
     static RemoteCacheManager cacheManager;
