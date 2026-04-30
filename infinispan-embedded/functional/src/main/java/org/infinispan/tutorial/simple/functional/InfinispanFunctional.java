@@ -13,6 +13,9 @@ import org.infinispan.functional.FunctionalMap;
 import org.infinispan.functional.MetaParam.MetaLifespan;
 import org.infinispan.functional.Traversable;
 import org.infinispan.functional.impl.FunctionalMapImpl;
+import org.infinispan.functional.impl.ReadOnlyMapImpl;
+import org.infinispan.functional.impl.ReadWriteMapImpl;
+import org.infinispan.functional.impl.WriteOnlyMapImpl;
 import org.infinispan.manager.DefaultCacheManager;
 
 public class InfinispanFunctional {
@@ -31,26 +34,26 @@ public class InfinispanFunctional {
    static void manipulateFunctionalMap() throws InterruptedException, ExecutionException {
       // Execute two parallel write-only operation to store key/value pairs
       CompletableFuture<Void> writeFuture1 = writeOnlyMap.eval("key1", "value1",
-            (v, writeView) -> writeView.set(v));
+         (v, writeView) -> writeView.set(v));
       CompletableFuture<Void> writeFuture2 = writeOnlyMap.eval("key2", "value2",
-            (v, writeView) -> writeView.set(v));
+         (v, writeView) -> writeView.set(v));
 
       // When each write-only operation completes, execute a read-only operation to retrieve the value
       CompletableFuture<String> readFuture1 =
-            writeFuture1.thenCompose(r -> readOnlyMap.eval("key1", EntryView.ReadEntryView::get));
+         writeFuture1.thenCompose(r -> readOnlyMap.eval("key1", EntryView.ReadEntryView::get));
       CompletableFuture<String> readFuture2 =
-            writeFuture2.thenCompose(r -> readOnlyMap.eval("key2", EntryView.ReadEntryView::get));
+         writeFuture2.thenCompose(r -> readOnlyMap.eval("key2", EntryView.ReadEntryView::get));
 
       // When the read-only operation completes, print it out
       System.out.printf("Created entries: %n");
       CompletableFuture<Void> end = readFuture1.thenAcceptBoth(readFuture2, (v1, v2) ->
-            System.out.printf("key1 = %s%nkey2 = %s%n", v1, v2));
+         System.out.printf("key1 = %s%nkey2 = %s%n", v1, v2));
 
       // Wait for this read/write combination to finish
       end.get();
 
       // Create a read-write map
-      FunctionalMap.ReadWriteMap<String, String> readWriteMap = functionalMap.toReadWriteMap();
+      FunctionalMap.ReadWriteMap<String, String> readWriteMap = ReadWriteMapImpl.create(functionalMap);
 
       // Use read-write multi-key based operation to write new values
       // together with lifespan and return previous values
@@ -65,7 +68,7 @@ public class InfinispanFunctional {
 
       // Use read-only multi-key operation to read current values for multiple keys
       Traversable<EntryView.ReadEntryView<String, String>> entryViews =
-            readOnlyMap.evalMany(data.keySet(), readOnlyView -> readOnlyView);
+         readOnlyMap.evalMany(data.keySet(), readOnlyView -> readOnlyView);
       System.out.printf("Updated entries: %n");
       entryViews.forEach(view -> System.out.printf("%s%n", view));
 
@@ -79,8 +82,8 @@ public class InfinispanFunctional {
       cacheManager.defineConfiguration("local", new ConfigurationBuilder().build());
       cache = cacheManager.<String, String>getCache("local").getAdvancedCache();
       functionalMap = FunctionalMapImpl.create(cache);
-      writeOnlyMap = functionalMap.toWriteOnlyMap();
-      readOnlyMap = functionalMap.toReadOnlyMap();
+      writeOnlyMap = WriteOnlyMapImpl.create(functionalMap);
+      readOnlyMap = ReadOnlyMapImpl.create(functionalMap);
    }
 
    static void stop() {
@@ -88,4 +91,5 @@ public class InfinispanFunctional {
          cacheManager.stop();
       }
    }
+
 }
