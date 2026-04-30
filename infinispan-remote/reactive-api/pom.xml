@@ -4,12 +4,12 @@
     <artifactId>infinispan-simple-tutorials-reactive</artifactId>
     <parent>
         <relativePath>../../pom.xml</relativePath>
-        <version>16.2.0-SNAPSHOT</version>
+        <version>16.1.3</version>
         <groupId>org.infinispan.tutorial.simple</groupId>
         <artifactId>infinispan-simple-tutorials</artifactId>
     </parent>
     <name>Infinispan Simple Tutorials: Reactive API</name>
-    
+
     <build>
         <plugins>
             <plugin>

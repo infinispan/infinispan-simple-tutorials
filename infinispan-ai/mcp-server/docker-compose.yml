@@ -1,6 +1,6 @@
 services:
   infinispan:
-    image: quay.io/infinispan-test/server:main
+    image: quay.io/infinispan/server:16.1
     ports:
       - "11222:11222"
     environment:
