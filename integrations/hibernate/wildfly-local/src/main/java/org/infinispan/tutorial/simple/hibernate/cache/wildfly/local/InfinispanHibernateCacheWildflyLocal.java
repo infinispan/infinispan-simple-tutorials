@@ -1,18 +1,19 @@
 package org.infinispan.tutorial.simple.hibernate.cache.wildfly.local;
 
-import org.hibernate.Session;
-import org.hibernate.stat.SecondLevelCacheStatistics;
-import org.hibernate.stat.Statistics;
-import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.controller.PersistenceManager;
-import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.model.Event;
-import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.model.Person;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import java.util.logging.Logger;
+
+import org.hibernate.Session;
+import org.hibernate.stat.SecondLevelCacheStatistics;
+import org.hibernate.stat.Statistics;
+import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.controller.PersistenceManager;
+import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.model.Event;
+import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.model.Person;
 
 /**
  * Start Wildfly, then:

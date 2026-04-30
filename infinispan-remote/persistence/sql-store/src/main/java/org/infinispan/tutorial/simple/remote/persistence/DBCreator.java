@@ -1,7 +1,5 @@
 package org.infinispan.tutorial.simple.remote.persistence;
 
-import org.apache.commons.io.IOUtils;
-
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.io.IOUtils;
 
 public class DBCreator {
 

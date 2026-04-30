@@ -45,7 +45,7 @@ public class InvalidationMode {
 
    static DefaultCacheManager cacheManager;
    static Cache<String, String> cache;
-   
+
    public static void main(String[] args) {
       createCacheManagerAndInitCache();
 

@@ -1,5 +1,10 @@
 package org.infinispan.tutorial.simple.ai.langchain4j;
 
+import java.util.List;
+
+import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
+import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
+
 import dev.langchain4j.data.document.Metadata;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
@@ -9,10 +14,6 @@ import dev.langchain4j.store.embedding.EmbeddingMatch;
 import dev.langchain4j.store.embedding.EmbeddingSearchRequest;
 import dev.langchain4j.store.embedding.EmbeddingSearchResult;
 import dev.langchain4j.store.embedding.infinispan.InfinispanEmbeddingStore;
-import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
-import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
-
-import java.util.List;
 
 public class InfinispanLangchain4j {
 

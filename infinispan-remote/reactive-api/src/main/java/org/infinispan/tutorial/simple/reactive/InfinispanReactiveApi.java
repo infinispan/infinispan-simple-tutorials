@@ -1,17 +1,17 @@
 package org.infinispan.tutorial.simple.reactive;
 
-import org.infinispan.api.Infinispan;
-import org.infinispan.api.mutiny.MutinyCache;
-import org.infinispan.api.sync.SyncCache;
-import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
-import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
+import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.TUTORIAL_CACHE_NAME;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import static org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.TUTORIAL_CACHE_NAME;
+import org.infinispan.api.Infinispan;
+import org.infinispan.api.mutiny.MutinyCache;
+import org.infinispan.api.sync.SyncCache;
+import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
+import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 public class InfinispanReactiveApi {
 

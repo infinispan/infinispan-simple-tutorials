@@ -21,7 +21,7 @@ public class InfinispanKubernetes {
       System.out.println("Starting Embedded Infinispan Application...");
       //Configure Infinispan to use default transport and Kubernetes configuration
       GlobalConfiguration globalConfig = new GlobalConfigurationBuilder()
-	    .transport()
+       .transport()
             .defaultTransport()
             .addProperty("configurationFile", "default-configs/default-jgroups-kubernetes.xml")
             .build();

@@ -1,6 +1,7 @@
 package org.infinispan.tutorial.simple.redis;
 
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
+
 import redis.clients.jedis.Jedis;
 
 public class RedisClientCache {

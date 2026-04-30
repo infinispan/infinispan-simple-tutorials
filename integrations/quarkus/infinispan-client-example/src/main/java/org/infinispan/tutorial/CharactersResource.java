@@ -1,5 +1,12 @@
 package org.infinispan.tutorial;
 
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.CompletionStage;
+
+import org.infinispan.tutorial.model.Character;
+import org.infinispan.tutorial.service.CharacterSearch;
+
 import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -9,12 +16,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
-import org.infinispan.tutorial.model.Character;
-import org.infinispan.tutorial.service.CharacterSearch;
-
-import java.util.Collections;
-import java.util.Set;
-import java.util.concurrent.CompletionStage;
 
 @Path("/characters")
 @Produces(MediaType.APPLICATION_JSON)

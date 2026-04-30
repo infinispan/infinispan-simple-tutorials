@@ -6,11 +6,12 @@
  */
 package org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
 
 @Entity
 @Cacheable

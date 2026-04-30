@@ -1,5 +1,7 @@
 package org.infinispan.tutorial.simple.clusterexec;
 
+import java.util.Random;
+
 import org.infinispan.configuration.global.GlobalConfigurationBuilder;
 import org.infinispan.manager.ClusterExecutor;
 import org.infinispan.manager.DefaultCacheManager;
@@ -7,8 +9,6 @@ import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.remoting.transport.Address;
 import org.infinispan.util.function.SerializableFunction;
 import org.infinispan.util.function.TriConsumer;
-
-import java.util.Random;
 
 public class InfinispanClusterExec {
 

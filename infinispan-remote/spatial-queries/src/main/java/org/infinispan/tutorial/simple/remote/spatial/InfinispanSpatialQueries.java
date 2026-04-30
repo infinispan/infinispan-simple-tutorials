@@ -9,7 +9,6 @@ import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.commons.api.query.Query;
 import org.infinispan.commons.api.query.QueryResult;
 import org.infinispan.commons.api.query.geo.LatLng;
-import org.infinispan.protostream.GeneratedSchema;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 /**
