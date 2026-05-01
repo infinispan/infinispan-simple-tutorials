@@ -12,7 +12,7 @@
     <name>Infinispan Simple Tutorials: AI LangChain4j Embedding Store</name>
 
     <properties>
-        <langchain4j.version>1.13.1-beta23</langchain4j.version>
+        <langchain4j.version>1.14.0-beta24</langchain4j.version>
     </properties>
 
     <build>
