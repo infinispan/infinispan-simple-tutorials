@@ -51,6 +51,13 @@ public class GuideMetadataGenerator {
    public void generate() throws IOException {
       List<Map<String, Object>> guides = new ArrayList<>();
       Path guidesOutputDir = outputDir.resolve("guides");
+      if (Files.exists(guidesOutputDir)) {
+         try (Stream<Path> files = Files.list(guidesOutputDir)) {
+            files.forEach(f -> {
+               try { Files.delete(f); } catch (IOException ignored) {}
+            });
+         }
+      }
       Files.createDirectories(guidesOutputDir);
 
       Options options = Options.builder()
