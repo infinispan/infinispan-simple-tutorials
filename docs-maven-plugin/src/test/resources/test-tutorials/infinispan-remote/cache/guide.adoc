@@ -1,0 +1,15 @@
+= Remote Cache Tutorial
+:summary: Learn how to connect to Infinispan Server and perform cache operations
+:mode: remote
+:topics: caching,getting-started
+:keywords: cache,put,get,remove,client
+:duration: 10
+:source-dir: infinispan-remote/cache
+
+== Prerequisites
+
+* Infinispan Server running
+
+== Steps
+
+Put and get a value.

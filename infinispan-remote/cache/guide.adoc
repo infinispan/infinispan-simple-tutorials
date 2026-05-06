@@ -1,0 +1,76 @@
+= Remote Cache: Getting Started
+:summary: Connect to an Infinispan Server and perform basic cache operations with the Hot Rod client
+:mode: remote
+:topics: caching,getting-started
+:keywords: cache,put,get,remote,hot-rod,client,server
+:duration: 5
+:source-dir: infinispan-remote/cache
+
+== What You Will Learn
+
+How to connect a Java Hot Rod client to an Infinispan Server and perform basic cache operations: put, get, and print values.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Add the Hot Rod Client Dependency
+
+Add the Infinispan Hot Rod client to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-client-hotrod</artifactId>
+</dependency>
+----
+
+== Step 2: Connect to the Server
+
+Use `ConfigurationBuilder` to set up authentication and connect:
+
+[source,java]
+----
+ConfigurationBuilder builder = new ConfigurationBuilder();
+builder.security()
+      .authentication()
+      .username("admin")
+      .password("password");
+
+RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
+----
+
+The tutorial uses a shared `TutorialsConnectorHelper` that handles connection setup and automatically falls back to Testcontainers if no server is running locally.
+
+== Step 3: Get a Cache and Store Data
+
+Retrieve a named cache and perform put/get operations:
+
+[source,java]
+----
+RemoteCache<String, String> cache = cacheManager.getCache("test");
+cache.put("key", "value");
+String value = cache.get("key");
+System.out.printf("key = %s\n", value);
+----
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+You should see output like:
+
+----
+key = value
+----
+
+== What's Next
+
+* link:../query/guide.html[Query your data] with Ickle queries
+* link:../near-cache/guide.html[Use near-caching] for faster reads
+* link:../security/secured-cache/guide.html[Secure your caches] with role-based authorization

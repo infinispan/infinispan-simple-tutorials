@@ -1,0 +1,20 @@
+name: Notify Website of Guide Changes
+
+on:
+   push:
+      branches: [main]
+      paths:
+         - '**/guide.adoc'
+         - 'docs-maven-plugin/**'
+
+jobs:
+   notify-website:
+      runs-on: ubuntu-latest
+      steps:
+         - name: Trigger website rebuild
+           run: |
+              curl -X POST \
+                -H "Accept: application/vnd.github+json" \
+                -H "Authorization: Bearer ${{ secrets.WEBSITE_DISPATCH_TOKEN }}" \
+                https://api.github.com/repos/infinispan/infinispan.github.io/dispatches \
+                -d '{"event_type":"guides_updated"}'

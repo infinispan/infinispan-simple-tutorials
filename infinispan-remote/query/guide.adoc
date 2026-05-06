@@ -1,0 +1,137 @@
+= Querying Data with Ickle and Protobuf
+:summary: Index and query cached data using Ickle queries, Protobuf schemas, and full-text search
+:mode: remote
+:topics: querying,getting-started
+:keywords: query,ickle,protobuf,protostream,indexed,full-text,search,projection
+:duration: 15
+:source-dir: infinispan-remote/query
+
+== What You Will Learn
+
+How to define Protobuf schemas with `@Proto` annotations, create indexed caches, and run Ickle queries including WHERE clauses, projections, and DELETE operations.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Define Your Data Model with Protobuf Annotations
+
+Infinispan uses Protobuf for serialization. Define your entities as Java records with `@Proto` and `@Indexed` annotations:
+
+[source,java]
+----
+@Proto
+@Indexed(keyEntity = "tutorial.PersonKey")
+public record Person(
+      @Keyword(projectable = true, sortable = true, normalizer = "lowercase")
+      String firstName,
+      @Keyword(projectable = true, sortable = true, normalizer = "lowercase")
+      String lastName,
+      int bornYear,
+      @Keyword(projectable = true, sortable = true, normalizer = "lowercase")
+      String bornIn) {
+}
+----
+
+Define a key entity for composite keys:
+
+[source,java]
+----
+@Proto
+@Indexed
+public record PersonKey(
+      @Basic(projectable = true) String id,
+      @Basic(projectable = true) String pseudo) {
+}
+----
+
+== Step 2: Register the Protobuf Schema
+
+Create a `@ProtoSchema` interface to generate the schema:
+
+[source,java]
+----
+@ProtoSchema(schemaPackageName = "tutorial",
+      includeClasses = { Person.class, PersonKey.class })
+public interface TutorialSchema extends GeneratedSchema {
+}
+----
+
+Register it when connecting:
+
+[source,java]
+----
+ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
+builder.addContextInitializer(new TutorialSchemaImpl());
+client = TutorialsConnectorHelper.connect(builder);
+client.administration().schemas().createOrUpdate(new TutorialSchemaImpl());
+----
+
+== Step 3: Create an Indexed Cache
+
+Configure the cache with indexing enabled:
+
+[source,xml]
+----
+<distributed-cache statistics="true">
+   <encoding>
+      <key media-type="application/x-protostream"/>
+      <value media-type="application/x-protostream"/>
+   </encoding>
+   <indexing enabled="true" storage="filesystem" startup-mode="AUTO">
+      <indexed-entities>
+         <indexed-entity>tutorial.Person</indexed-entity>
+      </indexed-entities>
+   </indexing>
+</distributed-cache>
+----
+
+== Step 4: Run Ickle Queries
+
+Query all entries:
+
+[source,java]
+----
+Query<Person> query = cache.query("FROM tutorial.Person");
+List<Person> results = query.execute().list();
+----
+
+Filter with parameters:
+
+[source,java]
+----
+Query<Person> query = cache.query(
+      "FROM tutorial.Person p WHERE p.lastName = :lastName");
+query.setParameter("lastName", "Granger");
+----
+
+Use projections to select specific fields:
+
+[source,java]
+----
+Query<Object[]> query = cache.query(
+      "SELECT p.key.pseudo, p.firstName, p.lastName " +
+      "FROM tutorial.Person p WHERE p.bornIn = 'London'");
+----
+
+Delete by query:
+
+[source,java]
+----
+Query<Person> query = cache.query(
+      "DELETE FROM tutorial.Person p WHERE p.key.pseudo = 'dmalfoy'");
+long deleted = query.execute().count().value();
+----
+
+== Step 5: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+== What's Next
+
+* Try link:../spatial-queries/guide.html[spatial queries] for geolocation data
+* Add link:../continuous-query/guide.html[continuous queries] for real-time notifications
