@@ -1,0 +1,15 @@
+= Distributed Cache Tutorial
+:summary: Create a distributed cache across a cluster of Infinispan nodes
+:mode: embedded
+:topics: caching,clustering
+:keywords: distributed,cluster,embedded
+:duration: 10
+:source-dir: infinispan-embedded/cache-distributed
+
+== Prerequisites
+
+* Java 17+
+
+== Steps
+
+Create a clustered cache manager.

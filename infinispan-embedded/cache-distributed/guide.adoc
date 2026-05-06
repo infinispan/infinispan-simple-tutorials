@@ -1,0 +1,89 @@
+= Distributed Cache with Embedded Infinispan
+:summary: Create a distributed cache across a cluster of embedded Infinispan nodes using DIST_SYNC mode
+:mode: embedded
+:topics: caching,clustering
+:keywords: distributed,cluster,embedded,cache-mode,dist-sync,partitioned
+:duration: 10
+:source-dir: infinispan-embedded/cache-distributed
+
+== What You Will Learn
+
+How to create a clustered Infinispan cache manager in embedded mode, configure a distributed (partitioned) cache, and observe how data is distributed across cluster nodes.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add the Embedded Dependency
+
+Add Infinispan core to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-core</artifactId>
+</dependency>
+----
+
+== Step 2: Create a Clustered Cache Manager
+
+Use `GlobalConfigurationBuilder.defaultClusteredBuilder()` to enable JGroups clustering:
+
+[source,java]
+----
+GlobalConfigurationBuilder global = GlobalConfigurationBuilder.defaultClusteredBuilder();
+DefaultCacheManager cacheManager = new DefaultCacheManager(global.build());
+----
+
+This starts a JGroups cluster. Multiple instances on the same network will auto-discover each other.
+
+== Step 3: Configure a Distributed Cache
+
+Create a cache with `DIST_SYNC` mode. In this mode, data is partitioned — each entry is stored on a subset of nodes (by default 2 copies):
+
+[source,java]
+----
+ConfigurationBuilder builder = new ConfigurationBuilder();
+builder.clustering().cacheMode(CacheMode.DIST_SYNC);
+
+Cache<String, String> cache = cacheManager.administration()
+      .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
+      .getOrCreateCache("cache", builder.build());
+----
+
+== Step 4: Populate and Query the Cache
+
+Store entries and observe ownership. Use `Flag.CACHE_MODE_LOCAL` to see only entries owned by the local node:
+
+[source,java]
+----
+// Store 10 entries with random keys
+for (int i = 0; i < 10; i++) {
+   cache.put(UUID.randomUUID().toString(), cacheManager.getNodeAddress());
+}
+
+// All entries (cluster-wide view)
+cache.entrySet().forEach(entry ->
+      System.out.printf("%s = %s\n", entry.getKey(), entry.getValue()));
+
+// Only locally-owned entries
+cache.getAdvancedCache().withFlags(Flag.CACHE_MODE_LOCAL)
+      .entrySet().forEach(entry ->
+            System.out.printf("[local] %s = %s\n", entry.getKey(), entry.getValue()));
+----
+
+== Step 5: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+The local view will show fewer entries than the cluster-wide view because distributed mode partitions data across nodes.
+
+== What's Next
+
+* Try link:../cache-replicated/guide.html[replicated mode] where every node has all data
+* Add link:../listeners/guide.html[cache listeners] to react to changes
+* Use link:../streams/guide.html[distributed streams] for parallel processing
