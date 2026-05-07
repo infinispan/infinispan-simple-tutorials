@@ -196,4 +196,13 @@
         <module>infinispan-ai/langchain4j</module>
         <module>infinispan-ai/vector-search</module>
     </modules>
+
+    <profiles>
+        <profile>
+            <id>guides</id>
+            <modules>
+                <module>docs-maven-plugin</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>

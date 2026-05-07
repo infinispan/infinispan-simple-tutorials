@@ -1,0 +1,106 @@
+= Semantic Search with LangChain4j and Infinispan
+:summary: Use Infinispan as a vector database for AI semantic search with LangChain4j embeddings
+:mode: ai
+:topics: getting-started
+:keywords: ai,langchain4j,vector,embedding,semantic-search,similarity,onnx
+:duration: 10
+:source-dir: infinispan-ai/langchain4j
+
+== What You Will Learn
+
+How to use Infinispan as a vector embedding store with LangChain4j to perform semantic similarity search over text.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Add Dependencies
+
+Add LangChain4j with the Infinispan embedding store and an ONNX embedding model:
+
+[source,xml]
+----
+<dependency>
+   <groupId>dev.langchain4j</groupId>
+   <artifactId>langchain4j-infinispan</artifactId>
+</dependency>
+<dependency>
+   <groupId>dev.langchain4j</groupId>
+   <artifactId>langchain4j-embeddings-all-minilm-l6-v2-q</artifactId>
+</dependency>
+----
+
+The quantized MiniLM model runs locally — no API keys or external services needed.
+
+== Step 2: Initialize the Embedding Model
+
+Create a local embedding model that converts text to vectors:
+
+[source,java]
+----
+EmbeddingModel embeddingModel = new AllMiniLmL6V2QuantizedEmbeddingModel();
+System.out.println("Dimension: " + embeddingModel.dimension()); // 384
+----
+
+== Step 3: Create the Infinispan Embedding Store
+
+Connect the embedding store to Infinispan:
+
+[source,java]
+----
+ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
+InfinispanEmbeddingStore embeddingStore = InfinispanEmbeddingStore.builder()
+      .cacheName("langchain4j-embeddings")
+      .dimension(embeddingModel.dimension())
+      .infinispanConfigBuilder(builder)
+      .distance(3) // inner product distance
+      .build();
+----
+
+== Step 4: Store Text as Embeddings
+
+Convert text segments to vectors and store them:
+
+[source,java]
+----
+TextSegment segment = TextSegment.from(
+      "Infinispan supports vector search for AI use cases",
+      Metadata.from("source", "docs").put("topic", "ai"));
+
+Embedding embedding = embeddingModel.embed(segment).content();
+embeddingStore.add(embedding, segment);
+----
+
+== Step 5: Search by Semantic Similarity
+
+Query with natural language — the model finds semantically similar text, not just keyword matches:
+
+[source,java]
+----
+String query = "How can I use Infinispan with AI?";
+Embedding queryEmbedding = embeddingModel.embed(query).content();
+
+EmbeddingSearchRequest request = EmbeddingSearchRequest.builder()
+      .queryEmbedding(queryEmbedding)
+      .maxResults(3)
+      .build();
+
+EmbeddingSearchResult<TextSegment> result = embeddingStore.search(request);
+for (EmbeddingMatch<TextSegment> match : result.matches()) {
+   System.out.printf("Score: %.4f | %s%n", match.score(), match.embedded().text());
+}
+----
+
+== Step 6: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+Results are ranked by cosine similarity score. Text about "vector search" and "embedding store" will rank highest for the AI query, even though the exact words differ.
+
+== What's Next
+
+* Try link:../vector-search/guide.html[vector search] for direct vector API usage without LangChain4j

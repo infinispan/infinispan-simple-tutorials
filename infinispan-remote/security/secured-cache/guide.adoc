@@ -1,0 +1,83 @@
+= Securing Caches with Role-Based Authorization
+:summary: Configure role-based access control (RBAC) to restrict cache operations by user role
+:mode: remote
+:topics: security
+:keywords: security,authorization,rbac,roles,deployer,access-control,secured
+:duration: 10
+:source-dir: infinispan-remote/security/secured-cache
+
+== What You Will Learn
+
+How to create a cache with role-based authorization so that only users with 
+specific roles can perform operations on it.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Define a Secured Cache
+
+Create a cache configuration that restricts access to the `deployer` role:
+
+[source,xml]
+----
+<distributed-cache name="securedCache">
+   <encoding media-type="application/x-protostream"/>
+   <security>
+      <authorization enabled="true" roles="deployer"/>
+   </security>
+</distributed-cache>
+----
+
+Only users with the `deployer` role can read or write to this cache. Other authenticated users will get an authorization error.
+
+== Step 2: Connect and Access Caches
+
+Connect with the default `admin` credentials:
+
+[source,java]
+----
+ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
+URI securedCacheConfig = InfinispanAuthorizationCache.class
+      .getClassLoader().getResource("securedCache.xml").toURI();
+builder.remoteCache("securedCache").configurationURI(securedCacheConfig);
+
+RemoteCacheManager cacheManager = TutorialsConnectorHelper.connect(builder);
+----
+
+== Step 3: Observe Authorization in Action
+
+Access to the unrestricted cache works normally:
+
+[source,java]
+----
+RemoteCache<String, String> cache = cacheManager.getCache("test");
+cache.put("key", "value"); // succeeds
+----
+
+But accessing the secured cache without the required role throws an exception:
+
+[source,java]
+----
+RemoteCache<String, String> securedCache = cacheManager.getCache("securedCache");
+try {
+   securedCache.put("key", "value"); // fails — admin doesn't have deployer role
+} catch (HotRodClientException ex) {
+   System.out.println(ex.getMessage()); // authorization error
+}
+----
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+You will see an authorization error message when trying to write to the secured cache, demonstrating that RBAC is enforced.
+
+== What's Next
+
+* Configure link:../security/tls-authorization/guide.html[TLS with client certificate authorization]
+* Learn about Infinispan's built-in roles: `admin`, `deployer`, `application`, `observer`, `monitor`
