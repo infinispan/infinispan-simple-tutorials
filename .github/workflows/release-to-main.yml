@@ -2,6 +2,12 @@ name: Release to Main
 
 on:
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (merge but do not push)'
+        required: false
+        default: 'false'
+        type: boolean
 
 jobs:
   merge-to-main:
@@ -13,10 +19,47 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Extract main branch version
+        id: main-version
+        run: |
+          git checkout main
+          MAIN_VERSION=$(grep -m1 '<version>' pom.xml | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
+          MAIN_PARENT_VERSION=$(grep -A1 'infinispan-build-configuration-parent' pom.xml | grep '<version>' | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
+          echo "project=$MAIN_VERSION" >> $GITHUB_OUTPUT
+          echo "parent=$MAIN_PARENT_VERSION" >> $GITHUB_OUTPUT
+          echo "Main project version: $MAIN_VERSION"
+          echo "Main parent version: $MAIN_PARENT_VERSION"
+
       - name: Merge development into main
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout main
           git merge origin/development -m "Release: merge development into main"
-          git push origin main
+
+      - name: Restore main branch versions
+        run: |
+          MAIN_VERSION="${{ steps.main-version.outputs.project }}"
+          MAIN_PARENT_VERSION="${{ steps.main-version.outputs.parent }}"
+          DEV_VERSION=$(grep -m1 '<version>' pom.xml | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
+          DEV_PARENT_VERSION=$(grep -A1 'infinispan-build-configuration-parent' pom.xml | grep '<version>' | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
+
+          echo "Replacing project version: $DEV_VERSION -> $MAIN_VERSION"
+          echo "Replacing parent version: $DEV_PARENT_VERSION -> $MAIN_PARENT_VERSION"
+
+          # Replace SNAPSHOT versions with main versions in all pom.xml files
+          find . -name "pom.xml" -not -path "./.git/*" -exec sed -i "s|$DEV_VERSION|$MAIN_VERSION|g" {} +
+          find . -name "pom.xml" -not -path "./.git/*" -exec sed -i "s|$DEV_PARENT_VERSION|$MAIN_PARENT_VERSION|g" {} +
+
+          git add -A
+          git diff --cached --quiet || git commit -m "chore: restore main branch versions ($MAIN_VERSION)"
+
+      - name: Push to main
+        if: ${{ inputs.dry_run != 'true' }}
+        run: git push origin main
+
+      - name: Dry run summary
+        if: ${{ inputs.dry_run == 'true' }}
+        run: |
+          echo "DRY RUN - not pushing. Merge result:"
+          git log --oneline -5
