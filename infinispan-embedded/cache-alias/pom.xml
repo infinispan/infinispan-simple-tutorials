@@ -5,7 +5,7 @@
     <artifactId>infinispan-simple-tutorials-embedded-cache-alias</artifactId>
     <parent>
         <relativePath>../../pom.xml</relativePath>
-        <version>16.1.3</version>
+        <version>16.1.4</version>
         <groupId>org.infinispan.tutorial.simple</groupId>
         <artifactId>infinispan-simple-tutorials</artifactId>
     </parent>
