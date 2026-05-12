@@ -10,11 +10,13 @@ public enum SSLConfig {
       @Override
       public ConfigurationBuilder addConfig(ConfigurationBuilder builder) {
          System.out.println("  - Try to access the server with simple tls server keystore");
+         // tag::simple-tls[]
          builder
                .security()
                .ssl().hostnameValidation(false)
                .trustStoreFileName("server-truststore.pfx")
                .trustStorePassword("trustSecret".toCharArray());
+         // end::simple-tls[]
          return builder;
       }
    },
@@ -78,6 +80,7 @@ public enum SSLConfig {
       @Override
       public ConfigurationBuilder addConfig(ConfigurationBuilder builder) {
          System.out.println("\n\n  - Try to access the server with a signed tls server and client1 keystore with Authorization");
+         // tag::mutual-tls[]
          builder.security()
                .ssl().hostnameValidation(false)
                .trustStoreFileName("server_truststore.p12")
@@ -86,6 +89,7 @@ public enum SSLConfig {
                .keyStorePassword("Client1secret".toCharArray());
 
          builder.security().authentication().saslMechanism("EXTERNAL");
+         // end::mutual-tls[]
          return builder;
       }
    },

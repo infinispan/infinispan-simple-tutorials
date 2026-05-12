@@ -1,0 +1,62 @@
+= Cluster Executor with Embedded Infinispan
+:summary: Execute tasks across all nodes in an Infinispan cluster using ClusterExecutor
+:mode: embedded
+:topics: clustering,execution
+:keywords: cluster-executor,distributed-execution,embedded,serializable-function
+:duration: 10
+:source-dir: infinispan-embedded/clusterexec
+
+== What You Will Learn
+
+How to use the Infinispan `ClusterExecutor` to submit tasks that run on all nodes in an embedded cluster and collect results.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add the Embedded Dependency
+
+Add Infinispan core to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-core</artifactId>
+</dependency>
+----
+
+== Step 2: Create a Clustered Cache Manager
+
+Set up a clustered cache manager. The cluster executor is obtained from the cache manager:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/clusterexec/InfinispanClusterExec.java[tag=cache-manager]
+----
+
+== Step 3: Submit a Task to All Nodes
+
+Use `ClusterExecutor.submitConsumer()` to run a `SerializableFunction` on every cluster member and handle results with a `TriConsumer`:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/clusterexec/InfinispanClusterExec.java[tag=submit-task]
+----
+
+The first argument is the task that runs on each node (it receives the local `EmbeddedCacheManager`). The second argument is a callback that receives the node address, the result value, and any exception.
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+Each cluster member generates a random integer, and the results are printed on the submitting node.
+
+== What's Next
+
+* Try link:../cache-distributed/guide.html[distributed caching] for data partitioning across nodes
+* Use link:../streams/guide.html[distributed streams] for parallel data processing
+* Explore link:../counter/guide.html[clustered counters] for shared state across nodes

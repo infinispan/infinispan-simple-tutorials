@@ -1,0 +1,87 @@
+= Programmatic Index Configuration with Embedded Infinispan
+:summary: Define index mappings programmatically instead of using annotations for embedded Infinispan queries
+:mode: embedded
+:topics: querying,indexing
+:keywords: query,programmatic,index,mapping,embedded,search
+:duration: 10
+:source-dir: infinispan-embedded/query-programmatic-index
+
+== What You Will Learn
+
+How to define search index mappings programmatically using `ProgrammaticSearchMappingProvider` instead of annotations, allowing you to index plain Java records or classes without modifying their source.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add Dependencies
+
+Add the Infinispan core and query modules to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-core</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-query</artifactId>
+</dependency>
+----
+
+== Step 2: Define a Plain Entity
+
+Use a simple Java record with no indexing annotations:
+
+[source,java]
+----
+public record Person(String name, String surname) {
+}
+----
+
+== Step 3: Create a Programmatic Index Definition
+
+Implement `ProgrammaticSearchMappingProvider` to define the index mapping in code:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/query/programmatic/PersonIndexDefinition.java[tag=index-definition]
+----
+
+== Step 4: Register the Provider via SPI
+
+Create a service file at `META-INF/services/org.infinispan.search.mapper.mapping.ProgrammaticSearchMappingProvider` containing:
+
+[source,text]
+----
+org.infinispan.tutorial.simple.query.programmatic.PersonIndexDefinition
+----
+
+== Step 5: Run a Full-Text Query
+
+Configure an indexed cache and query using full-text syntax with wildcards:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/query/programmatic/InfinispanQueryProgrammaticIndex.java[tag=config]
+----
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/query/programmatic/InfinispanQueryProgrammaticIndex.java[tag=query]
+----
+
+== Step 6: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+The output shows the two persons whose name matches the wildcard `Will*`.
+
+== What's Next
+
+* Try link:../query/guide.html[annotation-based indexing] for a simpler approach
+* Add link:../streams/guide.html[distributed streams] for parallel processing

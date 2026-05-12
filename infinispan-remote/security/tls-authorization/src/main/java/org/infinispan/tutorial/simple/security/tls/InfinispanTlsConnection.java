@@ -49,6 +49,7 @@ public class InfinispanTlsConnection {
    private static void testSslConfig(ConfigurationBuilder builder) {
       RemoteCacheManager cacheManager = null;
       try {
+         // tag::test-connection[]
          cacheManager = TutorialsConnectorHelper.connect(builder);
          RemoteCache<String, String> cache = cacheManager.getCache("secured");
          System.out.println("    = connection success");
@@ -56,6 +57,7 @@ public class InfinispanTlsConnection {
          System.out.println("    = put succeeds");
          cache.get("test");
          System.out.println("    = get succeeds");
+         // end::test-connection[]
       } catch (Throwable e) {
          e.printStackTrace();
          System.out.println("\n   FAILED \n\n");

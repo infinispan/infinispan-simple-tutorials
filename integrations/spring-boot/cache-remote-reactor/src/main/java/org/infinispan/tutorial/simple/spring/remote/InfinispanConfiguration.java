@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
+// tag::customizer[]
 @Configuration
 public class InfinispanConfiguration {
 
@@ -50,3 +51,4 @@ public class InfinispanConfiguration {
       };
    }
 }
+// end::customizer[]

@@ -15,18 +15,24 @@ import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
  */
 public class InfinispanRemoteOpenTelemetry {
    public static void main(String[] args) {
+      // tag::connect[]
       ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
 
       try (RemoteCacheManager client = TutorialsConnectorHelper.connect(builder)) {
          RemoteCache<String, String> cache = client.getCache(TUTORIAL_CACHE_NAME);
+         // end::connect[]
 
+         // tag::enable-tracing[]
          // Enabled tracing at runtime by changing the configuration.
          client.administration()
                  .updateConfigurationAttribute(cache.getName(), "tracing.enabled", "true");
+         // end::enable-tracing[]
 
+         // tag::put-ops[]
          for (int i = 0; i < 300; i++) {
             cache.put("i" + i, i + "");
          }
+         // end::put-ops[]
 
          client.stop();
       }

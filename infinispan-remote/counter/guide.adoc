@@ -1,0 +1,57 @@
+= Remote Counters
+:summary: Use strong counters (bounded and unbounded) and weak counters with the Hot Rod client
+:mode: remote
+:topics: counters,getting-started
+:keywords: counter,strong,weak,bounded,unbounded,atomic,distributed
+:duration: 10
+:source-dir: infinispan-remote/counter
+
+== What You Will Learn
+
+How to create and use distributed counters: bounded strong counters with upper limits, unbounded strong counters with compare-and-set operations, and weak counters optimized for fast increments.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Connect and Create a Bounded Strong Counter
+
+Connect to the server, obtain a `CounterManager`, and define a counter with an upper bound. Attempts to exceed the bound throw an exception:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/counter/InfinispanRemoteCounter.java[tag=bounded-counter]
+----
+
+== Step 2: Create an Unbounded Strong Counter
+
+Unbounded strong counters support compare-and-set, listeners, and reset:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/counter/InfinispanRemoteCounter.java[tag=unbounded-counter]
+----
+
+== Step 3: Create a Weak Counter
+
+Weak counters trade consistency for speed. Their value is computed lazily:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/counter/InfinispanRemoteCounter.java[tag=weak-counter]
+----
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+You should see output showing counter values, bound exceptions, listener events, and compare-and-set results.
+
+== What's Next
+
+* link:../cache/guide.html[Get started] with basic cache operations
+* link:../multimap/guide.html[Use multimap caches] for multiple values per key

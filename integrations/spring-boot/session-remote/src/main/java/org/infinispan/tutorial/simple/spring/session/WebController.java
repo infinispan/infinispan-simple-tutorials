@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import jakarta.servlet.http.HttpSession;
 
+// tag::controller[]
 @Controller
 @SessionAttributes("greetings")
 public class WebController {
@@ -22,3 +23,4 @@ public class WebController {
     }
 
 }
+// end::controller[]

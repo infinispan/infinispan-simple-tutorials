@@ -7,6 +7,7 @@ import org.infinispan.client.hotrod.RemoteCacheManager;
 /**
  * Caching service to be tested using JUnit 5 and the Infinispan Server Extension
  */
+// tag::caching-service[]
 public class CachingService {
 
    private RemoteCache<String, String> cache;
@@ -28,3 +29,4 @@ public class CachingService {
       return cache.containsValue(name);
    }
 }
+// end::caching-service[]

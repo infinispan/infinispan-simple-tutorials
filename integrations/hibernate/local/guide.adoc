@@ -1,0 +1,76 @@
+= Hibernate L2 Cache with Infinispan (Standalone)
+:summary: Use Infinispan as the Hibernate second-level cache provider in a standalone Java application
+:mode: integration
+:topics: hibernate,caching
+:keywords: hibernate,l2-cache,jpa,entity-cache,query-cache,h2
+:duration: 10
+:source-dir: integrations/hibernate/local
+
+== What You Will Learn
+
+How to configure Infinispan as the Hibernate second-level (L2) cache provider in a standalone Java SE application, and observe entity cache puts, hits, misses, and query cache behavior through Hibernate statistics.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add the Infinispan Hibernate Cache Dependency
+
+Add the Infinispan Hibernate cache module and an in-memory database to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.hibernate.orm</groupId>
+   <artifactId>hibernate-core</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-hibernate-cache-v66</artifactId>
+</dependency>
+<dependency>
+   <groupId>com.h2database</groupId>
+   <artifactId>h2</artifactId>
+</dependency>
+----
+
+== Step 2: Configure the Persistence Unit
+
+In `META-INF/persistence.xml`, enable the second-level cache and query cache, and set Infinispan as the cache provider:
+
+[source,xml]
+----
+include::src/main/resources/META-INF/persistence.xml[tag=persistence-unit]
+----
+
+== Step 3: Mark Entities as Cacheable
+
+Annotate your JPA entities with `@Cacheable` so they participate in second-level caching:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/hibernate/cache/local/model/Event.java[tag=entity]
+----
+
+== Step 4: Use the Entity Manager and Observe Cache Statistics
+
+Persist, find, update, and query entities. Hibernate statistics reveal L2 cache activity:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/hibernate/cache/local/InfinispanHibernateCacheLocal.java[tag=cache-ops]
+----
+
+== Step 5: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:exec
+----
+
+The output shows cache puts when entities are persisted, cache hits when entities are found, cache misses after eviction, and query cache behavior on repeated queries.
+
+== What's Next
+
+* link:../spring-local/guide.html[Hibernate L2 cache with Spring Boot] for the same pattern in a Spring Boot application
+* link:../wildfly-local/guide.html[Hibernate L2 cache with WildFly] for a Jakarta EE deployment

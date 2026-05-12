@@ -1,0 +1,48 @@
+= Cache Encodings with DataFormat
+:summary: Store and retrieve data using different cache encodings (text/plain, JSON, XML) with the DataFormat API
+:mode: remote
+:topics: caching,encoding
+:keywords: encoding,media-type,json,xml,text,utf-8,dataformat,marshaller
+:duration: 10
+:source-dir: infinispan-remote/encoding
+
+== What You Will Learn
+
+How to configure caches with different media type encodings (text/plain, JSON, XML) and use the `DataFormat` API to read and write data with a `UTF8StringMarshaller`.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Define Cache Configurations and Connect
+
+Create XML cache configurations for each encoding (text/plain, JSON, XML) and load them when connecting:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/encoding/InfinispanEncodingCaches.java[tag=connect]
+----
+
+For JSON and XML caches, use `DataFormat` to specify the marshaller and media type when obtaining cache references. The text cache works directly with the default marshaller.
+
+== Step 2: Store and Retrieve Data
+
+Put and get values using each cache with its respective encoding:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/encoding/InfinispanEncodingCaches.java[tag=usage]
+----
+
+== Step 3: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+== What's Next
+
+* link:../cache/guide.html[Get started] with basic remote cache operations
+* link:../query/guide.html[Query your data] with Ickle queries

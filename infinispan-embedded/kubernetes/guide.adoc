@@ -1,0 +1,82 @@
+= Kubernetes Discovery with Embedded Infinispan
+:summary: Configure embedded Infinispan to discover cluster members using Kubernetes DNS_PING
+:mode: embedded
+:topics: clustering,kubernetes
+:keywords: kubernetes,dns-ping,jgroups,discovery,embedded,k8s
+:duration: 15
+:source-dir: infinispan-embedded/kubernetes
+
+== What You Will Learn
+
+How to configure embedded Infinispan to form a cluster on Kubernetes using JGroups DNS_PING for node discovery, and how to build and deploy the application using JKube.
+
+== Prerequisites
+
+* Java 17+
+* A Kubernetes cluster (e.g., Minikube, OpenShift)
+* `kubectl` configured to access the cluster
+
+== Step 1: Add the Embedded Dependency
+
+Add Infinispan core to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-core</artifactId>
+</dependency>
+----
+
+== Step 2: Configure JGroups Kubernetes Transport
+
+Use the built-in Kubernetes JGroups configuration and pass the DNS query via a system property:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/kubernetes/InfinispanKubernetes.java[tag=global-config]
+----
+
+The DNS query is set through the `jgroups.dns.query` system property, which points to the headless Kubernetes service:
+
+[source,xml]
+----
+<options.dnsPing>
+   -Djgroups.dns.query=${options.service}.${options.namespace}.svc.cluster.local
+</options.dnsPing>
+----
+
+== Step 3: Create a Replicated Cache
+
+Create a replicated cache so every pod in the deployment holds all entries:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/kubernetes/InfinispanKubernetes.java[tag=cache-config]
+----
+
+== Step 4: Populate the Cache Periodically
+
+Each pod updates its own entry on a schedule, demonstrating cluster-wide data replication:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/kubernetes/InfinispanKubernetes.java[tag=populate]
+----
+
+== Step 5: Build and Deploy to Kubernetes
+
+Build the Docker image and deploy to Kubernetes using JKube:
+
+[source,bash]
+----
+mvn package k8s:build k8s:resource k8s:apply -Pdocker
+----
+
+This creates a deployment with 2 replicas and a headless service for DNS-based cluster discovery.
+
+== What's Next
+
+* Try link:../cache-replicated/guide.html[replicated mode] locally before deploying to Kubernetes
+* Explore link:../cache-distributed/guide.html[distributed mode] for large datasets where full replication is not feasible
+* Add link:../listeners/guide.html[cache listeners] to react to cluster events

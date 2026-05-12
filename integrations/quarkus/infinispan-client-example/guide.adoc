@@ -1,0 +1,82 @@
+= Quarkus Infinispan Client
+:summary: Build a Quarkus REST resource that stores, retrieves, and full-text searches data in a remote Infinispan Server
+:mode: integration
+:topics: quarkus,remote
+:keywords: quarkus,infinispan-client,rest,full-text,indexed,protobuf,devservices
+:duration: 10
+:source-dir: integrations/quarkus/infinispan-client-example
+
+== What You Will Learn
+
+How to use the Quarkus Infinispan client extension to connect to an Infinispan Server, store indexed Protobuf entities, and perform full-text search queries through a JAX-RS REST resource.
+
+== Prerequisites
+
+* Java 17+
+* Quarkus
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman for Quarkus Dev Services)
+
+== Step 1: Add Dependencies
+
+Add the Quarkus Infinispan client and REST Jackson extensions:
+
+[source,xml]
+----
+<dependency>
+   <groupId>io.quarkus</groupId>
+   <artifactId>quarkus-infinispan-client</artifactId>
+</dependency>
+<dependency>
+   <groupId>io.quarkus</groupId>
+   <artifactId>quarkus-rest-jackson</artifactId>
+</dependency>
+----
+
+== Step 2: Define the Protobuf Entity
+
+Create an indexed Protobuf record with `@Text` fields for full-text search:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/model/Character.java[tag=entity]
+----
+
+== Step 3: Configure the Cache
+
+In `application.properties`, point to the cache configuration and set server coordinates:
+
+[source,properties]
+----
+include::src/main/resources/application.properties[tag=config]
+----
+
+In dev mode, Quarkus Dev Services automatically starts an Infinispan container.
+
+== Step 4: Inject the RemoteCache and Query
+
+Inject the remote cache and perform full-text queries using Ickle:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/service/CharacterSearch.java[tag=service]
+----
+
+== Step 5: Run the Tutorial
+
+[source,bash]
+----
+mvn quarkus:dev
+----
+
+Then query the REST endpoints:
+
+[source,bash]
+----
+curl http://localhost:8080/characters/0
+curl "http://localhost:8080/characters/query?term=dragon"
+----
+
+== What's Next
+
+* link:../../../infinispan-ai/vector-search/guide.html[Vector search] for kNN similarity search on embeddings
+* link:../../../infinispan-remote/query/guide.html[Remote queries] for Ickle query basics with the Hot Rod client

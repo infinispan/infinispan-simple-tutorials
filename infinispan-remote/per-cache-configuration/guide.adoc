@@ -1,0 +1,61 @@
+= Per-Cache Configuration
+:summary: Configure remote caches using templates, inline XML, and URI-based XML files
+:mode: remote
+:topics: caching,configuration
+:keywords: per-cache,template,xml,uri,configuration,distributed-cache
+:duration: 10
+:source-dir: infinispan-remote/per-cache-configuration
+
+== What You Will Learn
+
+How to define per-cache configuration on the Hot Rod client using three different approaches: server-side templates, inline XML strings, and XML files loaded from a URI. When you call `getCache()` for a cache that does not yet exist, Infinispan creates it automatically from the provided configuration.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Define Per-Cache Configurations
+
+You can configure caches using a template name, an inline XML string, or an XML file loaded from a URI. Register templates on the server before first cache access:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/percache/InfinispanRemotePerCache.java[tag=cache-configs]
+----
+
+The `cacheConfig.xml` file referenced by the URI configuration contains:
+
+[source,xml]
+----
+include::src/main/resources/cacheConfig.xml[tag=cache-config]
+----
+
+== Step 2: Use the Caches
+
+All three caches are created on first access via `getCache()`:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/percache/InfinispanRemotePerCache.java[tag=use-cache]
+----
+
+== Step 3: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+You should see output like:
+
+----
+key = world
+key = world-another
+key = world-uri
+----
+
+== What's Next
+
+* link:../cache/guide.html[Getting started] with basic cache operations
+* link:../near-cache/guide.html[Near-caching] for faster reads

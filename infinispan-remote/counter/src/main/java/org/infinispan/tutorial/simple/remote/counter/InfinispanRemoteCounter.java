@@ -28,26 +28,20 @@ public class InfinispanRemoteCounter {
    static WeakCounter counter3;
 
    public static void main(String[] args) throws Exception {
-      connectToInfinispan();
       manipulateCounters();
       disconnect();
    }
 
    public static void manipulateCounters() throws Exception {
-      // Create 3 counters.
-      // The first counter is bounded to 10 (upper-bound).
+      // tag::bounded-counter[]
+      // Connect to the server and obtain the CounterManager
+      cacheManager = TutorialsConnectorHelper.connect();
+      counterManager = RemoteCounterManagerFactory.asCounterManager(cacheManager);
+
+      // Create a bounded strong counter with an upper bound of 10
       counterManager.defineCounter("counter-1", CounterConfiguration.builder(CounterType.BOUNDED_STRONG)
               .upperBound(10)
               .initialValue(1)
-              .build());
-
-      // The second counter is unbounded
-      counterManager.defineCounter("counter-2", CounterConfiguration.builder(CounterType.UNBOUNDED_STRONG)
-              .initialValue(2)
-              .build());
-      // And finally, the third counter is a weak counter.
-      counterManager.defineCounter("counter-3", CounterConfiguration.builder(CounterType.WEAK)
-              .initialValue(3)
               .build());
 
       // StrongCounter provides the higher consistency. Its value is known during the increment/decrement and it may be bounded.
@@ -55,6 +49,7 @@ public class InfinispanRemoteCounter {
       counter1 = counterManager.getStrongCounter("counter-1");
       // All methods returns a CompletableFuture. So you can do other work while the counter value is being computed.
       counter1.getValue().thenAccept(value -> System.out.println("Counter-1 initial value is " + value)).get();
+      // end::bounded-counter[]
 
       // Try to add more than the upper-bound
       counter1.addAndGet(10).handle((value, throwable) -> {
@@ -73,7 +68,12 @@ public class InfinispanRemoteCounter {
          return value;
       }).get();
 
+      // tag::unbounded-counter[]
       // Similar to counter-1, counter-2 is a strong counter but it is unbounded. It will never throw the CounterOutOfBoundsException
+      counterManager.defineCounter("counter-2", CounterConfiguration.builder(CounterType.UNBOUNDED_STRONG)
+              .initialValue(2)
+              .build());
+
       counter2 = counterManager.getStrongCounter("counter-2");
 
       // All counters allow a listener to be registered.
@@ -93,6 +93,13 @@ public class InfinispanRemoteCounter {
       // Reset the counter to its initial value (2)
       counter2.reset().get();
       counter2.getValue().thenAccept(value -> System.out.println("Counter-2 initial value is " + value)).get();
+      // end::unbounded-counter[]
+
+      // tag::weak-counter[]
+      // And finally, the third counter is a weak counter.
+      counterManager.defineCounter("counter-3", CounterConfiguration.builder(CounterType.WEAK)
+              .initialValue(3)
+              .build());
 
       // Retrieve counter-3
       counter3 = counterManager.getWeakCounter("counter-3");
@@ -103,13 +110,11 @@ public class InfinispanRemoteCounter {
 
       // Check the counter value.
       System.out.println("Counter-3 value is " + counter3.getValue());
+      // end::weak-counter[]
    }
 
    public static void connectToInfinispan() {
-      // Connect to the server
       cacheManager = TutorialsConnectorHelper.connect();
-
-      // Retrieve the CounterManager from the CacheManager. Each CacheManager has it own CounterManager
       counterManager = RemoteCounterManagerFactory.asCounterManager(cacheManager);
    }
 

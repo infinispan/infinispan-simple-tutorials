@@ -30,9 +30,11 @@ public class InfinispanReactiveApi {
 
    static void connect() {
       // Connect to the server
+      // tag::connect[]
       ConfigurationBuilder configurationBuilder = TutorialsConnectorHelper.connectionConfig();
       try {
          infinispan = Infinispan.create(configurationBuilder.create());
+      // end::connect[]
          //ping
          System.out.println("Get cache names: " + infinispan.sync().caches().names());
       } catch (Exception ex) {
@@ -64,14 +66,17 @@ public class InfinispanReactiveApi {
    }
 
    static void initCache() {
+      // tag::init-cache[]
       cache = infinispan.mutiny()
             .caches().<String, String>get(TUTORIAL_CACHE_NAME)
             .await().atMost(Duration.ofMillis(100));
+      // end::init-cache[]
    }
 
    static void manipulateCacheReactive() {
       ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
+      // tag::reactive-ops[]
       cache.set("hello", "reactive")
               .chain(ignore -> cache.get("hello"))
               .onItem().invoke(v -> System.out.printf("%s -- %s\n", LocalDateTime.now(), v))
@@ -79,6 +84,7 @@ public class InfinispanReactiveApi {
               .onItem().delayIt().onExecutor(executor).by(Duration.ofSeconds(1))
               .invoke(v -> System.out.printf("%s -- %s\n", LocalDateTime.now(), v))
               .await().atMost(Duration.ofSeconds(2));
+      // end::reactive-ops[]
 
       executor.shutdown();
    }

@@ -35,6 +35,7 @@ public class InfinispanNearCache {
       disconnect(false);
    }
 
+   // tag::read-cache[]
    static void readCache(RemoteCache<Integer, String> cache) {
       Instant start = Instant.now();
       Random random = new Random();
@@ -43,8 +44,10 @@ public class InfinispanNearCache {
       long timeElapsed = Duration.between(start, finish).toMillis();
       System.out.println(String.format("Time to complete with cache %s is %d milliseconds", cache.getName(), timeElapsed));
    }
+   // end::read-cache[]
 
    public static void connectToInfinispan() {
+      // tag::near-cache-config[]
       ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
       // Add an additional cache with near caching configuration
       builder.remoteCache(CACHE_WITH_NEAR_CACHING)
@@ -55,6 +58,7 @@ public class InfinispanNearCache {
 
       // Connect to the server with the near cache configuration for the test cache
       cacheManager = TutorialsConnectorHelper.connect(builder);
+      // end::near-cache-config[]
       testCache = cacheManager.getCache(TUTORIAL_CACHE_NAME);
       withNearCaching = cacheManager.getCache(CACHE_WITH_NEAR_CACHING);
    }

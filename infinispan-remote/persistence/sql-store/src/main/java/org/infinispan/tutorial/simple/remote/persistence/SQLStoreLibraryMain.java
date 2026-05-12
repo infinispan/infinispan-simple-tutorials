@@ -17,6 +17,7 @@ public class SQLStoreLibraryMain {
       dbCreator.startDBServer("9123");
       dbCreator.createAndPopulate();
 
+      // tag::setup[]
       ConfigurationBuilder configurationBuilder = TutorialsConnectorHelper.connectionConfig();
       configurationBuilder.addContextInitializer(new TechLibrarySchemaImpl());
       URI authorsCacheURI = SQLStoreLibraryMain.class.getClassLoader().getResource("sqlTableCache.xml").toURI();
@@ -25,9 +26,11 @@ public class SQLStoreLibraryMain {
       configurationBuilder.remoteCache(BOOKS_CACHE).configurationURI(booksCacheURI);
 
       RemoteCacheManager cacheManager = TutorialsConnectorHelper.connect(configurationBuilder);
+
       ProtostreamSchemaUploader schemaUploader = new ProtostreamSchemaUploader(cacheManager);
       System.out.println("Register proto schema in the server...");
       schemaUploader.registerSchema();
+      // end::setup[]
 
       System.out.println("DB content authors ...");
       System.out.println(dbCreator.readAuthors());

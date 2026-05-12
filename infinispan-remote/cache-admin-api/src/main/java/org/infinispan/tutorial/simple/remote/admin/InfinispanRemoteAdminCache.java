@@ -63,16 +63,21 @@ public class InfinispanRemoteAdminCache {
      * template.
      */
     static void cacheWithTemplate() throws IOException {
+        // tag::template-and-xml-cache[]
+        // Create a cache from a template
         Path path = Paths.get(InfinispanRemoteAdminCache.class.getClassLoader().getResource("cacheTemplate.xml").getPath());
         String xmlTemplate = Files.readString(path);
         try {
             cacheManager.administration().createTemplate("template", new StringConfiguration(xmlTemplate));
         } catch (Exception ce) {
-            // If the
             System.out.println(ce.getMessage());
         }
-
         cacheManager.administration().getOrCreateCache(CACHE_WITH_TEMPLATE, "template");
+
+        // Create a cache with full XML configuration
+        String xml = Files.readString(Paths.get(InfinispanRemoteAdminCache.class.getClassLoader().getResource("CacheWithXMLConfiguration.xml").getPath()));
+        cacheManager.administration().getOrCreateCache(CACHE_WITH_XMLCONFIGURATION, new StringConfiguration(xml));
+        // end::template-and-xml-cache[]
         System.out.println("Cache created from default template.");
     }
 
@@ -80,11 +85,13 @@ public class InfinispanRemoteAdminCache {
      * Creates a simple, local cache with no configuration.
      */
     static void createSimpleCache() {
+        // tag::cache-creation[]
         try {
             cacheManager.administration().createCache(SIMPLE_CACHE, (String)null);
             System.out.println("SimpleCache created.");
         } catch (Exception e) {
             System.out.println("Expected to fail for multiple invocations as the cache exists message: " + e.getMessage());
         }
+        // end::cache-creation[]
     }
 }

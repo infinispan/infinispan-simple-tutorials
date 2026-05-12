@@ -1,0 +1,59 @@
+= Authorization and Security with Embedded Infinispan
+:summary: Configure role-based authorization to control access to embedded Infinispan caches
+:mode: embedded
+:topics: security,authorization
+:keywords: security,authorization,roles,permissions,rbac,embedded
+:duration: 10
+:source-dir: infinispan-embedded/security
+
+== What You Will Learn
+
+How to configure role-based access control (RBAC) on embedded Infinispan caches, define roles with specific permissions, and enforce authorization so that only users with the correct roles can access cache data.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add the Embedded Dependency
+
+Add Infinispan core to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-core</artifactId>
+</dependency>
+----
+
+== Step 2: Configure Authorization, Roles, and Start the Cache Manager
+
+Enable authorization on the cache manager, define roles with specific permissions, and start the cache manager under an admin subject that has `LIFECYCLE` permission. The `IdentityRoleMapper` maps the principal name directly to the role name:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/security/InfinispanCacheSecurity.java[tag=config]
+----
+
+== Step 3: Create Caches with Authorization and Enforce Access Control
+
+Create caches with authorization enabled, restricting a secret cache to specific roles. Wrap cache operations with `Security.doAs` to execute under a specific user. Unauthorized access throws a `SecurityException`:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/security/InfinispanCacheSecurity.java[tag=usage]
+----
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+The output shows successful reads from the normal and secret caches with the correct users, and a `SecurityException` when an unauthorized user attempts to access the secret cache.
+
+== What's Next
+
+* Add link:../metrics/guide.html[Prometheus metrics] to monitor your caches
+* Explore link:../cache-distributed/guide.html[distributed caching] for multi-node setups

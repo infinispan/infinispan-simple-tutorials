@@ -9,6 +9,7 @@ import org.infinispan.api.annotations.indexing.Longitude;
 import org.infinispan.api.annotations.indexing.Text;
 import org.infinispan.protostream.annotations.Proto;
 
+// tag::entities[]
 @Proto
 @Indexed
 @GeoPoint(fieldName = "location", projectable = true, sortable = true)
@@ -21,3 +22,4 @@ public record Restaurant(
       @Basic Float score
 ) {
 }
+// end::entities[]

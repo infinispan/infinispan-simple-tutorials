@@ -1,0 +1,68 @@
+= Spring Boot HTTP Sessions with Embedded Infinispan
+:summary: Store Spring Boot HTTP sessions in an embedded clustered Infinispan cache
+:mode: integration
+:topics: spring-boot,session
+:keywords: spring-boot,http-session,spring-session,embedded,clustered,distributed
+:duration: 10
+:source-dir: integrations/spring-boot/session-embedded
+
+== What You Will Learn
+
+How to store Spring Boot HTTP sessions in an embedded Infinispan cache using `@EnableInfinispanEmbeddedHttpSession`, with distributed clustering for session replication across nodes.
+
+== Prerequisites
+
+* Java 17+
+* Spring Boot
+
+== Step 1: Add Dependencies
+
+Add the Infinispan Spring Boot embedded starter, Spring Web, and Spring Session:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-spring-boot4-starter-embedded</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.springframework.session</groupId>
+   <artifactId>spring-session-core</artifactId>
+</dependency>
+----
+
+== Step 2: Enable Embedded HTTP Sessions with Clustering
+
+Annotate your application with `@EnableInfinispanEmbeddedHttpSession` and configure a clustered cache for sessions:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/spring/session/UserSessionsApp.java[tag=app]
+----
+
+== Step 3: Use Sessions in a REST Controller
+
+Store and retrieve session data through a REST controller:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/spring/session/UserSessionsController.java[tag=controller]
+----
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn spring-boot:run
+----
+
+Visit `http://localhost:8080/?name=Katia`. Refresh to see the previous name from the session. Start multiple instances on different ports to see distributed session replication.
+
+== What's Next
+
+* link:../session-remote/guide.html[Spring Boot remote sessions] for externalized session storage in an Infinispan Server
+* link:../cache-embedded/guide.html[Spring Boot embedded caching] for data caching with embedded Infinispan

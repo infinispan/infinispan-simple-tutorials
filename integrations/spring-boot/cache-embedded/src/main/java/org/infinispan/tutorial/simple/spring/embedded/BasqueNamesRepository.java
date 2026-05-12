@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
+// tag::repository[]
 @Component
 @CacheConfig(cacheNames = Data.BASQUE_NAMES_CACHE)
 public class BasqueNamesRepository {
@@ -20,3 +21,4 @@ public class BasqueNamesRepository {
    }
 
 }
+// end::repository[]

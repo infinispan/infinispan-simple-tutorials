@@ -1,0 +1,62 @@
+= Cross-Site Replication
+:summary: Set up active-passive cross-site replication between two Infinispan clusters (LON and NYC) and switch between them
+:mode: remote
+:topics: caching,cross-site
+:keywords: cross-site,xsite,replication,active-passive,cluster,switch,backup,LON,NYC
+:duration: 15
+:source-dir: infinispan-remote/cross-site-replication
+
+== What You Will Learn
+
+How to configure a Hot Rod client with backup clusters, perform cache operations across two sites (LON and NYC) with active-passive replication, and manually switch between clusters.
+
+== Prerequisites
+
+* Java 17+
+* Two Infinispan clusters running with cross-site replication enabled (use the provided `docker-compose` or `minikube` setup in this module, then run the `create-data.sh` script)
+
+== Step 1: Connect to the Primary Cluster and Add a Backup
+
+Configure the client to connect to the default LON cluster and add NYC as a backup cluster:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/xsite/InfinispanRemoteSwitchCluster.java[tag=connect]
+----
+
+== Step 2: Create or Get the Cross-Site Cache
+
+Create the cross-site cache on both clusters:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/xsite/InfinispanRemoteSwitchCluster.java[tag=create-cache]
+----
+
+== Step 3: Put Data and Switch Clusters
+
+Put data on LON, switch to NYC to read it (replicated via active-passive), then put data on NYC:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/xsite/InfinispanRemoteSwitchCluster.java[tag=switch-cluster]
+----
+
+Data put on LON replicates to NYC, but data put directly on NYC does not replicate back to LON (active-passive).
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+After running, you can verify:
+
+* LON (`localhost:11222/console`): contains `hello` but not `hello-nyc`
+* NYC (`localhost:31222/console`): contains both `hello` (replicated) and `hello-nyc`
+
+== What's Next
+
+* link:../cache/guide.html[Get started] with basic remote cache operations
+* link:../near-cache/guide.html[Use near-caching] for faster reads

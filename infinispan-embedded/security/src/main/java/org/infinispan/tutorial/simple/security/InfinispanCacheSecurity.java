@@ -66,6 +66,7 @@ public class InfinispanCacheSecurity {
     }
 
     public void createDefaultCacheManager() {
+        // tag::config[]
         // Setup up a clustered cache manager
         GlobalConfigurationBuilder global = GlobalConfigurationBuilder.defaultClusteredBuilder();
 
@@ -87,9 +88,11 @@ public class InfinispanCacheSecurity {
         // Then we call start using the admin user. The user needs LIFECYCLE permission.
         dcm = new DefaultCacheManager(global.build(), false);
         Security.doAs(ADMIN_USER, dcm::start);
+        // end::config[]
     }
 
     public void createAllCachesAndPopulate(int size) {
+        // tag::usage[]
         // First, create the first cache.
         // This cache is accessible to any role.
         ConfigurationBuilder builder1 = new ConfigurationBuilder();
@@ -110,6 +113,7 @@ public class InfinispanCacheSecurity {
         // We utilize an admin to create the cache.
         secretCache = Security.doAs(ADMIN_USER, () -> dcm.administration().withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
                 .getOrCreateCache(SECRET_CACHE_NAME, builder2.build()));
+        // end::usage[]
 
         // Now populate the caches with the correct user.
         Security.doAs(WRITE_ONLY_USER, () -> {

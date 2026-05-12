@@ -32,24 +32,18 @@ Use `GlobalConfigurationBuilder.defaultClusteredBuilder()` to enable JGroups clu
 
 [source,java]
 ----
-GlobalConfigurationBuilder global = GlobalConfigurationBuilder.defaultClusteredBuilder();
-DefaultCacheManager cacheManager = new DefaultCacheManager(global.build());
+include::src/main/java/org/infinispan/tutorial/simple/distributed/InfinispanDistributed.java[tag=clustered-cache-manager]
 ----
 
 This starts a JGroups cluster. Multiple instances on the same network will auto-discover each other.
 
 == Step 3: Configure a Distributed Cache
 
-Create a cache with `DIST_SYNC` mode. In this mode, data is partitioned — each entry is stored on a subset of nodes (by default 2 copies):
+Create a cache with `DIST_SYNC` mode. In this mode, data is partitioned: each entry is stored on a subset of nodes (by default 2 copies):
 
 [source,java]
 ----
-ConfigurationBuilder builder = new ConfigurationBuilder();
-builder.clustering().cacheMode(CacheMode.DIST_SYNC);
-
-Cache<String, String> cache = cacheManager.administration()
-      .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
-      .getOrCreateCache("cache", builder.build());
+include::src/main/java/org/infinispan/tutorial/simple/distributed/InfinispanDistributed.java[tag=distributed-cache]
 ----
 
 == Step 4: Populate and Query the Cache
@@ -58,19 +52,7 @@ Store entries and observe ownership. Use `Flag.CACHE_MODE_LOCAL` to see only ent
 
 [source,java]
 ----
-// Store 10 entries with random keys
-for (int i = 0; i < 10; i++) {
-   cache.put(UUID.randomUUID().toString(), cacheManager.getNodeAddress());
-}
-
-// All entries (cluster-wide view)
-cache.entrySet().forEach(entry ->
-      System.out.printf("%s = %s\n", entry.getKey(), entry.getValue()));
-
-// Only locally-owned entries
-cache.getAdvancedCache().withFlags(Flag.CACHE_MODE_LOCAL)
-      .entrySet().forEach(entry ->
-            System.out.printf("[local] %s = %s\n", entry.getKey(), entry.getValue()));
+include::src/main/java/org/infinispan/tutorial/simple/distributed/InfinispanDistributed.java[tag=display-cache]
 ----
 
 == Step 5: Run the Tutorial

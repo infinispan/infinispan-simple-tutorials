@@ -30,6 +30,7 @@ public class InfinispanLangchain4j {
       }
    }
 
+   // tag::setup[]
    static void initEmbeddingModel() {
       embeddingModel = new AllMiniLmL6V2QuantizedEmbeddingModel();
       System.out.println("Embedding model initialized. Dimension: " + embeddingModel.dimension());
@@ -45,6 +46,7 @@ public class InfinispanLangchain4j {
             .build();
       System.out.println("Connected to Infinispan and created embedding store.");
    }
+   // end::setup[]
 
    static void storeAndSearch() {
       // Store some text segments with metadata
@@ -57,6 +59,7 @@ public class InfinispanLangchain4j {
 
       System.out.println("Stored 3 text segments with embeddings.\n");
 
+      // tag::search[]
       // Search by similarity
       String query = "How can I use Infinispan with AI?";
       System.out.println("Query: \"" + query + "\"");
@@ -75,13 +78,16 @@ public class InfinispanLangchain4j {
          System.out.printf("  Score: %.4f | Text: %s%n",
                match.score(), match.embedded().text());
       }
+      // end::search[]
    }
 
+   // tag::add-embedding[]
    static void addEmbedding(String text, Metadata metadata) {
       TextSegment segment = TextSegment.from(text, metadata);
       Embedding embedding = embeddingModel.embed(segment).content();
       embeddingStore.add(embedding, segment);
    }
+   // end::add-embedding[]
 
    static void disconnect() {
       if (embeddingStore != null) {

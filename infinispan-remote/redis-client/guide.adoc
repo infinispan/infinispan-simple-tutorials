@@ -1,0 +1,67 @@
+= Accessing Infinispan with a Redis Client
+:summary: Connect to Infinispan using the RESP protocol with the Jedis Redis client library
+:mode: remote
+:topics: caching,redis
+:keywords: redis,jedis,resp,protocol,client,interoperability
+:duration: 5
+:source-dir: infinispan-remote/redis-client
+
+== What You Will Learn
+
+How to use a standard Redis client (Jedis) to connect to Infinispan via the RESP (Redis Serialization Protocol) endpoint and perform basic set/get operations.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Add the Jedis Dependency
+
+Add the Jedis Redis client to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>redis.clients</groupId>
+   <artifactId>jedis</artifactId>
+   <version>${jedis.version}</version>
+</dependency>
+----
+
+== Step 2: Connect to Infinispan Using the Redis Protocol
+
+Create a Jedis instance using a Redis URI with the Infinispan credentials:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/redis/RedisClientCache.java[tag=connect]
+----
+
+The tutorial automatically falls back to Testcontainers if no server is running locally.
+
+== Step 3: Perform Redis Operations
+
+Use standard Redis commands to store and retrieve data from Infinispan:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/redis/RedisClientCache.java[tag=put-get]
+----
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+You should see output like:
+
+----
+Read from Infinispan using a Redis Client (Resp Protocol): Hello world
+----
+
+== What's Next
+
+* link:../cache/guide.html[Get started] with the Hot Rod client
+* link:../encoding/guide.html[Use different encodings] for your caches

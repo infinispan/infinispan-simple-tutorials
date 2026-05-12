@@ -4,6 +4,7 @@ import org.infinispan.spring.remote.session.configuration.EnableInfinispanRemote
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
+// tag::app[]
 @SpringBootApplication
 @EnableInfinispanRemoteHttpSession
 public class UserSessionsApp {
@@ -12,3 +13,4 @@ public class UserSessionsApp {
         new SpringApplicationBuilder().sources(UserSessionsApp.class).run(args);
     }
 }
+// end::app[]

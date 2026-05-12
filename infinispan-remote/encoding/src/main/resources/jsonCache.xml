@@ -1,3 +1,5 @@
+<!-- tag::json-cache[] -->
 <distributed-cache name="jsonCache">
     <encoding media-type="application/json"/>
 </distributed-cache>
+<!-- end::json-cache[] -->

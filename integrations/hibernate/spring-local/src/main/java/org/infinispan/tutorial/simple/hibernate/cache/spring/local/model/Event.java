@@ -13,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
+// tag::entity[]
 @Entity
 @Cacheable
 public class Event {
@@ -24,6 +25,7 @@ public class Event {
    private String name;
 
    private LocalDateTime timestamp = LocalDateTime.now();
+// end::entity[]
 
    public Event(String name) {
       this.name = name;

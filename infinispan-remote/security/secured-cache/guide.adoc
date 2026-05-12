@@ -8,7 +8,7 @@
 
 == What You Will Learn
 
-How to create a cache with role-based authorization so that only users with 
+How to create a cache with role-based authorization so that only users with
 specific roles can perform operations on it.
 
 == Prerequisites
@@ -22,12 +22,7 @@ Create a cache configuration that restricts access to the `deployer` role:
 
 [source,xml]
 ----
-<distributed-cache name="securedCache">
-   <encoding media-type="application/x-protostream"/>
-   <security>
-      <authorization enabled="true" roles="deployer"/>
-   </security>
-</distributed-cache>
+include::src/main/resources/securedCache.xml[tag=secured-cache]
 ----
 
 Only users with the `deployer` role can read or write to this cache. Other authenticated users will get an authorization error.
@@ -38,34 +33,16 @@ Connect with the default `admin` credentials:
 
 [source,java]
 ----
-ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
-URI securedCacheConfig = InfinispanAuthorizationCache.class
-      .getClassLoader().getResource("securedCache.xml").toURI();
-builder.remoteCache("securedCache").configurationURI(securedCacheConfig);
-
-RemoteCacheManager cacheManager = TutorialsConnectorHelper.connect(builder);
+include::src/main/java/org/infinispan/tutorial/simple/remote/InfinispanAuthorizationCache.java[tag=connect]
 ----
 
 == Step 3: Observe Authorization in Action
 
-Access to the unrestricted cache works normally:
+Access to the unrestricted cache works normally, but accessing the secured cache without the required role throws an exception:
 
 [source,java]
 ----
-RemoteCache<String, String> cache = cacheManager.getCache("test");
-cache.put("key", "value"); // succeeds
-----
-
-But accessing the secured cache without the required role throws an exception:
-
-[source,java]
-----
-RemoteCache<String, String> securedCache = cacheManager.getCache("securedCache");
-try {
-   securedCache.put("key", "value"); // fails — admin doesn't have deployer role
-} catch (HotRodClientException ex) {
-   System.out.println(ex.getMessage()); // authorization error
-}
+include::src/main/java/org/infinispan/tutorial/simple/remote/InfinispanAuthorizationCache.java[tag=manipulate]
 ----
 
 == Step 4: Run the Tutorial

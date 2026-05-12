@@ -22,6 +22,7 @@ import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.model.Person
  * for i in {1..15}; do curl http://localhost:8080/wildfly-local/infinispan/hibernate-cache/$i; done
  *
  */
+// tag::rest[]
 @Path("/")
 public class InfinispanHibernateCacheWildflyLocal {
 
@@ -46,6 +47,7 @@ public class InfinispanHibernateCacheWildflyLocal {
       SecondLevelCacheStatistics eventCacheStats = getCacheStatistics(EVENT_REGION_NAME);
       return printfAssert("Event entity cache puts: %d (expected %d)%n", eventCacheStats.getPutCount(), 3);
    }
+// end::rest[]
 
    @GET
    @Path("/hibernate-cache/2")

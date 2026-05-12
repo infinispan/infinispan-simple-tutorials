@@ -1,0 +1,73 @@
+= Invalidation Mode with Embedded Infinispan
+:summary: Use invalidation mode in a clustered environment where nodes maintain local data and invalidate stale entries across the cluster
+:mode: embedded
+:topics: caching,invalidation
+:keywords: invalidation,cluster,embedded,cache-mode,invalidation-sync,putForExternalRead
+:duration: 10
+:source-dir: infinispan-embedded/cache-invalidated
+
+== What You Will Learn
+
+How to configure an Infinispan cluster in invalidation mode, where nodes do not share data but instead invalidate stale entries across the cluster when data is added, updated, or removed.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add the Embedded Dependency
+
+Add Infinispan core to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-core</artifactId>
+</dependency>
+----
+
+== Step 2: Configure Invalidation Mode
+
+Create a clustered cache manager and define a cache with `INVALIDATION_SYNC` mode:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/invalidation/InvalidationMode.java[tag=config]
+----
+
+In this mode, when a value is added or updated on one node, the corresponding entry is invalidated (removed) on all other nodes.
+
+== Step 3: Use Put and PutForExternalRead
+
+A standard `put` invalidates matching entries on other nodes:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/invalidation/InvalidationMode.java[tag=put]
+----
+
+Use `putForExternalRead` to store a value locally without triggering invalidation on other nodes. This is useful when loading data from an external source:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/invalidation/InvalidationMode.java[tag=put-external]
+----
+
+Note that `putForExternalRead` may result in stale data if the same key exists with a different value on another node.
+
+== Step 4: Run the Tutorial
+
+Run the tutorial in two or more separate terminals to form a cluster:
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+An interactive menu lets you put, get, and remove entries. Observe how a `put` on one node invalidates the entry on the other, while `putForExternalRead` does not.
+
+== What's Next
+
+* Try link:../cache-distributed/guide.html[distributed mode] where data is partitioned across nodes
+* Try link:../cache-replicated/guide.html[replicated mode] where every node has all data
+* Add link:../listeners/guide.html[cache listeners] to react to invalidation events

@@ -4,6 +4,7 @@
              xsi:schemaLocation="
         http://xmlns.jcp.org/xml/ns/persistence
         http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+   <!-- tag::persistence-unit[] -->
    <persistence-unit name="events">
       <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
       <properties>
@@ -40,4 +41,5 @@
                    value= "1000"/>
       </properties>
    </persistence-unit>
+   <!-- end::persistence-unit[] -->
 </persistence>

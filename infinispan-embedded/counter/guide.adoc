@@ -1,0 +1,69 @@
+= Clustered Counters with Embedded Infinispan
+:summary: Use strong bounded, strong unbounded, and weak counters in an embedded Infinispan cluster
+:mode: embedded
+:topics: clustering,counters
+:keywords: counter,strong-counter,weak-counter,bounded,clustered-counter,embedded
+:duration: 15
+:source-dir: infinispan-embedded/counter
+
+== What You Will Learn
+
+How to configure and use Infinispan clustered counters in embedded mode, including strong bounded counters, strong unbounded counters, and weak counters.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add the Counter Dependency
+
+Add the Infinispan clustered counter module to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-clustered-counter</artifactId>
+</dependency>
+----
+
+== Step 2: Define Counters in the Global Configuration
+
+Use `CounterManagerConfigurationBuilder` to define counters when building the global configuration:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/counter/InfinispanCounter.java[tag=counter-config]
+----
+
+== Step 3: Use Strong Counters
+
+Strong counters provide consistent values during increment and decrement operations. All methods return `CompletableFuture`:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/counter/InfinispanCounter.java[tag=strong-counter]
+----
+
+== Step 4: Use Weak Counters
+
+Weak counters are optimized for speed. Their value is computed lazily:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/counter/InfinispanCounter.java[tag=weak-counter]
+----
+
+== Step 5: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+The output shows counter operations including bounded overflow handling, compare-and-set, reset, and weak counter updates.
+
+== What's Next
+
+* Try link:../clusterexec/guide.html[cluster execution] for running tasks across nodes
+* Explore link:../lock/guide.html[clustered locks] for distributed coordination
+* Use link:../cache-distributed/guide.html[distributed caching] for data partitioning

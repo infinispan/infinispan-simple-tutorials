@@ -1,0 +1,68 @@
+= Hibernate L2 Cache with WildFly
+:summary: Use Infinispan as the Hibernate second-level cache provider in a WildFly JAX-RS application
+:mode: integration
+:topics: hibernate,wildfly
+:keywords: hibernate,l2-cache,wildfly,jax-rs,rest,war,jta
+:duration: 15
+:source-dir: integrations/hibernate/wildfly-local
+
+== What You Will Learn
+
+How to use Infinispan as the built-in Hibernate L2 cache provider in WildFly, exposed through JAX-RS REST endpoints that step through cache operations one by one.
+
+== Prerequisites
+
+* Java 8+
+* WildFly application server
+
+== Step 1: Configure the Persistence Unit
+
+WildFly ships with Infinispan as its default Hibernate cache provider. Configure `META-INF/persistence.xml` to use the WildFly JTA datasource and enable caching:
+
+[source,xml]
+----
+include::src/main/resources/META-INF/persistence.xml[tag=persistence-unit]
+----
+
+== Step 2: Create the Persistence Manager EJB
+
+A stateless EJB handles entity operations within JTA transactions:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/hibernate/cache/wildfly/local/controller/PersistenceManager.java[tag=ejb]
+----
+
+== Step 3: Expose Cache Steps as JAX-RS Endpoints
+
+The REST resource exposes each cache operation as a separate GET endpoint:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/hibernate/cache/wildfly/local/InfinispanHibernateCacheWildflyLocal.java[tag=rest]
+----
+
+== Step 4: Run the Tutorial
+
+Build and deploy the WAR to a running WildFly instance:
+
+[source,bash]
+----
+mvn clean package wildfly:deploy
+----
+
+Then call each step in sequence:
+
+[source,bash]
+----
+for i in {1..13}; do
+  curl http://localhost:8080/wildfly-local/infinispan/hibernate-cache/$i
+done
+----
+
+Each endpoint returns the cache statistics for that step, showing puts, hits, misses, and query cache behavior.
+
+== What's Next
+
+* link:../local/guide.html[Hibernate L2 cache standalone] for the same pattern without an application server
+* link:../spring-local/guide.html[Hibernate L2 cache with Spring Boot] for a Spring Boot variant

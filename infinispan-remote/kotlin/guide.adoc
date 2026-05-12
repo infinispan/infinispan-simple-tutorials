@@ -1,0 +1,83 @@
+= Using Infinispan with Kotlin
+:summary: Connect to Infinispan Server and perform cache operations using Kotlin and the Hot Rod client
+:mode: remote
+:topics: kotlin,getting-started
+:keywords: kotlin,hot-rod,cache,protostream,protobuf,remote
+:duration: 10
+:source-dir: infinispan-remote/kotlin
+
+== What You Will Learn
+
+How to use the Infinispan Hot Rod Java client from Kotlin, including basic cache operations and Protobuf serialization with `@Proto` annotations on Kotlin data classes.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Add Kotlin and Infinispan Dependencies
+
+Add the Kotlin standard library, Infinispan Hot Rod client, and Protostream dependencies to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.jetbrains.kotlin</groupId>
+   <artifactId>kotlin-stdlib</artifactId>
+   <version>${kotlin.version}</version>
+</dependency>
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-client-hotrod</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.infinispan.protostream</groupId>
+   <artifactId>protostream-processor</artifactId>
+   <version>${version.protostream}</version>
+</dependency>
+----
+
+Configure the Kotlin Maven plugin with `kapt` for annotation processing. See the `pom.xml` for the full build configuration.
+
+== Step 2: Define a Protobuf Entity in Kotlin
+
+Use `@Proto` on a Kotlin data class. Fields must use `@JvmField` for Protostream compatibility:
+
+[source,kotlin]
+----
+include::src/main/kotlin/org/infinispan/tutorial/simple/kotlin/GreetingKotlin.kt[tag=proto-entity]
+----
+
+Register the schema:
+
+[source,kotlin]
+----
+include::src/main/kotlin/org/infinispan/tutorial/simple/kotlin/GreetingSchemaKotlin.kt[tag=proto-schema]
+----
+
+== Step 3: Connect and Perform Cache Operations
+
+Use the same `TutorialsConnectorHelper` from Kotlin:
+
+[source,kotlin]
+----
+include::src/main/kotlin/org/infinispan/tutorial/simple/kotlin/InfinispanKotlinExample.kt[tag=kotlin-example]
+----
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+You should see output like:
+
+----
+key = value
+----
+
+== What's Next
+
+* link:../cache/guide.html[Get started] with basic Java cache operations
+* link:../query/guide.html[Query your data] with Ickle queries

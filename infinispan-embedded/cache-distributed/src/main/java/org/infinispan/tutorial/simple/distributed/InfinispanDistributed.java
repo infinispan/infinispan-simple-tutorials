@@ -23,13 +23,16 @@ public class InfinispanDistributed {
       infinispanDistributed.stopDefaultCacheManager();
    }
 
+   // tag::clustered-cache-manager[]
    public void createDefaultCacheManager() {
       // Setup up a clustered cache manager
       GlobalConfigurationBuilder global = GlobalConfigurationBuilder.defaultClusteredBuilder();
       // Initialize the cache manager
       cm1 = new DefaultCacheManager(global.build());
    }
+   // end::clustered-cache-manager[]
 
+   // tag::distributed-cache[]
    public void createAndPopulateTheCache(int size) {
       //Create cache configuration
       ConfigurationBuilder builder = new ConfigurationBuilder();
@@ -42,7 +45,9 @@ public class InfinispanDistributed {
          cache.put(UUID.randomUUID().toString(), cm1.getNodeAddress());
       }
    }
+   // end::distributed-cache[]
 
+   // tag::display-cache[]
    public void displayCacheContent() {
       if (cache == null) {
          System.out.println("The cache is null");
@@ -57,6 +62,7 @@ public class InfinispanDistributed {
       cache.getAdvancedCache().withFlags(Flag.CACHE_MODE_LOCAL).entrySet()
               .forEach(entry -> System.out.printf("%s = %s\n", entry.getKey(), entry.getValue()));
    }
+   // end::display-cache[]
 
    public void stopDefaultCacheManager() {
       if (cm1 != null) {

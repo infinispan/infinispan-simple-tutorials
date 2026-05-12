@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- tag::infinispan-xml[] -->
 <infinispan>
     <cache-container>
         <jmx domain="infinispan.embedded.example"/>
@@ -6,3 +7,4 @@
         <local-cache name="other"/>
     </cache-container>
 </infinispan>
+<!-- end::infinispan-xml[] -->

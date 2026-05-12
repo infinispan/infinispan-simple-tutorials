@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
  */
 public class SpringCaching {
 
+    // tag::config[]
     @Configuration
     @EnableCaching
     public static class SpringConfiguration {
@@ -34,7 +35,9 @@ public class SpringCaching {
             return new CachedObject();
         }
     }
+    // end::config[]
 
+    // tag::cacheable[]
     public static class CachedObject {
 
         @Cacheable(value = "default")
@@ -47,6 +50,7 @@ public class SpringCaching {
             return "Spring and Infinispan will speed this one up!";
         }
     }
+    // end::cacheable[]
 
     public static void main(String[] args) throws Exception {
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConfiguration.class);

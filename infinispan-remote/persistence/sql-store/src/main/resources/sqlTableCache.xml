@@ -1,3 +1,4 @@
+<!-- tag::sql-table-store[] -->
 <distributed-cache name="sqlTableCache">
     <encoding media-type="application/x-protostream"/>
     <persistence>
@@ -14,3 +15,4 @@
         </table-jdbc-store>
     </persistence>
 </distributed-cache>
+<!-- end::sql-table-store[] -->

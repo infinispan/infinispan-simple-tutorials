@@ -77,6 +77,7 @@ public class InfinispanRemoteContinuousQuery {
    }
 
    public static void createPostsAndQuery(int size, boolean random) throws Exception {
+      // tag::continuous-query[]
       RemoteCache<String, InstaPost> cache = client.getCache(TutorialsConnectorHelper.TUTORIAL_CACHE_NAME);
 
       // Create a query with lastName parameter
@@ -101,7 +102,9 @@ public class InfinispanRemoteContinuousQuery {
 
       // And the listener corresponding the query to the continuous query
       continuousQuery.addContinuousQueryListener(query, listener);
+      // end::continuous-query[]
 
+      // tag::insert-data[]
       // Add 1000 random posts
       for (int i = 0; i < size; i++) {
          // Add a post
@@ -110,6 +113,7 @@ public class InfinispanRemoteContinuousQuery {
          // Await a little to see results
          Thread.sleep(10);
       }
+      // end::insert-data[]
 
       System.out.println("Total posts " + cache.size());
       System.out.println("Total posts by @belen_esteban " + queryPosts.size());

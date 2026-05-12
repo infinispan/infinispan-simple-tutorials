@@ -38,6 +38,7 @@ public class InfinispanRemotePerCache {
    }
 
    static void manipulateCaches() {
+      // tag::use-cache[]
       // Obtain a remote cache that does not exist.
       // Rather than return null, create the cache from a template.
       cache = cacheManager.getCache(MY_CACHE);
@@ -45,6 +46,7 @@ public class InfinispanRemotePerCache {
       cache.put("hello", "world");
       // Retrieve the value and print it out
       System.out.printf("key = %s\n", cache.get("hello"));
+      // end::use-cache[]
 
       anotherCache = cacheManager.getCache(ANOTHER_CACHE);
       /// Store a value
@@ -63,22 +65,27 @@ public class InfinispanRemotePerCache {
       // Create a configuration for a locally-running server
       ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
 
-      //Add per-cache configuration that uses an org.infinispan cache template.
+      // tag::cache-configs[]
+      // Add per-cache configuration that uses an org.infinispan cache template.
       builder.remoteCache(MY_CACHE)
                // we can declare a template, even if the template does not exist yet.
                // however, the template has to be present on first access to create the cache.
               .templateName(MY_CUSTOM_TEMPLATE);
-      //Add per-cache configuration with a cache definition in XML format.
+
+      // Add per-cache configuration with a cache definition in XML format.
       builder.remoteCache(ANOTHER_CACHE)
               .configuration("<distributed-cache name=\"another-cache\"><encoding media-type=\"application/x-protostream\"/></distributed-cache>");
 
+      // Load cache definition from a classpath XML file URI.
       builder.remoteCache(URI_CACHE).configurationURI(
               InfinispanRemotePerCache.class.getClassLoader().getResource("cacheConfig.xml").toURI());
 
       cacheManager = TutorialsConnectorHelper.connect(builder);
-      // create the template that is used to create MY-CACHE on first access
+
+      // Create the template that is used to create MY-CACHE on first access
       cacheManager.administration().removeTemplate(MY_CUSTOM_TEMPLATE);
       cacheManager.administration().createTemplate(MY_CUSTOM_TEMPLATE, new StringConfiguration("<distributed-cache><encoding media-type=\"application/x-protostream\"/></distributed-cache>"));
+      // end::cache-configs[]
    }
 
    public static void disconnect(boolean removeCaches) {

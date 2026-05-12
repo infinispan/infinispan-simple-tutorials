@@ -1,0 +1,57 @@
+= Schema Administration
+:summary: Create, update, retrieve, and remove Protobuf schemas programmatically using the Schema Admin API
+:mode: remote
+:topics: schemas,protobuf
+:keywords: schema,protobuf,proto,admin,create,update,remove,get,RemoteSchemasAdmin
+:duration: 10
+:source-dir: infinispan-remote/schemas
+
+== What You Will Learn
+
+How to use the `RemoteSchemasAdmin` API to programmatically manage Protobuf schemas on an Infinispan Server: create, update, retrieve, check existence, and remove schemas.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Get the Schema Admin API
+
+Connect to the server and obtain the `RemoteSchemasAdmin` instance:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/server/schemas/InfinispanSchemasAdmin.java[tag=connect]
+----
+
+== Step 2: Create or Update a Schema
+
+Create a schema from a string content to see how error handling works, then fix the schema using the `Schema.Builder` API:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/server/schemas/InfinispanSchemasAdmin.java[tag=create-update]
+----
+
+The `createOrUpdate` method returns a `SchemaOpResult` that indicates success or errors.
+
+== Step 3: Retrieve, Check, and Remove Schemas
+
+Get a schema by name, check if it exists, and remove it:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/server/schemas/InfinispanSchemasAdmin.java[tag=manage]
+----
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+== What's Next
+
+* link:../query/guide.html[Query your data] with Ickle queries using Protobuf schemas
+* link:../cache/guide.html[Get started] with basic remote cache operations

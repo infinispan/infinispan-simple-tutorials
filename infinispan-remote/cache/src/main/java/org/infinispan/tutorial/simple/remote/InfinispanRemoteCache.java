@@ -16,19 +16,23 @@ public class InfinispanRemoteCache {
         disconnect();
     }
 
+    // tag::cache-ops[]
     static void manipulateCache() {
         // Store a value
         cache.put("key", "value");
         // Retrieve the value and print it out
         System.out.printf("key = %s\n", cache.get("key"));
     }
+    // end::cache-ops[]
 
+    // tag::connect[]
     static void connectToInfinispan() {
         // Connect to the server
         cacheManager = TutorialsConnectorHelper.connect();
         // Obtain the remote cache
         cache = cacheManager.getCache(TUTORIAL_CACHE_NAME);
     }
+    // end::connect[]
 
     static void disconnect() {
         // Stop the cache manager and release all resources

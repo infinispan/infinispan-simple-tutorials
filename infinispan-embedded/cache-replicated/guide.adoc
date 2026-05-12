@@ -1,0 +1,62 @@
+= Replicated Cache with Embedded Infinispan
+:summary: Create a replicated synchronous cache where all data is stored on every node in the cluster
+:mode: embedded
+:topics: caching,clustering
+:keywords: replicated,cluster,embedded,cache-mode,repl-sync
+:duration: 10
+:source-dir: infinispan-embedded/cache-replicated
+
+== What You Will Learn
+
+How to create a clustered Infinispan cache in replicated synchronous mode, where every entry is copied to all nodes in the cluster.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add the Embedded Dependency
+
+Add Infinispan core to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-core</artifactId>
+</dependency>
+----
+
+== Step 2: Create a Replicated Cache
+
+Set up a clustered cache manager and configure a cache with `REPL_SYNC` mode. Every entry is synchronously replicated to all nodes:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/replicated/InfinispanReplicated.java[tag=create-cache]
+----
+
+== Step 3: Populate and Query the Cache
+
+Store entries and observe that each node holds all the data. Use `SKIP_REMOTE_LOOKUP` to see the local view:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/replicated/InfinispanReplicated.java[tag=put-get]
+----
+
+In replicated mode, both views show the same entries because every node has a full copy of the data.
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+The local and cluster-wide views will display the same entries, unlike distributed mode where data is partitioned.
+
+== What's Next
+
+* Compare with link:../cache-distributed/guide.html[distributed mode] where data is partitioned
+* Try link:../cache-invalidated/guide.html[invalidation mode] for locally-managed data
+* Use link:../streams/guide.html[distributed streams] for parallel processing

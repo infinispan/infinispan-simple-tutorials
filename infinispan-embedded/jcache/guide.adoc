@@ -1,0 +1,66 @@
+= JCache (JSR-107) with Embedded Infinispan
+:summary: Use the standard JCache API (JSR-107) with Infinispan as the caching provider
+:mode: embedded
+:topics: caching,standards
+:keywords: jcache,jsr-107,javax-cache,caching-provider,embedded
+:duration: 5
+:source-dir: infinispan-embedded/jcache
+
+== What You Will Learn
+
+How to use the standard JCache (JSR-107) API with Infinispan as the caching provider. This approach uses the `javax.cache` API, making your code portable across JCache-compliant implementations.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add the JCache Dependencies
+
+Add both the Infinispan JCache module and the JCache API to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-jcache</artifactId>
+</dependency>
+<dependency>
+   <groupId>javax.cache</groupId>
+   <artifactId>cache-api</artifactId>
+</dependency>
+----
+
+== Step 2: Create a Cache Using JCache API
+
+Obtain a `CachingProvider` and `CacheManager` through the standard JCache SPI, then create a typed cache:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/jcache/InfinispanJCache.java[tag=create-cache]
+----
+
+Infinispan is automatically discovered as the JCache provider on the classpath.
+
+== Step 3: Use the Cache
+
+Store and retrieve values using the standard JCache API:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/jcache/InfinispanJCache.java[tag=put-get]
+----
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+The output shows the stored value retrieved through the JCache API.
+
+== What's Next
+
+* Try the Infinispan-native API with link:../functional/guide.html[functional maps]
+* Add link:../listeners/guide.html[cache listeners] to react to changes
+* Explore link:../cache-distributed/guide.html[distributed caching] for clustered setups

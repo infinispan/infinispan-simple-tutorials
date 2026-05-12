@@ -45,6 +45,7 @@ public class InfinispanCacheMetrics {
     }
 
     public void createDefaultCacheManager() {
+        // tag::config[]
         GlobalConfigurationBuilder builder = GlobalConfigurationBuilder.defaultClusteredBuilder();
 
         // Toggle statistics for the cache manager.
@@ -58,6 +59,7 @@ public class InfinispanCacheMetrics {
         builder.jmx().enabled(true).domain(JMX_DOMAIN);
 
         dcm = new DefaultCacheManager(builder.build());
+        // end::config[]
         dcm.start();
     }
 
@@ -79,6 +81,7 @@ public class InfinispanCacheMetrics {
     }
 
     public String scrapePrometheusMetrics() {
+        // tag::prometheus[]
         MetricsRegistry registry = GlobalComponentRegistry.componentOf(dcm, MetricsRegistry.class);
         Objects.requireNonNull(registry, "Registry is null");
 
@@ -86,9 +89,11 @@ public class InfinispanCacheMetrics {
             throw new IllegalStateException("Scrape not supported");
 
         return registry.scrape(CONTENT_TYPE);
+        // end::prometheus[]
     }
 
     public Object extractRunningCachesNumber() throws Throwable {
+        // tag::jmx[]
         // Retrieve the server to lookup the attributes.
         MBeanServerLookup server = dcm.getCacheManagerConfiguration().jmx().mbeanServerLookup();
         Objects.requireNonNull(server, "MBeanServerLookup is null");
@@ -98,6 +103,7 @@ public class InfinispanCacheMetrics {
 
         // Retrieve the number of running caches.
         return server.getMBeanServer().getAttribute(name, "RunningCacheCount");
+        // end::jmx[]
     }
 
     public void stop() {

@@ -1,0 +1,89 @@
+= Vector Search with Infinispan
+:summary: Perform kNN vector search and hybrid queries combining vector similarity with full-text and metadata filters
+:mode: ai
+:topics: vector-search,knn
+:keywords: vector,knn,embedding,similarity,cosine,hybrid,full-text,indexed,protobuf
+:duration: 10
+:source-dir: infinispan-ai/vector-search
+
+== What You Will Learn
+
+How to store entities with vector embeddings in Infinispan and perform kNN (k-nearest neighbor) vector searches, including hybrid queries that combine vector similarity with full-text search and metadata filters.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Define an Indexed Entity with a Vector Field
+
+Use the `@Vector` annotation to declare a vector field with its dimension and similarity function:
+
+[source,java]
+----
+@Proto
+@Indexed
+public record Beer(
+      @Keyword(projectable = true, sortable = true)
+      String name,
+
+      @Keyword(projectable = true, normalizer = "lowercase")
+      String style,
+
+      @Keyword(projectable = true, sortable = true, normalizer = "lowercase")
+      String brewery,
+
+      @Keyword(projectable = true, normalizer = "lowercase")
+      String country,
+
+      @Basic(projectable = true, sortable = true)
+      Double abv,
+
+      @Text
+      String description,
+
+      @Vector(dimension = 3, similarity = VectorSimilarity.COSINE)
+      float[] descriptionEmbedding
+) {
+}
+----
+
+== Step 2: Connect and Register the Schema
+
+Connect to the server and register the Protobuf schema for your entity:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/vectorsearch/VectorSearchQuickstart.java[tag=connect]
+----
+
+== Step 3: Perform a kNN Vector Search
+
+Use the `<->` operator with `~:k` to find the k nearest neighbors:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/vectorsearch/VectorSearchQuickstart.java[tag=knn]
+----
+
+== Step 4: Run Hybrid Queries
+
+Combine vector similarity with metadata filters using the `filtering` clause, or with full-text filters:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/vectorsearch/VectorSearchQuickstart.java[tag=hybrid]
+----
+
+== Step 5: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:exec
+----
+
+The output demonstrates full-text search, keyword/range filters, projections, kNN vector search with score projections, and hybrid queries filtering by style, country, and description text.
+
+== What's Next
+
+* link:../langchain4j/guide.html[Semantic search with LangChain4j] for vector search with an AI embedding model

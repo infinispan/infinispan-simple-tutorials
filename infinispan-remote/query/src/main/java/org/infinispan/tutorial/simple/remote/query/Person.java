@@ -8,6 +8,7 @@ import org.infinispan.protostream.annotations.Proto;
  * This class is annotated with the infinispan Protostream support annotations.
  * With this method, you don't need to define a protobuf file and a marshaller for the object.
  */
+// tag::model[]
 @Proto
 @Indexed(keyEntity = "tutorial.PersonKey")
 public record Person(@Keyword(projectable = true, sortable = true, normalizer = "lowercase", indexNullAs = "unnamed", norms = false)
@@ -18,3 +19,4 @@ public record Person(@Keyword(projectable = true, sortable = true, normalizer = 
                      @Keyword(projectable = true, sortable = true, normalizer = "lowercase", indexNullAs = "unnamed", norms = false)
                      String bornIn
 ) {}
+// end::model[]

@@ -29,6 +29,7 @@ public class InfinispanAuthorizationCache {
       disconnect(false);
    }
 
+   // tag::manipulate[]
    static void manipulateCache() {
       // Store a value in a non secured cache
       cache.put("key", "value");
@@ -41,7 +42,9 @@ public class InfinispanAuthorizationCache {
          System.out.println(ex.getMessage());
       }
    }
+   // end::manipulate[]
 
+   // tag::connect[]
    public static void connectToInfinispan() throws Exception {
       ConfigurationBuilder configurationBuilder = TutorialsConnectorHelper.connectionConfig();
       URI securedCacheConfig = InfinispanAuthorizationCache.class.getClassLoader().getResource("securedCache.xml").toURI();
@@ -53,6 +56,7 @@ public class InfinispanAuthorizationCache {
       cache = cacheManager.getCache(TUTORIAL_CACHE_NAME);
       securedCache = cacheManager.getCache(SECURED_CACHE);
    }
+   // end::connect[]
 
    public static void disconnect(boolean removeCaches) {
       if (removeCaches && cacheManager != null) {

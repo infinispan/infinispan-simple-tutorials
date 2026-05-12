@@ -1,0 +1,67 @@
+= Java Streams with Embedded Infinispan
+:summary: Use the Java Streams API to perform map-reduce operations on embedded Infinispan cache data
+:mode: embedded
+:topics: streams,processing
+:keywords: streams,map,reduce,embedded,cache,java-streams
+:duration: 5
+:source-dir: infinispan-embedded/streams
+
+== What You Will Learn
+
+How to use the standard Java Streams API on an Infinispan cache to map and reduce cache entries, leveraging Infinispan's distributed stream support for parallel processing.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add the Embedded Dependency
+
+Add Infinispan core to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-core</artifactId>
+</dependency>
+----
+
+== Step 2: Create a Cache and Populate It
+
+Create a local cache and store key-value pairs:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/streams/InfinispanStreams.java[tag=config]
+----
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/streams/InfinispanStreams.java[tag=populate]
+----
+
+== Step 3: Map and Reduce with Streams
+
+Use the Streams API on the cache key set to extract numeric prefixes from keys and sum them:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/streams/InfinispanStreams.java[tag=streams]
+----
+
+The result is `45` (sum of 0 through 9).
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+The output prints `Result = 45`.
+
+== What's Next
+
+* Start with link:../map/guide.html[basic map operations] for simple cache usage
+* Try link:../query/guide.html[Ickle queries] for structured data searching
+* Explore link:../cache-distributed/guide.html[distributed caching] for cluster-wide streams

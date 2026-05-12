@@ -26,6 +26,7 @@ public class InfinispanServerTasks {
       // Upload the task using the REST API
       uploadTask();
 
+      // tag::execute-task[]
       // Get a cache to execute the task
       RemoteCache<String, String> execCache = remoteCacheManager.getCache(TutorialsConnectorHelper.TUTORIAL_CACHE_NAME);
 
@@ -36,11 +37,13 @@ public class InfinispanServerTasks {
       // Execute hello task
       String greet = execCache.execute("hello", parameters);
       System.out.printf("Greeting = %s\n", greet);
+      // end::execute-task[]
 
       // Stop the cache manager and release all resources
       remoteCacheManager.stop();
    }
 
+   // tag::upload-task[]
    private static void uploadTask() throws Exception {
       // Grab the script content from the resources folder
       String script = getResourceAsString("hello.js", InfinispanServerTasks.class.getClassLoader());
@@ -55,4 +58,5 @@ public class InfinispanServerTasks {
             .uploadScript("hello", scriptEntity);
       uploadScript.toCompletableFuture().get(5, TimeUnit.SECONDS);
    }
+   // end::upload-task[]
 }

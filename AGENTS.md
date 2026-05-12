@@ -47,11 +47,11 @@ See `.editorconfig` for full details.
 
 ### Module Categories
 
-- **`infinispan-remote/`** — Tutorials using Hot Rod client to connect to an Infinispan Server (client-server mode)
-- **`infinispan-embedded/`** — Tutorials embedding Infinispan as a library (no server needed)
-- **`integrations/`** — Tutorials for Spring Boot, Quarkus, and Hibernate integrations
-- **`infinispan-ai/`** — AI/vector search tutorials (LangChain4j, vector search)
-- **`non-java-clients/`** — C++, C#, JavaScript Hot Rod client examples
+- **`infinispan-remote/`** - Tutorials using Hot Rod client to connect to an Infinispan Server (client-server mode)
+- **`infinispan-embedded/`** - Tutorials embedding Infinispan as a library (no server needed)
+- **`integrations/`** - Tutorials for Spring Boot, Quarkus, and Hibernate integrations
+- **`infinispan-ai/`** - AI/vector search tutorials (LangChain4j, vector search)
+- **`non-java-clients/`** - C++, C#, JavaScript Hot Rod client examples
 
 ### Shared Connection Helper
 
@@ -63,15 +63,15 @@ See `.editorconfig` for full details.
 ### Tutorial Module Pattern
 
 Each tutorial module follows the same structure:
-- `src/main/java/` — Runnable main class demonstrating the feature
-- `src/test/java/` — JUnit 5 test that exercises the same feature
-- `pom.xml` — Inherits from root, declares `exec-maven-plugin` for `mvn exec:exec`
-- `guide.adoc` (optional) — AsciiDoc tutorial guide published to infinispan.org
+- `src/main/java/` - Runnable main class demonstrating the feature
+- `src/test/java/` - JUnit 5 test that exercises the same feature
+- `pom.xml` - Inherits from root, declares `exec-maven-plugin` for `mvn exec:exec`
+- `guide.adoc` (optional) - AsciiDoc tutorial guide published to infinispan.org
 
 ### Documentation
 
-- `documentation/asciidoc/` — AsciiDoc source for published tutorial docs
-- `docs-maven-plugin/` — Custom Maven plugin that processes `guide.adoc` files from each tutorial into the website format
+- `documentation/asciidoc/` - AsciiDoc source for published tutorial docs
+- `docs-maven-plugin/` - Custom Maven plugin that processes `guide.adoc` files from each tutorial into the website format
 - Guides are built with the `guides` Maven profile
 
 ## CI
@@ -80,6 +80,6 @@ GitHub Actions runs on pushes and PRs to `main`, `development`, and `16.0.x` bra
 
 ## Branch Strategy
 
-- `development` — uses latest Infinispan dev version (`quay.io/infinispan-test/server:main`)
-- `main` — uses latest stable Infinispan release
+- `development` - uses latest Infinispan dev version (`quay.io/infinispan-test/server:main`)
+- `main` - uses latest stable Infinispan release
 - All contributions target `main`

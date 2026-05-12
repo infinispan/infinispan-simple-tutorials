@@ -26,6 +26,7 @@ public class InfinispanClusteredLock {
    }
 
    static void changeCounterWithLocks() throws InterruptedException, ExecutionException, TimeoutException {
+      // tag::use-lock[]
       // Acquire and release the lock 3 times
       CompletableFuture<Boolean> call1 = lock.tryLock(1, TimeUnit.SECONDS).whenComplete((r, ex) -> {
          if (r) {
@@ -61,9 +62,11 @@ public class InfinispanClusteredLock {
          // Print the value of the counter
          System.out.println("Value of the counter is " + counter.get());
       }).get(10, TimeUnit.SECONDS);
+      // end::use-lock[]
    }
 
    static void createAndStartComponents() {
+      // tag::manager[]
       // Setup up a clustered cache manager
       GlobalConfigurationBuilder global = GlobalConfigurationBuilder.defaultClusteredBuilder();
 
@@ -72,12 +75,15 @@ public class InfinispanClusteredLock {
 
       // Initialize the clustered lock manager from the cache manager
       clusteredLockManager = EmbeddedClusteredLockManagerFactory.from(cacheManager);
+      // end::manager[]
 
+      // tag::lock[]
       // Define a lock. By default, this lock is non reentrant
       clusteredLockManager.defineLock("lock");
 
       // Get a lock interface from each node
       lock = clusteredLockManager.get("lock");
+      // end::lock[]
 
       counter = new AtomicInteger(0);
    }

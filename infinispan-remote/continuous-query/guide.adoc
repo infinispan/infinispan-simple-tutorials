@@ -1,0 +1,72 @@
+= Continuous Queries
+:summary: Receive real-time notifications when cached data matches a query using continuous query listeners
+:mode: remote
+:topics: querying,events
+:keywords: continuous-query,query,listener,real-time,protobuf,protostream,ickle
+:duration: 15
+:source-dir: infinispan-remote/continuous-query
+
+== What You Will Learn
+
+How to register a continuous query that monitors cached data in real time and triggers a callback whenever an entry matching your query is created or updated.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Define the Data Model
+
+Create a Protobuf entity using the `@Proto` annotation and register the schema with a `@ProtoSchema` interface:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/query/InstaPost.java[tag=proto-entity]
+----
+
+Then define a `@ProtoSchema` interface to generate the schema:
+
+[source,java]
+----
+@ProtoSchema(schemaFileName = "instapost.proto",
+      schemaPackageName = "tutorial",
+      includeClasses = InstaPost.class)
+public interface InstaSchema extends GeneratedSchema {
+}
+----
+
+Add the schema initializer to the client configuration and register it on the server when connecting.
+
+== Step 2: Create a Continuous Query
+
+Define an Ickle query and attach a `ContinuousQueryListener` that fires when matching entries arrive:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/query/InfinispanRemoteContinuousQuery.java[tag=continuous-query]
+----
+
+== Step 3: Insert Data and Observe Notifications
+
+As entries are added to the cache, the listener fires for every entry that matches the query:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/query/InfinispanRemoteContinuousQuery.java[tag=insert-data]
+----
+
+Remember to remove the listener when it is no longer needed to avoid memory leaks by calling `continuousQuery.removeContinuousQueryListener(listener)`.
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+You should see output showing notifications every time the matching user posts, followed by totals.
+
+== What's Next
+
+* link:../query/guide.html[Query your data] with Ickle queries
+* link:../listeners/guide.html[Listen to cache events] with client listeners

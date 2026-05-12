@@ -1,3 +1,5 @@
+<!-- tag::text-cache[] -->
 <distributed-cache name="textCache">
     <encoding media-type="text/plain"/>
 </distributed-cache>
+<!-- end::text-cache[] -->

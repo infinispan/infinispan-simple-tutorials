@@ -1,0 +1,60 @@
+= Local Cache Map with Embedded Infinispan
+:summary: Use an embedded Infinispan cache as a local key-value map with basic put and get operations
+:mode: embedded
+:topics: caching,getting-started
+:keywords: local,cache,map,put,get,embedded
+:duration: 5
+:source-dir: infinispan-embedded/map
+
+== What You Will Learn
+
+How to create a local embedded Infinispan cache manager, define a cache, and perform basic `put` and `get` operations using the `java.util.Map`-like API.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add the Embedded Dependency
+
+Add Infinispan core to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-core</artifactId>
+</dependency>
+----
+
+== Step 2: Create a Cache Manager and Cache
+
+Create a local (non-clustered) cache manager and define a cache with default configuration:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/map/InfinispanMap.java[tag=config]
+----
+
+== Step 3: Store and Retrieve Values
+
+Use the familiar `put` and `get` methods from the `java.util.Map` interface:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/map/InfinispanMap.java[tag=put-get]
+----
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+The output prints `key = value`, confirming the cache stores and retrieves entries correctly.
+
+== What's Next
+
+* Try link:../multimap/guide.html[multimap caching] to store multiple values per key
+* Add link:../streams/guide.html[Java Streams] processing on cache data
+* Explore link:../cache-distributed/guide.html[distributed caching] across cluster nodes

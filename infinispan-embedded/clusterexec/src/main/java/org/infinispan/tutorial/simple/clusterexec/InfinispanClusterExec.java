@@ -22,16 +22,20 @@ public class InfinispanClusterExec {
       infinispanClusterExec.stopDefaultCacheManager();
    }
 
+   // tag::submit-task[]
    public void submitTask(SerializableFunction<EmbeddedCacheManager, Object> task, TriConsumer<Address, Object, Throwable> triConsumer) {
       ClusterExecutor clusterExecutor = cacheManager.executor();
       clusterExecutor.submitConsumer(task, triConsumer);
    }
+   // end::submit-task[]
 
    public void createCacheManager() {
+      // tag::cache-manager[]
       // Setup up a clustered cache manager
       GlobalConfigurationBuilder global = GlobalConfigurationBuilder.defaultClusteredBuilder();
       // Initialize the cache manager
       this.cacheManager = new DefaultCacheManager(global.build());
+      // end::cache-manager[]
    }
 
    public void stopDefaultCacheManager() {

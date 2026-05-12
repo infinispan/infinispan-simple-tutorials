@@ -1,0 +1,57 @@
+= Programmatic ProtoStream Marshalling
+:summary: Build a Protobuf schema programmatically and register a custom marshaller without annotations
+:mode: remote
+:topics: marshalling,protostream
+:keywords: protobuf,protostream,marshaller,schema,programmatic,serialization
+:duration: 10
+:source-dir: infinispan-remote/programmatic-protostream-marshalling
+
+== What You Will Learn
+
+How to define a Protobuf schema in Java code using the `Schema.Builder` API, implement a custom `MessageMarshaller`, and register both with the Hot Rod client -- all without using `@Proto` annotations.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Define the Data Model and Schema
+
+Create a simple Java record for the entity:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/marshalling/Magazine.java[tag=model]
+----
+
+Use the `Schema.Builder` API to define the schema in code:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/marshalling/MagazineSchemaCreator.java[tag=model]
+----
+
+== Step 2: Implement and Register the Marshaller
+
+Create a `MessageMarshaller` to convert between your Java type and Protobuf, then register the schema and marshaller with the `ProtoStreamMarshaller` and upload the schema to the server:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/marshalling/InfinispanProgrammaticProtostreamMarshalling.java[tag=setup]
+----
+
+The `MagazineMarshaller` implements `MessageMarshaller<Magazine>` with `readFrom` and `writeTo` methods that map record fields to Protobuf fields.
+
+== Step 3: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+You should see a magazine entry printed from the cache, confirming the programmatic schema and marshaller work correctly.
+
+== What's Next
+
+* link:../query/guide.html[Query your data] with Ickle queries and annotation-based schemas
+* link:../cache/guide.html[Getting started] with basic cache operations

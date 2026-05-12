@@ -1,0 +1,72 @@
+= Transactions with Embedded Infinispan
+:summary: Use JTA transactions to perform atomic commit and rollback operations on an embedded Infinispan cache
+:mode: embedded
+:topics: transactions,caching
+:keywords: transactions,commit,rollback,jta,embedded,cache
+:duration: 10
+:source-dir: infinispan-embedded/transactions
+
+== What You Will Learn
+
+How to configure a transactional embedded cache and use the JTA `TransactionManager` to commit and rollback cache operations atomically.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add the Embedded Dependency
+
+Add Infinispan core to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-core</artifactId>
+</dependency>
+----
+
+== Step 2: Configure a Transactional Cache
+
+Enable transaction mode on the cache configuration:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/tx/InfinispanTx.java[tag=config]
+----
+
+== Step 3: Commit a Transaction
+
+Obtain the `TransactionManager` and perform operations within a transaction:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/tx/InfinispanTx.java[tag=commit]
+----
+
+After the commit, both entries are visible in the cache.
+
+== Step 4: Rollback a Transaction
+
+Changes within a rolled-back transaction are discarded:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/tx/InfinispanTx.java[tag=rollback]
+----
+
+After the rollback, `key1` and `key2` still contain their original committed values (`value1` and `value2`).
+
+== Step 5: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+The output shows that after commit, the cache contains the new values, and after rollback, the original values remain unchanged.
+
+== What's Next
+
+* Try link:../lock/guide.html[clustered locks] for distributed synchronization
+* Explore link:../cache-distributed/guide.html[distributed caching] for multi-node setups

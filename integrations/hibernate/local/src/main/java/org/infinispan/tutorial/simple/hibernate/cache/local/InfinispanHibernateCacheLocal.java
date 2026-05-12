@@ -30,6 +30,7 @@ public class InfinispanHibernateCacheLocal {
    private static EntityManagerFactory emf;
 
    public static void main(String[] args) throws Exception {
+      // tag::cache-ops[]
       // Create JPA persistence manager
       emf = Persistence.createEntityManagerFactory("events");
 
@@ -46,6 +47,7 @@ public class InfinispanHibernateCacheLocal {
       findEntity(1L);
       eventCacheStats = getCacheStatistics(Event.class.getName());
       printfAssert("Event entity cache hits: %d (expected %d)%n", eventCacheStats.getHitCount(), 1);
+      // end::cache-ops[]
 
       // Update one of the persisted entities, stats should show a cache hit and a cache put
       updateEntity(1L);
@@ -213,6 +215,7 @@ public class InfinispanHibernateCacheLocal {
       }
    }
 
+   // tag::query[]
    private static void queryEntities() {
       try (Session em = createEntityManagerWithStatsCleared()) {
          TypedQuery<Event> query = em.createQuery("from Event", Event.class);
@@ -221,6 +224,7 @@ public class InfinispanHibernateCacheLocal {
          System.out.printf("Queried events: %s%n", events);
       }
    }
+   // end::query[]
 
    private static void saveExpiringEntity() {
       try (Session em = createEntityManagerWithStatsCleared()) {

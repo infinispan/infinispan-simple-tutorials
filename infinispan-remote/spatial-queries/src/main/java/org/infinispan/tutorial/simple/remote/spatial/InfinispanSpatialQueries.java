@@ -46,6 +46,7 @@ public class InfinispanSpatialQueries {
       disconnect(false);
    }
 
+   // tag::queries[]
    static QueryResult<Restaurant> withinCircle() {
       Query<Restaurant> query = myCache.query("from tutorial.Restaurant r where r.location " +
             "within circle(:lat, :lon, :distance)");
@@ -115,6 +116,7 @@ public class InfinispanSpatialQueries {
       System.out.println(valueObjects);
       return valueObjects;
    }
+   // end::queries[]
 
    static QueryResult<TrainRoute> alternativeMapping_entityHavingMultipleGeoPoints() {
       Query<TrainRoute> query = myCache.query("from tutorial.TrainRoute r where r.departure " +

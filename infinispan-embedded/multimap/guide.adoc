@@ -1,0 +1,63 @@
+= Multimap Cache with Embedded Infinispan
+:summary: Store multiple values per key using the embedded multimap cache with an asynchronous API
+:mode: embedded
+:topics: caching,multimap
+:keywords: multimap,embedded,async,multiple-values,cache
+:duration: 5
+:source-dir: infinispan-embedded/multimap
+
+== What You Will Learn
+
+How to use the Infinispan embedded multimap cache to associate multiple values with a single key, using the asynchronous `MultimapCache` API.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add Dependencies
+
+Add the Infinispan core and multimap modules to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-core</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-multimap</artifactId>
+</dependency>
+----
+
+== Step 2: Create a Multimap Cache
+
+Obtain a `MultimapCacheManager` from a regular cache manager, then define and retrieve a multimap cache:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/multimap/InfinispanMultimap.java[tag=config]
+----
+
+== Step 3: Store and Retrieve Multiple Values
+
+Put multiple values under the same key. All operations return `CompletableFuture`:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/multimap/InfinispanMultimap.java[tag=put-get]
+----
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+The output prints a collection containing `value1`, `value2`, and `value3` for the single key.
+
+== What's Next
+
+* Start with link:../map/guide.html[basic map operations] for single-value caching
+* Try link:../query/guide.html[Ickle queries] to search cached data

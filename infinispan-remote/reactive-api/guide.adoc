@@ -1,0 +1,59 @@
+= Reactive API with Mutiny
+:summary: Perform non-blocking cache operations using the Infinispan Mutiny reactive API
+:mode: remote
+:topics: reactive,mutiny
+:keywords: reactive,mutiny,non-blocking,async,cache,infinispan-api
+:duration: 10
+:source-dir: infinispan-remote/reactive-api
+
+== What You Will Learn
+
+How to use the Infinispan Mutiny API to perform non-blocking, reactive cache operations. Instead of the traditional `RemoteCacheManager`, this tutorial uses the `Infinispan` API entry point to obtain a `MutinyCache`.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Connect with the Infinispan API
+
+Use the `Infinispan.create()` factory to establish a connection:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/reactive/InfinispanReactiveApi.java[tag=connect]
+----
+
+== Step 2: Obtain a Mutiny Cache
+
+Get a `MutinyCache` from the Mutiny API:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/reactive/InfinispanReactiveApi.java[tag=init-cache]
+----
+
+== Step 3: Chain Reactive Operations
+
+Use Mutiny operators to chain cache operations in a non-blocking pipeline:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/reactive/InfinispanReactiveApi.java[tag=reactive-ops]
+----
+
+This pipeline sets a value, reads it back, transforms it, adds a delay, and prints the result -- all as a reactive chain.
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+You should see two timestamped lines showing the reactive operations executing with a one-second delay between them.
+
+== What's Next
+
+* link:../cache/guide.html[Getting started] with basic cache operations
+* link:../transactions/guide.html[Transactional operations] with commit and rollback

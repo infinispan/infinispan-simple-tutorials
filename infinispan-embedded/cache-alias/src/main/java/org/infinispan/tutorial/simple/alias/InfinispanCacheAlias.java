@@ -36,6 +36,7 @@ public class InfinispanCacheAlias {
    }
 
    public void createACacheWithAliasAndPopulate(int size) {
+      // tag::create-cache[]
       //Create cache configuration
       ConfigurationBuilder builder = new ConfigurationBuilder();
       builder.clustering().cacheMode(CacheMode.DIST_SYNC);
@@ -44,6 +45,7 @@ public class InfinispanCacheAlias {
       // Create a cache
       cache = cm1.administration().withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
               .getOrCreateCache(DIST_CACHE_NAME, builder.build());
+      // end::create-cache[]
       // Store the current node address in some random keys
       for (int i = 0; i < size; i++) {
          cache.put(UUID.randomUUID().toString(), cm1.getNodeAddress());
@@ -56,8 +58,10 @@ public class InfinispanCacheAlias {
          return;
       }
 
+      // tag::add-alias[]
       EmbeddedCacheManagerAdmin administration = cm1.administration();
       administration.updateConfigurationAttribute(DIST_CACHE_NAME, "aliases", ALIAS_2);
+      // end::add-alias[]
    }
 
    public void displayCacheContent(String cacheName) {
@@ -67,9 +71,11 @@ public class InfinispanCacheAlias {
       }
 
       System.out.println("Display content of cache: " + cacheName);
+      // tag::access-alias[]
       cm1.getCache(cacheName)
               .entrySet()
               .forEach(entry -> System.out.printf("%s = %s\n", entry.getKey(), entry.getValue()));
+      // end::access-alias[]
    }
 
 

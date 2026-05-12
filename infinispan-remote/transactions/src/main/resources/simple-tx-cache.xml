@@ -1,5 +1,7 @@
+<!-- tag::tx-cache-config[] -->
 <distributed-cache name="simple-tx-cache">
     <encoding media-type="application/x-protostream"/>
     <locking isolation="REPEATABLE_READ"/>
     <transaction locking="PESSIMISTIC" mode="NON_XA" />
 </distributed-cache>
+<!-- end::tx-cache-config[] -->

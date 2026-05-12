@@ -1,0 +1,78 @@
+= Spring Boot Reactive Remote Caching
+:summary: Use Spring Boot with reactive @Cacheable and Project Reactor backed by a remote Infinispan Server
+:mode: integration
+:topics: spring-boot,reactive
+:keywords: spring-boot,cacheable,reactor,mono,reactive,webflux,remote
+:duration: 10
+:source-dir: integrations/spring-boot/cache-remote-reactor
+
+== What You Will Learn
+
+How to use Spring Boot's `@EnableCaching` with Project Reactor (`Mono`) and the Infinispan Spring Boot remote starter for reactive caching against an Infinispan Server.
+
+== Prerequisites
+
+* Java 17+
+* Spring Boot
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Add Dependencies
+
+Add the Infinispan Spring Boot remote starter with Spring WebFlux:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-spring-boot4-starter-remote</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot-starter-webflux</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.infinispan.protostream</groupId>
+   <artifactId>protostream-processor</artifactId>
+</dependency>
+----
+
+== Step 2: Enable Reactive Caching
+
+In `application.properties`, enable the reactive mode:
+
+[source,properties]
+----
+include::src/main/resources/application.properties[tag=config]
+----
+
+== Step 3: Return Mono from Cached Methods
+
+Annotate methods that return `Mono` with `@Cacheable`. The Infinispan reactive cache adapter handles the subscription:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/spring/remote/BasqueNamesRepository.java[tag=repository]
+----
+
+== Step 4: Configure the Remote Cache and Schema
+
+Register the Protobuf schema and cache configuration:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/spring/remote/InfinispanConfiguration.java[tag=customizer]
+----
+
+== Step 5: Run the Tutorial
+
+[source,bash]
+----
+mvn spring-boot:run
+----
+
+The application periodically looks up Basque names. Watch the logs: the first lookup for each id logs "Call database", while subsequent lookups return from the Infinispan cache without the log message.
+
+== What's Next
+
+* link:../cache-remote/guide.html[Spring Boot remote caching] for the non-reactive version
+* link:../cache-embedded/guide.html[Spring Boot embedded caching] for caching without a server

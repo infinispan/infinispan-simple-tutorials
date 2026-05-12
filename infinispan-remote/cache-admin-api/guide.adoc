@@ -1,0 +1,80 @@
+= Remote Cache Administration
+:summary: Create caches remotely using the Hot Rod client admin API with simple, template, and XML configurations
+:mode: remote
+:topics: caching,administration
+:keywords: cache,admin,create,template,xml,configuration,volatile,remote
+:duration: 10
+:source-dir: infinispan-remote/cache-admin-api
+
+== What You Will Learn
+
+How to create remote caches programmatically using the Hot Rod admin API. You will create caches with no configuration, from a template, and from XML configuration.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Add the Hot Rod Client Dependency
+
+Add the Infinispan Hot Rod client to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-client-hotrod</artifactId>
+</dependency>
+----
+
+== Step 2: Create a Simple Cache
+
+Use the admin API to create a cache with no configuration:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/admin/InfinispanRemoteAdminCache.java[tag=cache-creation]
+----
+
+If the cache already exists, `createCache` throws an exception. Use `getOrCreateCache` instead for idempotent creation.
+
+== Step 3: Create Caches from Templates and XML
+
+You can also create caches from a registered template or a full XML cache definition using `StringConfiguration`.
+
+Define a cache template in XML:
+
+[source,xml]
+----
+include::src/main/resources/cacheTemplate.xml[tag=template]
+----
+
+Then register the template and create caches using both approaches:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/admin/InfinispanRemoteAdminCache.java[tag=template-and-xml-cache]
+----
+
+The XML cache definition file (`CacheWithXMLConfiguration.xml`) specifies the full cache configuration including encoding, locking, transactions, and expiration settings.
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+You should see output like:
+
+----
+SimpleCache created.
+Cache created from default template.
+Cache with configuration exists or is created.
+----
+
+== What's Next
+
+* link:../cache/guide.html[Get started] with basic cache operations
+* link:../cache-alias/guide.html[Add aliases] to your caches
+* link:../listeners/guide.html[Listen to cache events] with client listeners

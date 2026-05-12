@@ -4,6 +4,7 @@
    xsi:schemaLocation="
         http://xmlns.jcp.org/xml/ns/persistence
         http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+   <!-- tag::persistence-unit[] -->
    <persistence-unit name="events">
       <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
       <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
@@ -27,4 +28,5 @@
                    value= "1000"/>
       </properties>
    </persistence-unit>
+   <!-- end::persistence-unit[] -->
 </persistence>

@@ -22,15 +22,19 @@ public class InfinispanStreams {
    }
 
    public void storeKeyValues(int range) {
+      // tag::populate[]
       // Store some values
       IntStream.range(0, range).boxed().forEach(i -> cache.put(i + "-key", i + "-value"));
+      // end::populate[]
    }
 
    public int mapAndReduceKeys() {
+      // tag::streams[]
       // Map and reduce the keys
       return cache.keySet().stream()
               .map(e -> Integer.valueOf(e.substring(0, e.indexOf("-"))))
               .collect(() -> Collectors.summingInt(i -> i.intValue()));
+      // end::streams[]
    }
 
    public void printResult(int result) {
@@ -38,12 +42,14 @@ public class InfinispanStreams {
    }
 
    public void createDefaultCacheManagerAndInitCache() {
+      // tag::config[]
       // Construct a simple local cache manager with default configuration
       cm1 = new DefaultCacheManager();
       // Define local cache configuration
       cm1.defineConfiguration("local", new ConfigurationBuilder().build());
       // Obtain the local cache
       cache = cm1.getCache("local");
+      // end::config[]
    }
 
    public void stopDefaultCacheManager() {

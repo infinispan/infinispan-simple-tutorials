@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import reactor.core.publisher.Mono;
 
+// tag::repository[]
 @Component
 @CacheConfig(cacheNames = Data.BASQUE_NAMES_CACHE)
 public class BasqueNamesRepository {
@@ -23,6 +24,7 @@ public class BasqueNamesRepository {
       logger.info("Call database to FIND name by id '" + id + "'");
       return Mono.fromCallable(() -> database.get(id));
    }
+// end::repository[]
 
    public int size() {
       return database.size();
