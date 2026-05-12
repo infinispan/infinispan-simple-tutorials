@@ -1,0 +1,69 @@
+= JUnit 5 Testing with Infinispan Server Extension
+:summary: Write integration tests using the Infinispan Server JUnit 5 extension with Testcontainers
+:mode: remote
+:topics: testing,junit5
+:keywords: junit5,test,testcontainers,extension,integration-test,server
+:duration: 10
+:source-dir: infinispan-remote/junit5
+
+== What You Will Learn
+
+How to write JUnit 5 integration tests for Infinispan using the `InfinispanServerExtension`, which automatically starts an Infinispan Server via Testcontainers.
+
+== Prerequisites
+
+* Java 17+
+* Docker or Podman available for Testcontainers
+
+== Step 1: Add the Test Driver Dependency
+
+Add the Infinispan JUnit 5 test driver to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-server-testdriver-junit5</artifactId>
+   <version>${version.infinispan}</version>
+   <scope>test</scope>
+</dependency>
+----
+
+== Step 2: Create a Service to Test
+
+Define a simple caching service that wraps a `RemoteCache`:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/junit5/CachingService.java[tag=caching-service]
+----
+
+== Step 3: Register the Extension and Write Tests
+
+Use `@RegisterExtension` to start an Infinispan Server automatically, then test with a `RemoteCacheManager` provided by the extension:
+
+[source,java]
+----
+include::src/test/java/org/infinispan/tutorial/simple/remote/junit5/CachingServiceTest.java[tag=setup-and-test]
+----
+
+You can also test with a cache created directly by the extension:
+
+[source,java]
+----
+include::src/test/java/org/infinispan/tutorial/simple/remote/junit5/CachingServiceTest.java[tag=test-cache]
+----
+
+== Step 4: Run the Tests
+
+[source,bash]
+----
+mvn test
+----
+
+The extension starts an Infinispan Server container, runs the tests, and stops the container automatically.
+
+== What's Next
+
+* link:../cache/guide.html[Get started] with basic cache operations
+* link:../query/guide.html[Query your data] with Ickle queries

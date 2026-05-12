@@ -1,0 +1,86 @@
+= Spring Boot Embedded Caching
+:summary: Use Spring Boot @Cacheable with an embedded Infinispan cache manager
+:mode: integration
+:topics: spring-boot,caching
+:keywords: spring-boot,cacheable,embedded,enable-caching,infinispan-xml
+:duration: 5
+:source-dir: integrations/spring-boot/cache-embedded
+
+== What You Will Learn
+
+How to use Spring Boot's `@EnableCaching` with the Infinispan embedded Spring Boot starter to cache data in-process, configured via an `infinispan.xml` file.
+
+== Prerequisites
+
+* Java 17+
+* Spring Boot
+
+== Step 1: Add Dependencies
+
+Add the Infinispan Spring Boot embedded starter:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-spring-boot4-starter-embedded</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+----
+
+== Step 2: Configure the Embedded Cache
+
+Point to an Infinispan XML configuration file in `application.properties`:
+
+[source,properties]
+----
+include::src/main/resources/application.properties[tag=config]
+----
+
+Define the cache in `infinispan.xml`:
+
+[source,xml]
+----
+include::src/main/resources/infinispan.xml[tag=infinispan-xml]
+----
+
+== Step 3: Enable Caching and Use @Cacheable
+
+Enable caching in your Spring Boot application:
+
+[source,java]
+----
+@SpringBootApplication
+@EnableCaching
+@EnableScheduling
+public class BasqueNamesCachingApp {
+
+   public static void main(String[] args) {
+      SpringApplication.run(BasqueNamesCachingApp.class);
+   }
+}
+----
+
+Annotate repository methods with `@Cacheable`:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/spring/embedded/BasqueNamesRepository.java[tag=repository]
+----
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn spring-boot:run
+----
+
+The application periodically looks up Basque names. The first lookup for each id logs "Call database"; subsequent lookups return from the embedded Infinispan cache.
+
+== What's Next
+
+* link:../cache-remote/guide.html[Spring Boot remote caching] for caching with an Infinispan Server
+* link:../session-embedded/guide.html[Spring Boot embedded sessions] for HTTP session storage with embedded Infinispan

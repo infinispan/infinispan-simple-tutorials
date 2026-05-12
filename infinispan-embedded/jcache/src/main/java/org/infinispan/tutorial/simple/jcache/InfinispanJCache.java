@@ -19,13 +19,16 @@ public class InfinispanJCache {
    }
 
    static void manipulateCache() {
+      // tag::put-get[]
       // Store a value
       cache.put("key", "value");
       // Retrieve the value and print it out
       System.out.printf("key = %s\n", cache.get("key"));
+      // end::put-get[]
    }
 
    static void createAndStartComponents() {
+      // tag::create-cache[]
       // Construct a simple local cache manager with default configuration
       jcacheProvider = Caching.getCachingProvider();
       cacheManager = jcacheProvider.getCacheManager();
@@ -33,6 +36,7 @@ public class InfinispanJCache {
       configuration.setTypes(String.class, String.class);
       // create a cache using the supplied configuration
       cache = cacheManager.createCache("myCache", configuration);
+      // end::create-cache[]
    }
 
    static void close() {

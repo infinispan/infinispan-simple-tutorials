@@ -5,6 +5,7 @@ import org.infinispan.client.hotrod.RemoteCacheManager
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper.TUTORIAL_CACHE_NAME
 
+// tag::kotlin-example[]
 object InfinispanKotlinExample {
     lateinit var cacheManager: RemoteCacheManager
     lateinit var cache: RemoteCache<String, String>
@@ -35,3 +36,4 @@ object InfinispanKotlinExample {
         TutorialsConnectorHelper.stop(cacheManager)
     }
 }
+// end::kotlin-example[]

@@ -1,0 +1,71 @@
+= Spring @Cacheable with Embedded Infinispan
+:summary: Use Infinispan as the Spring CacheManager with @Cacheable annotations
+:mode: integration
+:topics: spring,caching
+:keywords: spring,cacheable,cache-manager,embedded,enable-caching
+:duration: 5
+:source-dir: integrations/spring/spring-cache
+
+== What You Will Learn
+
+How to configure Spring's `CacheManager` with an embedded Infinispan implementation and use `@Cacheable` to transparently cache slow method results.
+
+== Prerequisites
+
+* Java 17+
+* Spring Framework
+
+== Step 1: Add Dependencies
+
+Add the Infinispan Spring embedded integration and Spring Context:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-spring7-embedded</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.springframework</groupId>
+   <artifactId>spring-context</artifactId>
+</dependency>
+----
+
+== Step 2: Configure the Spring CacheManager
+
+Create a Spring configuration that provides the Infinispan-backed `CacheManager` and enables caching:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/spring/embedded/SpringCaching.java[tag=config]
+----
+
+== Step 3: Annotate Slow Methods with @Cacheable
+
+Apply `@Cacheable` to methods whose results should be cached. The first call executes the method; subsequent calls return the cached result:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/spring/embedded/SpringCaching.java[tag=cacheable]
+----
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:exec@spring-caching
+----
+
+You should see output like:
+
+----
+Returned: "Spring and Infinispan will speed this one up!" in 5 s
+Returned: "Spring and Infinispan will speed this one up!" in 0 s
+----
+
+The first call takes 5 seconds. The second call returns instantly from the Infinispan cache.
+
+== What's Next
+
+* link:../../spring-boot/cache-embedded/guide.html[Spring Boot embedded caching] for Spring Boot auto-configuration with Infinispan
+* link:../../spring-boot/cache-remote/guide.html[Spring Boot remote caching] for caching with an Infinispan Server

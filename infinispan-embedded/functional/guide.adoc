@@ -1,0 +1,69 @@
+= Functional Map API with Embedded Infinispan
+:summary: Use the functional map API for write-only, read-only, and read-write operations on cache entries
+:mode: embedded
+:topics: caching,functional
+:keywords: functional-map,write-only,read-only,read-write,embedded,lambda
+:duration: 10
+:source-dir: infinispan-embedded/functional
+
+== What You Will Learn
+
+How to use the Infinispan functional map API, which provides a lambda-based approach to cache operations with write-only, read-only, and read-write map views.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add the Embedded Dependency
+
+Add Infinispan core to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-core</artifactId>
+</dependency>
+----
+
+== Step 2: Create the Functional Map
+
+Obtain a `FunctionalMapImpl` from an `AdvancedCache`, then create typed map views:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/functional/InfinispanFunctional.java[tag=create-map]
+----
+
+== Step 3: Write and Read Entries
+
+Use write-only operations to store values and chain read-only operations with `CompletableFuture`:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/functional/InfinispanFunctional.java[tag=write-read]
+----
+
+== Step 4: Use Read-Write Operations
+
+The read-write map supports atomic operations that read the previous value and write a new one, with optional metadata like lifespan:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/functional/InfinispanFunctional.java[tag=read-write]
+----
+
+== Step 5: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+The output shows created entries, updated entries with their new values, and the previous values before the update.
+
+== What's Next
+
+* Try link:../listeners/guide.html[cache listeners] to react to cache changes
+* Explore link:../streams/guide.html[distributed streams] for parallel processing
+* Use link:../jcache/guide.html[JCache API] for a standard caching interface

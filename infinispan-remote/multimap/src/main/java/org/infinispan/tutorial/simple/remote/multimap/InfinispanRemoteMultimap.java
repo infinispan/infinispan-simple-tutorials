@@ -33,6 +33,7 @@ public class InfinispanRemoteMultimap {
    }
 
    static void manipulateMultimap() throws Exception {
+      // tag::put-values[]
       multimap.put(2016, "Rosita");
       multimap.put(2016, "Guillermo");
       multimap.put(2016, "Patricia");
@@ -40,13 +41,17 @@ public class InfinispanRemoteMultimap {
       multimap.put(2017, "Matilda");
       multimap.put(2017, "Hector");
       multimap.put(2018, "Richard").get(10, TimeUnit.SECONDS);
+      // end::put-values[]
 
+      // tag::get-values[]
       multimap.get(2016).whenComplete((v, ex) -> {
          System.out.println(v);
       }).join();
+      // end::get-values[]
    }
 
    public static void connectToInfinispan() {
+      // tag::connect[]
       // Connect to the server and create a cache
       cacheManager = TutorialsConnectorHelper.connect();
 
@@ -55,6 +60,7 @@ public class InfinispanRemoteMultimap {
 
       // Retrieve the multimap cache.
       multimap = multimapCacheManager.get(TUTORIAL_CACHE_NAME);
+      // end::connect[]
    }
 
    public static void disconnect(boolean removeCache) {

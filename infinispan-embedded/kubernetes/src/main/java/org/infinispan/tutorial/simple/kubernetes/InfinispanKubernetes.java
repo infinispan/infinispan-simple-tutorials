@@ -19,14 +19,17 @@ public class InfinispanKubernetes {
 
    public static void main(String[] args) {
       System.out.println("Starting Embedded Infinispan Application...");
+      // tag::global-config[]
       //Configure Infinispan to use default transport and Kubernetes configuration
       GlobalConfiguration globalConfig = new GlobalConfigurationBuilder()
        .transport()
             .defaultTransport()
             .addProperty("configurationFile", "default-configs/default-jgroups-kubernetes.xml")
             .build();
+      // end::global-config[]
 
       try (DefaultCacheManager cacheManager = new DefaultCacheManager(globalConfig)) {
+         // tag::cache-config[]
          // We need a distributed cache for the purpose of this demo
          Configuration cacheConfiguration = new ConfigurationBuilder()
                .clustering()
@@ -34,7 +37,9 @@ public class InfinispanKubernetes {
                .build();
 
          Cache<String, String> cache = cacheManager.createCache("kubernetes", cacheConfiguration);
+         // end::cache-config[]
 
+         // tag::populate[]
          // Each cluster member will update its own entry in the cache
          String hostname = Inet4Address.getLocalHost().getHostName();
          ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -45,6 +50,7 @@ public class InfinispanKubernetes {
                   System.out.println(cache.entrySet());
                },
                0, 2, TimeUnit.SECONDS);
+         // end::populate[]
 
          try {
             // Execute indefinitely until the process is interrupted by Kubernetes

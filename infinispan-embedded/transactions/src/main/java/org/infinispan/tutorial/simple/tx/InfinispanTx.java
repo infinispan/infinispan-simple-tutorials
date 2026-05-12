@@ -33,6 +33,7 @@ public class InfinispanTx {
    }
 
    public void createDefaultCacheManagerAndInitCache() {
+      // tag::config[]
       // Initialize the cache manager
       cm1 = new DefaultCacheManager();
       // Create a transaction cache config
@@ -43,6 +44,7 @@ public class InfinispanTx {
       cache = cm1.administration()
               .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
               .getOrCreateCache(CACHE_NAME, cacheConfig);
+      // end::config[]
    }
 
    private void displayCacheContent() {
@@ -51,6 +53,7 @@ public class InfinispanTx {
 
 
    public void putAndCommit(Map<String, String> keyValues) throws Exception {
+      // tag::commit[]
       // Obtain the transaction manager
       TransactionManager transactionManager = cache.getAdvancedCache().getTransactionManager();
       // Perform some operations within a transaction and commit it
@@ -59,9 +62,11 @@ public class InfinispanTx {
          cache.put(k, v);
       });
       transactionManager.commit();
+      // end::commit[]
    }
 
    public void putAndRollback(Map<String, String> keyValues) throws Exception {
+      // tag::rollback[]
       // Obtain the transaction manager
       TransactionManager transactionManager = cache.getAdvancedCache().getTransactionManager();
       // Perform some operations within a transaction and commit it
@@ -70,6 +75,7 @@ public class InfinispanTx {
          cache.put(k, v);
       });
       transactionManager.rollback();
+      // end::rollback[]
    }
 
    public void stopDefaultCacheManager() {

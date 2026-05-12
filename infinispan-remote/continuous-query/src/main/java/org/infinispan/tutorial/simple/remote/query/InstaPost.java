@@ -8,5 +8,7 @@ import org.infinispan.protostream.annotations.Proto;
  * <p>
  * https://blog.infinispan.org/2018/06/making-java-objects-queryable-by.html
  */
+// tag::proto-entity[]
 @Proto
 public record InstaPost(String id, String user, String hashtag){}
+// end::proto-entity[]

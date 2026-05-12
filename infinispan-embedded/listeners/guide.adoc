@@ -1,0 +1,71 @@
+= Cache Listeners with Embedded Infinispan
+:summary: Register listeners to receive notifications when cache entries are created or modified
+:mode: embedded
+:topics: caching,events
+:keywords: listener,cache-listener,events,entry-created,entry-modified,embedded
+:duration: 10
+:source-dir: infinispan-embedded/listeners
+
+== What You Will Learn
+
+How to create and register cache listeners in embedded Infinispan to react to entry creation and modification events.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add the Embedded Dependency
+
+Add Infinispan core to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-core</artifactId>
+</dependency>
+----
+
+== Step 2: Create a Listener Class
+
+Annotate a class with `@Listener` and define handler methods using event annotations like `@CacheEntryCreated` and `@CacheEntryModified`:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/listen/InfinispanListen.java[tag=listener]
+----
+
+Each event fires twice -- once before (`isPre() == true`) and once after (`isPre() == false`) the operation. Filter on the phase you need.
+
+== Step 3: Register the Listener
+
+Add the listener to a cache instance:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/listen/InfinispanListen.java[tag=register-listener]
+----
+
+== Step 4: Trigger Events
+
+Any cache operation triggers the corresponding listener methods:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/listen/InfinispanListen.java[tag=trigger-events]
+----
+
+== Step 5: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+The output shows creation notifications for `key1` and `key2`, and a modification notification when `key1` is updated.
+
+== What's Next
+
+* Try link:../cache-distributed/guide.html[distributed caching] with listeners in a cluster
+* Explore link:../functional/guide.html[functional map API] for lambda-based cache operations
+* Use link:../streams/guide.html[distributed streams] for processing cache data

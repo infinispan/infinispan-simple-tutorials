@@ -1,0 +1,61 @@
+= SQL Store Persistence
+:summary: Persist cache data to a relational database using SQL table stores with Protobuf schemas
+:mode: remote
+:topics: persistence,sql-store
+:keywords: sql,jdbc,persistence,protobuf,protostream,h2,table-store,query-store
+:duration: 15
+:source-dir: infinispan-remote/persistence/sql-store
+
+== What You Will Learn
+
+How to configure SQL table and query stores so that Infinispan caches load and persist data from a relational database. You will define Protobuf entities with `@Proto` annotations and register the generated schema on the server.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Define the Data Model
+
+Define your entities as Java records with `@Proto` annotations. For example, the `Author` entity:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/persistence/Author.java[tag=entities]
+----
+
+The `Book` entity follows the same pattern with fields like `isbn`, `title`, `authorName`, and `country`. A `@ProtoSchema` interface generates the Protobuf schema for both entities.
+
+== Step 2: Configure the SQL Table Store
+
+Define the cache with a `table-jdbc-store` that maps directly to a database table:
+
+[source,xml]
+----
+include::src/main/resources/sqlTableCache.xml[tag=sql-table-store]
+----
+
+== Step 3: Connect, Register the Schema, and Read Data
+
+Register the Protobuf context initializer, load cache configurations from XML, and upload the schema to the server:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/persistence/SQLStoreLibraryMain.java[tag=setup]
+----
+
+The caches automatically load data from the database tables. You can read them with `cacheManager.getCache(cacheName).values()`.
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+The tutorial starts an embedded H2 database, populates it, and displays the cached data loaded from the SQL store.
+
+== What's Next
+
+* link:../../cache/guide.html[Getting started] with basic cache operations
+* link:../../query/guide.html[Query your data] with Ickle queries

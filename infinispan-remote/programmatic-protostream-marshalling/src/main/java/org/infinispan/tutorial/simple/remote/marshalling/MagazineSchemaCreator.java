@@ -4,6 +4,7 @@ import org.infinispan.protostream.schema.Schema;
 import org.infinispan.protostream.schema.Type;
 
 public final class MagazineSchemaCreator {
+    // tag::model[]
     static public Schema magazineSchema() {
         return new Schema.Builder("magazine.proto")
                 .packageName("magazine_sample")
@@ -14,4 +15,5 @@ public final class MagazineSchemaCreator {
                 .addRepeatedField(Type.Scalar.STRING, "stories", 4)
                 .build();
     }
+    // end::model[]
 }

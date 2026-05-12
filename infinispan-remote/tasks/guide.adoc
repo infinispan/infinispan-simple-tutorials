@@ -1,0 +1,64 @@
+= Server-Side Tasks
+:summary: Upload and execute server-side JavaScript tasks via the Hot Rod client and REST API
+:mode: remote
+:topics: tasks,server
+:keywords: tasks,server-tasks,javascript,execute,rest,hot-rod
+:duration: 10
+:source-dir: infinispan-remote/tasks
+
+== What You Will Learn
+
+How to upload a JavaScript task to the Infinispan Server using the REST API and then execute it remotely through the Hot Rod client with parameters.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Create a Server Task Script
+
+Define a JavaScript task in `src/main/resources/hello.js`:
+
+[source,javascript]
+----
+// mode=local,language=javascript,parameters=[greetee]
+"Hello " + greetee
+----
+
+The comment header declares the execution mode, language, and expected parameters.
+
+== Step 2: Upload the Task via REST
+
+Use the Infinispan REST client to upload the script to the server:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/server/tasks/InfinispanServerTasks.java[tag=upload-task]
+----
+
+== Step 3: Execute the Task via Hot Rod
+
+Execute the uploaded task on a cache with parameters:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/server/tasks/InfinispanServerTasks.java[tag=execute-task]
+----
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+You should see output like:
+
+----
+Greeting = Hello developer
+----
+
+== What's Next
+
+* link:../cache/guide.html[Getting started] with basic cache operations
+* link:../reactive-api/guide.html[Reactive API] for non-blocking operations

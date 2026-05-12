@@ -16,33 +16,36 @@ public class InfinispanCacheAlias {
    static RemoteCache<String, String> cacheAlias;
 
    public static void main(String[] args) {
-      connectToInfinispan();
-      manipulateCache();
+      connectAndStore();
       addAlias();
       disconnect();
    }
 
-   static void manipulateCache() {
-      // Store a value
-      cache.put("key", "value");
-      // Retrieve the value and print it out
-      System.out.printf("key = %s\n", cache.get("key"));
-   }
-
-   static void addAlias() {
-      cacheManager.administration().updateConfigurationAttribute(cache.getName(), "aliases", "alias alias2");
-      // Retrieve the value and print it out
-      cacheAlias = cacheManager.getCache("alias");
-      if (cacheAlias != null) {
-         System.out.printf("key = %s\n", cacheAlias.get("key"));
-      }
-   }
-
-   static void connectToInfinispan() {
+   static void connectAndStore() {
+      // tag::connect-and-store[]
       // Connect to the server
       cacheManager = TutorialsConnectorHelper.connect();
       // Obtain the remote cache
       cache = cacheManager.getCache(TUTORIAL_CACHE_NAME);
+
+      // Store a value
+      cache.put("key", "value");
+      // Retrieve the value and print it out
+      System.out.printf("key = %s\n", cache.get("key"));
+      // end::connect-and-store[]
+   }
+
+   static void addAlias() {
+      // tag::aliases[]
+      // Add aliases to the cache
+      cacheManager.administration().updateConfigurationAttribute(cache.getName(), "aliases", "alias alias2");
+
+      // Retrieve the value through an alias
+      cacheAlias = cacheManager.getCache("alias");
+      if (cacheAlias != null) {
+         System.out.printf("key = %s\n", cacheAlias.get("key"));
+      }
+      // end::aliases[]
    }
 
    static void disconnect() {

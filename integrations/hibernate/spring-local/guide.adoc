@@ -1,0 +1,77 @@
+= Hibernate L2 Cache with Spring Boot
+:summary: Use Infinispan as the Hibernate second-level cache provider in a Spring Boot application
+:mode: integration
+:topics: hibernate,spring-boot
+:keywords: hibernate,l2-cache,spring-boot,jpa,entity-cache,query-cache
+:duration: 10
+:source-dir: integrations/hibernate/spring-local
+
+== What You Will Learn
+
+How to configure Infinispan as the Hibernate second-level cache in a Spring Boot application using `application.properties`, and verify cache behavior through Hibernate statistics.
+
+== Prerequisites
+
+* Java 17+
+* Spring Boot
+
+== Step 1: Add Dependencies
+
+Add Spring Boot Data JPA and the Infinispan Hibernate cache module to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-hibernate-cache-v66</artifactId>
+</dependency>
+<dependency>
+   <groupId>com.h2database</groupId>
+   <artifactId>h2</artifactId>
+</dependency>
+----
+
+== Step 2: Configure Hibernate Caching in application.properties
+
+Enable the second-level cache and query cache via Spring Boot properties:
+
+[source,properties]
+----
+include::src/main/resources/application.properties[tag=config]
+----
+
+== Step 3: Mark Entities as Cacheable
+
+Annotate your JPA entities with `@Cacheable`:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/hibernate/cache/spring/local/model/Event.java[tag=entity]
+----
+
+== Step 4: Run Cache Operations from a CommandLineRunner
+
+The Spring Boot application uses a `CommandLineRunner` to demonstrate cache behavior:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/hibernate/cache/spring/local/InfinispanHibernateCacheSpringLocal.java[tag=app]
+----
+
+== Step 5: Run the Tutorial
+
+[source,bash]
+----
+mvn spring-boot:run
+----
+
+The output shows cache puts, hits, misses, and query cache statistics, confirming Infinispan is serving as the L2 cache provider.
+
+== What's Next
+
+* link:../local/guide.html[Hibernate L2 cache standalone] for the same pattern without Spring
+* link:../wildfly-local/guide.html[Hibernate L2 cache with WildFly] for a Jakarta EE deployment

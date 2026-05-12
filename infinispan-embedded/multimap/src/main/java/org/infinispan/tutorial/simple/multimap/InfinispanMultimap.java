@@ -25,6 +25,7 @@ public class InfinispanMultimap {
    }
 
    static void manipulateMultimap() throws InterruptedException, ExecutionException, TimeoutException {
+        // tag::put-get[]
         // Store multiple values in a key
         CompletableFuture.allOf(
               multimap.put("key", "value1"),
@@ -38,9 +39,11 @@ public class InfinispanMultimap {
 
                  });
               }).get(10, TimeUnit.SECONDS);
+        // end::put-get[]
     }
 
     static void createAndStartComponents() {
+        // tag::config[]
         // Construct a local cache manager with default configuration
         cacheManager = new DefaultCacheManager();
 
@@ -52,6 +55,7 @@ public class InfinispanMultimap {
 
         // Get the MultimapCache
         multimap = multimapCacheManager.get("multimap");
+        // end::config[]
     }
 
     static void stop() {

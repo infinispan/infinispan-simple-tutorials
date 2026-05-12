@@ -1,0 +1,76 @@
+= Ickle Queries with Embedded Infinispan
+:summary: Run Ickle queries against indexed entities stored in an embedded Infinispan cache
+:mode: embedded
+:topics: querying,indexing
+:keywords: query,ickle,indexed,embedded,search
+:duration: 10
+:source-dir: infinispan-embedded/query
+
+== What You Will Learn
+
+How to annotate entities for indexing, configure an indexed cache, and execute Ickle queries to search for data in an embedded Infinispan cache.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add Dependencies
+
+Add the Infinispan core, API, and query modules to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-api</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-core</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-query</artifactId>
+</dependency>
+----
+
+== Step 2: Define an Indexed Entity
+
+Annotate your entity class with `@Indexed` and mark searchable fields with `@Basic`:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/query/Person.java[tag=entity]
+----
+
+== Step 3: Configure an Indexed Cache
+
+Enable indexing on the cache configuration and register the indexed entity:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/query/InfinispanQuery.java[tag=config]
+----
+
+== Step 4: Run an Ickle Query
+
+Store some entries and query them using the Ickle query language:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/query/InfinispanQuery.java[tag=query]
+----
+
+== Step 5: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+The output shows the two persons named William (Shakespeare and Wordsworth).
+
+== What's Next
+
+* Try link:../query-programmatic-index/guide.html[programmatic index definitions] without annotations
+* Use link:../streams/guide.html[distributed streams] for parallel cache processing

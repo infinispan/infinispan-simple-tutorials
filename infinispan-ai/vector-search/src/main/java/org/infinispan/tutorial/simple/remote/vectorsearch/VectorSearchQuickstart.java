@@ -48,6 +48,7 @@ public class VectorSearchQuickstart {
       disconnect();
    }
 
+   // tag::connect[]
    static void connect() throws Exception {
       ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
       builder.addContextInitializer(new BeerSchemaImpl());
@@ -60,6 +61,7 @@ public class VectorSearchQuickstart {
       cacheManager.administration().schemas().createOrUpdate(new BeerSchemaImpl());
       cache = cacheManager.getCache(CACHE_NAME);
    }
+   // end::connect[]
 
    static void disconnect() {
       TutorialsConnectorHelper.stop(cacheManager);
@@ -157,6 +159,7 @@ public class VectorSearchQuickstart {
 
    // ---- Vector search (kNN) ----
 
+   // tag::knn[]
    static void knnVectorSearch() {
       System.out.println("=== kNN: 3 beers closest to 'dark roasty' vector [0.9, 0.1, 0.1] ===");
       Query<Beer> query = cache.query(
@@ -168,6 +171,7 @@ public class VectorSearchQuickstart {
       }
       System.out.println();
    }
+   // end::knn[]
 
    static void scoreProjection() {
       System.out.println("=== kNN with score: 3 beers closest to 'light crisp lager' vector [0.05, 0.9, 0.1] ===");
@@ -184,6 +188,7 @@ public class VectorSearchQuickstart {
 
    // ---- Hybrid queries: vector + metadata ----
 
+   // tag::hybrid[]
    static void hybridFilterByStyle() {
       System.out.println("=== Hybrid: closest to 'refreshing summer beer' [0.05, 0.95, 0.05], only lagers under 5% ABV ===");
       Query<Object[]> query = cache.query(
@@ -228,4 +233,5 @@ public class VectorSearchQuickstart {
       }
       System.out.println();
    }
+   // end::hybrid[]
 }

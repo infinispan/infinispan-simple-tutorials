@@ -31,6 +31,7 @@ public class InfinispanCounter {
    }
 
    public void createAndManipulateCounters() throws Exception {
+      // tag::strong-counter[]
       // StrongCounter provides the higher consistency. Its value is known during the increment/decrement and it may be bounded.
       // Bounded counters are aimed for uses cases where a limit is needed.
       counter1 = counterManager.getStrongCounter("counter-1");
@@ -74,7 +75,9 @@ public class InfinispanCounter {
       // Reset the counter to its initial value (2)
       counter2.reset().get();
       counter2.getValue().thenAccept(value -> System.out.println("Counter-2 initial value is " + value)).get();
+      // end::strong-counter[]
 
+      // tag::weak-counter[]
       // Retrieve counter-3
       counter3 = counterManager.getWeakCounter("counter-3");
       // Weak counter doesn't have its value available during updates. This makes the increment faster than the StrongCounter
@@ -84,9 +87,11 @@ public class InfinispanCounter {
 
       // Check the counter value.
       System.out.println("Counter-3 value is " + counter3.getValue());
+      // end::weak-counter[]
    }
 
    public void createCounterManager() {
+      // tag::counter-config[]
       // Setup up a clustered cache manager
       GlobalConfigurationBuilder global = GlobalConfigurationBuilder.defaultClusteredBuilder();
       // Create the counter configuration builder
@@ -104,6 +109,7 @@ public class InfinispanCounter {
 
       // Retrieve the CounterManager from the CacheManager. Each CacheManager has it own CounterManager
       counterManager = EmbeddedCounterManagerFactory.asCounterManager(cm1);
+      // end::counter-config[]
    }
 
    public void stopCounterManager() {

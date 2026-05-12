@@ -33,13 +33,7 @@ Use `ConfigurationBuilder` to set up authentication and connect:
 
 [source,java]
 ----
-ConfigurationBuilder builder = new ConfigurationBuilder();
-builder.security()
-      .authentication()
-      .username("admin")
-      .password("password");
-
-RemoteCacheManager cacheManager = new RemoteCacheManager(builder.build());
+include::src/main/java/org/infinispan/tutorial/simple/remote/InfinispanRemoteCache.java[tag=connect]
 ----
 
 The tutorial uses a shared `TutorialsConnectorHelper` that handles connection setup and automatically falls back to Testcontainers if no server is running locally.
@@ -50,10 +44,7 @@ Retrieve a named cache and perform put/get operations:
 
 [source,java]
 ----
-RemoteCache<String, String> cache = cacheManager.getCache("test");
-cache.put("key", "value");
-String value = cache.get("key");
-System.out.printf("key = %s\n", value);
+include::src/main/java/org/infinispan/tutorial/simple/remote/InfinispanRemoteCache.java[tag=cache-ops]
 ----
 
 == Step 4: Run the Tutorial

@@ -18,6 +18,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
  */
 public class CachingServiceTest {
 
+   // tag::setup-and-test[]
    @RegisterExtension
    static InfinispanServerExtension infinispanServerExtension = buildExtension();
 
@@ -49,7 +50,9 @@ public class CachingServiceTest {
       assertTrue(cachingService.exists("Mickey"));
       assertFalse(cachingService.exists("Donald"));
    }
+   // end::setup-and-test[]
 
+   // tag::test-cache[]
    @Test
    public void testUsingACache(){
       // Grab the cache created in the context of this test
@@ -67,4 +70,5 @@ public class CachingServiceTest {
       assertTrue(cachingService.exists("Donald"));
       assertFalse(cachingService.exists("Minie"));
    }
+   // end::test-cache[]
 }

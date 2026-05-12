@@ -1,0 +1,58 @@
+= Client Listeners for Cache Events
+:summary: Register client listeners to receive notifications when cache entries are created or modified
+:mode: remote
+:topics: events,listeners
+:keywords: listener,event,created,modified,client-listener,hot-rod,remote
+:duration: 10
+:source-dir: infinispan-remote/listeners
+
+== What You Will Learn
+
+How to register a `@ClientListener` on a remote cache to receive asynchronous notifications when entries are created or modified.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Define a Client Listener
+
+Create a class annotated with `@ClientListener` and add methods annotated with `@ClientCacheEntryCreated` and `@ClientCacheEntryModified`:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/listen/InfinispanRemoteListen.java[tag=listener]
+----
+
+After connecting to the server, register the listener on a remote cache with `cache.addClientListener(new MyListener())`.
+
+== Step 2: Trigger Events and Clean Up
+
+Store and update entries to generate events. Always remove listeners when they are no longer needed:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/listen/InfinispanRemoteListen.java[tag=usage]
+----
+
+Remote events are asynchronous, so allow a short wait before shutting down.
+
+== Step 3: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+You should see output like:
+
+----
+Created key1
+Created key2
+About to modify key1
+----
+
+== What's Next
+
+* link:../continuous-query/guide.html[Continuous queries] for query-based real-time notifications
+* link:../cache/guide.html[Get started] with basic cache operations

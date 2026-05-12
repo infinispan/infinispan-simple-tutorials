@@ -24,6 +24,7 @@ public class InfinispanQuery {
    }
 
    static List<Person> addDataAndPerformQuery() {
+      // tag::query[]
       // Store some entries
       cache.put("person1", new Person("William", "Shakespeare"));
       cache.put("person2", new Person("William", "Wordsworth"));
@@ -32,11 +33,13 @@ public class InfinispanQuery {
       Query<Person> query = cache.query("from org.infinispan.tutorial.simple.query.Person where name = 'William'");
       // Execute the query
       return query.execute().list();
+      // end::query[]
    }
 
    static EmbeddedCacheManager createCacheManagerAndCache() {
       // Create cache manager
       cacheManager = new DefaultCacheManager();
+      // tag::config[]
       // Create cache config
       ConfigurationBuilder builder = new ConfigurationBuilder();
       builder.indexing()
@@ -48,6 +51,7 @@ public class InfinispanQuery {
       cache = cacheManager.administration()
               .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
               .getOrCreateCache("cache", builder.build());
+      // end::config[]
       return cacheManager;
    }
 

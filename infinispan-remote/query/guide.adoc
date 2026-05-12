@@ -17,114 +17,33 @@ How to define Protobuf schemas with `@Proto` annotations, create indexed caches,
 
 == Step 1: Define Your Data Model with Protobuf Annotations
 
-Infinispan uses Protobuf for serialization. Define your entities as Java records with `@Proto` and `@Indexed` annotations:
+Infinispan uses Protobuf for serialization. Define your entities as Java records with `@Proto` and `@Indexed` annotations.
+The `Person` entity uses `@Keyword` annotations for indexed fields, and the `PersonKey` record defines a composite key with `@Basic` projectable fields. A `@ProtoSchema` interface generates the schema for both:
 
 [source,java]
 ----
-@Proto
-@Indexed(keyEntity = "tutorial.PersonKey")
-public record Person(
-      @Keyword(projectable = true, sortable = true, normalizer = "lowercase")
-      String firstName,
-      @Keyword(projectable = true, sortable = true, normalizer = "lowercase")
-      String lastName,
-      int bornYear,
-      @Keyword(projectable = true, sortable = true, normalizer = "lowercase")
-      String bornIn) {
-}
+include::src/main/java/org/infinispan/tutorial/simple/remote/query/Person.java[tag=model]
 ----
 
-Define a key entity for composite keys:
+== Step 2: Connect and Create an Indexed Cache
+
+Register the Protobuf context initializer, configure the indexed cache with `indexing enabled="true"`, and connect:
 
 [source,java]
 ----
-@Proto
-@Indexed
-public record PersonKey(
-      @Basic(projectable = true) String id,
-      @Basic(projectable = true) String pseudo) {
-}
+include::src/main/java/org/infinispan/tutorial/simple/remote/query/InfinispanRemoteQuery.java[tag=setup]
 ----
 
-== Step 2: Register the Protobuf Schema
+== Step 3: Run Ickle Queries
 
-Create a `@ProtoSchema` interface to generate the schema:
+Query all entries, filter with parameters, use projections, and delete by query:
 
 [source,java]
 ----
-@ProtoSchema(schemaPackageName = "tutorial",
-      includeClasses = { Person.class, PersonKey.class })
-public interface TutorialSchema extends GeneratedSchema {
-}
+include::src/main/java/org/infinispan/tutorial/simple/remote/query/InfinispanRemoteQuery.java[tag=queries]
 ----
 
-Register it when connecting:
-
-[source,java]
-----
-ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
-builder.addContextInitializer(new TutorialSchemaImpl());
-client = TutorialsConnectorHelper.connect(builder);
-client.administration().schemas().createOrUpdate(new TutorialSchemaImpl());
-----
-
-== Step 3: Create an Indexed Cache
-
-Configure the cache with indexing enabled:
-
-[source,xml]
-----
-<distributed-cache statistics="true">
-   <encoding>
-      <key media-type="application/x-protostream"/>
-      <value media-type="application/x-protostream"/>
-   </encoding>
-   <indexing enabled="true" storage="filesystem" startup-mode="AUTO">
-      <indexed-entities>
-         <indexed-entity>tutorial.Person</indexed-entity>
-      </indexed-entities>
-   </indexing>
-</distributed-cache>
-----
-
-== Step 4: Run Ickle Queries
-
-Query all entries:
-
-[source,java]
-----
-Query<Person> query = cache.query("FROM tutorial.Person");
-List<Person> results = query.execute().list();
-----
-
-Filter with parameters:
-
-[source,java]
-----
-Query<Person> query = cache.query(
-      "FROM tutorial.Person p WHERE p.lastName = :lastName");
-query.setParameter("lastName", "Granger");
-----
-
-Use projections to select specific fields:
-
-[source,java]
-----
-Query<Object[]> query = cache.query(
-      "SELECT p.key.pseudo, p.firstName, p.lastName " +
-      "FROM tutorial.Person p WHERE p.bornIn = 'London'");
-----
-
-Delete by query:
-
-[source,java]
-----
-Query<Person> query = cache.query(
-      "DELETE FROM tutorial.Person p WHERE p.key.pseudo = 'dmalfoy'");
-long deleted = query.execute().count().value();
-----
-
-== Step 5: Run the Tutorial
+== Step 4: Run the Tutorial
 
 [source,bash]
 ----

@@ -22,6 +22,7 @@ public class InfinispanReplicated {
    }
 
    public static void createDefaultCacheManagerAndStartCache() {
+      // tag::create-cache[]
       // Setup up a clustered cache manager
       GlobalConfigurationBuilder global = GlobalConfigurationBuilder.defaultClusteredBuilder();
       // Initialize the cache manager
@@ -34,9 +35,11 @@ public class InfinispanReplicated {
       cache = cacheManager.administration()
               .withFlags(CacheContainerAdmin.AdminFlag.VOLATILE)
               .getOrCreateCache("cache", cacheConfig);
+      // end::create-cache[]
    }
 
    public static void manipulateReplicatedCache() {
+      // tag::put-get[]
       // Store the current node address in some random keys
       for(int i=0; i < 10; i++) {
          cache.put(UUID.randomUUID().toString(), cacheManager.getNodeAddress());
@@ -48,6 +51,7 @@ public class InfinispanReplicated {
       // Display the current cache contents for this node
       cache.getAdvancedCache().withFlags(Flag.SKIP_REMOTE_LOOKUP)
               .entrySet().forEach(entry -> System.out.printf("%s = %s\n", entry.getKey(), entry.getValue()));
+      // end::put-get[]
    }
 
    public static void stopDefaultCacheManager() {

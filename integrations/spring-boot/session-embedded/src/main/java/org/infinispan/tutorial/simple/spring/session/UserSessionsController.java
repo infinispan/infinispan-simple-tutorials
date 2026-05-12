@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
 
+// tag::controller[]
 @RestController
 public class UserSessionsController {
 
@@ -36,6 +37,7 @@ public class UserSessionsController {
     public Set<?> sessions() {
         return cacheManager.getCache("sessions").getNativeCache().keySet();
     }
+// end::controller[]
 
     @GetMapping("/sessions/{id}")
     public String sessionContent(@PathVariable String id) {

@@ -6,8 +6,10 @@ import org.infinispan.api.annotations.indexing.Keyword;
 import org.infinispan.commons.api.query.geo.LatLng;
 import org.infinispan.protostream.annotations.Proto;
 
+// tag::entities[]
 @Proto
 @Indexed
 public record Hiking(@Keyword String name, @GeoField LatLng start, @GeoField LatLng end) {
 
 }
+// end::entities[]

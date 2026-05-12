@@ -90,6 +90,7 @@ public class InvalidationMode {
    }
 
    static void createCacheManagerAndInitCache() {
+      // tag::config[]
       // Create a clustered configuration and a default cache named test
       GlobalConfiguration global = GlobalConfigurationBuilder.defaultClusteredBuilder().build();
 
@@ -106,6 +107,7 @@ public class InvalidationMode {
 
       // Retrieve the cache
       cache = cacheManager.getCache("test");
+      // end::config[]
    }
 
    public static void stopCacheManager() {
@@ -120,8 +122,10 @@ public class InvalidationMode {
       String key = readUserInput("Enter a key: ", scanner);
       System.out.println("\n");
       String value = readUserInput("Enter a value: ", scanner);
+      // tag::put[]
       // Will put the key/value pair and invalidate the key/value pair that may exist in other nodes
       cache.put(key, value);
+      // end::put[]
       System.out.println(String.format("[%s, %s] added", key, value));
    }
 
@@ -131,8 +135,10 @@ public class InvalidationMode {
       System.out.println("\n");
       String value = readUserInput("Enter a value: ", scanner);
 
+      // tag::put-external[]
       //Put for external read won't invalidate the value if it's present in another node.
       cache.putForExternalRead(key, value);
+      // end::put-external[]
       System.out.println(String.format("[%s, %s] added for external read", key, value));
    }
 

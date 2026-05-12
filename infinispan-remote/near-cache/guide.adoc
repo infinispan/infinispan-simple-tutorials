@@ -1,0 +1,64 @@
+= Near-Cache with Bloom Filters
+:summary: Speed up repeated reads by enabling near-caching with bloom filter optimization on the Hot Rod client
+:mode: remote
+:topics: caching,performance
+:keywords: near-cache,bloom-filter,invalidated,hot-rod,client
+:duration: 10
+:source-dir: infinispan-remote/near-cache
+
+== What You Will Learn
+
+How to configure a near-cache on the Hot Rod client so that frequently read entries are stored locally, avoiding remote calls. You will also enable bloom filters to reduce the invalidation overhead when entries change on the server.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Add the Hot Rod Client Dependency
+
+Add the Infinispan Hot Rod client to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-client-hotrod</artifactId>
+</dependency>
+----
+
+== Step 2: Configure Near-Caching with Bloom Filters
+
+Enable near-caching on a specific remote cache. Set the mode to `INVALIDATED`, configure the maximum number of entries, and turn on bloom filters:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/nearcache/InfinispanNearCache.java[tag=near-cache-config]
+----
+
+* `NearCacheMode.INVALIDATED` keeps the local near-cache consistent by invalidating entries when they change on the server.
+* `nearCacheMaxEntries` limits memory usage on the client.
+* `nearCacheUseBloomFilter(true)` reduces the number of invalidation messages the server sends to the client.
+
+== Step 3: Compare Read Performance
+
+Populate both a regular cache and the near-cache, then perform 10,000 random reads on each to see the difference:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/nearcache/InfinispanNearCache.java[tag=read-cache]
+----
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+You should see that reads on the near-cache complete significantly faster than reads on the regular cache.
+
+== What's Next
+
+* link:../cache/guide.html[Getting started] with basic cache operations
+* link:../per-cache-configuration/guide.html[Per-cache configuration] using templates and XML

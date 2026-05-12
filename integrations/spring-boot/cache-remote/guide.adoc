@@ -1,0 +1,84 @@
+= Spring Boot Remote Caching
+:summary: Use Spring Boot with @Cacheable and @CacheEvict backed by a remote Infinispan Server
+:mode: integration
+:topics: spring-boot,caching
+:keywords: spring-boot,cacheable,cache-evict,remote,hot-rod,protostream,protobuf
+:duration: 10
+:source-dir: integrations/spring-boot/cache-remote
+
+== What You Will Learn
+
+How to use Spring Boot's `@EnableCaching` with the Infinispan Spring Boot starter to cache and evict data stored in a remote Infinispan Server, using Protobuf serialization.
+
+== Prerequisites
+
+* Java 17+
+* Spring Boot
+* An Infinispan Server running on `localhost:11222`
+
+== Step 1: Add Dependencies
+
+Add the Infinispan Spring Boot remote starter and the ProtoStream processor:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-spring-boot4-starter-remote</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.infinispan.protostream</groupId>
+   <artifactId>protostream-processor</artifactId>
+</dependency>
+----
+
+== Step 2: Configure the Connection
+
+In `application.properties`, point the starter to your Infinispan Server:
+
+[source,properties]
+----
+include::src/main/resources/application.properties[tag=config]
+----
+
+== Step 3: Define a Protobuf Entity
+
+Use the `@Proto` annotation to define a cacheable record that will be serialized with Protobuf:
+
+[source,java]
+----
+@Proto
+public record BasqueName(String id, String name) {}
+----
+
+== Step 4: Use @Cacheable and @CacheEvict
+
+Annotate repository methods to cache lookups and evict on removal:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/spring/remote/BasqueNamesRepository.java[tag=repository]
+----
+
+== Step 5: Configure the Remote Cache
+
+Use an `InfinispanRemoteCacheCustomizer` bean to configure the remote cache and register the Protobuf schema:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/spring/remote/InfinispanConfiguration.java[tag=customizer]
+----
+
+== Step 6: Run the Tutorial
+
+[source,bash]
+----
+mvn spring-boot:run
+----
+
+The application periodically creates, reads, and removes entries. Watch the logs to see cache hits (no "Call database" message) versus cache misses (with the message).
+
+== What's Next
+
+* link:../cache-remote-reactor/guide.html[Spring Boot reactive remote caching] for the same pattern with Project Reactor
+* link:../cache-embedded/guide.html[Spring Boot embedded caching] for caching without a server

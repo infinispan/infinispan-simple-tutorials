@@ -37,6 +37,7 @@ public class InfinispanProgrammaticProtostreamMarshalling {
    static void connectToInfinispan() {
       ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
 
+      // tag::setup[]
       ProtoStreamMarshaller marshaller = new ProtoStreamMarshaller();
       SerializationContext serializationContext = marshaller.getSerializationContext();
       FileDescriptorSource fds = FileDescriptorSource.fromString(schema.getName(), schema.toString());
@@ -49,7 +50,8 @@ public class InfinispanProgrammaticProtostreamMarshalling {
       client = TutorialsConnectorHelper.connect(builder);
 
       // Create and add the Protobuf schema in the server
-      registerMagazineSchemaInTheServer(client);
+      client.administration().schemas().createOrUpdate(schema);
+      // end::setup[]
 
       // Get the people cache, create it if needed with the default configuration
       magazineRemoteCache = client.getCache(TUTORIAL_CACHE_NAME);

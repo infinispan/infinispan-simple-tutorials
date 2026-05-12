@@ -36,10 +36,16 @@ public class InfinispanRemoteListen {
    }
 
    static void manipulateCache() {
+      // tag::usage[]
       // Store some values
       cache.put("key1", "value1");
       cache.put("key2", "value2");
       cache.put("key1", "newValue");
+
+      // Remote events are asynchronous, so allow a short wait before removing
+      // Remove listener when no longer needed
+      cache.removeClientListener(listener);
+      // end::usage[]
    }
 
    static void registerListener() {
@@ -68,6 +74,7 @@ public class InfinispanRemoteListen {
       TutorialsConnectorHelper.stop(cacheManager);
    }
 
+   // tag::listener[]
    @ClientListener
    public static class MyListener {
       StringBuilder logTrack = new StringBuilder();
@@ -87,5 +94,6 @@ public class InfinispanRemoteListen {
       }
 
    }
+   // end::listener[]
 
 }

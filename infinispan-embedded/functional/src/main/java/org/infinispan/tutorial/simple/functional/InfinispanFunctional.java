@@ -29,6 +29,7 @@ public class InfinispanFunctional {
    }
 
    static void manipulateFunctionalMap() throws InterruptedException, ExecutionException {
+      // tag::write-read[]
       // Execute two parallel write-only operation to store key/value pairs
       CompletableFuture<Void> writeFuture1 = writeOnlyMap.eval("key1", "value1",
             (v, writeView) -> writeView.set(v));
@@ -48,7 +49,9 @@ public class InfinispanFunctional {
 
       // Wait for this read/write combination to finish
       end.get();
+      // end::write-read[]
 
+      // tag::read-write[]
       // Create a read-write map
       FunctionalMap.ReadWriteMap<String, String> readWriteMap = functionalMap.toReadWriteMap();
 
@@ -62,6 +65,7 @@ public class InfinispanFunctional {
          readWriteView.set(v, new MetaLifespan(Duration.ofHours(1).toMillis()));
          return prev;
       });
+      // end::read-write[]
 
       // Use read-only multi-key operation to read current values for multiple keys
       Traversable<EntryView.ReadEntryView<String, String>> entryViews =
@@ -75,12 +79,14 @@ public class InfinispanFunctional {
    }
 
    static void createAndStartComponents() {
+      // tag::create-map[]
       cacheManager = new DefaultCacheManager();
       cacheManager.defineConfiguration("local", new ConfigurationBuilder().build());
       cache = cacheManager.<String, String>getCache("local").getAdvancedCache();
       functionalMap = FunctionalMapImpl.create(cache);
       writeOnlyMap = functionalMap.toWriteOnlyMap();
       readOnlyMap = functionalMap.toReadOnlyMap();
+      // end::create-map[]
    }
 
    static void stop() {

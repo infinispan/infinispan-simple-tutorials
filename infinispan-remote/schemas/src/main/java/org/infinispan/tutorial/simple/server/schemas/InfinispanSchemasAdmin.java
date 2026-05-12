@@ -48,6 +48,7 @@ public class InfinispanSchemasAdmin {
       disconnect();
    }
 
+   // tag::create-update[]
    static RemoteSchemasAdmin.SchemaOpResult createSchemaWithError() {
       return schemasAdmin.createOrUpdate(Schema.
             buildFromStringContent(SCHEMA_NAME, "What is love?"));
@@ -59,9 +60,13 @@ public class InfinispanSchemasAdmin {
             .addMessage("Greeting")
             .addField(Type.Scalar.STRING, "content", 1)
             .build();
-     return schemasAdmin.createOrUpdate(schema);
+      RemoteSchemasAdmin.SchemaOpResult result =
+            schemasAdmin.createOrUpdate(schema);
+     return result;
    }
+   // end::create-update[]
 
+   // tag::manage[]
    static Optional<Schema> getOptionalSchema() {
       Optional<Schema> schemaOpt = schemasAdmin.get(SCHEMA_NAME);
       return schemaOpt;
@@ -76,11 +81,14 @@ public class InfinispanSchemasAdmin {
    static boolean schemaExists() {
       return schemasAdmin.exists(SCHEMA_NAME);
    }
+   // end::manage[]
 
    static void connectToInfinispan() {
+      // tag::connect[]
       // Connect to the server
       remoteCacheManager = TutorialsConnectorHelper.connect();
       schemasAdmin = remoteCacheManager.administration().schemas();
+      // end::connect[]
    }
 
    static void disconnect() {

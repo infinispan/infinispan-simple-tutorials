@@ -1,3 +1,5 @@
+<!-- tag::cache-config[] -->
 <distributed-cache name="uri-cache">
     <encoding media-type="application/x-protostream"/>
 </distributed-cache>
+<!-- end::cache-config[] -->

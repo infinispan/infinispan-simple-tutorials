@@ -21,6 +21,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 
+// tag::app[]
 @SpringBootApplication
 public class InfinispanHibernateCacheSpringLocal {
 
@@ -31,6 +32,7 @@ public class InfinispanHibernateCacheSpringLocal {
 
    @Bean
    public CommandLineRunner demo() {
+// end::app[]
       return (args) -> {
          CacheRegionStatistics eventCacheStats;
          CacheRegionStatistics personCacheStats;

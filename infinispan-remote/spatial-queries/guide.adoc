@@ -1,0 +1,53 @@
+= Spatial Queries
+:summary: Run geospatial queries on indexed caches using within circle, box, polygon, distance projection, and spatial ordering
+:mode: remote
+:topics: querying,spatial
+:keywords: spatial,geospatial,query,latitude,longitude,geopoint,geofield,within,circle,box,polygon,distance
+:duration: 15
+:source-dir: infinispan-remote/spatial-queries
+
+== What You Will Learn
+
+How to define geospatial entities with `@GeoPoint` and `@GeoField` annotations, create indexed caches, and run spatial Ickle queries including within circle, within box, within polygon, distance projections, and spatial ordering.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Define Geospatial Entities
+
+Use `@GeoPoint` with `@Latitude` and `@Longitude` to define a location on a record:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/spatial/Restaurant.java[tag=entities]
+----
+
+For entities with multiple geo points, use multiple `@GeoPoint` annotations (see `TrainRoute`). Alternatively, use `@GeoField` with `LatLng` for a simpler mapping:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/spatial/Hiking.java[tag=entities]
+----
+
+== Step 2: Create an Indexed Cache and Run Spatial Queries
+
+Configure the cache with indexing enabled for all spatial entities. Then run spatial queries -- within a circle, within a bounding box, within a polygon, and with distance projections and ordering:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/spatial/InfinispanSpatialQueries.java[tag=queries]
+----
+
+== Step 3: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+== What's Next
+
+* link:../query/guide.html[Query your data] with standard Ickle queries
+* link:../continuous-query/guide.html[Use continuous queries] for real-time notifications

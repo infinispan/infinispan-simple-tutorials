@@ -1,0 +1,76 @@
+= Prometheus Metrics and JMX with Embedded Infinispan
+:summary: Enable Prometheus metrics scraping and JMX statistics on an embedded Infinispan cache
+:mode: embedded
+:topics: monitoring,metrics
+:keywords: prometheus,jmx,metrics,statistics,micrometer,embedded
+:duration: 10
+:source-dir: infinispan-embedded/metrics
+
+== What You Will Learn
+
+How to enable statistics on an embedded Infinispan cache manager and cache, scrape metrics in Prometheus format using Micrometer, and access cache attributes via JMX.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add Dependencies
+
+Add Infinispan core and the Micrometer Prometheus registry to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-core</artifactId>
+</dependency>
+<dependency>
+   <groupId>io.micrometer</groupId>
+   <artifactId>micrometer-core</artifactId>
+</dependency>
+<dependency>
+   <groupId>io.micrometer</groupId>
+   <artifactId>micrometer-registry-prometheus</artifactId>
+</dependency>
+----
+
+== Step 2: Configure Statistics and JMX
+
+Configure the cache manager with statistics and JMX enabled, then create a distributed cache with statistics:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/metrics/InfinispanCacheMetrics.java[tag=config]
+----
+
+== Step 3: Scrape Prometheus Metrics
+
+Use the `MetricsRegistry` to scrape metrics in Prometheus text format:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/metrics/InfinispanCacheMetrics.java[tag=prometheus]
+----
+
+== Step 4: Access JMX Attributes
+
+Query cache manager attributes through JMX:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/metrics/InfinispanCacheMetrics.java[tag=jmx]
+----
+
+== Step 5: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+The output displays Prometheus-formatted metrics followed by the running cache count from JMX.
+
+== What's Next
+
+* Add link:../security/guide.html[role-based security] to restrict cache access
+* Explore link:../cache-distributed/guide.html[distributed caching] for multi-node deployments

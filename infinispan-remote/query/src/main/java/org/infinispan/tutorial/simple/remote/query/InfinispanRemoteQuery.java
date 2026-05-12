@@ -38,6 +38,7 @@ public class InfinispanRemoteQuery {
       disconnect(false);
    }
 
+   // tag::queries[]
    static List<Person> queryAll() {
       // Query all
       Query<Person> query = peopleCache.query("FROM tutorial.Person");
@@ -48,14 +49,15 @@ public class InfinispanRemoteQuery {
       return queryResult;
    }
 
-   static List<Person> deleteByQuery() {
-      Query<Person> query = peopleCache.query("DELETE FROM tutorial.Person p where p.key.pseudo = 'dmalfoy'");
-      System.out.println("== DELETE count:" + query.execute().count().value());
-      // Query all
-      query = peopleCache.query("FROM tutorial.Person");
+   static List<Person> queryWithWhereStatementOnValues() {
+      // Create a query with lastName parameter
+      System.out.println("== Query on values");
+      Query<Person> query = peopleCache.query("FROM tutorial.Person p where p.lastName = :lastName");
+      // Set the parameter value
+      query.setParameter("lastName", "Granger");
+      // Execute the query
       List<Person> queryResult = query.execute().list();
       // Print the results
-      System.out.println("SIZE " + queryResult.size());
       System.out.println(queryResult);
       return queryResult;
    }
@@ -74,6 +76,19 @@ public class InfinispanRemoteQuery {
       return queryResultProjection;
    }
 
+   static List<Person> deleteByQuery() {
+      Query<Person> query = peopleCache.query("DELETE FROM tutorial.Person p where p.key.pseudo = 'dmalfoy'");
+      System.out.println("== DELETE count:" + query.execute().count().value());
+      // Query all
+      query = peopleCache.query("FROM tutorial.Person");
+      List<Person> queryResult = query.execute().list();
+      // Print the results
+      System.out.println("SIZE " + queryResult.size());
+      System.out.println(queryResult);
+      return queryResult;
+   }
+   // end::queries[]
+
    static List<Person> queryByKey() {
       // Create a query by key
       System.out.println("== Query by key values");
@@ -85,19 +100,7 @@ public class InfinispanRemoteQuery {
       return queryResult;
    }
 
-   static List<Person> queryWithWhereStatementOnValues() {
-      // Create a query with lastName parameter
-      System.out.println("== Query on values");
-      Query<Person> query = peopleCache.query("FROM tutorial.Person p where p.lastName = :lastName");
-      // Set the parameter value
-      query.setParameter("lastName", "Granger");
-      // Execute the query
-      List<Person> queryResult = query.execute().list();
-      // Print the results
-      System.out.println(queryResult);
-      return queryResult;
-   }
-
+   // tag::setup[]
    static void connectToInfinispan() throws Exception {
       ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
 
@@ -117,6 +120,7 @@ public class InfinispanRemoteQuery {
       // Get the people cache, create it if needed with the default configuration
       peopleCache = client.getCache(INDEXED_PEOPLE_CACHE);
    }
+   // end::setup[]
 
    static void addDataToCache() {
       // Create the persons dataset to be stored in the cache

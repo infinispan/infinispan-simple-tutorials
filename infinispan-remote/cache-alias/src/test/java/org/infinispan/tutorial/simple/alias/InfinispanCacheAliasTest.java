@@ -12,7 +12,7 @@ public class InfinispanCacheAliasTest {
 
     @BeforeAll
     public static void start() {
-        InfinispanCacheAlias.connectToInfinispan();
+        InfinispanCacheAlias.connectAndStore();
     }
 
     @AfterAll
@@ -25,7 +25,7 @@ public class InfinispanCacheAliasTest {
         assertNotNull(InfinispanCacheAlias.cache);
         assertNull(InfinispanCacheAlias.cacheAlias);
 
-        InfinispanCacheAlias.manipulateCache();
+        InfinispanCacheAlias.addAlias();
         assertEquals("value", InfinispanCacheAlias.cache.get("key"));
 
         InfinispanCacheAlias.addAlias();

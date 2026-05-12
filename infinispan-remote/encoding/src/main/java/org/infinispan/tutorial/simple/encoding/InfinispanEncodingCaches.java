@@ -24,6 +24,7 @@ public class InfinispanEncodingCaches {
    }
 
    static void manipulateCachesAndPrint() {
+      // tag::usage[]
       System.out.println("== Cache with text encoding and string marshaller.");
       textCache.put("text", "诶, 你好.");
       System.out.println("Get key from text cache: " + textCache.get("text"));
@@ -35,9 +36,11 @@ public class InfinispanEncodingCaches {
       System.out.println("== Cache with xml encoding and string marshaller.");
       xmlCache.put("xml", "<name>infinispan</name>");
       System.out.println("Get key from xml cache: " + xmlCache.get("xml"));
+      // end::usage[]
    }
 
    public static void connectToInfinispan() throws Exception {
+      // tag::connect[]
       ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
 
       URI textCacheURI = InfinispanEncodingCaches.class.getClassLoader().getResource("textCache.xml").toURI();
@@ -49,6 +52,7 @@ public class InfinispanEncodingCaches {
       builder.remoteCache("xmlCache").configurationURI(xmlCacheURI);
 
       cacheManager = TutorialsConnectorHelper.connect(builder);
+      // end::connect[]
       textCache = cacheManager.getCache("textCache");
       jsonCache = cacheManager.getCache("jsonCache")
               .withDataFormat(DataFormat.builder()

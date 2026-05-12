@@ -15,10 +15,12 @@ public class RedisClientCache {
    }
 
    static void manipulateWithRESP() {
+      // tag::put-get[]
       String key = "Hello";
       jedis.set(key, "world");
       String value = jedis.get(key);
       System.out.println(String.format("Read from Infinispan using a Redis Client (Resp Protocol): %s %s", key, value));
+      // end::put-get[]
    }
 
    static void disconnect() {
@@ -54,12 +56,15 @@ public class RedisClientCache {
    }
 
    private static Jedis createJedis(int port) {
+      // tag::connect[]
       String redisUri = String.format("redis://%s:%s@%s:%s",
               TutorialsConnectorHelper.USER,
               TutorialsConnectorHelper.PASSWORD,
               TutorialsConnectorHelper.HOST,
               port);
-      return new Jedis(redisUri);
+      Jedis jedis = new Jedis(redisUri);
+      // end::connect[]
+      return jedis;
    }
 
 }

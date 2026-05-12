@@ -35,6 +35,7 @@ public class InfinispanRemoteTx {
    }
 
    static void manipulateWithTx() throws Exception {
+      // tag::tx-operations[]
       // Obtain the transaction manager
       TransactionManager transactionManager = cache.getTransactionManager();
       // Perform some operations within a transaction and commit it
@@ -44,6 +45,8 @@ public class InfinispanRemoteTx {
       transactionManager.commit();
       // Display the current cache contents
       System.out.printf("key1 = %s\nkey2 = %s\n", cache.get("key1"), cache.get("key2"));
+
+      // Perform some operations within a transaction and roll it back
       // Perform some operations within a transaction and roll it back
       transactionManager.begin();
       cache.put("key1", "value3");
@@ -51,11 +54,13 @@ public class InfinispanRemoteTx {
       transactionManager.rollback();
       // Display the current cache contents
       System.out.printf("key1 = %s\nkey2 = %s\n", cache.get("key1"), cache.get("key2"));
+      // end::tx-operations[]
    }
 
    public static void connectToInfinispan() throws Exception {
       // Create a configuration for a locally-running server
       ConfigurationBuilder builder = TutorialsConnectorHelper.connectionConfig();
+      // tag::tx-config[]
       // Add a transactional cache on startup
       URI cacheConfig = InfinispanRemoteTx.class.getClassLoader().getResource("simple-tx-cache.xml").toURI();
       builder.remoteCache(CACHE_NAME)
@@ -69,6 +74,7 @@ public class InfinispanRemoteTx {
       // Connect to the server
       cacheManager = TutorialsConnectorHelper.connect(builder);
       cache = cacheManager.getCache(CACHE_NAME);
+      // end::tx-config[]
    }
 
    public static void disconnect(boolean removeCaches) {

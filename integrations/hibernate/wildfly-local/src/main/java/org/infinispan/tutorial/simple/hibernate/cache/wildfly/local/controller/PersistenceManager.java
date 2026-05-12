@@ -12,6 +12,7 @@ import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.model.Event;
 import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.model.Person;
 import org.infinispan.tutorial.simple.hibernate.cache.wildfly.local.util.ClearStatistics;
 
+// tag::ejb[]
 @Stateless
 @Interceptors(ClearStatistics.class)
 public class PersistenceManager {
@@ -29,6 +30,7 @@ public class PersistenceManager {
       Event event = em.find(Event.class, id);
       out.append(String.format("Found entity: %s%n", event));
    }
+// end::ejb[]
 
    public void updateEntity(long id, StringBuilder out) {
       Event event = em.find(Event.class, id);

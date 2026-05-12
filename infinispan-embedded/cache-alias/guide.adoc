@@ -1,0 +1,73 @@
+= Cache Aliases with Embedded Infinispan
+:summary: Create and update cache aliases so that a single cache is accessible under multiple names
+:mode: embedded
+:topics: caching,aliases
+:keywords: alias,cache-alias,embedded,distributed,dynamic-configuration
+:duration: 10
+:source-dir: infinispan-embedded/cache-alias
+
+== What You Will Learn
+
+How to create a distributed cache with an alias in embedded Infinispan, access the same cache data through different names, and dynamically add new aliases at runtime.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add the Embedded Dependency
+
+Add Infinispan core to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-core</artifactId>
+</dependency>
+----
+
+== Step 2: Create a Cache with an Alias
+
+Configure a distributed cache and assign an alias using the `aliases()` method on the configuration builder:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/alias/InfinispanCacheAlias.java[tag=create-cache]
+----
+
+The cache is now accessible by both its original name and the alias. Any data stored through one name is visible through the other.
+
+== Step 3: Access the Cache by Alias
+
+Retrieve the cache using the alias name. It returns the same underlying cache:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/alias/InfinispanCacheAlias.java[tag=access-alias]
+----
+
+== Step 4: Add a New Alias at Runtime
+
+Use `updateConfigurationAttribute` to dynamically add another alias to an existing cache:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/alias/InfinispanCacheAlias.java[tag=add-alias]
+----
+
+After this update, the cache is accessible by the original name, the first alias, and the new alias.
+
+== Step 5: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+The output shows the same cache entries when accessed by the cache name or any of its aliases.
+
+== What's Next
+
+* Try link:../cache-distributed/guide.html[distributed caching] to understand how data is partitioned
+* Try link:../cache-replicated/guide.html[replicated mode] where every node has all data
+* Add link:../listeners/guide.html[cache listeners] to react to changes

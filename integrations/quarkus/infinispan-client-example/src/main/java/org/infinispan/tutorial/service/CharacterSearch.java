@@ -13,6 +13,7 @@ import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+// tag::service[]
 @ApplicationScoped
 public class CharacterSearch {
    @Inject
@@ -47,3 +48,4 @@ public class CharacterSearch {
    }
 
 }
+// end::service[]

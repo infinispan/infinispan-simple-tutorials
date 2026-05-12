@@ -6,10 +6,13 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import org.asciidoctor.Asciidoctor;
@@ -142,7 +145,67 @@ public class GuideMetadataGenerator {
       }
 
       guides.add(guide);
-      Files.copy(guideFile, guidesOutputDir.resolve(id + ".adoc"));
+
+      String resolved = resolveIncludes(content, guideFile.getParent());
+      Files.writeString(guidesOutputDir.resolve(id + ".adoc"), resolved);
+   }
+
+   private static final Pattern INCLUDE_PATTERN =
+         Pattern.compile("^include::(.+?)\\[tag=(\\w[\\w-]*)\\]\\s*$", Pattern.MULTILINE);
+
+   private final Map<Path, List<String>> fileCache = new HashMap<>();
+
+   private String resolveIncludes(String content, Path baseDir) {
+      Matcher matcher = INCLUDE_PATTERN.matcher(content);
+      StringBuilder sb = new StringBuilder();
+      while (matcher.find()) {
+         String filePath = matcher.group(1);
+         String tagName = matcher.group(2);
+         String extracted = extractTag(baseDir.resolve(filePath), tagName);
+         matcher.appendReplacement(sb, Matcher.quoteReplacement(extracted));
+      }
+      matcher.appendTail(sb);
+      return sb.toString();
+   }
+
+   private String extractTag(Path file, String tag) {
+      List<String> lines = fileCache.computeIfAbsent(file, f -> {
+         try {
+            return Files.readAllLines(f);
+         } catch (IOException e) {
+            System.err.println("WARNING: Cannot read include file: " + f);
+            return List.of();
+         }
+      });
+      if (lines.isEmpty()) {
+         return "// Include not found: " + file.getFileName() + "[tag=" + tag + "]";
+      }
+
+      String startMarker = "tag::" + tag + "[]";
+      String endMarker = "end::" + tag + "[]";
+      StringBuilder sb = new StringBuilder();
+      boolean capturing = false;
+      for (String line : lines) {
+         if (line.contains(startMarker)) {
+            capturing = true;
+            continue;
+         }
+         if (line.contains(endMarker)) {
+            capturing = false;
+            continue;
+         }
+         if (capturing) {
+            sb.append(line).append('\n');
+         }
+      }
+      String result = sb.toString();
+      if (result.isEmpty()) {
+         return "// Tag not found: " + tag + " in " + file.getFileName();
+      }
+      if (result.endsWith("\n")) {
+         result = result.substring(0, result.length() - 1);
+      }
+      return result;
    }
 
    private String attrString(Document doc, String name) {

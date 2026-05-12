@@ -1,0 +1,63 @@
+= Remote Multimap Cache
+:summary: Store multiple values per key using the remote multimap cache API
+:mode: remote
+:topics: caching,multimap
+:keywords: multimap,multiple-values,remote,hot-rod,cache
+:duration: 5
+:source-dir: infinispan-remote/multimap
+
+== What You Will Learn
+
+How to use the remote multimap cache to associate multiple values with a single key, useful for one-to-many relationships.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Get the Multimap Cache Manager
+
+Connect to the server and obtain a `MultimapCacheManager`:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/multimap/InfinispanRemoteMultimap.java[tag=connect]
+----
+
+== Step 2: Store Multiple Values per Key
+
+Use `put` to add multiple values under the same key:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/multimap/InfinispanRemoteMultimap.java[tag=put-values]
+----
+
+== Step 3: Retrieve All Values for a Key
+
+Use `get` to retrieve the collection of values associated with a key:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/multimap/InfinispanRemoteMultimap.java[tag=get-values]
+----
+
+This prints all four values stored under key `2016`.
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+You should see output like:
+
+----
+[Rosita, Guillermo, Patricia, Silvia]
+----
+
+== What's Next
+
+* link:../cache/guide.html[Get started] with basic cache operations
+* link:../counter/guide.html[Use distributed counters] for atomic counting

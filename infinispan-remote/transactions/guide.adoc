@@ -1,0 +1,68 @@
+= Transactional Cache Operations
+:summary: Perform transactional cache operations with commit and rollback using the Hot Rod client
+:mode: remote
+:topics: transactions,caching
+:keywords: transaction,commit,rollback,non-xa,pessimistic,transactionmanager
+:duration: 10
+:source-dir: infinispan-remote/transactions
+
+== What You Will Learn
+
+How to configure a transactional remote cache and use `TransactionManager` to group cache operations into transactions that can be committed or rolled back.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Define a Transactional Cache
+
+Create an XML cache definition with transactional settings in `simple-tx-cache.xml`:
+
+[source,xml]
+----
+include::src/main/resources/simple-tx-cache.xml[tag=tx-cache-config]
+----
+
+== Step 2: Configure and Connect
+
+Associate the cache with a `TransactionManagerLookup` and set the transaction mode:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/transaction/InfinispanRemoteTx.java[tag=tx-config]
+----
+
+== Step 3: Commit and Roll Back Transactions
+
+Begin a transaction, put entries, and commit. Then begin another transaction, modify entries, and roll back to discard the changes:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/remote/transaction/InfinispanRemoteTx.java[tag=tx-operations]
+----
+
+After rollback, the values remain `value1` and `value2`.
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+You should see:
+
+----
+key1 = value1
+key2 = value2
+key1 = value1
+key2 = value2
+----
+
+The second pair confirms the rollback discarded the changes.
+
+== What's Next
+
+* link:../cache/guide.html[Getting started] with basic cache operations
+* link:../reactive-api/guide.html[Reactive API] for non-blocking operations

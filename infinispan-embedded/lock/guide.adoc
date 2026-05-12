@@ -1,0 +1,70 @@
+= Clustered Locks with Embedded Infinispan
+:summary: Use clustered locks for distributed synchronization across embedded Infinispan nodes
+:mode: embedded
+:topics: clustering,locking
+:keywords: clustered-lock,distributed,embedded,synchronization,concurrency
+:duration: 10
+:source-dir: infinispan-embedded/lock
+
+== What You Will Learn
+
+How to use Infinispan clustered locks to synchronize concurrent operations across a cluster of embedded nodes using the asynchronous `ClusteredLock` API.
+
+== Prerequisites
+
+* Java 17+
+
+== Step 1: Add Dependencies
+
+Add the Infinispan core and clustered lock modules to your `pom.xml`:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-core</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-clustered-lock</artifactId>
+</dependency>
+----
+
+== Step 2: Create a Clustered Lock Manager
+
+Start a clustered cache manager and obtain a `ClusteredLockManager` from it:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/lock/InfinispanClusteredLock.java[tag=manager]
+----
+
+== Step 3: Define and Use a Clustered Lock
+
+Define a named lock and acquire it asynchronously. The lock is non-reentrant by default:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/lock/InfinispanClusteredLock.java[tag=lock]
+----
+
+Multiple concurrent `tryLock` calls can be coordinated with `CompletableFuture.allOf` to wait for all operations to complete:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/lock/InfinispanClusteredLock.java[tag=use-lock]
+----
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+The output shows each lock acquisition and release in sequence, with a final counter value reflecting the number of successful lock operations.
+
+== What's Next
+
+* Try link:../cache-distributed/guide.html[distributed caching] across cluster nodes
+* Use link:../transactions/guide.html[transactions] for multi-key atomic operations

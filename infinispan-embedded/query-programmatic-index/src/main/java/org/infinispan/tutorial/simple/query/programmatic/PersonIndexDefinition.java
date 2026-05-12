@@ -5,6 +5,7 @@ import org.hibernate.search.mapper.pojo.mapping.definition.programmatic.TypeMapp
 import org.infinispan.query.mapper.mapping.MappingConfigurationContext;
 import org.infinispan.query.mapper.mapping.ProgrammaticSearchMappingProvider;
 
+// tag::index-definition[]
 public class PersonIndexDefinition implements ProgrammaticSearchMappingProvider {
 
     @Override
@@ -16,3 +17,4 @@ public class PersonIndexDefinition implements ProgrammaticSearchMappingProvider 
         type.property("surname").fullTextField();
     }
 }
+// end::index-definition[]

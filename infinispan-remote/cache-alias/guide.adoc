@@ -1,0 +1,55 @@
+= Remote Cache Aliases
+:summary: Add aliases to remote caches and access the same data through different cache names
+:mode: remote
+:topics: caching,administration
+:keywords: cache,alias,remote,administration,hot-rod
+:duration: 5
+:source-dir: infinispan-remote/cache-alias
+
+== What You Will Learn
+
+How to add aliases to an existing remote cache so you can access the same cache data using alternative names.
+
+== Prerequisites
+
+* Java 17+
+* An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
+
+== Step 1: Connect and Store Data
+
+Connect to the server, obtain a remote cache, and store a value:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/alias/InfinispanCacheAlias.java[tag=connect-and-store]
+----
+
+== Step 2: Add and Use Aliases
+
+Use the admin API to update the `aliases` configuration attribute. You can then access the same cache data through any of its aliases:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/alias/InfinispanCacheAlias.java[tag=aliases]
+----
+
+The alias points to the same underlying cache, so all data is shared.
+
+== Step 3: Run the Tutorial
+
+[source,bash]
+----
+mvn package exec:java
+----
+
+You should see output like:
+
+----
+key = value
+key = value
+----
+
+== What's Next
+
+* link:../cache-admin-api/guide.html[Create caches] with the admin API
+* link:../cache/guide.html[Get started] with basic cache operations

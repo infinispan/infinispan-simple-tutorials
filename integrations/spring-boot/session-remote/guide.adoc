@@ -1,0 +1,82 @@
+= Spring Boot HTTP Sessions with Remote Infinispan
+:summary: Store Spring Boot HTTP sessions in a remote Infinispan Server for externalized session management
+:mode: integration
+:topics: spring-boot,session
+:keywords: spring-boot,http-session,spring-session,remote,session-replication
+:duration: 10
+:source-dir: integrations/spring-boot/session-remote
+
+== What You Will Learn
+
+How to store Spring Boot HTTP sessions in a remote Infinispan Server using `@EnableInfinispanRemoteHttpSession`, enabling session sharing across application instances.
+
+== Prerequisites
+
+* Java 17+
+* Spring Boot
+* An Infinispan Server running on `localhost:11222`
+
+== Step 1: Add Dependencies
+
+Add the Infinispan Spring Boot remote starter, Spring Web, Thymeleaf, and Spring Session:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-spring-boot4-starter-remote</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot-starter-thymeleaf</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.springframework.session</groupId>
+   <artifactId>spring-session-core</artifactId>
+</dependency>
+----
+
+== Step 2: Enable Remote HTTP Sessions
+
+Annotate your main application class with `@EnableInfinispanRemoteHttpSession`:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/spring/session/UserSessionsApp.java[tag=app]
+----
+
+== Step 3: Configure the Sessions Cache
+
+Use an `InfinispanRemoteCacheCustomizer` to configure the "sessions" cache with Protobuf marshalling:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/spring/session/InfinispanConfiguration.java[tag=customizer]
+----
+
+== Step 4: Use Session Attributes in a Controller
+
+Store and retrieve data from the HTTP session as usual:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/spring/session/WebController.java[tag=controller]
+----
+
+== Step 5: Run the Tutorial
+
+[source,bash]
+----
+mvn spring-boot:run
+----
+
+Visit `http://localhost:8080/greeting?name=Katia`. Refresh the page to see the previous name persisted in the session. Sessions are stored in the remote Infinispan Server, so they survive application restarts.
+
+== What's Next
+
+* link:../session-embedded/guide.html[Spring Boot embedded sessions] for session storage without a server
+* link:../cache-remote/guide.html[Spring Boot remote caching] for data caching with a remote server

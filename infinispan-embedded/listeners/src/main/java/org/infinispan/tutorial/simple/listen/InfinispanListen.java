@@ -25,13 +25,16 @@ public class InfinispanListen {
    }
 
    static void manipulateCache() {
+      // tag::trigger-events[]
       // Store some values
       cache.put("key1", "value1");
       cache.put("key2", "value2");
       cache.put("key1", "newValue");
+      // end::trigger-events[]
    }
 
    static void createAndStartComponents() {
+      // tag::register-listener[]
       // Construct a simple local cache manager with default configuration
       cacheManager = new DefaultCacheManager();
       // Define local cache configuration
@@ -42,6 +45,7 @@ public class InfinispanListen {
       listener = new MyListener();
       // Register a listener
       cache.addListener(listener);
+      // end::register-listener[]
    }
 
    static void stop() {
@@ -51,6 +55,7 @@ public class InfinispanListen {
       }
    }
 
+   // tag::listener[]
    @Listener
    public static class MyListener {
       Map<String, String> created = new HashMap();
@@ -72,4 +77,5 @@ public class InfinispanListen {
             System.out.printf("About to modify %s\n", event.getKey());
       }
    }
+   // end::listener[]
 }

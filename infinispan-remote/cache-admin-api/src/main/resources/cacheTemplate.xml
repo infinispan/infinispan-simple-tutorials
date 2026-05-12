@@ -1,3 +1,4 @@
+<!-- tag::template[] -->
 <infinispan>
     <cache-container>
         <distributed-cache-configuration name="template" remote-timeout="17500" statistics="true">
@@ -7,3 +8,4 @@
         </distributed-cache-configuration>
     </cache-container>
 </infinispan>
+<!-- end::template[] -->

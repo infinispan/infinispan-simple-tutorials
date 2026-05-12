@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 
+// tag::app[]
 @EnableInfinispanEmbeddedHttpSession
 @SpringBootApplication
 public class UserSessionsApp {
@@ -42,3 +43,4 @@ public class UserSessionsApp {
         new SpringApplicationBuilder().sources(UserSessionsApp.class).run(args);
     }
 }
+// end::app[]
