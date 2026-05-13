@@ -80,5 +80,5 @@ The application periodically creates, reads, and removes entries. Watch the logs
 
 == What's Next
 
-* link:../cache-remote-reactor/guide.html[Spring Boot reactive remote caching] for the same pattern with Project Reactor
-* link:../cache-embedded/guide.html[Spring Boot embedded caching] for caching without a server
+* link:/tutorials/integrations-spring-boot-cache-remote-reactor/[Spring Boot reactive remote caching] for the same pattern with Project Reactor
+* link:/tutorials/integrations-spring-boot-cache-embedded/[Spring Boot embedded caching] for caching without a server

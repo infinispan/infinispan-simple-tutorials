@@ -77,6 +77,6 @@ This creates a deployment with 2 replicas and a headless service for DNS-based c
 
 == What's Next
 
-* Try link:../cache-replicated/guide.html[replicated mode] locally before deploying to Kubernetes
-* Explore link:../cache-distributed/guide.html[distributed mode] for large datasets where full replication is not feasible
-* Add link:../listeners/guide.html[cache listeners] to react to cluster events
+* Try link:/tutorials/embedded-cache-replicated/[replicated mode] locally before deploying to Kubernetes
+* Explore link:/tutorials/embedded-cache-distributed/[distributed mode] for large datasets where full replication is not feasible
+* Add link:/tutorials/embedded-listeners/[cache listeners] to react to cluster events

@@ -58,5 +58,5 @@ After running, you can verify:
 
 == What's Next
 
-* link:../cache/guide.html[Get started] with basic remote cache operations
-* link:../near-cache/guide.html[Use near-caching] for faster reads
+* link:/tutorials/remote-cache/[Get started] with basic remote cache operations
+* link:/tutorials/remote-near-cache/[Use near-caching] for faster reads

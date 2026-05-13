@@ -71,4 +71,4 @@ Results are ranked by cosine similarity score. Text about "vector search" and "e
 
 == What's Next
 
-* Try link:../vector-search/guide.html[vector search] for direct vector API usage without LangChain4j
+* Try link:/tutorials/ai-vector-search/[vector search] for direct vector API usage without LangChain4j

@@ -64,5 +64,5 @@ Visit `http://localhost:8080/?name=Katia`. Refresh to see the previous name from
 
 == What's Next
 
-* link:../session-remote/guide.html[Spring Boot remote sessions] for externalized session storage in an Infinispan Server
-* link:../cache-embedded/guide.html[Spring Boot embedded caching] for data caching with embedded Infinispan
+* link:/tutorials/integrations-spring-boot-session-remote/[Spring Boot remote sessions] for externalized session storage in an Infinispan Server
+* link:/tutorials/integrations-spring-boot-cache-embedded/[Spring Boot embedded caching] for data caching with embedded Infinispan

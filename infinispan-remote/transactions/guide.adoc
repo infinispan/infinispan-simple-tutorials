@@ -64,5 +64,5 @@ The second pair confirms the rollback discarded the changes.
 
 == What's Next
 
-* link:../cache/guide.html[Getting started] with basic cache operations
-* link:../reactive-api/guide.html[Reactive API] for non-blocking operations
+* link:/tutorials/remote-cache/[Getting started] with basic cache operations
+* link:/tutorials/remote-reactive-api/[Reactive API] for non-blocking operations
