@@ -62,6 +62,6 @@ The output prints `Result = 45`.
 
 == What's Next
 
-* Start with link:../map/guide.html[basic map operations] for simple cache usage
-* Try link:../query/guide.html[Ickle queries] for structured data searching
-* Explore link:../cache-distributed/guide.html[distributed caching] for cluster-wide streams
+* Start with link:/tutorials/embedded-map/[basic map operations] for simple cache usage
+* Try link:/tutorials/embedded-query/[Ickle queries] for structured data searching
+* Explore link:/tutorials/embedded-cache-distributed/[distributed caching] for cluster-wide streams

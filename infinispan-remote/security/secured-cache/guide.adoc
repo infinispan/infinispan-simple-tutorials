@@ -56,5 +56,5 @@ You will see an authorization error message when trying to write to the secured 
 
 == What's Next
 
-* Configure link:../security/tls-authorization/guide.html[TLS with client certificate authorization]
+* Configure link:/tutorials/remote-security-tls-authorization/[TLS with client certificate authorization]
 * Learn about Infinispan's built-in roles: `admin`, `deployer`, `application`, `observer`, `monitor`

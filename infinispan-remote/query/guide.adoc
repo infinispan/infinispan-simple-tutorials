@@ -52,5 +52,5 @@ mvn package exec:java
 
 == What's Next
 
-* Try link:../spatial-queries/guide.html[spatial queries] for geolocation data
-* Add link:../continuous-query/guide.html[continuous queries] for real-time notifications
+* Try link:/tutorials/remote-spatial-queries/[spatial queries] for geolocation data
+* Add link:/tutorials/remote-continuous-query/[continuous queries] for real-time notifications

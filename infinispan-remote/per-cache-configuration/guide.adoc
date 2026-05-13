@@ -57,5 +57,5 @@ key = world-uri
 
 == What's Next
 
-* link:../cache/guide.html[Getting started] with basic cache operations
-* link:../near-cache/guide.html[Near-caching] for faster reads
+* link:/tutorials/remote-cache/[Getting started] with basic cache operations
+* link:/tutorials/remote-near-cache/[Near-caching] for faster reads

@@ -60,5 +60,5 @@ You should see that reads on the near-cache complete significantly faster than r
 
 == What's Next
 
-* link:../cache/guide.html[Getting started] with basic cache operations
-* link:../per-cache-configuration/guide.html[Per-cache configuration] using templates and XML
+* link:/tutorials/remote-cache/[Getting started] with basic cache operations
+* link:/tutorials/remote-per-cache-configuration/[Per-cache configuration] using templates and XML

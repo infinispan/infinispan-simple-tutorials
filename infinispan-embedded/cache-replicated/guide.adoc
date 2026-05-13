@@ -57,6 +57,6 @@ The local and cluster-wide views will display the same entries, unlike distribut
 
 == What's Next
 
-* Compare with link:../cache-distributed/guide.html[distributed mode] where data is partitioned
-* Try link:../cache-invalidated/guide.html[invalidation mode] for locally-managed data
-* Use link:../streams/guide.html[distributed streams] for parallel processing
+* Compare with link:/tutorials/embedded-cache-distributed/[distributed mode] where data is partitioned
+* Try link:/tutorials/embedded-cache-invalidated/[invalidation mode] for locally-managed data
+* Use link:/tutorials/embedded-streams/[distributed streams] for parallel processing

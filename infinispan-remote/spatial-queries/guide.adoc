@@ -49,5 +49,5 @@ mvn package exec:java
 
 == What's Next
 
-* link:../query/guide.html[Query your data] with standard Ickle queries
-* link:../continuous-query/guide.html[Use continuous queries] for real-time notifications
+* link:/tutorials/remote-query/[Query your data] with standard Ickle queries
+* link:/tutorials/remote-continuous-query/[Use continuous queries] for real-time notifications

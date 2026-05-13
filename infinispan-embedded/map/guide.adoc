@@ -55,6 +55,6 @@ The output prints `key = value`, confirming the cache stores and retrieves entri
 
 == What's Next
 
-* Try link:../multimap/guide.html[multimap caching] to store multiple values per key
-* Add link:../streams/guide.html[Java Streams] processing on cache data
-* Explore link:../cache-distributed/guide.html[distributed caching] across cluster nodes
+* Try link:/tutorials/embedded-multimap/[multimap caching] to store multiple values per key
+* Add link:/tutorials/embedded-streams/[Java Streams] processing on cache data
+* Explore link:/tutorials/embedded-cache-distributed/[distributed caching] across cluster nodes

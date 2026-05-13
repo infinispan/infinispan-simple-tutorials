@@ -75,6 +75,6 @@ Cache with configuration exists or is created.
 
 == What's Next
 
-* link:../cache/guide.html[Get started] with basic cache operations
-* link:../cache-alias/guide.html[Add aliases] to your caches
-* link:../listeners/guide.html[Listen to cache events] with client listeners
+* link:/tutorials/remote-cache/[Get started] with basic cache operations
+* link:/tutorials/remote-cache-alias/[Add aliases] to your caches
+* link:/tutorials/remote-listeners/[Listen to cache events] with client listeners

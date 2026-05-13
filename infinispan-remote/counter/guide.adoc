@@ -53,5 +53,5 @@ You should see output showing counter values, bound exceptions, listener events,
 
 == What's Next
 
-* link:../cache/guide.html[Get started] with basic cache operations
-* link:../multimap/guide.html[Use multimap caches] for multiple values per key
+* link:/tutorials/remote-cache/[Get started] with basic cache operations
+* link:/tutorials/remote-multimap/[Use multimap caches] for multiple values per key

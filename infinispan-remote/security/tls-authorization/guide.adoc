@@ -65,5 +65,5 @@ mvn package exec:java
 
 == What's Next
 
-* link:../secured-cache/guide.html[Secured cache] with role-based authorization
-* link:../../cache/guide.html[Getting started] with basic cache operations
+* link:/tutorials/remote-security-secured-cache/[Secured cache] with role-based authorization
+* link:/tutorials/remote-cache/[Getting started] with basic cache operations

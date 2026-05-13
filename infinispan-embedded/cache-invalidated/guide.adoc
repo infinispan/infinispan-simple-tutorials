@@ -68,6 +68,6 @@ An interactive menu lets you put, get, and remove entries. Observe how a `put` o
 
 == What's Next
 
-* Try link:../cache-distributed/guide.html[distributed mode] where data is partitioned across nodes
-* Try link:../cache-replicated/guide.html[replicated mode] where every node has all data
-* Add link:../listeners/guide.html[cache listeners] to react to invalidation events
+* Try link:/tutorials/embedded-cache-distributed/[distributed mode] where data is partitioned across nodes
+* Try link:/tutorials/embedded-cache-replicated/[replicated mode] where every node has all data
+* Add link:/tutorials/embedded-listeners/[cache listeners] to react to invalidation events

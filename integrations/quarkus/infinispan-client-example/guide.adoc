@@ -78,5 +78,5 @@ curl "http://localhost:8080/characters/query?term=dragon"
 
 == What's Next
 
-* link:../../../infinispan-ai/vector-search/guide.html[Vector search] for kNN similarity search on embeddings
-* link:../../../infinispan-remote/query/guide.html[Remote queries] for Ickle query basics with the Hot Rod client
+* link:/tutorials/ai-vector-search/[Vector search] for kNN similarity search on embeddings
+* link:/tutorials/remote-query/[Remote queries] for Ickle query basics with the Hot Rod client

@@ -72,5 +72,5 @@ The output shows the two persons named William (Shakespeare and Wordsworth).
 
 == What's Next
 
-* Try link:../query-programmatic-index/guide.html[programmatic index definitions] without annotations
-* Use link:../streams/guide.html[distributed streams] for parallel cache processing
+* Try link:/tutorials/embedded-query-programmatic-index/[programmatic index definitions] without annotations
+* Use link:/tutorials/embedded-streams/[distributed streams] for parallel cache processing

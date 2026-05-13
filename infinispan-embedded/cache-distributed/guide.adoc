@@ -66,6 +66,6 @@ The local view will show fewer entries than the cluster-wide view because distri
 
 == What's Next
 
-* Try link:../cache-replicated/guide.html[replicated mode] where every node has all data
-* Add link:../listeners/guide.html[cache listeners] to react to changes
-* Use link:../streams/guide.html[distributed streams] for parallel processing
+* Try link:/tutorials/embedded-cache-replicated/[replicated mode] where every node has all data
+* Add link:/tutorials/embedded-listeners/[cache listeners] to react to changes
+* Use link:/tutorials/embedded-streams/[distributed streams] for parallel processing

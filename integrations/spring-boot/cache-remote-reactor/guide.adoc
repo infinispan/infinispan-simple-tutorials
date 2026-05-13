@@ -74,5 +74,5 @@ The application periodically looks up Basque names. Watch the logs: the first lo
 
 == What's Next
 
-* link:../cache-remote/guide.html[Spring Boot remote caching] for the non-reactive version
-* link:../cache-embedded/guide.html[Spring Boot embedded caching] for caching without a server
+* link:/tutorials/integrations-spring-boot-cache-remote/[Spring Boot remote caching] for the non-reactive version
+* link:/tutorials/integrations-spring-boot-cache-embedded/[Spring Boot embedded caching] for caching without a server

@@ -66,6 +66,6 @@ The output shows creation notifications for `key1` and `key2`, and a modificatio
 
 == What's Next
 
-* Try link:../cache-distributed/guide.html[distributed caching] with listeners in a cluster
-* Explore link:../functional/guide.html[functional map API] for lambda-based cache operations
-* Use link:../streams/guide.html[distributed streams] for processing cache data
+* Try link:/tutorials/embedded-cache-distributed/[distributed caching] with listeners in a cluster
+* Explore link:/tutorials/embedded-functional/[functional map API] for lambda-based cache operations
+* Use link:/tutorials/embedded-streams/[distributed streams] for processing cache data

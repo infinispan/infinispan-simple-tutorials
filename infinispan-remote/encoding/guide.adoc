@@ -44,5 +44,5 @@ mvn package exec:java
 
 == What's Next
 
-* link:../cache/guide.html[Get started] with basic remote cache operations
-* link:../query/guide.html[Query your data] with Ickle queries
+* link:/tutorials/remote-cache/[Get started] with basic remote cache operations
+* link:/tutorials/remote-query/[Query your data] with Ickle queries
