@@ -6,6 +6,8 @@
 :duration: 5
 :source-dir: infinispan-remote/redis-client
 
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
 == What You Will Learn
 
 How to use a standard Redis client (Jedis) to connect to Infinispan via the RESP (Redis Serialization Protocol) endpoint and perform basic set/get operations.

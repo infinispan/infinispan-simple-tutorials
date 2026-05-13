@@ -6,6 +6,8 @@
 :duration: 15
 :source-dir: integrations/hibernate/wildfly-local
 
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
 == What You Will Learn
 
 How to use Infinispan as the built-in Hibernate L2 cache provider in WildFly, exposed through JAX-RS REST endpoints that step through cache operations one by one.

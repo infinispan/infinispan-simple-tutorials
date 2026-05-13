@@ -6,6 +6,8 @@
 :duration: 10
 :source-dir: infinispan-remote/tasks
 
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
 == What You Will Learn
 
 How to upload a JavaScript task to the Infinispan Server using the REST API and then execute it remotely through the Hot Rod client with parameters.

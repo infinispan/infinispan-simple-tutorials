@@ -6,6 +6,8 @@
 :duration: 10
 :source-dir: integrations/spring-boot/session-remote
 
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
 == What You Will Learn
 
 How to store Spring Boot HTTP sessions in a remote Infinispan Server using `@EnableInfinispanRemoteHttpSession`, enabling session sharing across application instances.
