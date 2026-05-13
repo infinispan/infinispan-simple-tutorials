@@ -6,6 +6,8 @@
 :duration: 10
 :source-dir: infinispan-embedded/security
 
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
 == What You Will Learn
 
 How to configure role-based access control (RBAC) on embedded Infinispan caches, define roles with specific permissions, and enforce authorization so that only users with the correct roles can access cache data.

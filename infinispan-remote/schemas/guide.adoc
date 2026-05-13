@@ -6,6 +6,8 @@
 :duration: 10
 :source-dir: infinispan-remote/schemas
 
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
 == What You Will Learn
 
 How to use the `RemoteSchemasAdmin` API to programmatically manage Protobuf schemas on an Infinispan Server: create, update, retrieve, check existence, and remove schemas.

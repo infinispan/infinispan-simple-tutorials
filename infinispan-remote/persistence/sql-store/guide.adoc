@@ -6,6 +6,8 @@
 :duration: 15
 :source-dir: infinispan-remote/persistence/sql-store
 
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
 == What You Will Learn
 
 How to configure SQL table and query stores so that Infinispan caches load and persist data from a relational database. You will define Protobuf entities with `@Proto` annotations and register the generated schema on the server.

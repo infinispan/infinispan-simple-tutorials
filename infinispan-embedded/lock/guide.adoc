@@ -6,6 +6,8 @@
 :duration: 10
 :source-dir: infinispan-embedded/lock
 
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
 == What You Will Learn
 
 How to use Infinispan clustered locks to synchronize concurrent operations across a cluster of embedded nodes using the asynchronous `ClusteredLock` API.

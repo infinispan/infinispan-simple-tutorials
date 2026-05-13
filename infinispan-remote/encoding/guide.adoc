@@ -6,6 +6,8 @@
 :duration: 10
 :source-dir: infinispan-remote/encoding
 
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
 == What You Will Learn
 
 How to configure caches with different media type encodings (text/plain, JSON, XML) and use the `DataFormat` API to read and write data with a `UTF8StringMarshaller`.
