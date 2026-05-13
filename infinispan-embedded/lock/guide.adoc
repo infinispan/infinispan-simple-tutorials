@@ -66,5 +66,5 @@ The output shows each lock acquisition and release in sequence, with a final cou
 
 == What's Next
 
-* Try link:../cache-distributed/guide.html[distributed caching] across cluster nodes
-* Use link:../transactions/guide.html[transactions] for multi-key atomic operations
+* Try link:/tutorials/embedded-cache-distributed/[distributed caching] across cluster nodes
+* Use link:/tutorials/embedded-transactions/[transactions] for multi-key atomic operations

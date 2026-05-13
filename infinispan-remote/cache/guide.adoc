@@ -62,6 +62,6 @@ key = value
 
 == What's Next
 
-* link:../query/guide.html[Query your data] with Ickle queries
-* link:../near-cache/guide.html[Use near-caching] for faster reads
-* link:../security/secured-cache/guide.html[Secure your caches] with role-based authorization
+* link:/tutorials/remote-query/[Query your data] with Ickle queries
+* link:/tutorials/remote-near-cache/[Use near-caching] for faster reads
+* link:/tutorials/remote-security-secured-cache/[Secure your caches] with role-based authorization

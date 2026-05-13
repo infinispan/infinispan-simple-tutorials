@@ -68,6 +68,6 @@ The output shows the same cache entries when accessed by the cache name or any o
 
 == What's Next
 
-* Try link:../cache-distributed/guide.html[distributed caching] to understand how data is partitioned
-* Try link:../cache-replicated/guide.html[replicated mode] where every node has all data
-* Add link:../listeners/guide.html[cache listeners] to react to changes
+* Try link:/tutorials/embedded-cache-distributed/[distributed caching] to understand how data is partitioned
+* Try link:/tutorials/embedded-cache-replicated/[replicated mode] where every node has all data
+* Add link:/tutorials/embedded-listeners/[cache listeners] to react to changes

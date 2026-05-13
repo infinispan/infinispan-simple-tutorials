@@ -86,4 +86,4 @@ The output demonstrates full-text search, keyword/range filters, projections, kN
 
 == What's Next
 
-* link:../langchain4j/guide.html[Semantic search with LangChain4j] for vector search with an AI embedding model
+* link:/tutorials/ai-langchain4j/[Semantic search with LangChain4j] for vector search with an AI embedding model

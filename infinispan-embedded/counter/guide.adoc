@@ -64,6 +64,6 @@ The output shows counter operations including bounded overflow handling, compare
 
 == What's Next
 
-* Try link:../clusterexec/guide.html[cluster execution] for running tasks across nodes
-* Explore link:../lock/guide.html[clustered locks] for distributed coordination
-* Use link:../cache-distributed/guide.html[distributed caching] for data partitioning
+* Try link:/tutorials/embedded-clusterexec/[cluster execution] for running tasks across nodes
+* Explore link:/tutorials/embedded-lock/[clustered locks] for distributed coordination
+* Use link:/tutorials/embedded-cache-distributed/[distributed caching] for data partitioning

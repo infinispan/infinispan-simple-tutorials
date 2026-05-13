@@ -57,5 +57,5 @@ The tutorial starts an embedded H2 database, populates it, and displays the cach
 
 == What's Next
 
-* link:../../cache/guide.html[Getting started] with basic cache operations
-* link:../../query/guide.html[Query your data] with Ickle queries
+* link:/tutorials/remote-cache/[Getting started] with basic cache operations
+* link:/tutorials/remote-query/[Query your data] with Ickle queries

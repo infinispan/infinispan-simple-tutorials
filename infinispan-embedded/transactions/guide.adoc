@@ -68,5 +68,5 @@ The output shows that after commit, the cache contains the new values, and after
 
 == What's Next
 
-* Try link:../lock/guide.html[clustered locks] for distributed synchronization
-* Explore link:../cache-distributed/guide.html[distributed caching] for multi-node setups
+* Try link:/tutorials/embedded-lock/[clustered locks] for distributed synchronization
+* Explore link:/tutorials/embedded-cache-distributed/[distributed caching] for multi-node setups

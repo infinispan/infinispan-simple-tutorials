@@ -64,5 +64,5 @@ Each endpoint returns the cache statistics for that step, showing puts, hits, mi
 
 == What's Next
 
-* link:../local/guide.html[Hibernate L2 cache standalone] for the same pattern without an application server
-* link:../spring-local/guide.html[Hibernate L2 cache with Spring Boot] for a Spring Boot variant
+* link:/tutorials/integrations-hibernate-local/[Hibernate L2 cache standalone] for the same pattern without an application server
+* link:/tutorials/integrations-hibernate-spring-local/[Hibernate L2 cache with Spring Boot] for a Spring Boot variant

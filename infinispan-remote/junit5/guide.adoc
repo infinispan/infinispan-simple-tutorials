@@ -65,5 +65,5 @@ The extension starts an Infinispan Server container, runs the tests, and stops t
 
 == What's Next
 
-* link:../cache/guide.html[Get started] with basic cache operations
-* link:../query/guide.html[Query your data] with Ickle queries
+* link:/tutorials/remote-cache/[Get started] with basic cache operations
+* link:/tutorials/remote-query/[Query your data] with Ickle queries

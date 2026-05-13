@@ -63,5 +63,5 @@ Read from Infinispan using a Redis Client (Resp Protocol): Hello world
 
 == What's Next
 
-* link:../cache/guide.html[Get started] with the Hot Rod client
-* link:../encoding/guide.html[Use different encodings] for your caches
+* link:/tutorials/remote-cache/[Get started] with the Hot Rod client
+* link:/tutorials/remote-encoding/[Use different encodings] for your caches

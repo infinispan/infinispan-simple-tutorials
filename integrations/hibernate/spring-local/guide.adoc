@@ -73,5 +73,5 @@ The output shows cache puts, hits, misses, and query cache statistics, confirmin
 
 == What's Next
 
-* link:../local/guide.html[Hibernate L2 cache standalone] for the same pattern without Spring
-* link:../wildfly-local/guide.html[Hibernate L2 cache with WildFly] for a Jakarta EE deployment
+* link:/tutorials/integrations-hibernate-local/[Hibernate L2 cache standalone] for the same pattern without Spring
+* link:/tutorials/integrations-hibernate-wildfly-local/[Hibernate L2 cache with WildFly] for a Jakarta EE deployment

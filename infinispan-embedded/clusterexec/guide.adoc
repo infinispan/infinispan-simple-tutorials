@@ -57,6 +57,6 @@ Each cluster member generates a random integer, and the results are printed on t
 
 == What's Next
 
-* Try link:../cache-distributed/guide.html[distributed caching] for data partitioning across nodes
-* Use link:../streams/guide.html[distributed streams] for parallel data processing
-* Explore link:../counter/guide.html[clustered counters] for shared state across nodes
+* Try link:/tutorials/embedded-cache-distributed/[distributed caching] for data partitioning across nodes
+* Use link:/tutorials/embedded-streams/[distributed streams] for parallel data processing
+* Explore link:/tutorials/embedded-counter/[clustered counters] for shared state across nodes
