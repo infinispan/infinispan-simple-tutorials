@@ -55,5 +55,5 @@ The output shows successful reads from the normal and secret caches with the cor
 
 == What's Next
 
-* Add link:../metrics/guide.html[Prometheus metrics] to monitor your caches
-* Explore link:../cache-distributed/guide.html[distributed caching] for multi-node setups
+* Add link:/tutorials/embedded-metrics/[Prometheus metrics] to monitor your caches
+* Explore link:/tutorials/embedded-cache-distributed/[distributed caching] for multi-node setups

@@ -51,5 +51,5 @@ key = value
 
 == What's Next
 
-* link:../cache-admin-api/guide.html[Create caches] with the admin API
-* link:../cache/guide.html[Get started] with basic cache operations
+* link:/tutorials/remote-cache-admin-api/[Create caches] with the admin API
+* link:/tutorials/remote-cache/[Get started] with basic cache operations

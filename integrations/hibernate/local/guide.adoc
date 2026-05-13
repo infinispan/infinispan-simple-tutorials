@@ -72,5 +72,5 @@ The output shows cache puts when entities are persisted, cache hits when entitie
 
 == What's Next
 
-* link:../spring-local/guide.html[Hibernate L2 cache with Spring Boot] for the same pattern in a Spring Boot application
-* link:../wildfly-local/guide.html[Hibernate L2 cache with WildFly] for a Jakarta EE deployment
+* link:/tutorials/integrations-hibernate-spring-local/[Hibernate L2 cache with Spring Boot] for the same pattern in a Spring Boot application
+* link:/tutorials/integrations-hibernate-wildfly-local/[Hibernate L2 cache with WildFly] for a Jakarta EE deployment

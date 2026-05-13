@@ -68,5 +68,5 @@ You should see output showing notifications every time the matching user posts, 
 
 == What's Next
 
-* link:../query/guide.html[Query your data] with Ickle queries
-* link:../listeners/guide.html[Listen to cache events] with client listeners
+* link:/tutorials/remote-query/[Query your data] with Ickle queries
+* link:/tutorials/remote-listeners/[Listen to cache events] with client listeners

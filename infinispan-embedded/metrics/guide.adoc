@@ -72,5 +72,5 @@ The output displays Prometheus-formatted metrics followed by the running cache c
 
 == What's Next
 
-* Add link:../security/guide.html[role-based security] to restrict cache access
-* Explore link:../cache-distributed/guide.html[distributed caching] for multi-node deployments
+* Add link:/tutorials/embedded-security/[role-based security] to restrict cache access
+* Explore link:/tutorials/embedded-cache-distributed/[distributed caching] for multi-node deployments

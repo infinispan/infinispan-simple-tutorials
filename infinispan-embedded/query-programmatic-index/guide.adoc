@@ -83,5 +83,5 @@ The output shows the two persons whose name matches the wildcard `Will*`.
 
 == What's Next
 
-* Try link:../query/guide.html[annotation-based indexing] for a simpler approach
-* Add link:../streams/guide.html[distributed streams] for parallel processing
+* Try link:/tutorials/embedded-query/[annotation-based indexing] for a simpler approach
+* Add link:/tutorials/embedded-streams/[distributed streams] for parallel processing

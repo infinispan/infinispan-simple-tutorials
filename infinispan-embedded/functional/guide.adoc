@@ -64,6 +64,6 @@ The output shows created entries, updated entries with their new values, and the
 
 == What's Next
 
-* Try link:../listeners/guide.html[cache listeners] to react to cache changes
-* Explore link:../streams/guide.html[distributed streams] for parallel processing
-* Use link:../jcache/guide.html[JCache API] for a standard caching interface
+* Try link:/tutorials/embedded-listeners/[cache listeners] to react to cache changes
+* Explore link:/tutorials/embedded-streams/[distributed streams] for parallel processing
+* Use link:/tutorials/embedded-jcache/[JCache API] for a standard caching interface

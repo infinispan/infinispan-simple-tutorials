@@ -61,6 +61,6 @@ The output shows the stored value retrieved through the JCache API.
 
 == What's Next
 
-* Try the Infinispan-native API with link:../functional/guide.html[functional maps]
-* Add link:../listeners/guide.html[cache listeners] to react to changes
-* Explore link:../cache-distributed/guide.html[distributed caching] for clustered setups
+* Try the Infinispan-native API with link:/tutorials/embedded-functional/[functional maps]
+* Add link:/tutorials/embedded-listeners/[cache listeners] to react to changes
+* Explore link:/tutorials/embedded-cache-distributed/[distributed caching] for clustered setups
