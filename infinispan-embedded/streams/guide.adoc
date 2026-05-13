@@ -6,6 +6,8 @@
 :duration: 5
 :source-dir: infinispan-embedded/streams
 
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
 == What You Will Learn
 
 How to use the standard Java Streams API on an Infinispan cache to map and reduce cache entries, leveraging Infinispan's distributed stream support for parallel processing.

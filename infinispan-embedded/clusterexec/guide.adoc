@@ -6,6 +6,8 @@
 :duration: 10
 :source-dir: infinispan-embedded/clusterexec
 
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
 == What You Will Learn
 
 How to use the Infinispan `ClusterExecutor` to submit tasks that run on all nodes in an embedded cluster and collect results.

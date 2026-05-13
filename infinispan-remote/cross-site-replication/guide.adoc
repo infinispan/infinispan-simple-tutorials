@@ -6,6 +6,8 @@
 :duration: 15
 :source-dir: infinispan-remote/cross-site-replication
 
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
 == What You Will Learn
 
 How to configure a Hot Rod client with backup clusters, perform cache operations across two sites (LON and NYC) with active-passive replication, and manually switch between clusters.
