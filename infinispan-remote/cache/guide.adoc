@@ -6,6 +6,8 @@
 :duration: 5
 :source-dir: infinispan-remote/cache
 
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
 == What You Will Learn
 
 How to connect a Java Hot Rod client to an Infinispan Server and perform basic cache operations: put, get, and print values.

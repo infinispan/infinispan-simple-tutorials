@@ -6,6 +6,8 @@
 :duration: 5
 :source-dir: infinispan-embedded/multimap
 
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
 == What You Will Learn
 
 How to use the Infinispan embedded multimap cache to associate multiple values with a single key, using the asynchronous `MultimapCache` API.

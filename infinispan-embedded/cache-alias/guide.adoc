@@ -6,6 +6,8 @@
 :duration: 10
 :source-dir: infinispan-embedded/cache-alias
 
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
 == What You Will Learn
 
 How to create a distributed cache with an alias in embedded Infinispan, access the same cache data through different names, and dynamically add new aliases at runtime.
