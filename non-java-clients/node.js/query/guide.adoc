@@ -1,0 +1,155 @@
+= Querying Data with Ickle and the JavaScript Client
+:summary: Register Protobuf schemas and run Ickle queries with filters and projections
+:mode: remote
+:topics: querying,getting-started
+:keywords: query,ickle,protobuf,protostream,search,projection,javascript,node
+:duration: 15
+:source-dir: non-java-clients/node.js/query
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+== What You Will Learn
+
+How to register a Protobuf schema, store Protostream-encoded data, and run Ickle queries including WHERE clauses and projections.
+
+== Prerequisites
+
+* Node.js 22+
+* An Infinispan Server running on `localhost:11222`
+* The `protobufjs` npm package (installed via `npm install`)
+
+Start an Infinispan Server with Docker:
+
+[source,shell]
+----
+docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
+----
+
+NOTE: The `protoStreamCache` is created automatically by the setup script using the admin API.
+
+== Step 1: Define a Protobuf Schema
+
+Define a Person schema with a `@TypeId` annotation for Protostream registration:
+
+[source,protobuf]
+----
+syntax = "proto3";
+package tutorial;
+/**
+ * @TypeId(1000042)
+ */
+message Person {
+    string firstName = 1;
+    string lastName = 2;
+    int32 bornYear = 3;
+    string bornIn = 4;
+}
+----
+
+Register it by putting to the `___protobuf_metadata` internal cache:
+
+[source,javascript]
+----
+const metaClient = await ispn.client(addr, {
+    cacheName: '___protobuf_metadata',
+    dataFormat: {keyType: 'text/plain', valueType: 'text/plain'},
+    authentication: { ... }
+});
+await metaClient.put('tutorial/Person.proto', personProto);
+----
+
+== Step 2: Connect with Protostream Encoding
+
+Connect to the cache with Protostream value format, text/plain keys, and register the type:
+
+[source,javascript]
+----
+const client = await ispn.client(addr, {
+    cacheName: 'protoStreamCache',
+    topologyUpdates: false,
+    dataFormat: {
+        keyType: 'text/plain',
+        valueType: 'application/x-protostream'
+    },
+    authentication: { ... }
+});
+
+client.registerProtostreamRoot(root);
+client.registerProtostreamType('.tutorial.Person', 1000042);
+----
+
+== Step 3: Add Data
+
+Create Protobuf messages with `protobufjs` and put them in the cache:
+
+[source,javascript]
+----
+const Person = root.lookupType('.tutorial.Person');
+const message = Person.create({firstName: 'Hermione', lastName: 'Granger', bornYear: 1979, bornIn: 'London'});
+await client.put('0', message);
+----
+
+== Step 4: Run Ickle Queries
+
+Query all entries:
+
+[source,javascript]
+----
+const all = await client.query({queryString: 'from tutorial.Person'});
+----
+
+Filter with a WHERE clause:
+
+[source,javascript]
+----
+const grangers = await client.query({
+    queryString: "from tutorial.Person p where p.lastName = 'Granger'"
+});
+----
+
+Use projections to select specific fields:
+
+[source,javascript]
+----
+const names = await client.query({
+    queryString: "select p.firstName, p.lastName from tutorial.Person p where p.bornIn = 'London'"
+});
+----
+
+Projection results are returned as arrays of field values.
+
+== Step 5: Run the Tutorial
+
+[source,shell]
+----
+npm run query
+----
+
+You should see output like:
+
+----
+Registered person.proto schema.
+Added 4 people.
+
+=== Query all ===
+Total results: 4
+  Draco Malfoy
+  Harry Potter
+  Hermione Granger
+  Ron Wesley
+
+=== Query: people with lastName = 'Granger' ===
+  Hermione Granger
+
+=== Query: projection of people born in London ===
+  Draco Malfoy
+  Hermione Granger
+  Ron Wesley
+
+Cache cleared.
+----
+
+== What's Next
+
+* link:/tutorials/javascript-schemas/[Schema management] for registering and retrieving schemas
+* link:/tutorials/javascript-cache/[Basic cache operations] for standard cache usage

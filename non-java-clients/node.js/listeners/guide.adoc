@@ -1,0 +1,96 @@
+= Cache Event Listeners with the JavaScript Client
+:summary: Receive notifications when cache entries are created, modified, or removed
+:mode: remote
+:topics: events,caching
+:keywords: listener,events,create,modify,remove,notifications,javascript,node
+:duration: 10
+:source-dir: non-java-clients/node.js/listeners
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+== What You Will Learn
+
+How to register event listeners on a cache to receive notifications when entries are created, modified, or removed.
+
+== Prerequisites
+
+* Node.js 22+
+* An Infinispan Server running on `localhost:11222`
+
+Start an Infinispan Server with Docker:
+
+[source,shell]
+----
+docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
+----
+
+== Step 1: Register a Listener
+
+Add a listener for `create` events. The returned `listenerId` is used to add more event types to the same listener:
+
+[source,javascript]
+----
+const listenerId = await client.addListener('create', (key, version, id) => {
+    console.log('[CREATE] key=' + key);
+});
+----
+
+== Step 2: Add More Event Types
+
+Register `modify` and `remove` callbacks on the same listener by passing the `listenerId`:
+
+[source,javascript]
+----
+await client.addListener('modify', (key, version, id) => {
+    console.log('[MODIFY] key=' + key);
+}, {listenerId: listenerId});
+
+await client.addListener('remove', (key, id) => {
+    console.log('[REMOVE] key=' + key);
+}, {listenerId: listenerId});
+----
+
+== Step 3: Trigger Events
+
+Cache operations now trigger the registered callbacks:
+
+[source,javascript]
+----
+await client.put('player1', 'Mario');   // triggers CREATE
+await client.replace('player1', 'Peach'); // triggers MODIFY
+await client.remove('player1');          // triggers REMOVE
+----
+
+== Step 4: Remove the Listener
+
+Remove the listener to stop receiving events:
+
+[source,javascript]
+----
+await client.removeListener(listenerId);
+----
+
+== Step 5: Run the Tutorial
+
+[source,shell]
+----
+npm run listeners
+----
+
+You should see output like:
+
+----
+Listener registered: <listener-id>
+[CREATE] key=player1
+[CREATE] key=player2
+[MODIFY] key=player1
+[REMOVE] key=player2
+
+Listener removed.
+No events after listener removal.
+----
+
+== What's Next
+
+* link:/tutorials/javascript-cache/[Basic cache operations] for standard cache usage
+* link:/tutorials/javascript-near-cache/[Near caching] for client-side caching with server invalidation

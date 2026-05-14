@@ -1,0 +1,83 @@
+= Security and Authentication with the JavaScript Client
+:summary: Connect to Infinispan with different SASL authentication mechanisms
+:mode: remote
+:topics: security
+:keywords: security,authentication,sasl,scram,credentials,javascript,node
+:duration: 5
+:source-dir: non-java-clients/node.js/security
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+== What You Will Learn
+
+How to connect to an Infinispan Server using different SCRAM SASL authentication mechanisms: SCRAM-SHA-256 and SCRAM-SHA-512.
+
+== Prerequisites
+
+* Node.js 22+
+* An Infinispan Server running on `localhost:11222`
+
+Start an Infinispan Server with Docker:
+
+[source,shell]
+----
+docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
+----
+
+== Step 1: Connect with SCRAM-SHA-256 Authentication
+
+SCRAM-SHA-256 is a challenge-response mechanism with salted password hashing:
+
+[source,javascript]
+----
+const client = await ispn.client({port: 11222, host: '127.0.0.1'}, {
+    cacheName: 'test',
+    authentication: {
+        enabled: true,
+        saslMechanism: 'SCRAM-SHA-256',
+        userName: 'admin',
+        password: 'password'
+    }
+});
+----
+
+== Step 2: SCRAM-SHA-512 Authentication
+
+Use SCRAM-SHA-512 for the same mechanism with a stronger hash:
+
+[source,javascript]
+----
+const scramClient = await ispn.client({port: 11222, host: '127.0.0.1'}, {
+    cacheName: 'test',
+    authentication: {
+        enabled: true,
+        saslMechanism: 'SCRAM-SHA-512',
+        userName: 'admin',
+        password: 'password'
+    }
+});
+----
+
+== Step 3: Run the Tutorial
+
+[source,shell]
+----
+npm run security
+----
+
+You should see output like:
+
+----
+Connecting with SCRAM-SHA-256 mechanism...
+SCRAM-SHA-256 auth successful: value
+
+Connecting with SCRAM-SHA-512 mechanism...
+SCRAM-SHA-512 auth successful: scram-value
+
+Done.
+----
+
+== What's Next
+
+* link:/tutorials/javascript-cache/[Basic cache operations] for standard cache usage
+* link:/tutorials/javascript-listeners/[Cache event listeners] for reacting to cache changes
