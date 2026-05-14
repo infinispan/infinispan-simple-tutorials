@@ -1,0 +1,99 @@
+= Near Caching with the JavaScript Client
+:summary: Improve read performance with client-side near caching
+:mode: remote
+:topics: caching,performance
+:keywords: near-cache,performance,client-side,invalidation,javascript,node
+:duration: 10
+:source-dir: non-java-clients/node.js/near-cache
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+== What You Will Learn
+
+How to enable client-side near caching to dramatically improve read performance for frequently accessed entries, and how near cache entries are automatically invalidated when server-side data changes.
+
+== Prerequisites
+
+* Node.js 22+
+* An Infinispan Server running on `localhost:11222`
+
+Start an Infinispan Server with Docker:
+
+[source,shell]
+----
+docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
+----
+
+== Step 1: Create Two Clients
+
+Create a normal client and a near-cache-enabled client for comparison:
+
+[source,javascript]
+----
+const remoteClient = await ispn.client({port: 11222, host: '127.0.0.1'}, {
+    authentication: { ... }
+});
+
+const nearClient = await ispn.client({port: 11222, host: '127.0.0.1'}, {
+    authentication: { ... },
+    nearCache: {maxEntries: 20}
+});
+----
+
+== Step 2: Populate and Warm the Cache
+
+Add entries and read them once to populate the near cache:
+
+[source,javascript]
+----
+for (let i = 0; i < 20; i++) {
+    await remoteClient.put('key-' + i, 'value-' + i);
+}
+
+for (let i = 0; i < 20; i++) {
+    await nearClient.get('key-' + i);
+}
+
+console.log('Near cache size: ' + nearClient.nearCacheSize());
+----
+
+== Step 3: Compare Performance
+
+Read entries in a loop and compare timing:
+
+[source,javascript]
+----
+const remoteStart = Date.now();
+for (let i = 0; i < 10000; i++) {
+    await remoteClient.get('key-' + (i % 20));
+}
+const remoteTime = Date.now() - remoteStart;
+----
+
+Near cache reads are served from local memory without a network round-trip.
+
+== Step 4: Run the Tutorial
+
+[source,shell]
+----
+npm run near-cache
+----
+
+You should see output like:
+
+----
+Populating 20 entries...
+Near cache size: 20
+
+=== Performance comparison (10000 reads) ===
+Remote reads:     1250 ms
+Near cache reads: 35 ms
+Speedup: 35.7x
+----
+
+Actual speedup depends on network latency and hardware.
+
+== What's Next
+
+* link:/tutorials/javascript-cache/[Basic cache operations] for standard remote caching
+* link:/tutorials/javascript-listeners/[Cache event listeners] for reacting to cache changes

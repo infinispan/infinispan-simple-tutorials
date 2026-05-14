@@ -1,0 +1,122 @@
+= Distributed Counters with the JavaScript Client
+:summary: Create and use distributed strong and weak counters with compare-and-swap
+:mode: remote
+:topics: counters
+:keywords: counter,strong,weak,cas,compare-and-swap,distributed,javascript,node
+:duration: 10
+:source-dir: non-java-clients/node.js/counter
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+== What You Will Learn
+
+How to create and use distributed counters, including strong counters with compare-and-swap (CAS) operations and weak counters optimized for high-throughput increments.
+
+== Prerequisites
+
+* Node.js 22+
+* An Infinispan Server running on `localhost:11222`
+
+Start an Infinispan Server with Docker:
+
+[source,shell]
+----
+docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
+----
+
+== Step 1: Create a Strong Counter
+
+Strong counters provide consistent reads and compare-and-swap operations:
+
+[source,javascript]
+----
+await client.counterCreate('visits', {
+    type: 'strong',
+    initialValue: 0,
+    storage: 'volatile'
+});
+----
+
+== Step 2: Increment and Read
+
+Add values and read the counter:
+
+[source,javascript]
+----
+let val = await client.counterAddAndGet('visits', 1);
+val = await client.counterAddAndGet('visits', 5);
+val = await client.counterGet('visits');
+----
+
+== Step 3: Compare and Swap
+
+Atomically update the counter only if the current value matches the expected value:
+
+[source,javascript]
+----
+const prev = await client.counterCompareAndSwap('visits', 6, 100);
+----
+
+If the current value is `6`, it is updated to `100`. Otherwise, the value is unchanged and the current value is returned.
+
+== Step 4: Create a Weak Counter
+
+Weak counters have higher throughput but eventual consistency for reads:
+
+[source,javascript]
+----
+await client.counterCreate('page-views', {
+    type: 'weak',
+    initialValue: 0,
+    concurrencyLevel: 4,
+    storage: 'volatile'
+});
+----
+
+The `concurrencyLevel` controls how many concurrent updates can be batched.
+
+== Step 5: Clean Up
+
+Remove counters when no longer needed:
+
+[source,javascript]
+----
+await client.counterRemove('visits');
+await client.counterRemove('page-views');
+----
+
+== Step 6: Run the Tutorial
+
+[source,shell]
+----
+npm run counter
+----
+
+You should see output like:
+
+----
+Created strong counter "visits".
+After +1: 1
+After +5: 6
+Current value: 6
+
+CAS(expect=6, update=100): previous=6
+After CAS: 100
+
+CAS(expect=6, update=200): previous=100
+After failed CAS: 100
+
+After reset: 0
+
+Created weak counter "page-views".
+page-views after 3 increments: 3
+
+"visits" config: type=strong, initialValue=0
+
+Counters removed.
+----
+
+== What's Next
+
+* link:/tutorials/javascript-cache/[Basic cache operations] for standard cache usage
+* link:/tutorials/javascript-listeners/[Cache event listeners] for reacting to cache changes

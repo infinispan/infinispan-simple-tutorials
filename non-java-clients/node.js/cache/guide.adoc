@@ -1,0 +1,123 @@
+= Basic Cache Operations with the JavaScript Client
+:summary: Connect to an Infinispan Server and perform basic cache operations with the JavaScript Hot Rod client
+:mode: remote
+:topics: caching,getting-started
+:keywords: cache,put,get,remove,putAll,getAll,replace,clear,javascript,node
+:duration: 5
+:source-dir: non-java-clients/node.js/cache
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+== What You Will Learn
+
+How to connect to an Infinispan Server and perform basic cache operations including put, get, remove, replace, bulk operations, and clearing the cache.
+
+== Prerequisites
+
+* Node.js 22+
+* An Infinispan Server running on `localhost:11222`
+
+Start an Infinispan Server with Docker:
+
+[source,shell]
+----
+docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
+----
+
+== Step 1: Install Dependencies
+
+[source,shell]
+----
+cd non-java-clients/javascript
+npm install
+----
+
+== Step 2: Connect to the Server
+
+Connect to the Infinispan Server with SCRAM-SHA-256 authentication:
+
+[source,javascript]
+----
+const client = await ispn.client({port: 11222, host: '127.0.0.1'}, {
+    authentication: {
+        enabled: true,
+        saslMechanism: 'SCRAM-SHA-256',
+        userName: 'admin',
+        password: 'password'
+    }
+});
+----
+
+== Step 3: Put and Get Entries
+
+Store a value and retrieve it by key:
+
+[source,javascript]
+----
+await client.put('name', 'Infinispan');
+const name = await client.get('name');
+----
+
+Check whether a key exists with `containsKey`:
+
+[source,javascript]
+----
+const exists = await client.containsKey('name');
+----
+
+== Step 4: Bulk Operations
+
+Use `putAll` and `getAll` for multiple entries at once:
+
+[source,javascript]
+----
+await client.putAll([
+    {key: 'key1', value: 'value1'},
+    {key: 'key2', value: 'value2'},
+    {key: 'key3', value: 'value3'}
+]);
+const result = await client.getAll(['key1', 'key2', 'key3']);
+----
+
+== Step 5: Replace and Remove
+
+Replace an existing value and remove an entry:
+
+[source,javascript]
+----
+await client.replace('key1', 'newValue1');
+await client.remove('key2');
+----
+
+== Step 6: Run the Tutorial
+
+[source,shell]
+----
+npm run cache
+----
+
+You should see output like:
+
+----
+get(name) = Infinispan
+containsKey(name) = true
+
+Bulk operations:
+  key1 = value1
+  key2 = value2
+  key3 = value3
+
+replaced key1: true
+get(key1) = newValue1
+
+removed key2: true
+get(key2) = undefined
+
+Cache size: 3
+Cache cleared. Size: 0
+----
+
+== What's Next
+
+* link:/tutorials/javascript-listeners/[Cache event listeners] for reacting to cache changes
+* link:/tutorials/javascript-encoding/[Cache encodings] for different media type formats

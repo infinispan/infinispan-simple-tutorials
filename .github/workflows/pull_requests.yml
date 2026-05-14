@@ -49,6 +49,27 @@ jobs:
       - name: JDK 17 Tests
         run: ./mvnw -B clean install -Dmaven.test.failure.ignore=true
 
+      - name: Restart Infinispan Server for Node.js Tests
+        run: |
+          IMAGE=$(docker inspect --format='{{.Config.Image}}' $(docker ps -q | head -1) 2>/dev/null || true)
+          docker stop $(docker ps -q) 2>/dev/null || true
+          docker rm $(docker ps -aq) 2>/dev/null || true
+          if [ -n "$IMAGE" ]; then
+            docker run -d -p 11222:11222 -e USER="admin" -e PASS="password" "$IMAGE"
+            curl --fail --silent --show-error --retry-all-errors --retry 240 --retry-delay 1 http://localhost:11222/rest/v2/container/health/status > /dev/null
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Node.js Client Tests
+        working-directory: non-java-clients/node.js
+        run: |
+          npm install
+          npm test
+
       - name: Test Logs
         uses: actions/upload-artifact@v7
         if: success() || failure()
