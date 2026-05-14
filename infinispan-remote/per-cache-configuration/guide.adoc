@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: infinispan-remote/per-cache-configuration
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to define per-cache configuration on the Hot Rod client using three different approaches: server-side templates, inline XML strings, and XML files loaded from a URI. When you call `getCache()` for a cache that does not yet exist, Infinispan creates it automatically from the provided configuration.

@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: infinispan-embedded/query-programmatic-index
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to define search index mappings programmatically using `ProgrammaticSearchMappingProvider` instead of annotations, allowing you to index plain Java records or classes without modifying their source.

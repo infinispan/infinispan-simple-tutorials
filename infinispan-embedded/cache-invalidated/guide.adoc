@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: infinispan-embedded/cache-invalidated
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to configure an Infinispan cluster in invalidation mode, where nodes do not share data but instead invalidate stale entries across the cluster when data is added, updated, or removed.

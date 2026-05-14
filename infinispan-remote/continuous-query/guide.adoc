@@ -6,8 +6,6 @@
 :duration: 15
 :source-dir: infinispan-remote/continuous-query
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to register a continuous query that monitors cached data in real time and triggers a callback whenever an entry matching your query is created or updated.

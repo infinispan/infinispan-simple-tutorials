@@ -6,8 +6,6 @@
 :duration: 15
 :source-dir: infinispan-embedded/counter
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to configure and use Infinispan clustered counters in embedded mode, including strong bounded counters, strong unbounded counters, and weak counters.

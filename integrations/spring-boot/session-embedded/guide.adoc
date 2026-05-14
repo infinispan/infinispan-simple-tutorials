@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: integrations/spring-boot/session-embedded
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to store Spring Boot HTTP sessions in an embedded Infinispan cache using `@EnableInfinispanEmbeddedHttpSession`, with distributed clustering for session replication across nodes.

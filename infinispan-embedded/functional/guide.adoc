@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: infinispan-embedded/functional
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to use the Infinispan functional map API, which provides a lambda-based approach to cache operations with write-only, read-only, and read-write map views.

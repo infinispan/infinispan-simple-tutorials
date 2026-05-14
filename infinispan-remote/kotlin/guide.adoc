@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: infinispan-remote/kotlin
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to use the Infinispan Hot Rod Java client from Kotlin, including basic cache operations and Protobuf serialization with `@Proto` annotations on Kotlin data classes.
