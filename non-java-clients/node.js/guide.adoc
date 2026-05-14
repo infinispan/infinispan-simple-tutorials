@@ -1,7 +1,7 @@
 = Node.js Hot Rod Client: Getting Started
 :summary: Connect to an Infinispan Server and perform basic cache operations with the Node.js Hot Rod client
 :mode: remote
-:topics: caching,getting-started,non-java
+:topics: caching,getting-started
 :keywords: cache,put,get,remote,hot-rod,nodejs,javascript
 :duration: 10
 :source-dir: non-java-clients/node.js
