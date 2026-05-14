@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: infinispan-ai/langchain4j
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to use Infinispan as a vector embedding store with LangChain4j to perform semantic similarity search over text.

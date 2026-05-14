@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: infinispan-remote/transactions
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to configure a transactional remote cache and use `TransactionManager` to group cache operations into transactions that can be committed or rolled back.

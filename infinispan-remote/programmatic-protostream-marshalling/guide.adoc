@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: infinispan-remote/programmatic-protostream-marshalling
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to define a Protobuf schema in Java code using the `Schema.Builder` API, implement a custom `MessageMarshaller`, and register both with the Hot Rod client -- all without using `@Proto` annotations.
