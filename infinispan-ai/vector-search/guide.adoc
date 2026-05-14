@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: infinispan-ai/vector-search
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to store entities with vector embeddings in Infinispan and perform kNN (k-nearest neighbor) vector searches, including hybrid queries that combine vector similarity with full-text search and metadata filters.

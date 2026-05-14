@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: infinispan-embedded/metrics
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to enable statistics on an embedded Infinispan cache manager and cache, scrape metrics in Prometheus format using Micrometer, and access cache attributes via JMX.

@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: integrations/spring-boot/cache-remote
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to use Spring Boot's `@EnableCaching` with the Infinispan Spring Boot starter to cache and evict data stored in a remote Infinispan Server, using Protobuf serialization.

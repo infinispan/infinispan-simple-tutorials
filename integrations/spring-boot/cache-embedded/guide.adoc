@@ -6,8 +6,6 @@
 :duration: 5
 :source-dir: integrations/spring-boot/cache-embedded
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to use Spring Boot's `@EnableCaching` with the Infinispan embedded Spring Boot starter to cache data in-process, configured via an `infinispan.xml` file.

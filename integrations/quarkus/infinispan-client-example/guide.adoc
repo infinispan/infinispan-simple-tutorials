@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: integrations/quarkus/infinispan-client-example
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to use the Quarkus Infinispan client extension to connect to an Infinispan Server, store indexed Protobuf entities, and perform full-text search queries through a JAX-RS REST resource.

@@ -6,8 +6,6 @@
 :duration: 15
 :source-dir: infinispan-remote/security/tls-authorization
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to configure the Hot Rod client with TLS encryption and client certificate authentication. The tutorial demonstrates multiple SSL configurations, from simple server-only trust to mutual TLS with the EXTERNAL SASL mechanism for authorization.
