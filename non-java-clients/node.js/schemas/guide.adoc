@@ -1,0 +1,104 @@
+= Schema Management with the JavaScript Client
+:summary: Register and retrieve Protobuf schemas using the metadata cache
+:mode: remote
+:topics: schemas,protobuf
+:keywords: schema,protobuf,protostream,metadata,register,retrieve,javascript,node
+:duration: 5
+:source-dir: non-java-clients/node.js/schemas
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+== What You Will Learn
+
+How to register Protobuf schemas on the Infinispan Server using the internal `___protobuf_metadata` cache, retrieve them, and check for validation errors.
+
+== Prerequisites
+
+* Node.js 22+
+* An Infinispan Server running on `localhost:11222`
+
+Start an Infinispan Server with Docker:
+
+[source,shell]
+----
+docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
+----
+
+== Step 1: Connect to the Metadata Cache
+
+Connect directly to the internal `___protobuf_metadata` cache with text/plain encoding:
+
+[source,javascript]
+----
+const client = await ispn.client({port: 11222, host: '127.0.0.1'}, {
+    cacheName: '___protobuf_metadata',
+    dataFormat: {
+        keyType: 'text/plain',
+        valueType: 'text/plain'
+    },
+    authentication: { ... }
+});
+----
+
+== Step 2: Register a Schema
+
+Put the `.proto` file content with the schema name as the key:
+
+[source,javascript]
+----
+const personProto = `syntax = "proto3";
+package tutorial;
+
+/* @Indexed */
+message Person {
+    /* @Keyword(projectable = true, sortable = true, normalizer = "lowercase") */
+    string firstName = 1;
+    /* @Keyword(projectable = true, sortable = true, normalizer = "lowercase") */
+    string lastName = 2;
+    /* @Basic(projectable = true, sortable = true) */
+    int32 bornYear = 3;
+    /* @Keyword(projectable = true, sortable = true, normalizer = "lowercase") */
+    string bornIn = 4;
+}`;
+
+await client.put('person.proto', personProto);
+----
+
+== Step 3: Retrieve and Validate
+
+Retrieve the schema by key. Check for errors in the `.errors` suffix key:
+
+[source,javascript]
+----
+const schema = await client.get('person.proto');
+const errors = await client.get('person.proto.errors');
+----
+
+If the schema has validation errors, Infinispan stores the error messages in the `person.proto.errors` key.
+
+== Step 4: Run the Tutorial
+
+[source,shell]
+----
+npm run schemas
+----
+
+You should see output like:
+
+----
+Registered person.proto schema.
+
+Retrieved schema:
+syntax = "proto3";
+package tutorial;
+...
+
+No schema errors.
+
+Removed person.proto schema.
+----
+
+== What's Next
+
+* link:/tutorials/javascript-query/[Ickle queries] for querying data using registered schemas
+* link:/tutorials/javascript-encoding/[Cache encodings] for different media type formats

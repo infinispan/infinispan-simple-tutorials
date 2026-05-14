@@ -1,18 +1,29 @@
 {
-  "name": "infinispan-simple-tutorials-js",
-  "version": "0.0.1",
-  "description": "Infinispan Javascript client simple tutorial",
-  "main": "index.js",
-  "author": "Galder Zamarreño",
+  "name": "infinispan-simple-tutorials-javascript",
+  "version": "1.0.0",
+  "description": "Infinispan JavaScript Hot Rod client tutorials",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/infinispan/infinispan-simple-tutorials"
   },
   "scripts": {
-    "start": "node index.js"
+    "cache": "node cache/main.js",
+    "counter": "node counter/main.js",
+    "encoding": "node encoding/main.js",
+    "listeners": "node listeners/main.js",
+    "near-cache": "node near-cache/main.js",
+    "query": "node query/main.js",
+    "continuous-query": "node continuous-query/main.js",
+    "schemas": "node schemas/main.js",
+    "security": "node security/main.js",
+    "spatial-queries": "node spatial-queries/main.js",
+    "transactions": "node transactions/main.js",
+    "vector-search": "node vector-search/main.js",
+    "test": "node cache/main.js && node counter/main.js && node encoding/main.js && node listeners/main.js && node near-cache/main.js && node query/main.js && node continuous-query/main.js && node schemas/main.js && node security/main.js && node spatial-queries/main.js && node vector-search/main.js"
   },
   "dependencies": {
-    "infinispan": "^0.9.0"
+    "infinispan": "^0.15.0",
+    "protobufjs": "^7.0.0"
   }
 }
