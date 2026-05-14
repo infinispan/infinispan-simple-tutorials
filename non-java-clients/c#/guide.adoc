@@ -1,0 +1,60 @@
+= C# Hot Rod Client: Getting Started
+:summary: Connect to an Infinispan Server and perform basic cache operations with the C# Hot Rod client
+:mode: remote
+:topics: caching,getting-started,non-java
+:keywords: cache,put,get,remote,hot-rod,csharp,dotnet
+:duration: 10
+:source-dir: non-java-clients/c#
+
+== What You Will Learn
+
+How to connect a C# Hot Rod client to an Infinispan Server and perform basic cache operations: put, get, and print values.
+
+== Prerequisites
+
+* .NET Framework 4.5+ or Mono
+* Infinispan C# Hot Rod client library (`hotrodcs.dll`)
+* An Infinispan Server running on `127.0.0.1:11222`
+
+== Step 1: Configure the Client
+
+Create a `ConfigurationBuilder` and point it to the Infinispan Server:
+
+[source,csharp]
+----
+ConfigurationBuilder builder = new ConfigurationBuilder();
+Configuration conf = builder.AddServers("127.0.0.1:11222").Build();
+----
+
+== Step 2: Connect and Perform Cache Operations
+
+Initialize the `RemoteCacheManager`, get a cache, and store and retrieve a value:
+
+[source,csharp]
+----
+RemoteCacheManager remoteManager = new RemoteCacheManager(conf);
+remoteManager.Start();
+IRemoteCache<string, string> cache = remoteManager.GetCache<string, string>();
+cache.Put("key", "value");
+Console.WriteLine("key = {0}", cache.Get("key"));
+remoteManager.Stop();
+----
+
+== Step 3: Build and Run
+
+Build the project with MSBuild or Mono:
+
+[source,bash]
+----
+# MSBuild (Windows)
+msbuild simple.sln
+
+# Mono (Linux/macOS)
+xbuild simple.sln
+----
+
+You should see output like:
+
+----
+key = value
+----

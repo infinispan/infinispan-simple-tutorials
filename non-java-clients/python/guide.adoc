@@ -1,0 +1,72 @@
+= Python REST Client: Getting Started
+:summary: Connect to an Infinispan Server and perform basic cache operations with Python and the REST API
+:mode: remote
+:topics: caching,getting-started,non-java
+:keywords: cache,put,get,remote,rest,python
+:duration: 10
+:source-dir: non-java-clients/python
+
+== What You Will Learn
+
+How to connect a Python client to an Infinispan Server using the REST API and perform basic cache operations: create a cache, put, get, and print values.
+
+== Prerequisites
+
+* Python 3.8+
+* An Infinispan Server running on `127.0.0.1:11222`
+
+== Step 1: Install Dependencies
+
+[source,bash]
+----
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+----
+
+== Step 2: Create a Cache
+
+Use the REST API to create a distributed cache:
+
+[source,python]
+----
+requests.post(
+    f"{SERVER_URL}/rest/v2/caches/{CACHE_NAME}",
+    headers={"Content-Type": "application/json"},
+    data='{"distributed-cache": {"mode": "SYNC"}}',
+    auth=AUTH,
+)
+----
+
+== Step 3: Store and Retrieve Data
+
+Put a value and get it back:
+
+[source,python]
+----
+requests.put(
+    f"{SERVER_URL}/rest/v2/caches/{CACHE_NAME}/key",
+    data="value",
+    headers={"Content-Type": "text/plain"},
+    auth=AUTH,
+)
+
+response = requests.get(
+    f"{SERVER_URL}/rest/v2/caches/{CACHE_NAME}/key",
+    auth=AUTH,
+)
+print(f"key = {response.text}")
+----
+
+== Step 4: Run the Tutorial
+
+[source,bash]
+----
+python3 simple.py
+----
+
+You should see output like:
+
+----
+key = value
+----
