@@ -32,6 +32,7 @@ class GuideMetadataGeneratorTest {
       assertTrue(yaml.contains("mode: remote"), "should contain mode attribute");
       assertTrue(yaml.contains("mode: embedded"), "should contain mode attribute");
       assertTrue(yaml.contains("caching"), "should contain topic");
+      assertTrue(yaml.contains("language: java"), "should default language to java");
    }
 
    @Test

@@ -28,7 +28,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 public class GuideMetadataGenerator {
 
    private static final Set<String> SKIP_DIRS = Set.of(
-         "target", "docs", "documentation", "docs-maven-plugin", "non-java-clients", ".git", ".github");
+         "target", "docs", "documentation", "docs-maven-plugin", ".git", ".github");
 
    private final Path srcDir;
    private final Path outputDir;
@@ -63,12 +63,8 @@ public class GuideMetadataGenerator {
       }
       Files.createDirectories(guidesOutputDir);
 
-      Options options = Options.builder()
-            .safe(SafeMode.UNSAFE)
-            .build();
-
       try (Asciidoctor asciidoctor = Asciidoctor.Factory.create()) {
-         collectGuides(srcDir, "", asciidoctor, options, guides, guidesOutputDir);
+         collectGuides(srcDir, "", asciidoctor, guides, guidesOutputDir);
       }
 
       guides.sort(Comparator.comparing(g -> (String) g.get("id")));
@@ -88,7 +84,7 @@ public class GuideMetadataGenerator {
    }
 
    private void collectGuides(Path dir, String prefix, Asciidoctor asciidoctor,
-         Options options, List<Map<String, Object>> guides, Path guidesOutputDir)
+         List<Map<String, Object>> guides, Path guidesOutputDir)
          throws IOException {
       try (Stream<Path> entries = Files.list(dir)) {
          List<Path> sorted = entries.sorted().toList();
@@ -104,10 +100,11 @@ public class GuideMetadataGenerator {
             String dirName = stripPrefix(entry.getFileName().toString());
             if (Files.exists(guideFile)) {
                String id = prefix.isEmpty() ? dirName : prefix + "-" + dirName;
-               processGuide(guideFile, id, asciidoctor, options, guides, guidesOutputDir);
+               String language = deriveLanguage(guideFile);
+               processGuide(guideFile, id, language, asciidoctor, guides, guidesOutputDir);
             }
             String subPrefix = prefix.isEmpty() ? dirName : prefix + "-" + dirName;
-            collectGuides(entry, subPrefix, asciidoctor, options, guides, guidesOutputDir);
+            collectGuides(entry, subPrefix, asciidoctor, guides, guidesOutputDir);
          }
       }
    }
@@ -119,17 +116,33 @@ public class GuideMetadataGenerator {
       return dirName;
    }
 
-   private void processGuide(Path guideFile, String id, Asciidoctor asciidoctor,
-         Options options, List<Map<String, Object>> guides, Path guidesOutputDir)
+   private static final String NON_JAVA_CLIENTS_DIR = "non-java-clients";
+
+   private String deriveLanguage(Path guideFile) {
+      Path relative = srcDir.relativize(guideFile.getParent());
+      if (relative.getNameCount() >= 2
+            && relative.getName(0).toString().equals(NON_JAVA_CLIENTS_DIR)) {
+         return relative.getName(1).toString();
+      }
+      return "java";
+   }
+
+   private void processGuide(Path guideFile, String id, String language, Asciidoctor asciidoctor,
+         List<Map<String, Object>> guides, Path guidesOutputDir)
          throws IOException {
       String content = Files.readString(guideFile);
-      Document doc = asciidoctor.load(content, options);
+      Options perGuideOptions = Options.builder()
+            .safe(SafeMode.UNSAFE)
+            .baseDir(guideFile.getParent().toFile())
+            .build();
+      Document doc = asciidoctor.load(content, perGuideOptions);
 
       Map<String, Object> guide = new LinkedHashMap<>();
       guide.put("id", id);
       guide.put("title", doc.getDoctitle());
       guide.put("summary", attrString(doc, "summary"));
       guide.put("mode", attrString(doc, "mode"));
+      guide.put("language", language);
       guide.put("topics", splitComma(attrString(doc, "topics")));
       guide.put("keywords", splitComma(attrString(doc, "keywords")));
       guide.put("source-dir", attrString(doc, "source-dir"));
