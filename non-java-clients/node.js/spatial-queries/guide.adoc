@@ -1,0 +1,204 @@
+= Spatial Queries with the JavaScript Client
+:summary: Run geospatial queries on indexed caches using within circle, box, polygon, distance projection, and spatial ordering
+:mode: remote
+:topics: querying,spatial
+:keywords: spatial,geospatial,query,latitude,longitude,geopoint,within,circle,box,polygon,distance,javascript,node
+:duration: 15
+:source-dir: non-java-clients/node.js/spatial-queries
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+== What You Will Learn
+
+How to define geospatial Protobuf entities with `@GeoPoint`, `@Latitude`, and `@Longitude` annotations, create indexed caches, and run spatial Ickle queries including within circle, within box, within polygon, distance projections, and spatial ordering.
+
+== Prerequisites
+
+* Node.js 22+
+* An Infinispan Server running on `localhost:11222`
+* The `protobufjs` npm package (installed via `npm install`)
+
+Start an Infinispan Server with Docker:
+
+[source,shell]
+----
+docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
+----
+
+== Step 1: Define Geospatial Protobuf Schemas
+
+Define a `Restaurant` schema with `@GeoPoint` to create a spatial index on latitude/longitude:
+
+[source,protobuf]
+----
+syntax = "proto3";
+package tutorial;
+/**
+ * @TypeId(1000060)
+ * @Indexed
+ * @GeoPoint(fieldName = "location", projectable = true, sortable = true)
+ */
+message Restaurant {
+    /** @Keyword(normalizer = "lowercase", projectable = true, sortable = true) */
+    string name = 1;
+    /** @Text */
+    string description = 2;
+    /** @Text */
+    string address = 3;
+    /** @Latitude(fieldName = "location") */
+    double latitude = 4;
+    /** @Longitude(fieldName = "location") */
+    double longitude = 5;
+    /** @Basic */
+    float score = 6;
+}
+----
+
+For entities with multiple geo points, such as a train route with departure and arrival, use multiple `@GeoPoint` annotations:
+
+[source,protobuf]
+----
+/**
+ * @TypeId(1000061)
+ * @Indexed
+ * @GeoPoint(fieldName = "departure", projectable = true, sortable = true)
+ * @GeoPoint(fieldName = "arrival", projectable = true, sortable = true)
+ */
+message TrainRoute {
+    /** @Keyword(normalizer = "lowercase") */
+    string name = 1;
+    /** @Latitude(fieldName = "departure") */
+    double departureLat = 2;
+    /** @Longitude(fieldName = "departure") */
+    double departureLon = 3;
+    /** @Latitude(fieldName = "arrival") */
+    double arrivalLat = 4;
+    /** @Longitude(fieldName = "arrival") */
+    double arrivalLon = 5;
+}
+----
+
+== Step 2: Register Schemas and Create an Indexed Cache
+
+Register the proto schemas on the server, then create an indexed cache listing the entities:
+
+[source,javascript]
+----
+// Register schemas
+const metaClient = await ispn.client(addr, {
+    cacheName: '___protobuf_metadata',
+    dataFormat: {keyType: 'text/plain', valueType: 'text/plain'},
+    authentication: { ... }
+});
+await metaClient.put('tutorial/Restaurant.proto', restaurantProto);
+
+// Create indexed cache (schemas must be registered first)
+const adminClient = await ispn.client(addr, { authentication: { ... } });
+await adminClient.admin.getOrCreateCache('spatialCache',
+    '<distributed-cache>' +
+    '<encoding><key media-type="text/plain"/><value media-type="application/x-protostream"/></encoding>' +
+    '<indexing enabled="true" storage="filesystem" startup-mode="AUTO">' +
+    '<indexed-entities><indexed-entity>tutorial.Restaurant</indexed-entity></indexed-entities>' +
+    '</indexing></distributed-cache>');
+----
+
+== Step 3: Run Spatial Queries
+
+Query restaurants within a 100-metre circle:
+
+[source,javascript]
+----
+const results = await client.query({
+    queryString: 'from tutorial.Restaurant r where r.location within circle(41.908, 12.455, 100)'
+});
+----
+
+Query within a bounding box (topLeftLat, topLeftLon, bottomRightLat, bottomRightLon):
+
+[source,javascript]
+----
+const results = await client.query({
+    queryString: 'from tutorial.Restaurant r where r.location within box(41.91, 12.45, 41.90, 12.46)'
+});
+----
+
+Query within a polygon:
+
+[source,javascript]
+----
+const results = await client.query({
+    queryString: 'from tutorial.Restaurant r where r.location within polygon((41.91, 12.45), (41.91, 12.46), (41.90, 12.46), (41.90, 12.46))'
+});
+----
+
+Project the distance from a reference point:
+
+[source,javascript]
+----
+const results = await client.query({
+    queryString: 'select r.name, distance(r.location, 41.908, 12.455) from tutorial.Restaurant r'
+});
+results.forEach(row => console.log(`${row[0]}: ${Math.round(row[1])}m`));
+----
+
+Order results by distance:
+
+[source,javascript]
+----
+const results = await client.query({
+    queryString: 'from tutorial.Restaurant r where r.location order by distance(r.location, 41.908, 12.455)'
+});
+----
+
+== Step 4: Run the Tutorial
+
+[source,shell]
+----
+npm run spatial-queries
+----
+
+You should see output like:
+
+----
+Registered Restaurant and TrainRoute schemas.
+Added 7 restaurants in Rome.
+
+Added 4 train routes.
+
+=== Within circle (100m radius) ===
+Found 2 restaurants:
+  La Locanda di Pietro
+  Trattoria Pizzeria Gli Archi
+
+=== Within box ===
+Found 6 restaurants:
+  ...
+
+=== Within polygon ===
+Found 6 restaurants:
+  ...
+
+=== Distance projection ===
+  La Locanda di Pietro: 66m
+  Trattoria Pizzeria Gli Archi: 70m
+  ...
+
+=== Order by distance ===
+  La Locanda di Pietro
+  Trattoria Pizzeria Gli Archi
+  Magazzino Scipioni
+  ...
+
+=== Train routes departing near Bologna (300km) ===
+Found 3 routes:
+  Bologna-Selva
+  Milan-Como
+  Bologna-Venice
+
+Cache cleared.
+----
+
+== What's Next
+
+* link:/tutorials/javascript-query/[Ickle queries] for standard query operations
+* link:/tutorials/javascript-cache/[Basic cache operations] for standard cache usage

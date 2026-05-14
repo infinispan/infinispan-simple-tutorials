@@ -1,0 +1,88 @@
+= Cache Encodings with the JavaScript Client
+:summary: Store data with different media types using text/plain and application/json encodings
+:mode: remote
+:topics: caching,encoding
+:keywords: encoding,media-type,text,json,dataFormat,javascript,node
+:duration: 5
+:source-dir: non-java-clients/node.js/encoding
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+== What You Will Learn
+
+How to connect to Infinispan with different data format encodings and store/retrieve data in text/plain and application/json formats.
+
+== Prerequisites
+
+* Node.js 22+
+* An Infinispan Server running on `localhost:11222`
+
+Start an Infinispan Server with Docker:
+
+[source,shell]
+----
+docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
+----
+
+== Step 1: Text/Plain Encoding
+
+Connect with `text/plain` data format and store plain text values:
+
+[source,javascript]
+----
+const textClient = await ispn.client({port: 11222, host: '127.0.0.1'}, {
+    dataFormat: {
+        keyType: 'text/plain',
+        valueType: 'text/plain'
+    },
+    authentication: { ... }
+});
+
+await textClient.put('greeting', 'Hello, Infinispan!');
+const val = await textClient.get('greeting');
+----
+
+== Step 2: JSON Encoding
+
+Connect with `application/json` value format and store JSON objects as strings:
+
+[source,javascript]
+----
+const jsonClient = await ispn.client({port: 11222, host: '127.0.0.1'}, {
+    dataFormat: {
+        keyType: 'text/plain',
+        valueType: 'application/json'
+    },
+    authentication: { ... }
+});
+
+const jsonValue = JSON.stringify({project: 'Infinispan', language: 'JavaScript'});
+await jsonClient.put('info', jsonValue);
+const retrieved = JSON.parse(await jsonClient.get('info'));
+----
+
+== Step 3: Run the Tutorial
+
+[source,shell]
+----
+npm run encoding
+----
+
+You should see output like:
+
+----
+== Cache with text/plain encoding ==
+get(greeting) = Hello, Infinispan!
+
+== Cache with application/json encoding ==
+get(info) = {"project":"Infinispan","language":"JavaScript"}
+  project  = Infinispan
+  language = JavaScript
+
+Done.
+----
+
+== What's Next
+
+* link:/tutorials/javascript-cache/[Basic cache operations] for standard cache usage
+* link:/tutorials/javascript-schemas/[Schema management] for Protobuf schema registration

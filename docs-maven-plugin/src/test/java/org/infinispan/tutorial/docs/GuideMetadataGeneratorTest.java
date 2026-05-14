@@ -29,10 +29,12 @@ class GuideMetadataGeneratorTest {
       String yaml = Files.readString(indexFile);
       assertTrue(yaml.contains("Remote Cache Tutorial"), "should contain tutorial-a title");
       assertTrue(yaml.contains("Distributed Cache Tutorial"), "should contain tutorial-b title");
+      assertTrue(yaml.contains("Node.js Cache Tutorial"), "should contain node.js tutorial title");
       assertTrue(yaml.contains("mode: remote"), "should contain mode attribute");
       assertTrue(yaml.contains("mode: embedded"), "should contain mode attribute");
       assertTrue(yaml.contains("caching"), "should contain topic");
       assertTrue(yaml.contains("language: java"), "should default language to java");
+      assertTrue(yaml.contains("language: node.js"), "should derive language from non-java-clients subdirectory");
    }
 
    @Test
@@ -59,6 +61,7 @@ class GuideMetadataGeneratorTest {
       String yaml = Files.readString(outputDir.resolve("index.yaml"));
       assertTrue(yaml.contains("id: remote-cache"), "should derive id: infinispan-remote/cache -> remote-cache");
       assertTrue(yaml.contains("id: embedded-cache-distributed"), "should derive id: infinispan-embedded/cache-distributed -> embedded-cache-distributed");
+      assertTrue(yaml.contains("id: non-java-clients-node.js-cache"), "should derive id: non-java-clients/node.js/cache -> non-java-clients-node.js-cache");
    }
 
    @Test

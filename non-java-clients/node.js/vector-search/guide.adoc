@@ -1,0 +1,158 @@
+= Vector Search with the JavaScript Client
+:summary: Perform kNN vector search and hybrid queries combining vector similarity with full-text and metadata filters
+:mode: ai
+:topics: vector-search,knn
+:keywords: vector,knn,embedding,similarity,cosine,hybrid,full-text,indexed,protobuf,javascript,node
+:duration: 10
+:source-dir: non-java-clients/node.js/vector-search
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+== What You Will Learn
+
+How to store entities with vector embeddings in Infinispan and perform kNN (k-nearest neighbor) vector searches, including hybrid queries that combine vector similarity with full-text search and metadata filters.
+
+== Prerequisites
+
+* Node.js 22+
+* An Infinispan Server running on `localhost:11222`
+* The `protobufjs` npm package (installed via `npm install`)
+
+Start an Infinispan Server with Docker:
+
+[source,shell]
+----
+docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
+----
+
+== Step 1: Define a Protobuf Schema with a Vector Field
+
+Use the `@Vector` annotation to declare a vector field with its dimension and similarity function.
+The 3-dimensional vectors represent taste profiles: dark/roasty, light/crisp, and hoppy/craft:
+
+[source,protobuf]
+----
+syntax = "proto3";
+package quickstart;
+/**
+ * @TypeId(1000050)
+ * @Indexed
+ */
+message Beer {
+    /** @Keyword(projectable = true, sortable = true) */
+    string name = 1;
+    /** @Keyword(projectable = true, normalizer = "lowercase") */
+    string style = 2;
+    /** @Keyword(projectable = true, sortable = true, normalizer = "lowercase") */
+    string brewery = 3;
+    /** @Keyword(projectable = true, normalizer = "lowercase") */
+    string country = 4;
+    /** @Basic(projectable = true, sortable = true) */
+    double abv = 5;
+    /** @Text */
+    string description = 6;
+    /** @Vector(dimension = 3, similarity = COSINE) */
+    repeated float descriptionEmbedding = 7;
+}
+----
+
+== Step 2: Register the Schema and Create an Indexed Cache
+
+Register the schema on the server and create a cache with indexing enabled:
+
+[source,javascript]
+----
+// Register schema
+const metaClient = await ispn.client({port, host}, {
+    ...authOpts,
+    cacheName: '___protobuf_metadata',
+    dataFormat: {keyType: 'text/plain', valueType: 'text/plain'}
+});
+await metaClient.put('quickstart/Beer.proto', beerProto);
+
+// Create indexed cache
+const adminClient = await ispn.client({port, host}, {
+    ...authOpts,
+    clientIntelligence: 'BASIC'
+});
+const cacheConfig =
+  '<distributed-cache>' +
+  '<encoding><key media-type="text/plain"/><value media-type="application/x-protostream"/></encoding>' +
+  '<indexing enabled="true" storage="filesystem" startup-mode="AUTO">' +
+  '<indexed-entities><indexed-entity>quickstart.Beer</indexed-entity></indexed-entities>' +
+  '</indexing></distributed-cache>';
+await adminClient.admin.getOrCreateCache('beers', cacheConfig);
+----
+
+== Step 3: Populate Data with Vector Embeddings
+
+Store beer entries with hand-crafted 3D vectors that cluster similar styles together:
+
+[source,javascript]
+----
+const Beer = root.lookupType('.quickstart.Beer');
+const msg = Beer.create({
+    name: 'Guinness', style: 'Stout', brewery: 'Guinness Brewery',
+    country: 'Ireland', abv: 4.2,
+    description: 'A rich, creamy stout with deep roasted barley flavours...',
+    descriptionEmbedding: [0.95, 0.05, 0.10]
+});
+await client.put('beer:1', msg);
+----
+
+== Step 4: Perform a kNN Vector Search
+
+Use the `<->` operator with `~k` to find the k nearest neighbors.
+Vector values are specified inline in the query:
+
+[source,javascript]
+----
+const results = await client.query({
+    queryString: 'from quickstart.Beer b where b.descriptionEmbedding <-> [0.9, 0.1, 0.1]~3'
+});
+----
+
+Add a score projection to see how close each match is:
+
+[source,javascript]
+----
+const scored = await client.query({
+    queryString: 'select b.name, b.style, score(b) from quickstart.Beer b ' +
+        'where b.descriptionEmbedding <-> [0.05, 0.9, 0.1]~3'
+});
+----
+
+== Step 5: Run Hybrid Queries
+
+Combine vector similarity with metadata filters using the `filtering` clause:
+
+[source,javascript]
+----
+// Vector + keyword + range filter
+const hybrid = await client.query({
+    queryString: "select score(b), b.name, b.style, b.abv from quickstart.Beer b " +
+        "where b.descriptionEmbedding <-> [0.05, 0.95, 0.05]~3 " +
+        "filtering (b.style = 'Lager' and b.abv < 5.0)"
+});
+
+// Vector + full-text filter
+const textHybrid = await client.query({
+    queryString: "select score(b), b.name, b.brewery, b.abv from quickstart.Beer b " +
+        "where b.descriptionEmbedding <-> [0.1, 0.1, 0.95]~5 " +
+        "filtering b.description : 'citrus'"
+});
+----
+
+== Step 6: Run the Tutorial
+
+[source,shell]
+----
+npm run vector-search
+----
+
+The output demonstrates full-text search, keyword/range filters, projections, kNN vector search with score projections, and hybrid queries filtering by style, country, and description text.
+
+== What's Next
+
+* link:/tutorials/node.js-spatial-queries/[Spatial queries] for geolocation data
+* link:/tutorials/node.js-query/[Querying with Ickle] for standard queries with filters and projections

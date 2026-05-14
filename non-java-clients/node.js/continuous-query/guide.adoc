@@ -1,0 +1,127 @@
+= Continuous Queries with the JavaScript Client
+:summary: Register a continuous query that pushes events when cache entries match an Ickle query
+:mode: remote
+:topics: querying,events,getting-started
+:keywords: continuous-query,ickle,protobuf,protostream,listener,javascript,node
+:duration: 15
+:source-dir: non-java-clients/node.js/continuous-query
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+== What You Will Learn
+
+How to register a continuous query so the server pushes events whenever cache entries join, leave, or are updated relative to an Ickle query result set.
+
+== Prerequisites
+
+* Node.js 22+
+* An Infinispan Server running on `localhost:11222`
+* The `protobufjs` npm package (installed via `npm install`)
+
+Start an Infinispan Server with Docker:
+
+[source,shell]
+----
+docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
+----
+
+NOTE: The `protoStreamCache` is created automatically by the setup script using the admin API.
+
+== Step 1: Define a Protobuf Schema
+
+Define an InstaPost schema with a `@TypeId` annotation:
+
+[source,protobuf]
+----
+syntax = "proto3";
+package tutorial;
+/**
+ * @TypeId(1000050)
+ */
+message InstaPost {
+    string id = 1;
+    string user = 2;
+    string hashtag = 3;
+}
+----
+
+Register it by putting to the `___protobuf_metadata` internal cache:
+
+[source,javascript]
+----
+const metaClient = await ispn.client(addr, {
+    cacheName: '___protobuf_metadata',
+    dataFormat: {keyType: 'text/plain', valueType: 'text/plain'},
+    authentication: { ... }
+});
+await metaClient.put('tutorial/InstaPost.proto', instaPostProto);
+----
+
+== Step 2: Connect with Protostream Encoding
+
+[source,javascript]
+----
+const client = await ispn.client(addr, {
+    cacheName: 'protoStreamCache',
+    topologyUpdates: false,
+    dataFormat: {
+        keyType: 'text/plain',
+        valueType: 'application/x-protostream'
+    },
+    authentication: { ... }
+});
+
+client.registerProtostreamRoot(root);
+client.registerProtostreamType('.tutorial.InstaPost', 1000050);
+----
+
+== Step 3: Register a Continuous Query
+
+Register a continuous query with an Ickle query string and optional named parameters:
+
+[source,javascript]
+----
+const cq = await client.addContinuousQuery(
+    'FROM tutorial.InstaPost p WHERE p.user = :userName',
+    {params: {userName: 'belen_esteban'}}
+);
+
+cq.on('joining', function(key, value) {
+    console.log('New matching post detected!');
+});
+
+cq.on('leaving', function(key) {
+    console.log('Post no longer matches.');
+});
+
+cq.on('updated', function(key, value) {
+    console.log('Matching post was updated.');
+});
+----
+
+The three event types are:
+
+* **joining** -- an entry now matches the query (new entry or modified to match)
+* **leaving** -- an entry no longer matches the query (removed or modified to not match)
+* **updated** -- an entry still matches but its value changed
+
+== Step 4: Remove the Continuous Query
+
+[source,javascript]
+----
+await client.removeContinuousQuery(cq);
+----
+
+== Step 5: Run the Tutorial
+
+[source,shell]
+----
+npm run continuous-query
+----
+
+You should see output showing joining events as random posts by `@belen_esteban` are detected.
+
+== What's Next
+
+* link:/tutorials/javascript-query/[Ickle queries] for one-shot query operations
+* link:/tutorials/javascript-listeners/[Event listeners] for basic cache event listeners

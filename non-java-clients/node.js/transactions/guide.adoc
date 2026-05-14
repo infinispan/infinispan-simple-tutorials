@@ -1,0 +1,141 @@
+= Transactions with the JavaScript Client
+:summary: Use Hot Rod transactions to commit or rollback cache operations atomically
+:mode: remote
+:topics: transactions,caching
+:keywords: transaction,commit,rollback,begin,atomicity,javascript,node
+:duration: 10
+:source-dir: non-java-clients/node.js/transactions
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+== What You Will Learn
+
+How to use the JavaScript Hot Rod client's transaction manager to group cache operations into atomic units that are either committed or rolled back together. You will also learn how read-then-write transactions track entry versions for conflict detection.
+
+== Prerequisites
+
+* Node.js 22+
+* An Infinispan Server running on `localhost:11222`
+
+Start an Infinispan Server with Docker:
+
+[source,shell]
+----
+docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
+----
+
+== Step 1: Create a Transactional Cache
+
+Transactional caches require `NON_XA` mode and `PESSIMISTIC` locking in their configuration:
+
+[source,javascript]
+----
+await adminClient.admin.getOrCreateCache('txCache',
+    '<distributed-cache>' +
+    '<encoding><key media-type="text/plain"/><value media-type="text/plain"/></encoding>' +
+    '<transaction mode="NON_XA" locking="PESSIMISTIC"/>' +
+    '</distributed-cache>');
+----
+
+== Step 2: Begin, Put, and Commit
+
+Get the transaction manager from the client, begin a transaction, put values, and commit. Puts are buffered locally until commit, when they are sent to the server atomically via the Hot Rod `PREPARE_TX` operation:
+
+[source,javascript]
+----
+const tm = client.getTransactionManager();
+await tm.begin();
+
+await client.put('key1', 'value1');
+await client.put('key2', 'value2');
+
+await tm.commit();
+----
+
+During a transaction, `get()` returns locally buffered values before falling back to the server:
+
+[source,javascript]
+----
+await tm.begin();
+await client.put('key1', 'value1');
+const v = await client.get('key1'); // returns 'value1' from local buffer
+await tm.commit();
+----
+
+== Step 3: Rollback
+
+Roll back a transaction to discard all buffered changes:
+
+[source,javascript]
+----
+await tm.begin();
+await client.put('key4', 'should-not-exist');
+await tm.rollback();
+// key4 does not exist on the server
+----
+
+== Step 4: Read-then-Write
+
+When you read a key inside a transaction, the client records its version. On commit, the server verifies that the version has not changed, providing conflict detection:
+
+[source,javascript]
+----
+await tm.begin();
+const current = await client.get('counter');       // version recorded
+await client.put('counter', String(parseInt(current) + 1));
+await tm.commit();                                  // server checks version
+----
+
+== Step 5: Remove within a Transaction
+
+Removes are also buffered and applied atomically on commit:
+
+[source,javascript]
+----
+await tm.begin();
+await client.remove('temp');
+const v = await client.get('temp'); // returns undefined (locally removed)
+await tm.commit();
+// 'temp' is removed from the server
+----
+
+== Step 6: Run the Tutorial
+
+[source,shell]
+----
+npm run transactions
+----
+
+You should see output like:
+
+----
+=== Commit transaction ===
+Put 3 keys (buffered locally).
+Get key1 within tx: value1
+Transaction committed.
+  key1 = value1
+  key2 = value2
+  key3 = value3
+
+=== Rollback transaction ===
+Put key4 (buffered locally).
+Transaction rolled back.
+  key4 = undefined
+
+=== Read-then-write transaction ===
+Read counter within tx: 0
+Transaction committed.
+  counter = 1
+
+=== Remove within transaction ===
+Get temp within tx after remove: undefined
+Transaction committed.
+  temp = undefined
+
+Cache cleared.
+----
+
+== What's Next
+
+* link:/tutorials/javascript-cache/[Basic cache operations] for standard CRUD usage
+* link:/tutorials/javascript-query/[Ickle queries] for standard query operations
