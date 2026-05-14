@@ -1,0 +1,78 @@
+= Node.js Hot Rod Client: Getting Started
+:summary: Connect to an Infinispan Server and perform basic cache operations with the Node.js Hot Rod client
+:mode: remote
+:topics: caching,getting-started,non-java
+:keywords: cache,put,get,remote,hot-rod,nodejs,javascript
+:duration: 10
+:source-dir: non-java-clients/node.js
+
+== What You Will Learn
+
+How to connect a Node.js Hot Rod client to an Infinispan Server and perform basic cache operations: put, get, and print values.
+
+== Prerequisites
+
+* Node.js
+* An Infinispan Server running on `127.0.0.1:11222`
+
+== Step 1: Install Dependencies
+
+[source,bash]
+----
+npm install
+----
+
+This installs the `infinispan` Hot Rod client package.
+
+== Step 2: Connect and Perform Cache Operations
+
+Create a client with authentication and connect to the server:
+
+[source,javascript]
+----
+var infinispan = require('infinispan');
+
+var connected = infinispan.client(
+  {port: 11222, host: '127.0.0.1'},
+  {
+    cacheName: 'my-cache',
+    clientIntelligence: 'BASIC',
+    authentication: {
+      enabled: true,
+      saslMechanism: 'DIGEST-MD5',
+      userName: 'admin',
+      password: 'password'
+    }
+  }
+);
+----
+
+Then put and get a value:
+
+[source,javascript]
+----
+connected.then(function(client) {
+  client.put('key', 'value').then(function () {
+    return client.get('key').then(function (value) {
+      console.log('key = ' + value);
+    });
+  }).finally(function() {
+    return client.disconnect();
+  });
+});
+----
+
+== Step 3: Run the Tutorial
+
+[source,bash]
+----
+npm start
+----
+
+You should see output like:
+
+----
+Connected
+key = value
+Disconnected
+----
