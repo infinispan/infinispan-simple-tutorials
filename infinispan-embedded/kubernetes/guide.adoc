@@ -6,8 +6,6 @@
 :duration: 15
 :source-dir: infinispan-embedded/kubernetes
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to configure embedded Infinispan to form a cluster on Kubernetes using JGroups DNS_PING for node discovery, and how to build and deploy the application using JKube.

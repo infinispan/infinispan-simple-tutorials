@@ -6,8 +6,6 @@
 :duration: 15
 :source-dir: infinispan-remote/spatial-queries
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to define geospatial entities with `@GeoPoint` and `@GeoField` annotations, create indexed caches, and run spatial Ickle queries including within circle, within box, within polygon, distance projections, and spatial ordering.

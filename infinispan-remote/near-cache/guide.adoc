@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: infinispan-remote/near-cache
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to configure a near-cache on the Hot Rod client so that frequently read entries are stored locally, avoiding remote calls. You will also enable bloom filters to reduce the invalidation overhead when entries change on the server.

@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: infinispan-remote/security/secured-cache
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to create a cache with role-based authorization so that only users with

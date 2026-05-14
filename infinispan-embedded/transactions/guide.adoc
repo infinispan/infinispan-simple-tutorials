@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: infinispan-embedded/transactions
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to configure a transactional embedded cache and use the JTA `TransactionManager` to commit and rollback cache operations atomically.

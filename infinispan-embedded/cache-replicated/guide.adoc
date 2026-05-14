@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: infinispan-embedded/cache-replicated
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to create a clustered Infinispan cache in replicated synchronous mode, where every entry is copied to all nodes in the cluster.
