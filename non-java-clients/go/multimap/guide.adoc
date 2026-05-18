@@ -1,0 +1,64 @@
+= Multimap Caches with the Go Client
+:summary: Store multiple values per key using the multimap cache API
+:mode: remote
+:topics: caching,multimap
+:keywords: multimap,multiple-values,put,get,size,go,golang
+:duration: 5
+:source-dir: non-java-clients/go/multimap
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to use multimap caches with the Go Hot Rod client to associate multiple values with a single key.
+
+== Prerequisites
+
+* A running Infinispan server.
+* Go 1.25 or later.
+
+== Running the Example
+
+[source,shell]
+----
+go run ./multimap
+----
+
+== Code Walkthrough
+
+=== Creating a Multimap Handle
+
+[source,go]
+----
+mm := client.Multimap("test")
+----
+
+=== Storing Multiple Values
+
+Each `Put` call adds a value under the given key without replacing existing values.
+
+[source,go]
+----
+mm.Put(ctx, []byte("2016"), []byte("Rosita"))
+mm.Put(ctx, []byte("2016"), []byte("Guillermo"))
+----
+
+=== Retrieving All Values
+
+`Get` returns all values associated with a key.
+
+[source,go]
+----
+values, err := mm.Get(ctx, []byte("2016"))
+----
+
+== Expected Output
+
+[source]
+----
+People born in 2016:
+  Rosita
+  Guillermo
+  Patricia
+  Silvia
+Total entries: 7
+Cache removed.
+----
