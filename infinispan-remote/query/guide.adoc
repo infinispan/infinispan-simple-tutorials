@@ -1,7 +1,7 @@
 = Querying Data with Ickle and Protobuf
 :summary: Index and query cached data using Ickle queries, Protobuf schemas, and full-text search
 :mode: remote
-:topics: querying,getting-started
+:topics: querying
 :keywords: query,ickle,protobuf,protostream,indexed,full-text,search,projection
 :duration: 15
 :source-dir: infinispan-remote/query

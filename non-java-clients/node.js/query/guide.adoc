@@ -1,7 +1,7 @@
 = Querying Data with Ickle and the JavaScript Client
 :summary: Register Protobuf schemas and run Ickle queries with filters and projections
 :mode: remote
-:topics: querying,getting-started
+:topics: querying
 :keywords: query,ickle,protobuf,protostream,search,projection,javascript,node
 :duration: 15
 :source-dir: non-java-clients/node.js/query

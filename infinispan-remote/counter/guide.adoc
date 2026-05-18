@@ -1,7 +1,7 @@
 = Remote Counters
 :summary: Use strong counters (bounded and unbounded) and weak counters with the Hot Rod client
 :mode: remote
-:topics: counters,getting-started
+:topics: counters
 :keywords: counter,strong,weak,bounded,unbounded,atomic,distributed
 :duration: 10
 :source-dir: infinispan-remote/counter

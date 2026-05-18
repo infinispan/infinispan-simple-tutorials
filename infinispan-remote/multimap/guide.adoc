@@ -1,7 +1,7 @@
 = Remote Multimap Cache
 :summary: Store multiple values per key using the remote multimap cache API
 :mode: remote
-:topics: caching,multimap
+:topics: multimap
 :keywords: multimap,multiple-values,remote,hot-rod,cache
 :duration: 5
 :source-dir: infinispan-remote/multimap

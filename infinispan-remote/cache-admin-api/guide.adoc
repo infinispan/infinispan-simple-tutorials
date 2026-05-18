@@ -1,7 +1,7 @@
 = Remote Cache Administration
 :summary: Create caches remotely using the Hot Rod client admin API with simple, template, and XML configurations
 :mode: remote
-:topics: caching,administration
+:topics: administration
 :keywords: cache,admin,create,template,xml,configuration,volatile,remote
 :duration: 10
 :source-dir: infinispan-remote/cache-admin-api

@@ -1,7 +1,7 @@
 = Using Infinispan with Kotlin
 :summary: Connect to Infinispan Server and perform cache operations using Kotlin and the Hot Rod client
 :mode: remote
-:topics: kotlin,getting-started
+:topics: kotlin
 :keywords: kotlin,hot-rod,cache,protostream,protobuf,remote
 :duration: 10
 :source-dir: infinispan-remote/kotlin
