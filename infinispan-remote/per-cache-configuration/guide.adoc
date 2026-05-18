@@ -1,7 +1,7 @@
 = Per-Cache Configuration
 :summary: Configure remote caches using templates, inline XML, and URI-based XML files
 :mode: remote
-:topics: caching,configuration
+:topics: configuration
 :keywords: per-cache,template,xml,uri,configuration,distributed-cache
 :duration: 10
 :source-dir: infinispan-remote/per-cache-configuration

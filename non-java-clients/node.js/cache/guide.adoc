@@ -1,7 +1,7 @@
 = Basic Cache Operations with the JavaScript Client
 :summary: Connect to an Infinispan Server and perform basic cache operations with the JavaScript Hot Rod client
 :mode: remote
-:topics: caching,getting-started
+:topics: caching
 :keywords: cache,put,get,remove,putAll,getAll,replace,clear,javascript,node
 :duration: 5
 :source-dir: non-java-clients/node.js/cache

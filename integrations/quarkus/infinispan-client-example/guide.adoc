@@ -1,7 +1,7 @@
 = Quarkus Infinispan Client
 :summary: Build a Quarkus REST resource that stores, retrieves, and full-text searches data in a remote Infinispan Server
 :mode: integration
-:topics: quarkus,remote
+:topics: quarkus
 :keywords: quarkus,infinispan-client,rest,full-text,indexed,protobuf,devservices
 :duration: 10
 :source-dir: integrations/quarkus/infinispan-client-example

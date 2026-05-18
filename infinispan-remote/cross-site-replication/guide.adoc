@@ -1,7 +1,7 @@
 = Cross-Site Replication
 :summary: Set up active-passive cross-site replication between two Infinispan clusters (LON and NYC) and switch between them
 :mode: remote
-:topics: caching,cross-site
+:topics: cross-site
 :keywords: cross-site,xsite,replication,active-passive,cluster,switch,backup,LON,NYC
 :duration: 15
 :source-dir: infinispan-remote/cross-site-replication

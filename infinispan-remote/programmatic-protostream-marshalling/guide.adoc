@@ -1,7 +1,7 @@
 = Programmatic ProtoStream Marshalling
 :summary: Build a Protobuf schema programmatically and register a custom marshaller without annotations
 :mode: remote
-:topics: marshalling,protostream
+:topics: marshalling,protobuf
 :keywords: protobuf,protostream,marshaller,schema,programmatic,serialization
 :duration: 10
 :source-dir: infinispan-remote/programmatic-protostream-marshalling

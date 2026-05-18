@@ -1,7 +1,7 @@
 = Transactions with the JavaScript Client
 :summary: Use Hot Rod transactions to commit or rollback cache operations atomically
 :mode: remote
-:topics: transactions,caching
+:topics: transactions
 :keywords: transaction,commit,rollback,begin,atomicity,javascript,node
 :duration: 10
 :source-dir: non-java-clients/node.js/transactions

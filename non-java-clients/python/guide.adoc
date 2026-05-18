@@ -1,7 +1,7 @@
 = Python REST Client: Getting Started
 :summary: Connect to an Infinispan Server and perform basic cache operations with Python and the REST API
 :mode: remote
-:topics: caching,getting-started
+:topics: caching
 :keywords: cache,put,get,remote,rest,python
 :duration: 10
 :source-dir: non-java-clients/python

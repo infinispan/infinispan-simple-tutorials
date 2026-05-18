@@ -1,7 +1,7 @@
 = Node.js Cache Tutorial
 :summary: Basic cache operations with the Node.js client
 :mode: remote
-:topics: caching,getting-started
+:topics: caching
 :keywords: cache,put,get,javascript,node
 :duration: 5
 :source-dir: non-java-clients/node.js/cache

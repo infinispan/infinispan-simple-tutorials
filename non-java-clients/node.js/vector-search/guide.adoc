@@ -1,7 +1,7 @@
 = Vector Search with the JavaScript Client
 :summary: Perform kNN vector search and hybrid queries combining vector similarity with full-text and metadata filters
 :mode: ai
-:topics: vector-search,knn
+:topics: vector-search
 :keywords: vector,knn,embedding,similarity,cosine,hybrid,full-text,indexed,protobuf,javascript,node
 :duration: 10
 :source-dir: non-java-clients/node.js/vector-search
