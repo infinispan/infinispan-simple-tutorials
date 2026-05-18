@@ -1,0 +1,62 @@
+= Near Caching with the Go Client
+:summary: Improve read performance with client-side near caching
+:mode: remote
+:topics: caching,performance
+:keywords: near-cache,performance,client-side,invalidation,go,golang
+:duration: 10
+:source-dir: non-java-clients/go/near-cache
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates the performance benefits of client-side near caching with the Go Hot Rod client.
+
+== Prerequisites
+
+* A running Infinispan server.
+* Go 1.25 or later.
+
+== Running the Example
+
+[source,shell]
+----
+go run ./near-cache
+----
+
+== Code Walkthrough
+
+=== Creating a Near Cache
+
+Create a near cache with a maximum number of locally cached entries.
+
+[source,go]
+----
+nearCache, err := hotrod.NewNearCache(ctx, client, "testCacheNearCaching",
+    hotrod.WithMaxNearCacheEntries(20),
+)
+----
+
+=== Benchmarking
+
+The example populates both a regular cache and a near cache with 20 entries, then performs 10,000 random reads from each to compare performance.
+
+[source,go]
+----
+// Regular cache reads
+for i := 0; i < 10_000; i++ {
+    testCache.Get(ctx, key)
+}
+
+// Near cache reads (served locally after first access)
+for i := 0; i < 10_000; i++ {
+    nearCache.Get(ctx, key)
+}
+----
+
+== Expected Output
+
+[source]
+----
+Time to complete 10,000 reads with regular cache:    <varies>
+Time to complete 10,000 reads with near cache:       <varies, significantly faster>
+Caches removed.
+----

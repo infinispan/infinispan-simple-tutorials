@@ -1,0 +1,96 @@
+= Vector Search with the Go Client
+:summary: Perform kNN vector search and hybrid queries combining vector similarity with full-text and metadata filters
+:mode: ai
+:topics: vector-search,knn
+:keywords: vector,knn,embedding,similarity,cosine,hybrid,full-text,indexed,protobuf,go,golang
+:duration: 10
+:source-dir: non-java-clients/go/vector-search
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to perform kNN vector search and hybrid queries with the Go Hot Rod client.
+
+== Prerequisites
+
+* A running Infinispan server.
+* Go 1.25 or later.
+
+== Running the Example
+
+[source,shell]
+----
+go run ./vector-search
+----
+
+== Code Walkthrough
+
+=== Vector Schema
+
+The `Beer` schema includes a `@Vector` field with 3 dimensions using cosine similarity.
+
+[source,protobuf]
+----
+/* @Indexed */
+message Beer {
+  /* @Keyword(projectable = true, sortable = true) */
+  string name = 1;
+  /* @Vector(dimension = 3, similarity = COSINE) */
+  repeated float descriptionEmbedding = 7;
+}
+----
+
+=== kNN Vector Search
+
+Use the `<->` operator to find the k nearest neighbors to a query vector.
+
+[source,go]
+----
+cache.Query(ctx, "from quickstart.Beer b where b.descriptionEmbedding <-> [:v]~:k",
+    hotrod.WithQueryParam("v", []float32{0.9, 0.1, 0.1}),
+    hotrod.WithQueryParam("k", int32(3)),
+)
+----
+
+=== Score Projection
+
+Use `score(b)` to include the similarity score in projections.
+
+[source,go]
+----
+cache.Query(ctx, "select b.name, b.style, score(b) from quickstart.Beer b where b.descriptionEmbedding <-> [:v]~:k",
+    hotrod.WithQueryParam("v", []float32{0.05, 0.9, 0.1}),
+    hotrod.WithQueryParam("k", int32(3)),
+)
+----
+
+=== Hybrid Queries
+
+Combine vector search with metadata filters using the `filtering` clause.
+
+[source,go]
+----
+cache.Query(ctx,
+    "select score(b), b.name, b.style, b.abv from quickstart.Beer b "+
+    "where b.descriptionEmbedding <-> [:v]~:k "+
+    "filtering (b.style = 'Lager' and b.abv < 5.0)",
+    hotrod.WithQueryParam("v", []float32{0.05, 0.95, 0.05}),
+    hotrod.WithQueryParam("k", int32(3)),
+)
+----
+
+Combine vector search with full-text filters.
+
+[source,go]
+----
+cache.Query(ctx,
+    "select score(b), b.name from quickstart.Beer b "+
+    "where b.descriptionEmbedding <-> [:v]~:k "+
+    "filtering b.description : 'citrus'",
+    hotrod.WithQueryParam("v", []float32{0.1, 0.1, 0.95}),
+    hotrod.WithQueryParam("k", int32(5)),
+)
+----
+
+== Expected Output
+
+The example runs 8 query demonstrations including full-text search, keyword and range filters, projections with sorting, kNN vector search, score projection, and three hybrid query variants.
