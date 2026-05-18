@@ -1,0 +1,59 @@
+= Cache Encodings with the Go Client
+:summary: Store data with different media types using text/plain and application/json encodings
+:mode: remote
+:topics: caching,encoding
+:keywords: encoding,media-type,text,json,go,golang
+:duration: 5
+:source-dir: non-java-clients/go/encoding
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to use different cache encodings with the Go Hot Rod client.
+
+== Prerequisites
+
+* A running Infinispan server.
+* Go 1.25 or later.
+
+== Running the Example
+
+[source,shell]
+----
+go run ./encoding
+----
+
+== Code Walkthrough
+
+=== Text Cache
+
+Create a cache with `text/plain` encoding and use `PutRaw` and `GetRaw` with the appropriate media type.
+
+[source,go]
+----
+textCache.PutRaw(ctx, []byte("greeting"), []byte("Hello, Infinispan!"), codec.MediaIDTextPlain)
+val, found, err := textCache.GetRaw(ctx, []byte("greeting"), codec.MediaIDTextPlain)
+----
+
+=== JSON Cache
+
+Create a cache with `application/json` encoding and store JSON documents.
+
+[source,go]
+----
+jsonCache.PutRaw(ctx, []byte(`"name"`), []byte(`{"project": "infinispan"}`), codec.MediaIDJSON)
+----
+
+== Expected Output
+
+[source]
+----
+Caches ready.
+
+== Cache with text/plain encoding ==
+textCache[greeting] = Hello, Infinispan!
+
+== Cache with application/json encoding ==
+jsonCache[name] = {"project": "infinispan"}
+
+Caches removed.
+----

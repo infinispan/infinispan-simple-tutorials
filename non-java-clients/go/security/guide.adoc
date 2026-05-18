@@ -1,0 +1,57 @@
+= Security and Authentication with the Go Client
+:summary: Connect to Infinispan with SASL authentication and role-based cache authorization
+:mode: remote
+:topics: security
+:keywords: security,authentication,sasl,scram,credentials,authorization,go,golang
+:duration: 5
+:source-dir: non-java-clients/go/security
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates SASL authentication and role-based cache authorization with the Go Hot Rod client.
+
+== Prerequisites
+
+* A running Infinispan server with the default `admin` user.
+* Go 1.25 or later.
+
+== Running the Example
+
+[source,shell]
+----
+go run ./security
+----
+
+== Code Walkthrough
+
+=== Connecting with Credentials
+
+The client connects using SCRAM-SHA-256 authentication via the URI.
+
+[source,go]
+----
+client, err := hotrod.NewClient(ctx, "hotrod://admin:password@localhost:11222")
+----
+
+=== Role-Based Authorization
+
+The example creates a secured cache that requires the `deployer` role.
+The `admin` user does not have this role, so operations on the secured cache fail with an authorization error.
+
+[source,go]
+----
+const securedCacheConfig = `<distributed-cache name="securedCache">
+    <security>
+        <authorization enabled="true" roles="deployer"/>
+    </security>
+</distributed-cache>`
+----
+
+== Expected Output
+
+[source]
+----
+Successfully put value in 'test' cache.
+Put to secured cache failed as expected: <authorization error>
+Caches removed.
+----

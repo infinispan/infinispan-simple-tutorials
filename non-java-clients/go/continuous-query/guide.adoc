@@ -1,0 +1,79 @@
+= Continuous Queries with the Go Client
+:summary: Register a continuous query that pushes events when cache entries match an Ickle query
+:mode: remote
+:topics: querying,events,getting-started
+:keywords: continuous-query,ickle,protobuf,protostream,listener,go,golang
+:duration: 15
+:source-dir: non-java-clients/go/continuous-query
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to register a continuous query on an Infinispan cache and receive real-time events when entries match an Ickle query predicate.
+
+== Prerequisites
+
+* A running Infinispan server.
+* Go 1.25 or later.
+
+== Running the Example
+
+[source,shell]
+----
+go run ./continuous-query
+----
+
+== Code Walkthrough
+
+=== Registering a Proto Schema
+
+The example registers an `InstaPost` Protobuf schema with `id`, `user`, and `hashtag` fields.
+
+[source,go]
+----
+client.Schemas().Register(ctx, "instapost.proto", instaPostProto)
+----
+
+=== Setting Up the Continuous Query
+
+A continuous query filters posts by a specific user.
+The `CQJoining` event fires each time a matching entry is inserted.
+
+[source,go]
+----
+cq, err := cache.ContinuousQuery(ctx,
+    "FROM tutorial.InstaPost p WHERE p.user = :userName",
+    hotrod.WithCQParam("userName", "belen_esteban"),
+)
+----
+
+=== Consuming Events
+
+Events are consumed from the `cq.Events` channel in a goroutine.
+
+[source,go]
+----
+for event := range cq.Events {
+    if event.Type == hotrod.CQJoining {
+        // handle matching entry
+    }
+}
+----
+
+=== Generating Data
+
+The example inserts 100 random posts from a pool of users and hashtags.
+Posts by `belen_esteban` trigger continuous query events.
+
+== Expected Output
+
+[source]
+----
+Registered instapost.proto schema.
+Continuous query registered.
+@belen_esteban has posted again! Hashtag: #love
+@belen_esteban has posted again! Hashtag: #infinispan
+...
+
+Total posts: 100
+Total posts by @belen_esteban: <varies>
+----

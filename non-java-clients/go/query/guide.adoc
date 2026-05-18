@@ -1,0 +1,93 @@
+= Querying Data with Ickle and the Go Client
+:summary: Register Protobuf schemas and run Ickle queries with filters and projections
+:mode: remote
+:topics: querying,getting-started
+:keywords: query,ickle,protobuf,protostream,search,projection,go,golang
+:duration: 15
+:source-dir: non-java-clients/go/query
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to register Protobuf schemas and run Ickle queries with the Go Hot Rod client.
+
+== Prerequisites
+
+* A running Infinispan server.
+* Go 1.25 or later.
+
+== Running the Example
+
+[source,shell]
+----
+go run ./query
+----
+
+== Code Walkthrough
+
+=== Schema Registration
+
+The example registers a `Person` schema with indexed fields for keyword and basic searches.
+
+[source,protobuf]
+----
+/* @Indexed */
+message Person {
+    /* @Keyword(projectable = true, sortable = true, normalizer = "lowercase") */
+    string firstName = 1;
+    /* @Keyword(projectable = true, sortable = true, normalizer = "lowercase") */
+    string lastName = 2;
+    /* @Basic(projectable = true, sortable = true) */
+    int32 bornYear = 3;
+    /* @Keyword(projectable = true, sortable = true, normalizer = "lowercase") */
+    string bornIn = 4;
+}
+----
+
+=== Query All
+
+[source,go]
+----
+result, err := cache.Query(ctx, "from tutorial.Person")
+----
+
+=== Query with Parameters
+
+[source,go]
+----
+result, err := cache.Query(ctx, "from tutorial.Person p where p.lastName = :lastName",
+    hotrod.WithQueryParam("lastName", "Granger"),
+)
+----
+
+=== Query with Projections
+
+[source,go]
+----
+result, err := cache.Query(ctx, "select p.firstName, p.lastName from tutorial.Person p where p.bornIn = 'London'")
+----
+
+== Expected Output
+
+[source]
+----
+Registered person.proto schema.
+Cache 'indexedPeopleCache' ready.
+Added 4 people.
+
+=== Query all ===
+Total results: 4
+  Hermione Granger
+  Harry Potter
+  Ron Wesley
+  Draco Malfoy
+
+=== Query: people with lastName = 'Granger' ===
+  Hermione Granger
+
+=== Query: projection of people born in London ===
+  Hermione Granger
+  Ron Wesley
+  Draco Malfoy
+
+Cache removed.
+----

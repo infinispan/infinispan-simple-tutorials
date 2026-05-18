@@ -1,0 +1,63 @@
+= Basic Cache Operations with the Go Client
+:summary: Connect to an Infinispan Server and perform basic cache operations with the Go Hot Rod client
+:mode: remote
+:topics: caching,getting-started
+:keywords: cache,put,get,remove,go,golang
+:duration: 5
+:source-dir: non-java-clients/go/cache
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to connect to an Infinispan server and perform basic cache operations using the Go Hot Rod client.
+
+== Prerequisites
+
+* A running Infinispan server.
+* Go 1.25 or later.
+
+== Running the Example
+
+[source,shell]
+----
+go run ./cache
+----
+
+== Code Walkthrough
+
+=== Connecting to the Server
+
+The example connects to the Infinispan server using a Hot Rod URI.
+You can override the default URI by setting the `INFINISPAN_URI` environment variable.
+
+[source,go]
+----
+client, err := hotrod.NewClient(ctx, "hotrod://admin:password@localhost:11222")
+----
+
+=== Creating the Cache
+
+The example creates a distributed cache with ProtoStream encoding using the administration API.
+
+[source,go]
+----
+client.Administration().GetOrCreateCache(ctx, "test", cacheConfig)
+----
+
+=== Storing and Retrieving Entries
+
+Use `Put` to store a key-value pair and `Get` to retrieve it.
+
+[source,go]
+----
+cache.Put(ctx, []byte("key"), []byte("value"))
+val, found, err := cache.Get(ctx, []byte("key"))
+----
+
+== Expected Output
+
+[source]
+----
+Cache 'test' ready.
+key = value
+Cache removed.
+----

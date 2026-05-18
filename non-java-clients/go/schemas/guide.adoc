@@ -1,0 +1,72 @@
+= Schema Management with the Go Client
+:summary: Register and retrieve Protobuf schemas using the schema manager API
+:mode: remote
+:topics: schemas,protobuf
+:keywords: schema,protobuf,protostream,metadata,register,retrieve,go,golang
+:duration: 5
+:source-dir: non-java-clients/go/schemas
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to register and retrieve Protobuf schemas with the Go Hot Rod client.
+
+== Prerequisites
+
+* A running Infinispan server.
+* Go 1.25 or later.
+
+== Running the Example
+
+[source,shell]
+----
+go run ./schemas
+----
+
+== Code Walkthrough
+
+=== Registering an Invalid Schema
+
+The example first attempts to register invalid content to show error handling.
+
+[source,go]
+----
+err = schemas.Register(ctx, schemaName, "What is love?")
+----
+
+=== Registering a Valid Schema
+
+Then it registers a valid Protobuf schema.
+
+[source,go]
+----
+schemas.Register(ctx, schemaName, validSchema)
+----
+
+=== Retrieving a Schema
+
+Use `Get` to retrieve a previously registered schema by name.
+
+[source,go]
+----
+content, found, err := schemas.Get(ctx, schemaName)
+----
+
+== Expected Output
+
+[source]
+----
+=== Registering schema with invalid content ===
+Schema registered (server may accept it with errors).
+
+=== Registering corrected schema ===
+Schema registered successfully.
+
+=== Getting schema 'simple_tuto_hello.proto' ===
+Schema content:
+syntax = "proto3";
+package hello;
+
+message Greeting {
+    string content = 1;
+}
+----
