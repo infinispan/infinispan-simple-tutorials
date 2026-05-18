@@ -6,8 +6,6 @@
 :duration: 5
 :source-dir: non-java-clients/node.js/schemas
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to register Protobuf schemas on the Infinispan Server using the internal `___protobuf_metadata` cache, retrieve them, and check for validation errors.
@@ -17,12 +15,14 @@ How to register Protobuf schemas on the Infinispan Server using the internal `__
 * Node.js 22+
 * An Infinispan Server running on `localhost:11222`
 
-Start an Infinispan Server with Docker:
+Start an Infinispan Server with Docker or Podman:
 
 [source,shell]
 ----
 docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
 ----
+
+TIP: You can replace `docker` with `podman` in the command above if you use Podman.
 
 == Step 1: Connect to the Metadata Cache
 

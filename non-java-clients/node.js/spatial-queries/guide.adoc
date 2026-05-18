@@ -18,12 +18,14 @@ How to define geospatial Protobuf entities with `@GeoPoint`, `@Latitude`, and `@
 * An Infinispan Server running on `localhost:11222`
 * The `protobufjs` npm package (installed via `npm install`)
 
-Start an Infinispan Server with Docker:
+Start an Infinispan Server with Docker or Podman:
 
 [source,shell]
 ----
 docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
 ----
+
+TIP: You can replace `docker` with `podman` in the command above if you use Podman.
 
 == Step 1: Define Geospatial Protobuf Schemas
 

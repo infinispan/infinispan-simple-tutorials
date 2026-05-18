@@ -14,7 +14,8 @@ How to use the Quarkus Infinispan client extension to connect to an Infinispan S
 
 * Java 17+
 * Quarkus
-* An Infinispan Server running on `localhost:11222` (or Docker/Podman for Quarkus Dev Services)
+
+You don't need an Infinispan Server running, use Quarkus Dev Services.
 
 == Step 1: Add Dependencies
 

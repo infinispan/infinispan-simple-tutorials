@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: non-java-clients/node.js/vector-search
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to store entities with vector embeddings in Infinispan and perform kNN (k-nearest neighbor) vector searches, including hybrid queries that combine vector similarity with full-text search and metadata filters.
@@ -18,12 +16,14 @@ How to store entities with vector embeddings in Infinispan and perform kNN (k-ne
 * An Infinispan Server running on `localhost:11222`
 * The `protobufjs` npm package (installed via `npm install`)
 
-Start an Infinispan Server with Docker:
+Start an Infinispan Server with Docker or Podman:
 
 [source,shell]
 ----
 docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
 ----
+
+TIP: You can replace `docker` with `podman` in the command above if you use Podman.
 
 == Step 1: Define a Protobuf Schema with a Vector Field
 
