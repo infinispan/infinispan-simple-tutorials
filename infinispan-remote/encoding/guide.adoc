@@ -1,8 +1,8 @@
 = Cache Encodings with DataFormat
 :summary: Store and retrieve data using different cache encodings (text/plain, JSON, XML) with the DataFormat API
 :mode: remote
-:topics: caching,encoding
-:keywords: encoding,media-type,json,xml,text,utf-8,dataformat,marshaller
+:topics: encoding
+:keywords: caching,encoding,media-type,json,xml,text,utf-8,dataformat,marshaller
 :duration: 10
 :source-dir: infinispan-remote/encoding
 

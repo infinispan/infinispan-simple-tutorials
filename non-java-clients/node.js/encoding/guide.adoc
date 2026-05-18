@@ -1,7 +1,7 @@
 = Cache Encodings with the JavaScript Client
 :summary: Store data with different media types using text/plain and application/json encodings
 :mode: remote
-:topics: caching,encoding
+:topics: encoding
 :keywords: encoding,media-type,text,json,dataFormat,javascript,node
 :duration: 5
 :source-dir: non-java-clients/node.js/encoding

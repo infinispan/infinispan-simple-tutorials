@@ -1,7 +1,7 @@
 = Reactive API with Mutiny
 :summary: Perform non-blocking cache operations using the Infinispan Mutiny reactive API
 :mode: remote
-:topics: reactive,mutiny
+:topics: reactive
 :keywords: reactive,mutiny,non-blocking,async,cache,infinispan-api
 :duration: 10
 :source-dir: infinispan-remote/reactive-api

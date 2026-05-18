@@ -1,7 +1,7 @@
 = Hibernate L2 Cache with Infinispan (Standalone)
 :summary: Use Infinispan as the Hibernate second-level cache provider in a standalone Java application
 :mode: integration
-:topics: hibernate,caching
+:topics: hibernate
 :keywords: hibernate,l2-cache,jpa,entity-cache,query-cache,h2
 :duration: 10
 :source-dir: integrations/hibernate/local

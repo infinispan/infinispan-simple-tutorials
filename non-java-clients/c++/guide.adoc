@@ -1,7 +1,7 @@
 = C++ Hot Rod Client: Getting Started
 :summary: Connect to an Infinispan Server and perform basic cache operations with the C++ Hot Rod client
 :mode: remote
-:topics: caching,getting-started
+:topics: caching
 :keywords: cache,put,get,remote,hot-rod,cpp
 :duration: 10
 :source-dir: non-java-clients/c++
