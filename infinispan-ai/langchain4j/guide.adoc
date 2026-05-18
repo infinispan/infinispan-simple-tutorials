@@ -1,7 +1,7 @@
 = Semantic Search with LangChain4j and Infinispan
 :summary: Use Infinispan as a vector database for AI semantic search with LangChain4j embeddings
 :mode: ai
-:topics: getting-started
+:topics: langchain
 :keywords: ai,langchain4j,vector,embedding,semantic-search,similarity,onnx
 :duration: 10
 :source-dir: infinispan-ai/langchain4j

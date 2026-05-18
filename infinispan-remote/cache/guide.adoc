@@ -1,7 +1,7 @@
 = Remote Cache: Getting Started
 :summary: Connect to an Infinispan Server and perform basic cache operations with the Hot Rod client
 :mode: remote
-:topics: caching,getting-started
+:topics: caching
 :keywords: cache,put,get,remote,hot-rod,client,server
 :duration: 5
 :source-dir: infinispan-remote/cache

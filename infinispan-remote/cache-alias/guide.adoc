@@ -1,7 +1,7 @@
 = Remote Cache Aliases
 :summary: Add aliases to remote caches and access the same data through different cache names
 :mode: remote
-:topics: caching,administration
+:topics: administration
 :keywords: cache,alias,remote,administration,hot-rod
 :duration: 5
 :source-dir: infinispan-remote/cache-alias

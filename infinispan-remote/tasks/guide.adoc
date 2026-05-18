@@ -1,7 +1,7 @@
 = Server-Side Tasks
 :summary: Upload and execute server-side JavaScript tasks via the Hot Rod client and REST API
 :mode: remote
-:topics: tasks,server
+:topics: tasks
 :keywords: tasks,server-tasks,javascript,execute,rest,hot-rod
 :duration: 10
 :source-dir: infinispan-remote/tasks

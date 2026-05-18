@@ -1,7 +1,7 @@
 = Continuous Queries with the JavaScript Client
 :summary: Register a continuous query that pushes events when cache entries match an Ickle query
 :mode: remote
-:topics: querying,events,getting-started
+:topics: querying,events
 :keywords: continuous-query,ickle,protobuf,protostream,listener,javascript,node
 :duration: 15
 :source-dir: non-java-clients/node.js/continuous-query

@@ -1,7 +1,7 @@
 = Local Cache Map with Embedded Infinispan
 :summary: Use an embedded Infinispan cache as a local key-value map with basic put and get operations
 :mode: embedded
-:topics: caching,getting-started
+:topics: caching
 :keywords: local,cache,map,put,get,embedded
 :duration: 5
 :source-dir: infinispan-embedded/map

@@ -1,7 +1,7 @@
 = Transactional Cache Operations
 :summary: Perform transactional cache operations with commit and rollback using the Hot Rod client
 :mode: remote
-:topics: transactions,caching
+:topics: transactions
 :keywords: transaction,commit,rollback,non-xa,pessimistic,transactionmanager
 :duration: 10
 :source-dir: infinispan-remote/transactions

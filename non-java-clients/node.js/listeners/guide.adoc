@@ -1,7 +1,7 @@
 = Cache Event Listeners with the JavaScript Client
 :summary: Receive notifications when cache entries are created, modified, or removed
 :mode: remote
-:topics: events,caching
+:topics: events
 :keywords: listener,events,create,modify,remove,notifications,javascript,node
 :duration: 10
 :source-dir: non-java-clients/node.js/listeners
