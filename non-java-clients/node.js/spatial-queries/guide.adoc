@@ -6,8 +6,6 @@
 :duration: 15
 :source-dir: non-java-clients/node.js/spatial-queries
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to define geospatial Protobuf entities with `@GeoPoint`, `@Latitude`, and `@Longitude` annotations, create indexed caches, and run spatial Ickle queries including within circle, within box, within polygon, distance projections, and spatial ordering.
