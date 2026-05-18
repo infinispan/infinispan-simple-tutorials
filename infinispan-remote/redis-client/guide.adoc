@@ -15,6 +15,17 @@ How to use a standard Redis client (Jedis) to connect to Infinispan via the RESP
 * Java 17+
 * An Infinispan Server running on `localhost:11222` (or Docker/Podman available for Testcontainers)
 
+Start an Infinispan Server with Docker or Podman:
+
+[source,shell]
+----
+docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
+----
+
+TIP: You can replace `docker` with `podman` in the command above if you use Podman.
+
+TIP: If no server is running, the tutorial code automatically starts an Infinispan Server using Testcontainers.
+
 == Step 1: Add the Jedis Dependency
 
 Add the Jedis Redis client to your `pom.xml`:

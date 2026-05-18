@@ -6,8 +6,6 @@
 :duration: 10
 :source-dir: non-java-clients/node.js/near-cache
 
-TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
-
 == What You Will Learn
 
 How to enable client-side near caching to dramatically improve read performance for frequently accessed entries, and how near cache entries are automatically invalidated when server-side data changes.
@@ -17,12 +15,14 @@ How to enable client-side near caching to dramatically improve read performance 
 * Node.js 22+
 * An Infinispan Server running on `localhost:11222`
 
-Start an Infinispan Server with Docker:
+Start an Infinispan Server with Docker or Podman:
 
 [source,shell]
 ----
 docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
 ----
+
+TIP: You can replace `docker` with `podman` in the command above if you use Podman.
 
 == Step 1: Create Two Clients
 
