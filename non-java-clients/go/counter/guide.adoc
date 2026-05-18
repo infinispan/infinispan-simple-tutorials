@@ -1,0 +1,84 @@
+= Distributed Counters with the Go Client
+:summary: Create and use distributed strong and weak counters with compare-and-swap
+:mode: remote
+:topics: counters
+:keywords: counter,strong,weak,cas,compare-and-swap,distributed,go,golang
+:duration: 10
+:source-dir: non-java-clients/go/counter
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to create and use distributed counters with the Go Hot Rod client.
+
+== Prerequisites
+
+* A running Infinispan server.
+* Go 1.25 or later.
+
+== Running the Example
+
+[source,shell]
+----
+go run ./counter
+----
+
+== Code Walkthrough
+
+=== Defining a Strong Counter
+
+A strong counter supports all operations including compare-and-swap and get-and-set.
+This example creates a bounded, persistent strong counter with an initial value of 1.
+
+[source,go]
+----
+counters.Define(ctx, "strong-counter", &hotrod.CounterConfiguration{
+    Type:         hotrod.CounterStrong,
+    Storage:      hotrod.StoragePersistent,
+    Bounded:      true,
+    LowerBound:   0,
+    UpperBound:   100,
+    InitialValue: 1,
+})
+----
+
+=== Counter Operations
+
+Use `AddAndGet` to atomically add a delta and `CompareAndSwap` for optimistic locking.
+
+[source,go]
+----
+val, err = strong.AddAndGet(ctx, 10)
+old, swapped, err := strong.CompareAndSwap(ctx, 11, 50)
+----
+
+=== Defining a Weak Counter
+
+Weak counters are optimized for high write throughput but do not support compare-and-swap or get-and-set.
+
+[source,go]
+----
+counters.Define(ctx, "weak-counter", &hotrod.CounterConfiguration{
+    Type:    hotrod.CounterWeak,
+    Storage: hotrod.StorageVolatile,
+})
+----
+
+== Expected Output
+
+[source]
+----
+=== Strong Counter ===
+Strong counter created: true
+Initial value: 1
+After adding 10: 11
+CAS(11 -> 50): old=11 swapped=true
+Current value: 50
+After reset: 1
+
+=== Weak Counter ===
+Weak counter created: true
+Weak counter value after adding 5: 5
+
+All counters: [strong-counter weak-counter]
+Counters removed.
+----

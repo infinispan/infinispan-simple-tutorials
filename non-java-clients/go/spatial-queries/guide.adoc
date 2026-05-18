@@ -1,0 +1,148 @@
+= Spatial Queries with the Go Client
+:summary: Run geospatial queries on indexed caches using within circle, box, polygon, distance projection, and spatial ordering
+:mode: remote
+:topics: querying,spatial
+:keywords: spatial,geospatial,query,latitude,longitude,geopoint,within,circle,box,polygon,distance,go,golang
+:duration: 15
+:source-dir: non-java-clients/go/spatial-queries
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to run geospatial queries on indexed Infinispan caches using the Go Hot Rod client.
+
+== Prerequisites
+
+* A running Infinispan server.
+* Go 1.25 or later.
+
+== Running the Example
+
+[source,shell]
+----
+go run ./spatial-queries
+----
+
+== Code Walkthrough
+
+=== Defining Spatial Schemas
+
+The `Restaurant` schema uses `@GeoPoint` with `@Latitude` and `@Longitude` annotations to create a composite spatial field called `location`.
+
+[source,protobuf]
+----
+/**
+ * @Indexed
+ * @GeoPoint(fieldName = "location", projectable = true, sortable = true)
+ */
+message Restaurant {
+    /** @Keyword(normalizer = "lowercase", projectable = true, sortable = true) */
+    string name = 1;
+    /** @Latitude(fieldName = "location") */
+    double latitude = 4;
+    /** @Longitude(fieldName = "location") */
+    double longitude = 5;
+}
+----
+
+The `TrainRoute` schema demonstrates multiple geo points on a single entity.
+
+[source,protobuf]
+----
+/**
+ * @Indexed
+ * @GeoPoint(fieldName = "departure", projectable = true, sortable = true)
+ * @GeoPoint(fieldName = "arrival", projectable = true, sortable = true)
+ */
+message TrainRoute {
+    /** @Latitude(fieldName = "departure") */
+    double departureLat = 2;
+    /** @Longitude(fieldName = "departure") */
+    double departureLon = 3;
+    /** @Latitude(fieldName = "arrival") */
+    double arrivalLat = 4;
+    /** @Longitude(fieldName = "arrival") */
+    double arrivalLon = 5;
+}
+----
+
+=== Within Circle
+
+Find restaurants within a 100-meter radius of a point.
+
+[source,go]
+----
+cache.Query(ctx, "from tutorial.Restaurant r where r.location within circle(41.908470, 12.455633, 100)")
+----
+
+=== Within Box
+
+Find restaurants inside a bounding rectangle.
+
+[source,go]
+----
+cache.Query(ctx, "from tutorial.Restaurant r where r.location within box(41.91, 12.45, 41.90, 12.46)")
+----
+
+=== Within Polygon
+
+Find restaurants inside an arbitrary polygon.
+
+[source,go]
+----
+cache.Query(ctx, "from tutorial.Restaurant r where r.location within polygon((41.91, 12.45), (41.91, 12.46), (41.90, 12.46), (41.90, 12.45))")
+----
+
+=== Distance Projection
+
+Project the distance from a reference point.
+
+[source,go]
+----
+cache.Query(ctx, "select r.name, distance(r.location, 41.908470, 12.455633) from tutorial.Restaurant r")
+----
+
+=== Order by Distance
+
+Sort results by proximity.
+
+[source,go]
+----
+cache.Query(ctx, "from tutorial.Restaurant r order by distance(r.location, 41.908470, 12.455633)")
+----
+
+== Expected Output
+
+[source]
+----
+Registered Restaurant and TrainRoute schemas.
+Cache 'spatialCache' ready.
+Added 7 restaurants in Rome.
+Added 4 train routes.
+
+=== Within circle (100m radius) ===
+Found <n> restaurants:
+  La Locanda di Pietro
+  ...
+
+=== Within box ===
+Found <n> restaurants:
+  ...
+
+=== Within polygon ===
+Found <n> restaurants:
+  ...
+
+=== Distance projection ===
+  La Locanda di Pietro: <n>m
+  ...
+
+=== Order by distance ===
+  ...
+
+=== Train routes departing near Bologna (300km) ===
+Found 2 routes:
+  Bologna-Selva
+  Bologna-Venice
+
+Cache removed.
+----

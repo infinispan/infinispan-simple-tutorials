@@ -1,0 +1,72 @@
+= Transactions with the Go Client
+:summary: Use Hot Rod transactions to commit or rollback cache operations atomically
+:mode: remote
+:topics: transactions,caching
+:keywords: transaction,commit,rollback,atomicity,go,golang
+:duration: 10
+:source-dir: non-java-clients/go/transactions
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to use Hot Rod transactions with the Go client to commit or rollback cache operations atomically.
+
+== Prerequisites
+
+* A running Infinispan server.
+* Go 1.25 or later.
+
+== Running the Example
+
+[source,shell]
+----
+go run ./transactions
+----
+
+== Code Walkthrough
+
+=== Transactional Cache Configuration
+
+The cache requires REPEATABLE_READ isolation and PESSIMISTIC locking with NON_XA transaction mode.
+
+[source,xml]
+----
+<distributed-cache name="simple-tx-cache">
+    <locking isolation="REPEATABLE_READ"/>
+    <transaction locking="PESSIMISTIC" mode="NON_XA"/>
+</distributed-cache>
+----
+
+=== Committing a Transaction
+
+Return `nil` from the callback to commit.
+
+[source,go]
+----
+client.WithTransaction(ctx, "simple-tx-cache", func(tc *hotrod.TxCache) error {
+    tc.Put(ctx, []byte("key1"), []byte("value1"))
+    tc.Put(ctx, []byte("key2"), []byte("value2"))
+    return nil // commit
+})
+----
+
+=== Rolling Back a Transaction
+
+Return an error from the callback to rollback.
+
+[source,go]
+----
+client.WithTransaction(ctx, "simple-tx-cache", func(tc *hotrod.TxCache) error {
+    tc.Put(ctx, []byte("key1"), []byte("value3"))
+    return errors.New("rollback")
+})
+----
+
+== Expected Output
+
+[source]
+----
+After commit:   key1 = value1, key2 = value2
+Transaction rolled back: rollback
+After rollback: key1 = value1, key2 = value2
+Cache removed.
+----

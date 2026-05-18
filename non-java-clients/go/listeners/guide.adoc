@@ -1,0 +1,75 @@
+= Cache Event Listeners with the Go Client
+:summary: Receive notifications when cache entries are created, modified, or removed
+:mode: remote
+:topics: events,caching
+:keywords: listener,events,create,modify,remove,notifications,go,golang
+:duration: 10
+:source-dir: non-java-clients/go/listeners
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to register cache event listeners with the Go Hot Rod client to receive notifications when entries are created, modified, or removed.
+
+== Prerequisites
+
+* A running Infinispan server.
+* Go 1.25 or later.
+
+== Running the Example
+
+[source,shell]
+----
+go run ./listeners
+----
+
+== Code Walkthrough
+
+=== Registering a Listener
+
+Register a listener that receives created, modified, and removed events.
+
+[source,go]
+----
+listener, err := cache.AddListener(ctx,
+    hotrod.WithListenerInterests(hotrod.EventCreated, hotrod.EventModified, hotrod.EventRemoved),
+)
+----
+
+=== Consuming Events
+
+Events arrive on the `listener.Events` channel.
+A goroutine drains the channel and prints each event.
+
+[source,go]
+----
+for event := range listener.Events {
+    switch event.Type {
+    case hotrod.EventCreated:
+        fmt.Printf("Created %s\n", event.Key)
+    case hotrod.EventModified:
+        fmt.Printf("Modified %s\n", event.Key)
+    case hotrod.EventRemoved:
+        fmt.Printf("Removed %s\n", event.Key)
+    }
+}
+----
+
+=== Removing the Listener
+
+Call `RemoveListener` to stop receiving events.
+
+[source,go]
+----
+cache.RemoveListener(ctx, listener)
+----
+
+== Expected Output
+
+[source]
+----
+Listener registered.
+Created key1
+Created key2
+Modified key1
+Listener removed.
+----

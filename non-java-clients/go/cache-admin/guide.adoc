@@ -1,0 +1,62 @@
+= Cache Administration with the Go Client
+:summary: Create and manage caches programmatically with the Go Hot Rod client
+:mode: remote
+:topics: caching,administration
+:keywords: cache,admin,create,remove,xml,configuration,go,golang
+:duration: 5
+:source-dir: non-java-clients/go/cache-admin
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to create and manage caches programmatically using the Go Hot Rod client administration API.
+
+== Prerequisites
+
+* A running Infinispan server.
+* Go 1.25 or later.
+
+== Running the Example
+
+[source,shell]
+----
+go run ./cache-admin
+----
+
+== Code Walkthrough
+
+=== Creating a Simple Cache
+
+Use `CreateCache` to create a cache with default settings.
+This method fails if the cache already exists.
+
+[source,go]
+----
+admin.CreateCache(ctx, "SimpleCache", "")
+----
+
+=== Creating a Cache with XML Configuration
+
+Use `GetOrCreateCache` with an XML configuration string to create a cache with specific settings such as locking, transactions, and expiration.
+
+[source,go]
+----
+admin.GetOrCreateCache(ctx, "CacheWithXMLConfiguration", xmlConfig)
+----
+
+=== Removing Caches
+
+Use `RemoveCache` to delete a cache and all its data.
+
+[source,go]
+----
+admin.RemoveCache(ctx, "SimpleCache")
+----
+
+== Expected Output
+
+[source]
+----
+SimpleCache created.
+Cache with XML configuration exists or is created.
+Caches removed.
+----
