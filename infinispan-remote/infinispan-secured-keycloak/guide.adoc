@@ -1,0 +1,93 @@
+= Securing Infinispan with Keycloak
+:summary: Set up Infinispan with Keycloak token-based authentication using OAuth2 introspection
+:mode: remote
+:topics: security,keycloak
+:keywords: security,keycloak,oauth2,token,introspection,authentication,docker-compose
+:duration: 15
+:source-dir: infinispan-remote/infinispan-secured-keycloak
+
+== What You Will Learn
+
+How to configure Infinispan Server with Keycloak for token-based authentication using OAuth2 introspection. Clients obtain tokens from Keycloak and use them to authenticate against the Infinispan REST and Hot Rod endpoints.
+
+== Prerequisites
+
+* Docker Compose or Podman Compose
+
+== Step 1: Start Keycloak and Infinispan
+
+On Linux, start both services with host networking:
+
+[source,shell]
+----
+docker compose -f docker-compose.yaml up -d
+----
+
+On macOS or Windows, use the bridge-network variant:
+
+[source,shell]
+----
+docker compose -f docker-compose-no-linux.yaml up -d
+----
+
+TIP: You can replace `docker` with `podman` in the commands above if you use Podman.
+
+Keycloak starts on port `8080` and imports the `infinispan` realm automatically. Infinispan starts on port `11222` configured with a token realm that validates tokens via Keycloak's introspection endpoint.
+
+== Step 2: Understand the Token Realm Configuration
+
+The Infinispan server uses a `tokenRealm` that delegates authentication to Keycloak:
+
+[source,yaml]
+----
+server:
+  security:
+    securityRealms:
+      - name: default
+        tokenRealm:
+          name: infinispan
+          authServerUrl: 'http://keycloak:8080'
+          client-id: infinispan-console
+          oauth2Introspection:
+            clientId: infinispan-server
+            clientSecret: '1fdca4ec-c416-47e0-867a-3d471af7050f'
+            introspectionUrl: 'http://keycloak:8080/realms/infinispan/protocol/openid-connect/token/introspect'
+----
+
+This configuration tells Infinispan to validate tokens by calling Keycloak's introspection endpoint with the `infinispan-server` client credentials.
+
+== Step 3: Obtain a Token from Keycloak
+
+Request a token from Keycloak using the password grant:
+
+[source,shell]
+----
+curl -X POST 'http://localhost:8080/realms/infinispan/protocol/openid-connect/token' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -d 'client_id=infinispan-console&username=admin&password=adminPassword&grant_type=password'
+----
+
+== Step 4: Access Infinispan with the Token
+
+Use the token to authenticate against the Infinispan REST API:
+
+[source,shell]
+----
+curl -H "Authorization: Bearer <token>" http://localhost:11222/rest/v2/caches
+----
+
+== Step 5: Access the Infinispan Console
+
+Open `http://localhost:11222/console` in your browser. The console redirects to Keycloak for login. Use the credentials configured in the Keycloak realm.
+
+== Step 6: Stop the Services
+
+[source,shell]
+----
+docker compose down
+----
+
+== What's Next
+
+* link:/tutorials/remote-security-secured-cache/[Secured caches] for role-based cache access control
+* link:/tutorials/remote-security-tls-authorization/[TLS authorization] for certificate-based authentication
