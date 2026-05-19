@@ -1,0 +1,86 @@
+= Infinispan Operator on Kubernetes
+:summary: Deploy and test an Infinispan cluster using the Infinispan Operator on Minikube or OpenShift
+:mode: remote
+:topics: operator,kubernetes
+:keywords: operator,kubernetes,minikube,openshift,deploy,cluster,k8s
+:duration: 20
+:source-dir: infinispan-remote/operator
+
+== What You Will Learn
+
+How to deploy an Infinispan cluster on Kubernetes using the Infinispan Operator. This tutorial covers both Minikube and OpenShift environments with automated scripts for deployment, cluster creation, and testing.
+
+== Prerequisites
+
+* For Minikube: A running https://kubernetes.io/docs/setup/learning-environment/minikube/[Minikube] cluster (recommended: 4 CPUs, 4 GB memory)
+* For OpenShift: A running Red Hat OpenShift 4.1+ cluster with administrator access
+* `kubectl` (Minikube) or `oc` (OpenShift) CLI installed
+
+== Minikube Deployment
+
+=== Step 1: Deploy the Operator
+
+Run all tutorial steps with a single command:
+
+[source,shell]
+----
+cd minikube
+make all
+----
+
+This deploys the Infinispan Operator, creates a cluster, builds the demo code, and runs the tests.
+
+You can also run individual steps:
+
+[source,shell]
+----
+make deploy    # Deploy the Operator
+make run       # Create an Infinispan cluster
+make build     # Build the demo code
+make test      # Run the tests
+----
+
+=== Step 2: Test with Custom Images
+
+Pass a custom Operator image with the `IMAGE` parameter:
+
+[source,shell]
+----
+make IMAGE=path/to/image deploy
+----
+
+For insecure registries, delete and recreate Minikube with the `--insecure-registry` flag:
+
+[source,shell]
+----
+minikube delete
+minikube start --insecure-registry <host>:<port>
+----
+
+== OpenShift Deployment
+
+=== Step 1: Deploy the Operator
+
+Run all tutorial steps:
+
+[source,shell]
+----
+cd openshift
+make all
+----
+
+This creates a project, deploys the Operator CRD, RBAC, and Operator pod, creates an Infinispan cluster, and tests cache operations via the REST API.
+
+=== Step 2: Test with Custom Descriptors
+
+Pass a custom repository and branch:
+
+[source,shell]
+----
+make REPO=myrepository/infinispan-operator/test-branch all
+----
+
+== What's Next
+
+* link:/tutorials/remote-cache/[Get started] with basic remote cache operations
+* link:/tutorials/remote-cross-site-replication/[Cross-site replication] for multi-cluster setups

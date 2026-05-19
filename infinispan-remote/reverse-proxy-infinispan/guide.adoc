@@ -1,0 +1,101 @@
+= Infinispan Behind an Nginx Reverse Proxy
+:summary: Run Infinispan behind an Nginx reverse proxy with path-based routing for the console and REST API
+:mode: remote
+:topics: deployment,reverse-proxy
+:keywords: nginx,reverse-proxy,cors,console,rest,docker-compose,proxy
+:duration: 10
+:source-dir: infinispan-remote/reverse-proxy-infinispan
+
+== What You Will Learn
+
+How to run Infinispan Server behind an Nginx reverse proxy with path-based routing. The proxy serves both the Infinispan Console UI and the REST API under a `/infinispan/` prefix, forwarding requests to the Infinispan backend.
+
+== Prerequisites
+
+* Docker Compose or Podman Compose
+
+== Step 1: Start the Services
+
+Start Infinispan and Nginx with Docker Compose:
+
+[source,shell]
+----
+docker compose up -d
+----
+
+TIP: You can replace `docker` with `podman` in the command above if you use Podman.
+
+This starts:
+
+* **Infinispan** on port `11222` (direct access)
+* **Nginx** on port `8080` (reverse proxy)
+
+== Step 2: Understand the Nginx Configuration
+
+Nginx routes requests under `/infinispan/` to the Infinispan backend:
+
+* `/infinispan/console/` proxies to the Infinispan Console UI with `X-Forwarded-Prefix` set so the console resolves its assets correctly
+* `/infinispan/` proxies all other paths (REST API) to `http://infinispan:11222/`, forwarding authorization headers and client IP information
+
+== Step 3: Understand the Infinispan Configuration
+
+Infinispan is configured with Basic authentication on the REST endpoint and a CORS rule that allows requests from the Nginx proxy origin (`http://localhost:8080`):
+
+[source,xml]
+----
+<infinispan>
+    <server>
+        <endpoints>
+            <endpoint socket-binding="default" security-realm="default">
+                <rest-connector>
+                    <authentication mechanisms="BASIC"/>
+                    <cors-rules>
+                        <cors-rule name="ngynx"
+                                   allow-credentials="true"
+                                   max-age-seconds="3600"
+                                   allowed-origins="http://localhost:8080"
+                                   allowed-methods="GET POST PUT DELETE OPTIONS"
+                                   allowed-headers="Authorization Content-Type,Accept"
+                                   expose-headers="Content-Type Accept"/>
+                    </cors-rules>
+                </rest-connector>
+            </endpoint>
+        </endpoints>
+    </server>
+</infinispan>
+----
+
+== Step 4: Access Infinispan Through the Proxy
+
+Access the console through the proxy:
+
+[source,shell]
+----
+open http://localhost:8080/infinispan/console/
+----
+
+Use the REST API through the proxy:
+
+[source,shell]
+----
+curl -u admin:password http://localhost:8080/infinispan/rest/v2/caches
+----
+
+You can also access Infinispan directly on port `11222`:
+
+[source,shell]
+----
+curl -u admin:password http://localhost:11222/rest/v2/caches
+----
+
+== Step 5: Stop the Services
+
+[source,shell]
+----
+docker compose down
+----
+
+== What's Next
+
+* link:/tutorials/remote-cache/[Get started] with basic remote cache operations
+* link:/tutorials/remote-security-secured-cache/[Secured caches] for role-based cache access control

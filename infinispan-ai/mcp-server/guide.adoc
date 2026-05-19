@@ -1,0 +1,105 @@
+= Infinispan MCP Server
+:summary: Enable the Infinispan MCP endpoint and connect AI assistants to manage caches, counters, and schemas through natural language
+:mode: ai
+:topics: mcp,ai
+:keywords: mcp,model-context-protocol,ai,claude,llm,cache,counter,schema
+:duration: 10
+:source-dir: infinispan-ai/mcp-server
+
+== What You Will Learn
+
+How to start an Infinispan Server with the MCP (Model Context Protocol) endpoint enabled and connect AI assistants such as Claude Code or Claude Desktop to manage caches, counters, and schemas through natural language.
+
+== Prerequisites
+
+* Docker Compose or Podman Compose
+* An MCP client (e.g., Claude Code, Claude Desktop, or an IDE with MCP support)
+
+== Step 1: Start the Infinispan Server
+
+Start the Infinispan Server with the MCP endpoint enabled using Docker Compose:
+
+[source,shell]
+----
+docker compose up -d
+----
+
+The MCP endpoint is available at `http://localhost:11222/rest/v3/mcp`.
+
+The server uses Basic authentication with credentials `admin` / `password`.
+
+TIP: You can replace `docker` with `podman` in the command above if you use Podman.
+
+== Step 2: Connect an MCP Client
+
+This folder contains an `.mcp.json` file pre-configured to connect to the local Infinispan MCP endpoint. Copy it to any project where you want MCP access:
+
+[source,shell]
+----
+cp .mcp.json /path/to/your/project/.mcp.json
+----
+
+You can also add the MCP server manually with the Claude Code CLI:
+
+[source,shell]
+----
+claude mcp add infinispan --transport http http://localhost:11222/rest/v3/mcp \
+  --header "Authorization: Basic YWRtaW46cGFzc3dvcmQ="
+----
+
+For Claude Desktop, add the following to your `claude_desktop_config.json`:
+
+[source,json]
+----
+{
+  "mcpServers": {
+    "infinispan": {
+      "type": "http",
+      "url": "http://localhost:11222/rest/v3/mcp",
+      "headers": {
+        "Authorization": "Basic YWRtaW46cGFzc3dvcmQ="
+      }
+    }
+  }
+}
+----
+
+== Step 3: Interact with Infinispan
+
+Once connected, ask your AI assistant to perform operations such as:
+
+* Create a cache called "my-cache"
+* Put the key "greeting" with value "hello world" in my-cache
+* Get the value for key "greeting" from my-cache
+* List all caches
+* Create a strong counter called "visitor-count"
+
+You can also verify the MCP endpoint directly with `curl`:
+
+[source,shell]
+----
+curl http://localhost:11222/rest/v3/mcp \
+  -u admin:password \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}},"id":1}'
+----
+
+== Step 4: Stop the Server
+
+[source,shell]
+----
+docker compose down
+----
+
+== Available MCP Capabilities
+
+The Infinispan MCP server exposes:
+
+* **Tools**: Cache operations (create, list, get, put, remove, query), counter operations (get, increment, decrement), and schema management
+* **Resources**: Server information, configuration, and audit/access logs
+* **Prompts**: Documentation search guidance
+
+== What's Next
+
+* link:/tutorials/ai-vector-search/[Vector search] for kNN similarity queries
+* link:/tutorials/ai-langchain4j/[LangChain4j integration] for building AI applications with Infinispan
