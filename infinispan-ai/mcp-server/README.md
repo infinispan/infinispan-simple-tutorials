@@ -1,9 +1,11 @@
 # Infinispan MCP Server Tutorial
 
-This tutorial shows how to enable and use Infinispan's MCP (Model Context Protocol) endpoint.
+This tutorial shows how to enable and use Infinispan's MCP (Model Context Protocol) endpoint
+using the CLI stdio transport bridge.
 
-Infinispan exposes an MCP endpoint that allows AI assistants and LLM-based tools to interact with
-your Infinispan cluster:
+The Infinispan CLI acts as a bridge between MCP clients and the server: it reads JSON-RPC messages
+from standard input, forwards them to the server's MCP endpoint, and writes responses to standard output.
+This allows AI assistants and LLM-based tools to interact with your Infinispan cluster:
 * managing caches
 * counters
 * schemas
@@ -25,16 +27,17 @@ Start Infinispan Server with the MCP endpoint enabled:
 docker compose up -d
 ```
 
-The MCP endpoint will be available at `http://localhost:11222/rest/v3/mcp`.
-
 The server is configured with Basic authentication using the credentials `admin` / `password`.
 
 ## Connecting an MCP Client
 
+The CLI stdio transport bridge runs inside the Docker container via `docker exec`.
+MCP clients launch this command and communicate with it through standard input/output.
+
 ### Using the `.mcp.json` file
 
 This folder contains an `.mcp.json` file pre-configured to connect to the local Infinispan MCP
-endpoint with Basic authentication. You can copy it to any project where you want MCP access:
+endpoint using the CLI stdio bridge. You can copy it to any project where you want MCP access:
 
 ```bash
 cp .mcp.json /path/to/your/project/.mcp.json
@@ -45,8 +48,8 @@ cp .mcp.json /path/to/your/project/.mcp.json
 You can also add the MCP server manually with the Claude Code CLI:
 
 ```bash
-claude mcp add infinispan --transport http http://localhost:11222/rest/v3/mcp \
-  --header "Authorization: Basic YWRtaW46cGFzc3dvcmQ="
+claude mcp add infinispan -- \
+  docker exec -i infinispan-mcp /opt/infinispan/bin/cli.sh mcp http://admin:password@localhost:11222
 ```
 
 ### Claude Desktop
@@ -57,15 +60,77 @@ Add the following to your Claude Desktop MCP configuration (`claude_desktop_conf
 {
   "mcpServers": {
     "infinispan": {
-      "type": "http",
-      "url": "http://localhost:11222/rest/v3/mcp",
-      "headers": {
-        "Authorization": "Basic YWRtaW46cGFzc3dvcmQ="
-      }
+      "command": "docker",
+      "args": ["exec", "-i", "infinispan-mcp", "/opt/infinispan/bin/cli.sh", "mcp", "http://admin:password@localhost:11222"]
     }
   }
 }
 ```
+
+### Using a local CLI installation
+
+If you have the Infinispan server distribution installed locally, you can point directly to the CLI binary
+instead of using `docker exec`:
+
+```json
+{
+  "mcpServers": {
+    "infinispan": {
+      "command": "/path/to/infinispan-server/bin/infinispan-cli",
+      "args": ["mcp", "http://admin:password@localhost:11222"]
+    }
+  }
+}
+```
+
+## Using CLI bookmarks
+
+Instead of hardcoding URLs and credentials in your MCP configuration, you can use CLI bookmarks.
+A bookmark stores the connection details (URL, credentials, TLS settings) under a name that you
+can reference in the `mcp` command.
+
+Create a bookmark:
+
+```bash
+docker exec infinispan-mcp /opt/infinispan/bin/cli.sh bookmark set myserver \
+  --url http://localhost:11222 --username admin --password password
+```
+
+Or if you have a local CLI installation:
+
+```bash
+infinispan-cli bookmark set myserver \
+  --url http://localhost:11222 --username admin --password password
+```
+
+Then reference the bookmark name in your `.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "infinispan": {
+      "command": "docker",
+      "args": ["exec", "-i", "infinispan-mcp", "/opt/infinispan/bin/cli.sh", "mcp", "myserver"]
+    }
+  }
+}
+```
+
+Or with a local CLI installation:
+
+```json
+{
+  "mcpServers": {
+    "infinispan": {
+      "command": "/path/to/infinispan-server/bin/infinispan-cli",
+      "args": ["mcp", "myserver"]
+    }
+  }
+}
+```
+
+This is especially useful when connecting to production or secured servers, since credentials
+and TLS settings are stored in the CLI configuration rather than in project files.
 
 ## Testing Locally
 
