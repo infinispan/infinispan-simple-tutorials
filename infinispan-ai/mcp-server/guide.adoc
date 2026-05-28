@@ -1,5 +1,5 @@
 = Infinispan MCP Server
-:summary: Enable the Infinispan MCP endpoint and connect AI assistants to manage caches, counters, and schemas through natural language
+:summary: Enable the Infinispan MCP endpoint and connect AI assistants using the CLI stdio transport bridge to manage caches, counters, and schemas through natural language
 :mode: ai
 :topics: mcp,ai
 :keywords: mcp,model-context-protocol,ai,claude,llm,cache,counter,schema
@@ -8,7 +8,7 @@
 
 == What You Will Learn
 
-How to start an Infinispan Server with the MCP (Model Context Protocol) endpoint enabled and connect AI assistants such as Claude Code or Claude Desktop to manage caches, counters, and schemas through natural language.
+How to start an Infinispan Server with the MCP (Model Context Protocol) endpoint enabled and connect AI assistants such as Claude Code or Claude Desktop using the CLI stdio transport bridge to manage caches, counters, and schemas through natural language.
 
 == Prerequisites
 
@@ -24,15 +24,18 @@ Start the Infinispan Server with the MCP endpoint enabled using Docker Compose:
 docker compose up -d
 ----
 
-The MCP endpoint is available at `http://localhost:11222/rest/v3/mcp`.
-
 The server uses Basic authentication with credentials `admin` / `password`.
 
 TIP: You can replace `docker` with `podman` in the command above if you use Podman.
 
 == Step 2: Connect an MCP Client
 
-This folder contains an `.mcp.json` file pre-configured to connect to the local Infinispan MCP endpoint. Copy it to any project where you want MCP access:
+The Infinispan CLI acts as a stdio transport bridge between MCP clients and the server.
+It reads JSON-RPC messages from standard input, forwards them to the server's MCP endpoint, and writes responses to standard output.
+
+In this tutorial, the CLI runs inside the Docker container via `docker exec`.
+
+This folder contains an `.mcp.json` file pre-configured to connect to the local Infinispan MCP endpoint using the CLI stdio bridge. Copy it to any project where you want MCP access:
 
 [source,shell]
 ----
@@ -43,8 +46,8 @@ You can also add the MCP server manually with the Claude Code CLI:
 
 [source,shell]
 ----
-claude mcp add infinispan --transport http http://localhost:11222/rest/v3/mcp \
-  --header "Authorization: Basic YWRtaW46cGFzc3dvcmQ="
+claude mcp add infinispan -- \
+  docker exec -i infinispan-mcp /opt/infinispan/bin/cli.sh mcp http://admin:password@localhost:11222
 ----
 
 For Claude Desktop, add the following to your `claude_desktop_config.json`:
@@ -54,15 +57,65 @@ For Claude Desktop, add the following to your `claude_desktop_config.json`:
 {
   "mcpServers": {
     "infinispan": {
-      "type": "http",
-      "url": "http://localhost:11222/rest/v3/mcp",
-      "headers": {
-        "Authorization": "Basic YWRtaW46cGFzc3dvcmQ="
-      }
+      "command": "docker",
+      "args": ["exec", "-i", "infinispan-mcp", "/opt/infinispan/bin/cli.sh", "mcp", "http://admin:password@localhost:11222"]
     }
   }
 }
 ----
+
+TIP: If you have the Infinispan server distribution installed locally, you can point directly to the CLI binary instead of using `docker exec`. Use `"/path/to/infinispan-server/bin/infinispan-cli"` as the `command` and `["mcp", "http://admin:password@localhost:11222"]` as the `args`.
+
+== Using CLI bookmarks
+
+Instead of hardcoding URLs and credentials in your MCP configuration, you can use CLI bookmarks.
+A bookmark stores the connection details (URL, credentials, TLS settings) under a name that you can reference in the `mcp` command.
+
+Create a bookmark:
+
+[source,shell]
+----
+docker exec infinispan-mcp /opt/infinispan/bin/cli.sh bookmark set myserver \
+  --url http://localhost:11222 --username admin --password password
+----
+
+Or if you have a local CLI installation:
+
+[source,shell]
+----
+infinispan-cli bookmark set myserver \
+  --url http://localhost:11222 --username admin --password password
+----
+
+Then reference the bookmark name in your `.mcp.json`:
+
+[source,json]
+----
+{
+  "mcpServers": {
+    "infinispan": {
+      "command": "docker",
+      "args": ["exec", "-i", "infinispan-mcp", "/opt/infinispan/bin/cli.sh", "mcp", "myserver"]
+    }
+  }
+}
+----
+
+Or with a local CLI installation:
+
+[source,json]
+----
+{
+  "mcpServers": {
+    "infinispan": {
+      "command": "/path/to/infinispan-server/bin/infinispan-cli",
+      "args": ["mcp", "myserver"]
+    }
+  }
+}
+----
+
+TIP: This is especially useful when connecting to production or secured servers, since credentials and TLS settings are stored in the CLI configuration rather than in project files.
 
 == Step 3: Interact with Infinispan
 

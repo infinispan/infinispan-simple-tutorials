@@ -1,6 +1,7 @@
 services:
   infinispan:
-    image: quay.io/infinispan/server:16.1
+    container_name: infinispan-mcp
+    image: quay.io/infinispan/server:16.2
     ports:
       - "11222:11222"
     environment:
