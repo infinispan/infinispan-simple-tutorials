@@ -106,7 +106,7 @@ public class TutorialsConnectorHelper {
       try {
          if (Version.getUnbrandedVersion().contains("SNAPSHOT")) {
             // we are using an Infinispan Dev version, use the latest build of the image
-            INFINISPAN_CONTAINER = new InfinispanContainer("quay.io/infinispan/server:16.1");
+            INFINISPAN_CONTAINER = new InfinispanContainer("quay.io/infinispan/server:16.2");
          } else {
             INFINISPAN_CONTAINER = new InfinispanContainer();
          }
