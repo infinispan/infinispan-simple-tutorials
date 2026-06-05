@@ -17,7 +17,7 @@
         </dependency>
         <dependency>
             <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-server-testdriver-junit5</artifactId>
+            <artifactId>infinispan-server-testdriver-core</artifactId>
             <version>${version.infinispan}</version>
             <scope>test</scope>
         </dependency>

@@ -8,8 +8,8 @@ import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.commons.util.Version;
 import org.infinispan.server.test.core.ServerRunMode;
 import org.infinispan.server.test.core.TestSystemPropertyNames;
-import org.infinispan.server.test.junit5.InfinispanServerExtension;
-import org.infinispan.server.test.junit5.InfinispanServerExtensionBuilder;
+import org.infinispan.server.test.jupiter.InfinispanServerExtension;
+import org.infinispan.server.test.jupiter.InfinispanServerExtensionBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -29,7 +29,7 @@ public class CachingServiceTest {
                  .config()
                  .numServers(1)
                  .runMode(ServerRunMode.CONTAINER)
-                 .property(TestSystemPropertyNames.INFINISPAN_TEST_SERVER_BASE_IMAGE_NAME, "quay.io/infinispan/server:16.1")
+                 .property(TestSystemPropertyNames.INFINISPAN_TEST_SERVER_BASE_IMAGE_NAME, "quay.io/infinispan/server:16.2")
                  .build();
       }
 
