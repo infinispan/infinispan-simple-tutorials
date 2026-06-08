@@ -29,6 +29,6 @@ public class InfinispanCacheMetricsTest {
       metrics.createCacheWithMetricsAndPopulate(5);
       assertEquals(5, metrics.cache.size());
       assertEquals("1", metrics.extractRunningCachesNumber());
-      assertTrue(metrics.scrapePrometheusMetrics().contains("vendor_cache_manager_DefaultCacheManager_cache_my_cache_statistics_approximate_entries"));
+      assertTrue(metrics.scrapePrometheusMetrics().contains("infinispan_statistics_approximate_entries"));
    }
 }

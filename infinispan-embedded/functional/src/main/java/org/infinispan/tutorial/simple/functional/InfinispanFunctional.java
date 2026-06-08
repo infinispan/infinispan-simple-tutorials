@@ -13,9 +13,6 @@ import org.infinispan.functional.FunctionalMap;
 import org.infinispan.functional.MetaParam.MetaLifespan;
 import org.infinispan.functional.Traversable;
 import org.infinispan.functional.impl.FunctionalMapImpl;
-import org.infinispan.functional.impl.ReadOnlyMapImpl;
-import org.infinispan.functional.impl.ReadWriteMapImpl;
-import org.infinispan.functional.impl.WriteOnlyMapImpl;
 import org.infinispan.manager.DefaultCacheManager;
 
 public class InfinispanFunctional {
@@ -56,7 +53,7 @@ public class InfinispanFunctional {
 
       // tag::read-write[]
       // Create a read-write map
-      FunctionalMap.ReadWriteMap<String, String> readWriteMap = ReadWriteMapImpl.create(functionalMap);
+      FunctionalMap.ReadWriteMap<String, String> readWriteMap = functionalMap.toReadWriteMap();
 
       // Use read-write multi-key based operation to write new values
       // together with lifespan and return previous values
@@ -87,8 +84,8 @@ public class InfinispanFunctional {
       cacheManager.defineConfiguration("local", new ConfigurationBuilder().build());
       cache = cacheManager.<String, String>getCache("local").getAdvancedCache();
       functionalMap = FunctionalMapImpl.create(cache);
-      writeOnlyMap = WriteOnlyMapImpl.create(functionalMap);
-      readOnlyMap = ReadOnlyMapImpl.create(functionalMap);
+      writeOnlyMap = functionalMap.toWriteOnlyMap();
+      readOnlyMap = functionalMap.toReadOnlyMap();
       // end::create-map[]
    }
 
