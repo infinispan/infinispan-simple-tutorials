@@ -60,7 +60,7 @@ public class InfinispanCacheAlias {
 
       // tag::add-alias[]
       EmbeddedCacheManagerAdmin administration = cm1.administration();
-      administration.updateConfigurationAttribute(DIST_CACHE_NAME, "aliases", ALIAS_2);
+      administration.assignAlias(ALIAS_2, DIST_CACHE_NAME);
       // end::add-alias[]
    }
 

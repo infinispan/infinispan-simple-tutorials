@@ -139,7 +139,7 @@ public class InfinispanCacheSecurity {
 
     public void stop() {
         if (dcm != null) {
-            Security.doAs(ADMIN_USER, dcm::stop);
+            Security.doAs(ADMIN_USER, (Runnable) dcm::stop);
             dcm = null;
         }
     }
