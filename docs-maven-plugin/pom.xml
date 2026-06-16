@@ -42,7 +42,7 @@
       <dependency>
          <groupId>org.junit.jupiter</groupId>
          <artifactId>junit-jupiter</artifactId>
-         <version>${version.junit6}</version>
+         <version>${version.junit5}</version>
          <scope>test</scope>
       </dependency>
    </dependencies>
