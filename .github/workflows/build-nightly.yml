@@ -5,6 +5,9 @@ on:
     - cron: '0 0 * * 1-5'
   workflow_dispatch: {}
 
+permissions:
+  contents: read
+
 defaults:
   run:
     shell: bash
@@ -13,12 +16,12 @@ jobs:
   test:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           ref: development   # Force checkout of the dev branch
 
       - name: Setup Java
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5
         with:
           java-version: '17'
           distribution: 'temurin'
@@ -34,7 +37,7 @@ jobs:
         run: ./mvnw -B clean install -Dmaven.test.failure.ignore=true
 
       - name: Test Logs
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         if: success() || failure()
         with:
           name: jdk17-test-results
@@ -46,4 +49,4 @@ jobs:
 
       - name: Dump docker logs on failure
         if: failure()
-        uses: jwalton/gh-docker-logs@v2
+        uses: jwalton/gh-docker-logs@2741064ab9d7af54b0b1ffb6076cf64c16f0220e # v2
