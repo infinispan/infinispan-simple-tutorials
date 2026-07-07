@@ -1,0 +1,135 @@
+= Spring Boot Automatic Protobuf Schema Registration
+:summary: Build a Spring Boot REST app with automatic Protobuf schema discovery and registration on a remote Infinispan Server
+:mode: integration
+:topics: spring-boot,protostream,schema
+:keywords: spring-boot,protobuf,protostream,schema,auto-registration,rest,full-text,indexed
+:duration: 10
+:source-dir: integrations/spring-boot/cache-remote-schema-auto-registration
+
+== What You Will Learn
+
+How to use the Infinispan Spring Boot starter with automatic Protobuf schema registration.
+Starting with Infinispan 16.2, the starter automatically discovers `GeneratedSchema` implementations on the classpath, registers them as serialization context initializers, and uploads the schemas to the Infinispan Server at startup.
+No manual `schemas().createOrUpdate()` call is needed.
+
+This tutorial builds a REST application that stores indexed characters in a remote cache and performs full-text search queries.
+
+== Prerequisites
+
+* Java 17+
+* Spring Boot
+* Docker or Podman (optional)
+
+You can start an Infinispan Server manually with Docker or Podman:
+
+[source,shell]
+----
+docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
+----
+
+TIP: You can replace `docker` with `podman` in the command above if you use Podman.
+
+TIP: If no server is running on `localhost:11222`, the application automatically starts an Infinispan container using Testcontainers.
+
+== Step 1: Add Dependencies
+
+Add the Infinispan Spring Boot remote starter and the ProtoStream annotation processor:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>infinispan-spring-boot4-starter-remote</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.infinispan.protostream</groupId>
+   <artifactId>protostream-processor</artifactId>
+</dependency>
+----
+
+== Step 2: Configure the Connection and Cache
+
+In `application.properties`, configure the connection, the marshaller, and the cache definition:
+
+[source,properties]
+----
+include::src/main/resources/application.properties[tag=config]
+----
+
+Key points:
+
+* `infinispan.remote.connection-uri` provides the connection string including credentials.
+* `infinispan.remote.cache.characters.configuration-uri` points to a classpath XML file that defines the cache.
+* `infinispan.remote.cache.characters.marshaller` is set to `ProtoStreamMarshaller` because the default is `JavaSerializationMarshaller`.
+* There is no manual schema registration code. The starter automatically discovers and uploads Protobuf schemas at startup.
+* To disable auto schema upload, set `infinispan.remote.use-schema-registration=false`.
+
+== Step 3: Define a Protobuf Entity
+
+Create an indexed Protobuf record with `@Text` fields for full-text search:
+
+[source,java]
+----
+include::src/main/java/tutorial/spring/infinispan/model/Character.java[tag=entity]
+----
+
+== Step 4: Define the Protobuf Schema
+
+Create a `@ProtoSchema` interface that extends `GeneratedSchema`.
+The starter will discover this interface automatically on the classpath, register it with the serialization context, and upload the generated `.proto` schema to the server:
+
+[source,java]
+----
+include::src/main/java/tutorial/spring/infinispan/model/AppSchema.java[tag=schema]
+----
+
+== Step 5: Query the Cache
+
+Inject the `RemoteCacheManager` and perform full-text queries using Ickle:
+
+[source,java]
+----
+include::src/main/java/tutorial/spring/infinispan/service/CharacterSearch.java[tag=service]
+----
+
+== Step 6: Expose REST Endpoints
+
+Create a Spring `@RestController` that exposes the search service:
+
+[source,java]
+----
+include::src/main/java/tutorial/spring/infinispan/CharactersResource.java[tag=resource]
+----
+
+== Step 7: Run the Tutorial
+
+[source,bash]
+----
+mvn spring-boot:run
+----
+
+Then query the REST endpoints:
+
+[source,bash]
+----
+curl http://localhost:8080/characters/0
+curl "http://localhost:8080/characters/query?term=Felix"
+----
+
+== How Auto Schema Registration Works
+
+The Infinispan Spring Boot starter (16.2+) automatically:
+
+1. Scans your application packages for `GeneratedSchema` implementations using Spring's classpath scanning.
+2. Registers them as `SerializationContextInitializer` instances with the `RemoteCacheManager`.
+3. Uploads the `.proto` schemas to the Infinispan Server via `RemoteSchemasAdmin.createOrUpdate()`.
+
+This is controlled by the `infinispan.remote.use-schema-registration` property, which defaults to `true`.
+
+NOTE: The auto-discovery scans packages registered with Spring Boot's `AutoConfigurationPackages` and skips internal Infinispan packages (`org.infinispan.*`).
+Make sure your application uses a different base package so the scanner picks up your schema.
+
+== What's Next
+
+* link:/tutorials/integrations-spring-boot-cache-remote/[Spring Boot remote caching] for caching with `@Cacheable` and `@CacheEvict`
+* link:/tutorials/integrations-quarkus-infinispan-client-example/[Quarkus Infinispan Client] for the same pattern with Quarkus

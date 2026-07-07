@@ -22,7 +22,9 @@ public class Reader {
       this.repository = repository;
       random = new Random();
       this.remoteCacheManager = remoteCacheManager;
-      // Upload the generated schema in the server
+      // Upload the generated schema in the server.
+      // Since 16.2, schemas are auto-discovered and uploaded by the Spring Boot starter.
+      // To disable auto-upload, set infinispan.remote.use-schema-registration=false
       remoteCacheManager.administration().schemas().createOrUpdate(new BasquesNamesSchemaBuilderImpl());
    }
 
