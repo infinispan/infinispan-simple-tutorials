@@ -11,7 +11,7 @@
     <name>Infinispan Simple Tutorials: Kotlin</name>
 
     <properties>
-        <kotlin.version>2.1.10</kotlin.version>
+        <kotlin.version>2.4.10</kotlin.version>
     </properties>
     <build>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
@@ -28,9 +28,6 @@
                             <goal>kapt</goal>
                         </goals>
                         <configuration>
-                            <args>
-                                <arg>-Xuse-k2-kapt</arg>
-                            </args>
                             <sourceDirs>
                                 <sourceDir>src/main/kotlin</sourceDir>
                             </sourceDirs>
@@ -48,6 +45,7 @@
                         <configuration>
                             <sourceDirs>
                                 <sourceDir>src/main/kotlin</sourceDir>
+                                <sourceDir>${project.build.directory}/generated-sources/kapt/compile</sourceDir>
                             </sourceDirs>
                         </configuration>
                         <goals>
