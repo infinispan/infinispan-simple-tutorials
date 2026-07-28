@@ -1,0 +1,12 @@
+package tutorial.spring.infinispan;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class CharactersApp {
+
+   public static void main(String[] args) {
+      SpringApplication.run(CharactersApp.class, args);
+   }
+}
