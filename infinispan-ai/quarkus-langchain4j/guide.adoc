@@ -1,0 +1,156 @@
+= RAG Chatbot with Quarkus LangChain4j and Infinispan
+:summary: Build a RAG chatbot using Quarkus with Infinispan as the embedding store and Ollama as the chat model
+:mode: ai
+:topics: quarkus,langchain
+:keywords: ai,quarkus,langchain4j,rag,embedding,infinispan,ollama,chatbot
+:duration: 15
+:source-dir: infinispan-ai/quarkus-langchain4j
+
+== What You Will Learn
+
+How to build a Retrieval Augmented Generation (RAG) chatbot using Quarkus,
+with Infinispan as the vector embedding store and Ollama as the local chat model.
+
+This tutorial shows what Quarkus adds on top of plain LangChain4j:
+
+* *Zero-config Infinispan* via DevServices (no manual server setup)
+* *CDI injection* of the embedding store (no builder boilerplate)
+* *Declarative AI services* with `@RegisterAiService` (no manual prompt assembly)
+* *Easy RAG* for automatic document ingestion and retrieval augmentation
+
+== Prerequisites
+
+* Java 17+
+* Maven 3.9+
+* Docker or Podman (for DevServices to start Infinispan and Ollama)
+
+NOTE: Both Infinispan Server and Ollama are started automatically by Quarkus DevServices.
+No manual setup is needed.
+
+== Step 1: The AI Service
+
+Define a declarative AI service interface. Quarkus automatically wires it to the
+chat model and the RAG retrieval augmentor:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/ai/quarkus/InfinispanAssistant.java[tag=ai-service]
+----
+
+`@RegisterAiService` tells Quarkus to create a CDI bean that handles embedding retrieval,
+prompt augmentation, and chat model invocation. No manual wiring needed.
+
+== Step 2: The REST Endpoint
+
+Expose the AI service through a REST endpoint:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/ai/quarkus/InfinispanAssistantResource.java[tag=resource]
+----
+
+== Step 3: Configuration
+
+The `application.properties` configures the embedding store dimension, the Ollama chat model,
+and the Easy RAG document ingestion:
+
+[source,properties]
+----
+# Infinispan Embedding Store
+quarkus.langchain4j.infinispan.dimension=384
+
+# Ollama Chat Model
+quarkus.langchain4j.ollama.chat-model.model-id=llama3.2
+
+# Easy RAG: ingest documents from classpath
+quarkus.langchain4j.easy-rag.path=docs
+quarkus.langchain4j.easy-rag.path-type=classpath
+quarkus.langchain4j.easy-rag.max-segment-size=200
+quarkus.langchain4j.easy-rag.max-overlap-size=50
+quarkus.langchain4j.easy-rag.max-results=3
+----
+
+Key points:
+
+* The `dimension=384` matches the AllMiniLmL6V2 in-process embedding model
+* Easy RAG automatically loads `.txt` files from the `docs/` classpath directory at startup,
+  splits them into chunks, embeds them, and stores them in Infinispan
+* No Infinispan connection configuration is needed in dev mode. Quarkus DevServices
+  starts an Infinispan Server container automatically
+
+== Step 4: The Knowledge Base
+
+Place text files in `src/main/resources/docs/`. This tutorial includes Infinispan FAQ files
+covering cache modes, vector search, client protocols, and more.
+
+Easy RAG reads these files at startup, chunks them into segments, embeds each segment
+using the in-process ONNX model, and stores the embeddings in Infinispan.
+
+== Step 5: Run the Tutorial
+
+Start the application in Quarkus dev mode:
+
+[source,bash]
+----
+mvn quarkus:dev
+----
+
+Quarkus DevServices will automatically start:
+
+* An Infinispan Server container (for the embedding store)
+* An Ollama container with the `llama3.2` model (for chat)
+
+NOTE: The first startup may take a few minutes while Ollama downloads the model.
+
+== Step 6: Ask Questions
+
+Query the chatbot using curl:
+
+[source,bash]
+----
+curl "http://localhost:8080/chat?question=What+cache+modes+does+Infinispan+support?"
+----
+
+The RAG pipeline automatically:
+
+1. Embeds your question using the in-process ONNX model
+2. Searches Infinispan for the most relevant document chunks
+3. Includes those chunks as context in the prompt sent to Ollama
+4. Returns the generated answer
+
+Try more questions:
+
+[source,bash]
+----
+curl "http://localhost:8080/chat?question=How+does+Infinispan+vector+search+work?"
+curl "http://localhost:8080/chat?question=What+client+protocols+does+Infinispan+support?"
+----
+
+== Quarkus vs Plain LangChain4j
+
+Compare this tutorial with the link:/tutorials/ai-langchain4j/[plain LangChain4j tutorial]:
+
+[cols="1,1"]
+|===
+| Plain LangChain4j | Quarkus LangChain4j
+
+| Manual `InfinispanEmbeddingStore.builder()`
+| CDI `@Inject EmbeddingStore` with zero builder code
+
+| Manual Hot Rod connection configuration
+| DevServices auto-starts Infinispan
+
+| Procedural embed/store/search calls
+| `@RegisterAiService` declarative AI service
+
+| Manual embedding + search + prompt assembly
+| Easy RAG handles ingestion and retrieval
+
+| `public static void main`
+| REST endpoint with live reload via `quarkus:dev`
+|===
+
+== What's Next
+
+* Try link:/tutorials/ai-langchain4j/[semantic search with LangChain4j] for direct embedding store usage
+* Try link:/tutorials/ai-vector-search/[vector search] for native Infinispan vector queries without LangChain4j

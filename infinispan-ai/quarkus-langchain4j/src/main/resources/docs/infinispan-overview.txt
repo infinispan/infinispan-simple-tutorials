@@ -1,0 +1,20 @@
+What is Infinispan?
+
+Infinispan is an open-source, distributed, in-memory key/value data store and cache.
+It can be used as a distributed cache, a NoSQL database, or an event-driven data store.
+Infinispan is written in Java and is available as an embedded library or as a standalone server.
+
+Infinispan provides high availability through data replication across cluster nodes.
+It supports both synchronous and asynchronous replication modes.
+Data can be stored in memory for fastest access, or persisted to disk for durability.
+
+Infinispan is part of the Red Hat ecosystem and is the upstream project for
+Red Hat Data Grid, which provides a commercially supported distribution.
+
+Key features include:
+- Distributed caching with multiple cache modes
+- Full-text and vector search powered by indexing
+- Cross-datacenter replication for geo-distributed deployments
+- Event listeners and continuous queries for reactive applications
+- Hot Rod, REST, and Memcached client protocols
+- Integration with Quarkus, Spring, and other Java frameworks

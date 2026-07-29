@@ -197,6 +197,7 @@
         <module>infinispan-embedded/metrics</module>
         <module>infinispan-embedded/security</module>
         <module>infinispan-ai/langchain4j</module>
+        <module>infinispan-ai/quarkus-langchain4j</module>
         <module>infinispan-ai/vector-search</module>
     </modules>
 
