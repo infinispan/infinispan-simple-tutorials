@@ -1,0 +1,25 @@
+Infinispan Cache Modes
+
+Infinispan supports several cache modes depending on your requirements:
+
+Local cache: Data is stored only on the node where it was written. This mode provides
+the fastest performance but no fault tolerance. Use it when you need a fast, single-node
+cache without replication overhead.
+
+Distributed cache: Data is distributed across a subset of nodes in the cluster.
+Each entry is stored on a configurable number of owner nodes (default is 2).
+This provides a good balance between scalability and fault tolerance.
+Distributed caches scale well because not every node stores every entry.
+
+Replicated cache: Every entry is replicated to all nodes in the cluster.
+This provides the highest availability since every node has a full copy of the data.
+Reads are fast because data is always local, but writes are slower because they
+must be replicated to all nodes.
+
+Invalidation cache: Each node maintains its own local cache. When data changes,
+invalidation messages are sent to other nodes to remove stale entries.
+This mode is useful when Infinispan sits in front of a database and you want
+to reduce database reads while keeping data consistent.
+
+Scattered cache: Similar to distributed cache, but optimized for write-heavy workloads.
+Each entry has a primary owner and is backed up on the node that last wrote to it.

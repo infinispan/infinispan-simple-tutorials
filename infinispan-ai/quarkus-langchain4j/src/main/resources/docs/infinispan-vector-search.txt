@@ -1,0 +1,24 @@
+Infinispan Vector Search and AI
+
+Infinispan provides native vector search capabilities for AI and machine learning use cases.
+You can store embedding vectors alongside your data and perform k-nearest neighbors (kNN)
+similarity searches using the Ickle query language.
+
+Vector fields are annotated with @Vector in the Protobuf schema and support multiple
+similarity metrics: COSINE (default), L2 (Euclidean distance), INNER_PRODUCT, and
+MAX_INNER_PRODUCT.
+
+Infinispan can be used as an embedding store with LangChain4j, the popular Java framework
+for building AI applications. The langchain4j-infinispan module provides a ready-to-use
+InfinispanEmbeddingStore that handles vector storage and similarity search.
+
+For Quarkus applications, the quarkus-langchain4j-infinispan extension provides:
+- CDI injection of the InfinispanEmbeddingStore bean
+- Automatic cache creation with proper indexing configuration
+- Quarkus DevServices to automatically start an Infinispan server in dev mode
+- Configuration via application.properties
+
+Hybrid queries combine vector similarity search with metadata filtering.
+For example, you can search for the most similar documents that also match
+a specific category or date range. This is done using the filtering() clause
+in Ickle vector queries.
