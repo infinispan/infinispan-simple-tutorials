@@ -1,0 +1,26 @@
+Infinispan Client Protocols
+
+Infinispan Server exposes multiple protocols for client access:
+
+Hot Rod: A binary protocol optimized for performance. Hot Rod clients are available
+for Java, C++, C#, and Node.js. The Java Hot Rod client is the most feature-rich and
+supports near caching, client-side intelligence for routing requests directly to data
+owners, and automatic failover. Quarkus provides the quarkus-infinispan-client extension
+for Hot Rod integration with CDI injection and DevServices.
+
+REST: An HTTP-based protocol that supports JSON, XML, and other media types.
+The REST API is useful for language-agnostic access and browser-based applications.
+It supports all cache operations, search queries, server management, and monitoring.
+
+Memcached: Infinispan implements the Memcached text protocol for compatibility
+with existing Memcached client libraries.
+
+The default server port is 11222 for all protocols.
+Default credentials in development mode are admin/password.
+
+For Quarkus applications, the recommended approach is to use the quarkus-infinispan-client
+extension which provides:
+- Automatic connection configuration via application.properties
+- DevServices to start Infinispan Server automatically during development
+- CDI injection of RemoteCacheManager and RemoteCache beans
+- Protobuf schema management and marshalling via ProtoStream annotations
