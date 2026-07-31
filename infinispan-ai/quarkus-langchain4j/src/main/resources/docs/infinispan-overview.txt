@@ -8,9 +8,6 @@ Infinispan provides high availability through data replication across cluster no
 It supports both synchronous and asynchronous replication modes.
 Data can be stored in memory for fastest access, or persisted to disk for durability.
 
-Infinispan is part of the Red Hat ecosystem and is the upstream project for
-Red Hat Data Grid, which provides a commercially supported distribution.
-
 Key features include:
 - Distributed caching with multiple cache modes
 - Full-text and vector search powered by indexing
