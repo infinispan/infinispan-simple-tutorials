@@ -1,0 +1,69 @@
+= Cache Encodings with the .NET Client
+:summary: Store data with different media types using text/plain and application/json encodings
+:mode: ai
+:topics: caching,encoding
+:keywords: encoding,media-type,text,json,dotnet,csharp
+:duration: 5
+:source-dir: non-java-clients/c#/encoding
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to use different cache encodings with the .NET Hot Rod client.
+
+== Prerequisites
+
+* A running Infinispan server.
+* .NET 10 or later.
+
+== Running the Example
+
+[source,shell]
+----
+dotnet run --project encoding
+----
+
+== Code Walkthrough
+
+=== Text Cache
+
+Create a cache with `text/plain` encoding.
+The builder infers `StringMarshaller` from the `string` type parameter.
+
+[source,csharp]
+----
+var textCache = client.NewCache<string>("textCache")
+    .WithEncoding(MediaType.PlainText)
+    .Build();
+
+await textCache.Put("greeting", "Hello, Infinispan!");
+var val = await textCache.Get("greeting");
+----
+
+=== JSON Cache
+
+Create a cache with `application/json` encoding and store JSON documents.
+Keys must be valid JSON values (e.g. a quoted string).
+
+[source,csharp]
+----
+var jsonCache = client.NewCache<string>("jsonCache")
+    .WithEncoding(MediaType.JSON)
+    .Build();
+
+await jsonCache.Put("\"name\"", "{\"project\": \"infinispan\"}");
+----
+
+== Expected Output
+
+[source]
+----
+Caches ready.
+
+== Cache with text/plain encoding ==
+textCache[greeting] = Hello, Infinispan!
+
+== Cache with application/json encoding ==
+jsonCache[name] = {"project": "infinispan"}
+
+Caches removed.
+----

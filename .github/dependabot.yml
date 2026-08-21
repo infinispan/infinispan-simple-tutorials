@@ -49,4 +49,13 @@ updates:
       pip-updates:
         patterns:
           - "*"
+  - package-ecosystem: nuget
+    directory: "/non-java-clients/c#"
+    schedule:
+      interval: weekly
+    target-branch: "development"
+    groups:
+      nuget-updates:
+        patterns:
+          - "*"
 

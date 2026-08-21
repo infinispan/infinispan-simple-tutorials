@@ -1,0 +1,62 @@
+= Cache Administration with the .NET Client
+:summary: Create, configure, and remove caches using the .NET Hot Rod client
+:mode: remote
+:topics: caching,administration
+:keywords: cache,admin,create,remove,dotnet,csharp
+:duration: 5
+:source-dir: non-java-clients/c#/cache-admin
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to manage caches using the administration API of the .NET Hot Rod client.
+
+== Prerequisites
+
+* A running Infinispan server.
+* .NET 10 or later.
+
+== Running the Example
+
+[source,shell]
+----
+dotnet run --project cache-admin
+----
+
+== Code Walkthrough
+
+=== Creating a Simple Cache
+
+Create a cache with default settings using `CreateCache`.
+
+[source,csharp]
+----
+await admin.CreateCache("SimpleCache");
+----
+
+=== Creating a Cache with XML Configuration
+
+Use `GetOrCreateCache` with an XML configuration string to create a cache with specific settings like locking, transactions, and expiration.
+
+[source,csharp]
+----
+await admin.GetOrCreateCache("withConfig", cacheConfig);
+----
+
+=== Listing Cache Names
+
+Retrieve the names of all caches on the server.
+
+[source,csharp]
+----
+var names = await admin.GetCacheNames();
+----
+
+== Expected Output
+
+[source]
+----
+SimpleCache created.
+Cache with XML configuration exists or is created.
+Caches: SimpleCache, withConfig, ...
+Caches removed.
+----

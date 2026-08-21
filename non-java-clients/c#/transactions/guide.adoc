@@ -1,0 +1,73 @@
+= Transactions with the .NET Client
+:summary: Perform transactional operations with commit and rollback using the .NET Hot Rod client
+:mode: remote
+:topics: transactions,getting-started
+:keywords: transaction,commit,rollback,dotnet,csharp
+:duration: 5
+:source-dir: non-java-clients/c#/transactions
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to use client-side transactions with the .NET Hot Rod client, including commit and rollback.
+
+== Prerequisites
+
+* A running Infinispan server.
+* .NET 10 or later.
+
+== Running the Example
+
+[source,shell]
+----
+dotnet run --project transactions
+----
+
+== Code Walkthrough
+
+=== Creating a Transactional Cache
+
+Create a cache with pessimistic locking and NON_XA transaction mode.
+
+[source,csharp]
+----
+const string txCacheConfig = """
+    <distributed-cache name="tx-cache">
+        <locking isolation="REPEATABLE_READ"/>
+        <transaction mode="NON_XA" locking="PESSIMISTIC"/>
+    </distributed-cache>
+    """;
+await admin.GetOrCreateCache("tx-cache", txCacheConfig);
+----
+
+=== Committing a Transaction
+
+Begin a transaction, put entries, and commit.
+The entries become visible after commit.
+
+[source,csharp]
+----
+var tx = cache.BeginTransaction();
+await tx.Put("key1", "value1");
+await tx.CommitAsync();
+----
+
+=== Rolling Back a Transaction
+
+Begin a transaction, put entries, and roll back.
+The entries revert to their previous values.
+
+[source,csharp]
+----
+var tx = cache.BeginTransaction();
+await tx.Put("key1", "value3");
+await tx.RollbackAsync();
+----
+
+== Expected Output
+
+[source]
+----
+After commit: key1 = value1, key2 = value2
+Transaction rolled back.
+After rollback: key1 = value1, key2 = value2
+----
