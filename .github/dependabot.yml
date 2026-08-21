@@ -22,4 +22,31 @@ updates:
       actions:
         patterns:
           - "*"
+  - package-ecosystem: npm
+    directory: "/non-java-clients/node.js"
+    schedule:
+      interval: weekly
+    target-branch: "development"
+    groups:
+      npm-updates:
+        patterns:
+          - "*"
+  - package-ecosystem: gomod
+    directory: "/non-java-clients/go"
+    schedule:
+      interval: weekly
+    target-branch: "development"
+    groups:
+      go-updates:
+        patterns:
+          - "*"
+  - package-ecosystem: pip
+    directory: "/non-java-clients/python"
+    schedule:
+      interval: weekly
+    target-branch: "development"
+    groups:
+      pip-updates:
+        patterns:
+          - "*"
 
