@@ -23,7 +23,7 @@
     "test": "node cache/main.js && node counter/main.js && node encoding/main.js && node listeners/main.js && node near-cache/main.js && node query/main.js && node continuous-query/main.js && node schemas/main.js && node security/main.js && node spatial-queries/main.js && node vector-search/main.js"
   },
   "dependencies": {
-    "infinispan": "^0.15.0",
-    "protobufjs": "^7.0.0"
+    "infinispan": "^0.16.0",
+    "protobufjs": "^8.7.2"
   }
 }
