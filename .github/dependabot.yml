@@ -1,14 +1,25 @@
 version: 2
 updates:
+  # main
   - package-ecosystem: maven
     directory: "/"
     schedule:
-      interval: daily
-    open-pull-requests-limit: 10
-    target-branch: development
+      interval: weekly
+    target-branch: "development"
+    rebase-strategy: disabled
+    groups:
+      patch-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: daily
-    open-pull-requests-limit: 10
-    target-branch: development
+      interval: weekly
+    target-branch: "development"
+    groups:
+      actions:
+        patterns:
+          - "*"
+
