@@ -1,60 +1,73 @@
-= C# Hot Rod Client: Getting Started
-:summary: Connect to an Infinispan Server and perform basic cache operations with the C# Hot Rod client
+= .NET Hot Rod Client Tutorials
+:summary: Simple tutorials for the Infinispan .NET Hot Rod client
 :mode: remote
 :topics: caching
 :keywords: cache,put,get,remote,hot-rod,csharp,dotnet
-:duration: 10
+:duration: 30
 :source-dir: non-java-clients/c#
 
-== What You Will Learn
+TIP: The source code for these tutorials is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
 
-How to connect a C# Hot Rod client to an Infinispan Server and perform basic cache operations: put, get, and print values.
+These tutorials demonstrate how to use the link:https://github.com/infinispan/Infinispan.Hotrod[Infinispan .NET Hot Rod client] to connect to an Infinispan Server and perform common operations.
 
 == Prerequisites
 
-* .NET Framework 4.5+ or Mono
-* Infinispan C# Hot Rod client library (`hotrodcs.dll`)
-* An Infinispan Server running on `127.0.0.1:11222`
+* .NET 10 or later.
+* A running Infinispan server. You can start one with Docker:
 
-== Step 1: Configure the Client
-
-Create a `ConfigurationBuilder` and point it to the Infinispan Server:
-
-[source,csharp]
+[source,shell]
 ----
-ConfigurationBuilder builder = new ConfigurationBuilder();
-Configuration conf = builder.AddServers("127.0.0.1:11222").Build();
+docker run -it -p 11222:11222 -e USER="admin" -e PASS="password" infinispan/server
 ----
 
-== Step 2: Connect and Perform Cache Operations
+== Tutorials
 
-Initialize the `RemoteCacheManager`, get a cache, and store and retrieve a value:
+[cols="1,2"]
+|===
+|Tutorial |Description
 
-[source,csharp]
+|link:cache/guide.adoc[Cache]
+|Basic cache operations: put, get, remove.
+
+|link:cache-admin/guide.adoc[Cache Administration]
+|Create, configure, list, and remove caches.
+
+|link:counter/guide.adoc[Counters]
+|Distributed strong and weak counters.
+
+|link:listeners/guide.adoc[Listeners]
+|Cache event listeners for create, modify, and remove events.
+
+|link:multimap/guide.adoc[Multimap]
+|Associate multiple values with a single key.
+
+|link:near-cache/guide.adoc[Near Cache]
+|Client-side near caching with performance benchmark.
+
+|link:schemas/guide.adoc[Schemas]
+|Register and manage Protobuf schemas.
+
+|link:security/guide.adoc[Security]
+|Cache authorization with role-based access control.
+
+|link:transactions/guide.adoc[Transactions]
+|Transactional cache operations with commit and rollback.
+|===
+
+== Running
+
+Each tutorial is an independent project.
+Run any tutorial from the `c#` directory:
+
+[source,shell]
 ----
-RemoteCacheManager remoteManager = new RemoteCacheManager(conf);
-remoteManager.Start();
-IRemoteCache<string, string> cache = remoteManager.GetCache<string, string>();
-cache.Put("key", "value");
-Console.WriteLine("key = {0}", cache.Get("key"));
-remoteManager.Stop();
+dotnet run --project cache
+dotnet run --project counter
 ----
 
-== Step 3: Build and Run
+Override the server URI with the `INFINISPAN_URI` environment variable:
 
-Build the project with MSBuild or Mono:
-
-[source,bash]
+[source,shell]
 ----
-# MSBuild (Windows)
-msbuild simple.sln
-
-# Mono (Linux/macOS)
-xbuild simple.sln
-----
-
-You should see output like:
-
-----
-key = value
+INFINISPAN_URI="hotrod://user:pass@myserver:11222" dotnet run --project cache
 ----

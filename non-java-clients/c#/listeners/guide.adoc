@@ -1,0 +1,67 @@
+= Cache Event Listeners with the .NET Client
+:summary: Register a cache event listener to receive notifications for create, modify, and remove events
+:mode: remote
+:topics: events,listeners
+:keywords: listener,events,created,modified,removed,dotnet,csharp
+:duration: 5
+:source-dir: non-java-clients/c#/listeners
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to register a cache event listener that receives notifications when entries are created, modified, or removed.
+
+== Prerequisites
+
+* A running Infinispan server.
+* .NET 10 or later.
+
+== Running the Example
+
+[source,shell]
+----
+dotnet run --project listeners
+----
+
+== Code Walkthrough
+
+=== Implementing a Listener
+
+Implement the `IClientListener` interface to handle cache events.
+
+[source,csharp]
+----
+class EventPrinter : IClientListener
+{
+    public string ListenerID { get; set; }
+
+    public void OnEvent(Event e)
+    {
+        var key = Encoding.UTF8.GetString(e.Key);
+        Console.WriteLine($"{e.Type} {key}");
+    }
+
+    public void OnError(Exception ex) { }
+}
+----
+
+=== Registering and Removing
+
+Use `AddListener` to start receiving events and `RemoveListener` to stop.
+
+[source,csharp]
+----
+await cache.AddListener(listener);
+// ... perform operations ...
+await cache.RemoveListener(listener);
+----
+
+== Expected Output
+
+[source]
+----
+Listener registered.
+CREATED key1
+CREATED key2
+MODIFIED key1
+Listener removed.
+----

@@ -1,0 +1,63 @@
+= Basic Cache Operations with the .NET Client
+:summary: Connect to an Infinispan Server and perform basic cache operations with the .NET Hot Rod client
+:mode: remote
+:topics: caching,getting-started
+:keywords: cache,put,get,remove,dotnet,csharp
+:duration: 5
+:source-dir: non-java-clients/c#/cache
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to connect to an Infinispan server and perform basic cache operations using the .NET Hot Rod client.
+
+== Prerequisites
+
+* A running Infinispan server.
+* .NET 10 or later.
+
+== Running the Example
+
+[source,shell]
+----
+dotnet run --project cache
+----
+
+== Code Walkthrough
+
+=== Connecting to the Server
+
+The example connects to the Infinispan server using a Hot Rod URI.
+You can override the default URI by setting the `INFINISPAN_URI` environment variable.
+
+[source,csharp]
+----
+var client = InfinispanClient.FromUri("hotrod://admin:password@localhost:11222");
+----
+
+=== Creating the Cache
+
+The example creates a cache using the administration API.
+
+[source,csharp]
+----
+await admin.GetOrCreateCache("test");
+----
+
+=== Storing and Retrieving Entries
+
+Use `Put` to store a key-value pair and `Get` to retrieve it.
+
+[source,csharp]
+----
+await cache.Put("key", "value");
+var result = await cache.Get("key");
+----
+
+== Expected Output
+
+[source]
+----
+Cache 'test' ready.
+key = value
+Cache removed.
+----

@@ -1,0 +1,64 @@
+= Distributed Counters with the .NET Client
+:summary: Create and use distributed strong and weak counters with the .NET Hot Rod client
+:mode: remote
+:topics: counters,getting-started
+:keywords: counter,strong,weak,compare-and-swap,dotnet,csharp
+:duration: 5
+:source-dir: non-java-clients/c#/counter
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to use distributed counters with the .NET Hot Rod client, including strong counters with compare-and-swap and weak counters.
+
+== Prerequisites
+
+* A running Infinispan server.
+* .NET 10 or later.
+
+== Running the Example
+
+[source,shell]
+----
+dotnet run --project counter
+----
+
+== Code Walkthrough
+
+=== Strong Counter
+
+Define a bounded, persistent strong counter and perform get, add, compare-and-swap, and reset operations.
+
+[source,csharp]
+----
+var strong = counters.Counter("strong-counter");
+await strong.AddAndGet(10);
+await strong.CompareAndSwap(11, 50);
+await strong.Reset();
+----
+
+=== Weak Counter
+
+Weak counters support only add operations and are optimized for high-concurrency scenarios.
+
+[source,csharp]
+----
+var weak = counters.Counter("weak-counter");
+await weak.AddAndGet(5);
+----
+
+== Expected Output
+
+[source]
+----
+Strong counter defined.
+Get: 1
+AddAndGet(10): 11
+CompareAndSwap(11 -> 50): old=11, swapped=True
+After reset: 1
+
+Weak counter defined.
+Weak AddAndGet(5): 5
+
+Counter names: strong-counter, weak-counter
+Counters removed.
+----

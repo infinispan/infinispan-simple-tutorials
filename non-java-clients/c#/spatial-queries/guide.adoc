@@ -1,0 +1,123 @@
+= Spatial Queries with the .NET Client
+:summary: Run geospatial queries on indexed caches using within circle, box, polygon, distance projection, and spatial ordering
+:mode: ai
+:topics: querying,spatial
+:keywords: spatial,geospatial,query,latitude,longitude,geopoint,within,circle,box,polygon,distance,dotnet,csharp
+:duration: 15
+:source-dir: non-java-clients/c#/spatial-queries
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to run geospatial queries on indexed Infinispan caches using the .NET Hot Rod client.
+
+== Prerequisites
+
+* A running Infinispan server.
+* .NET 10 or later.
+
+== Running the Example
+
+[source,shell]
+----
+dotnet run --project spatial-queries
+----
+
+== Code Walkthrough
+
+=== Schema and Code Generation
+
+The example uses `Protos/restaurant.proto` and `Protos/trainroute.proto` with `Grpc.Tools` to generate C# classes at build time.
+The same schemas -- with Infinispan spatial annotations -- are registered on the server.
+
+The `Restaurant` schema uses `@GeoPoint` with `@Latitude` and `@Longitude` annotations to create a composite spatial field called `location`.
+
+[source,protobuf]
+----
+/**
+ * @Indexed
+ * @GeoPoint(fieldName = "location", projectable = true, sortable = true)
+ */
+message Restaurant {
+    /** @Keyword(normalizer = "lowercase", projectable = true, sortable = true) */
+    string name = 1;
+    /** @Latitude(fieldName = "location") */
+    double latitude = 4;
+    /** @Longitude(fieldName = "location") */
+    double longitude = 5;
+}
+----
+
+The `TrainRoute` schema demonstrates multiple geo points on a single entity.
+
+[source,protobuf]
+----
+/**
+ * @Indexed
+ * @GeoPoint(fieldName = "departure", projectable = true, sortable = true)
+ * @GeoPoint(fieldName = "arrival", projectable = true, sortable = true)
+ */
+message TrainRoute {
+    /** @Latitude(fieldName = "departure") */
+    double departureLat = 2;
+    /** @Longitude(fieldName = "departure") */
+    double departureLon = 3;
+    /** @Latitude(fieldName = "arrival") */
+    double arrivalLat = 4;
+    /** @Longitude(fieldName = "arrival") */
+    double arrivalLon = 5;
+}
+----
+
+=== Creating Typed Caches
+
+Two cache instances share the same underlying cache -- one per entity type.
+Marshallers are inferred automatically from the generated protobuf classes.
+
+[source,csharp]
+----
+var restaurantCache = client.NewCache<Restaurant>("spatialCache")
+    .WithEncoding(MediaType.Protobuf)
+    .Build();
+var trainRouteCache = client.NewCache<TrainRoute>("spatialCache")
+    .WithEncoding(MediaType.Protobuf)
+    .Build();
+----
+
+=== Within Circle (Typed)
+
+Find restaurants within a 100-meter radius.
+`Query<Restaurant>()` returns typed results.
+
+[source,csharp]
+----
+var results = await restaurantCache.Query<Restaurant>(
+    "from tutorial.Restaurant r where r.location within circle(41.908470, 12.455633, 100)");
+foreach (var r in results)
+    Console.WriteLine($"  {r.Name}");
+----
+
+=== Distance Projection
+
+Use the `distance()` function to include the distance in meters in projections.
+
+[source,csharp]
+----
+var results = await restaurantCache.Query(
+    "select r.name, distance(r.location, 41.908470, 12.455633) from tutorial.Restaurant r");
+foreach (object[] row in results)
+    Console.WriteLine($"  {row[0]}: {Convert.ToDouble(row[1]):F0}m");
+----
+
+=== Multi-GeoPoint Queries
+
+Query train routes using their `departure` geo point.
+
+[source,csharp]
+----
+var results = await trainRouteCache.Query<TrainRoute>(
+    "from tutorial.TrainRoute r where r.departure within circle(44.4949, 11.3426, 300000)");
+----
+
+== Expected Output
+
+The example runs 6 query demonstrations: within circle, within box, within polygon, distance projection, order by distance, and multi-geo-point queries on train routes.
