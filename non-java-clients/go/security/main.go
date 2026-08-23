@@ -37,7 +37,7 @@ func main() {
 	}
 	defer client.Close()
 
-	admin := client.Administration()
+	admin := client.Admin()
 
 	if err := admin.GetOrCreateCache(ctx, "test", testCacheConfig); err != nil {
 		log.Fatalf("Create test cache: %v", err)

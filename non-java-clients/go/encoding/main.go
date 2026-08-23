@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"infinispan.org/go-client/hotrod"
-	"infinispan.org/go-client/internal/codec"
 )
 
 const textCacheConfig = `<distributed-cache name="textCache">
@@ -34,7 +33,7 @@ func main() {
 	}
 	defer client.Close()
 
-	admin := client.Administration()
+	admin := client.Admin()
 
 	if err := admin.GetOrCreateCache(ctx, "textCache", textCacheConfig); err != nil {
 		log.Fatalf("Create textCache: %v", err)
@@ -44,15 +43,15 @@ func main() {
 	}
 	fmt.Println("Caches ready.")
 
-	textCache := client.Cache("textCache")
-	jsonCache := client.Cache("jsonCache")
+	textCache := client.Cache("textCache").WithEncoding(hotrod.MediaTypeTextPlain)
+	jsonCache := client.Cache("jsonCache").WithEncoding(hotrod.MediaTypeJSON)
 
 	// Text cache with text/plain encoding
 	fmt.Println("\n== Cache with text/plain encoding ==")
-	if err := textCache.PutRaw(ctx, []byte("greeting"), []byte("Hello, Infinispan!"), codec.MediaIDTextPlain); err != nil {
+	if err := textCache.Put(ctx, []byte("greeting"), []byte("Hello, Infinispan!")); err != nil {
 		log.Fatalf("Put text: %v", err)
 	}
-	val, found, err := textCache.GetRaw(ctx, []byte("greeting"), codec.MediaIDTextPlain)
+	val, found, err := textCache.Get(ctx, []byte("greeting"))
 	if err != nil {
 		log.Fatalf("Get text: %v", err)
 	}
@@ -62,10 +61,10 @@ func main() {
 
 	// JSON cache with application/json encoding
 	fmt.Println("\n== Cache with application/json encoding ==")
-	if err := jsonCache.PutRaw(ctx, []byte(`"name"`), []byte(`{"project": "infinispan"}`), codec.MediaIDJSON); err != nil {
+	if err := jsonCache.Put(ctx, []byte(`"name"`), []byte(`{"project": "infinispan"}`)); err != nil {
 		log.Fatalf("Put json: %v", err)
 	}
-	val, found, err = jsonCache.GetRaw(ctx, []byte(`"name"`), codec.MediaIDJSON)
+	val, found, err = jsonCache.Get(ctx, []byte(`"name"`))
 	if err != nil {
 		log.Fatalf("Get json: %v", err)
 	}

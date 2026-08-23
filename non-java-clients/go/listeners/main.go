@@ -29,7 +29,7 @@ func main() {
 	}
 	defer client.Close()
 
-	if err := client.Administration().GetOrCreateCache(ctx, "test", cacheConfig); err != nil {
+	if err := client.Admin().GetOrCreateCache(ctx, "test", cacheConfig); err != nil {
 		log.Fatalf("GetOrCreateCache: %v", err)
 	}
 
@@ -78,7 +78,7 @@ func main() {
 	fmt.Println("Listener removed.")
 
 	// Clean up
-	if err := client.Administration().RemoveCache(ctx, "test"); err != nil {
+	if err := client.Admin().RemoveCache(ctx, "test"); err != nil {
 		log.Fatalf("RemoveCache: %v", err)
 	}
 }

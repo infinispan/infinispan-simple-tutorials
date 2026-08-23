@@ -29,32 +29,32 @@ func main() {
 	}
 	defer client.Close()
 
-	if err := client.Administration().GetOrCreateCache(ctx, "test", cacheConfig); err != nil {
+	if err := client.Admin().GetOrCreateCache(ctx, "test", cacheConfig); err != nil {
 		log.Fatalf("GetOrCreateCache: %v", err)
 	}
 
 	mm := client.Multimap("test")
 
 	// Put multiple values under the same key (year -> names)
-	if err := mm.Put(ctx, []byte("2016"), []byte("Rosita")); err != nil {
+	if err := mm.Put(ctx, []byte("2016"), [][]byte{[]byte("Rosita")}); err != nil {
 		log.Fatalf("Put: %v", err)
 	}
-	if err := mm.Put(ctx, []byte("2016"), []byte("Guillermo")); err != nil {
+	if err := mm.Put(ctx, []byte("2016"), [][]byte{[]byte("Guillermo")}); err != nil {
 		log.Fatalf("Put: %v", err)
 	}
-	if err := mm.Put(ctx, []byte("2016"), []byte("Patricia")); err != nil {
+	if err := mm.Put(ctx, []byte("2016"), [][]byte{[]byte("Patricia")}); err != nil {
 		log.Fatalf("Put: %v", err)
 	}
-	if err := mm.Put(ctx, []byte("2016"), []byte("Silvia")); err != nil {
+	if err := mm.Put(ctx, []byte("2016"), [][]byte{[]byte("Silvia")}); err != nil {
 		log.Fatalf("Put: %v", err)
 	}
-	if err := mm.Put(ctx, []byte("2017"), []byte("Matilda")); err != nil {
+	if err := mm.Put(ctx, []byte("2017"), [][]byte{[]byte("Matilda")}); err != nil {
 		log.Fatalf("Put: %v", err)
 	}
-	if err := mm.Put(ctx, []byte("2017"), []byte("Hector")); err != nil {
+	if err := mm.Put(ctx, []byte("2017"), [][]byte{[]byte("Hector")}); err != nil {
 		log.Fatalf("Put: %v", err)
 	}
-	if err := mm.Put(ctx, []byte("2018"), []byte("Richard")); err != nil {
+	if err := mm.Put(ctx, []byte("2018"), [][]byte{[]byte("Richard")}); err != nil {
 		log.Fatalf("Put: %v", err)
 	}
 
@@ -76,7 +76,7 @@ func main() {
 	fmt.Printf("Total entries: %d\n", size)
 
 	// Clean up
-	if err := client.Administration().RemoveCache(ctx, "test"); err != nil {
+	if err := client.Admin().RemoveCache(ctx, "test"); err != nil {
 		log.Fatalf("RemoveCache: %v", err)
 	}
 	fmt.Println("Cache removed.")

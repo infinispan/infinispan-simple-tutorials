@@ -32,7 +32,7 @@ func main() {
 	}
 	defer client.Close()
 
-	if err := client.Administration().GetOrCreateCache(ctx, "simple-tx-cache", txCacheConfig); err != nil {
+	if err := client.Admin().GetOrCreateCache(ctx, "simple-tx-cache", txCacheConfig); err != nil {
 		log.Fatalf("GetOrCreateCache: %v", err)
 	}
 
@@ -77,7 +77,7 @@ func main() {
 	fmt.Printf("After rollback: key1 = %s, key2 = %s\n", val1, val2)
 
 	// Clean up
-	if err := client.Administration().RemoveCache(ctx, "simple-tx-cache"); err != nil {
+	if err := client.Admin().RemoveCache(ctx, "simple-tx-cache"); err != nil {
 		log.Fatalf("RemoveCache: %v", err)
 	}
 	fmt.Println("Cache removed.")
