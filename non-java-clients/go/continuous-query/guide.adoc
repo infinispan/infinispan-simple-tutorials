@@ -33,9 +33,18 @@ The example registers an `InstaPost` Protobuf schema with `id`, `user`, and `has
 client.Schemas().Register(ctx, "instapost.proto", instaPostProto)
 ----
 
-=== Setting Up the Continuous Query
+=== Creating a Typed Cache
 
-A continuous query filters posts by a specific user.
+`TypedCache` uses the generated `InstaPost` class from `proto/instapost.proto`.
+
+[source,go]
+----
+cache := hotrod.NewTypedCache[string, *pb.InstaPost](client, "test").Build()
+----
+
+=== Setting Up the Typed Continuous Query
+
+`TypedContinuousQuery` auto-deserializes events using the cache's marshaller.
 The `CQJoining` event fires each time a matching entry is inserted.
 
 [source,go]
@@ -46,15 +55,15 @@ cq, err := cache.ContinuousQuery(ctx,
 )
 ----
 
-=== Consuming Events
+=== Consuming Typed Events
 
-Events are consumed from the `cq.Events` channel in a goroutine.
+Events are consumed from the `cq.Events` channel with typed values.
 
 [source,go]
 ----
 for event := range cq.Events {
     if event.Type == hotrod.CQJoining {
-        // handle matching entry
+        fmt.Printf("@belen_esteban posted! #%s\n", event.Value.Hashtag)
     }
 }
 ----

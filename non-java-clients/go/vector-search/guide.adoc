@@ -24,9 +24,10 @@ go run ./vector-search
 
 == Code Walkthrough
 
-=== Vector Schema
+=== Schema and Code Generation
 
-The `Beer` schema includes a `@Vector` field with 3 dimensions using cosine similarity.
+The example uses a `proto/beer.proto` file to generate a Go `Beer` struct at build time with `protoc`.
+The same schema — with Infinispan indexing annotations — is registered on the server.
 
 [source,protobuf]
 ----
@@ -39,25 +40,41 @@ message Beer {
 }
 ----
 
-=== kNN Vector Search
+=== Creating a Typed Cache
 
-Use the `<->` operator to find the k nearest neighbors to a query vector.
+`TypedCache` handles serialization using the generated protobuf type.
 
 [source,go]
 ----
-cache.Query(ctx, "from quickstart.Beer b where b.descriptionEmbedding <-> [:v]~:k",
+cache := hotrod.NewTypedCache[string, *pb.Beer](client, "beers").Build()
+----
+
+=== kNN Vector Search (Typed)
+
+Use the `<->` operator to find the k nearest neighbors to a query vector.
+`Query()` returns typed `*pb.Beer` values.
+
+[source,go]
+----
+results, err := cache.Query(ctx,
+    "from quickstart.Beer b where b.descriptionEmbedding <-> [:v]~:k",
     hotrod.WithQueryParam("v", []float32{0.9, 0.1, 0.1}),
     hotrod.WithQueryParam("k", int32(3)),
 )
+for _, b := range results {
+    fmt.Printf("  %s %s\n", b.Name, b.Style)
+}
 ----
 
 === Score Projection
 
 Use `score(b)` to include the similarity score in projections.
+Projection queries use `QueryProjection()` which returns raw column values.
 
 [source,go]
 ----
-cache.Query(ctx, "select b.name, b.style, score(b) from quickstart.Beer b where b.descriptionEmbedding <-> [:v]~:k",
+result, err := cache.QueryProjection(ctx,
+    "select b.name, b.style, score(b) from quickstart.Beer b where b.descriptionEmbedding <-> [:v]~:k",
     hotrod.WithQueryParam("v", []float32{0.05, 0.9, 0.1}),
     hotrod.WithQueryParam("k", int32(3)),
 )
@@ -69,7 +86,7 @@ Combine vector search with metadata filters using the `filtering` clause.
 
 [source,go]
 ----
-cache.Query(ctx,
+result, err := cache.QueryProjection(ctx,
     "select score(b), b.name, b.style, b.abv from quickstart.Beer b "+
     "where b.descriptionEmbedding <-> [:v]~:k "+
     "filtering (b.style = 'Lager' and b.abv < 5.0)",
@@ -82,7 +99,7 @@ Combine vector search with full-text filters.
 
 [source,go]
 ----
-cache.Query(ctx,
+result, err := cache.QueryProjection(ctx,
     "select score(b), b.name from quickstart.Beer b "+
     "where b.descriptionEmbedding <-> [:v]~:k "+
     "filtering b.description : 'citrus'",

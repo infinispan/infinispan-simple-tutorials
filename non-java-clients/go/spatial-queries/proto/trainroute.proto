@@ -1,0 +1,11 @@
+syntax = "proto3";
+package tutorial;
+option go_package = "infinispan.org/tutorials/go/spatial-queries/proto";
+
+message TrainRoute {
+    string name = 1;
+    double departureLat = 2;
+    double departureLon = 3;
+    double arrivalLat = 4;
+    double arrivalLon = 5;
+}

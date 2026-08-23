@@ -32,7 +32,7 @@ func main() {
 	}
 	defer client.Close()
 
-	admin := client.Administration()
+	admin := client.Admin()
 
 	// Create a simple cache with no specific configuration
 	createSimpleCache(ctx, admin)
