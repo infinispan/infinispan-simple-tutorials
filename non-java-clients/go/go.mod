@@ -3,7 +3,7 @@ module infinispan.org/tutorials/go
 go 1.25.0
 
 require (
-	google.golang.org/protobuf v1.36.11
+	google.golang.org/protobuf v1.36.12
 	infinispan.org/go-client v0.1.0
 )
 
