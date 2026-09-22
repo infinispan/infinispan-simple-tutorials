@@ -51,6 +51,24 @@ public class InfinispanRemoteQueryTest {
         assertEquals(3, collected.size());
         assertTrue(collected.contains("dmalfoy"));
 
+        // Update by query: London -> Greater London
+        int updated = InfinispanRemoteQuery.updateByQuery();
+        assertEquals(3, updated);
+        // Verify the update
+        List<Person> londonPeople = InfinispanRemoteQuery.peopleCache
+              .<Person>query("FROM tutorial.Person p WHERE p.bornIn = 'Greater London'")
+              .execute().list();
+        assertEquals(3, londonPeople.size());
+
+        // Update by query with parameter: Wesley -> Weasley
+        int updatedWithParam = InfinispanRemoteQuery.updateByQueryWithParameter();
+        assertEquals(1, updatedWithParam);
+        List<Person> weasleys = InfinispanRemoteQuery.peopleCache
+              .<Person>query("FROM tutorial.Person p WHERE p.lastName = 'Weasley'")
+              .execute().list();
+        assertEquals(1, weasleys.size());
+        assertEquals("Ron", weasleys.get(0).firstName());
+
         // Shut up Malfoy !!
         InfinispanRemoteQuery.deleteByQuery();
 

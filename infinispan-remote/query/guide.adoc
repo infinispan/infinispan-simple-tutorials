@@ -1,14 +1,14 @@
 = Querying Data with Ickle and Protobuf
-:summary: Index and query cached data using Ickle queries, Protobuf schemas, and full-text search
+:summary: Index and query cached data using Ickle queries, Protobuf schemas, and full-text search including update by query
 :mode: remote
 :topics: querying
-:keywords: query,ickle,protobuf,protostream,indexed,full-text,search,projection
+:keywords: query,ickle,protobuf,protostream,indexed,full-text,search,projection,update
 :duration: 15
 :source-dir: infinispan-remote/query
 
 == What You Will Learn
 
-How to define Protobuf schemas with `@Proto` annotations, create indexed caches, and run Ickle queries including WHERE clauses, projections, and DELETE operations.
+How to define Protobuf schemas with `@Proto` annotations, create indexed caches, and run Ickle queries including WHERE clauses, projections, UPDATE by query, and DELETE operations.
 
 == Prerequisites
 
@@ -47,7 +47,9 @@ include::src/main/java/org/infinispan/tutorial/simple/remote/query/InfinispanRem
 
 == Step 3: Run Ickle Queries
 
-Query all entries, filter with parameters, use projections, and delete by query:
+Query all entries, filter with parameters, use projections, update by query, and delete by query.
+Update by query uses `executeStatement()` to modify entries matching a WHERE clause, returning the count of updated entries.
+You can use named parameters with `setParameter()` just like in SELECT queries:
 
 [source,java]
 ----

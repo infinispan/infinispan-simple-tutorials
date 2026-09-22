@@ -19,6 +19,9 @@ public class TutorialsConnectorHelper {
    public static final String HOST = "127.0.0.1";
    public static final int SINGLE_PORT = ConfigurationProperties.DEFAULT_HOTROD_PORT;
 
+   public static final String INFINISPAN_IMAGE_PROPERTY = "infinispan.test.container.image";
+   public static final String INFINISPAN_DEV_IMAGE = "quay.io/infinispan-test/server:main";
+
    public static final String TUTORIAL_CACHE_NAME = "test";
    public static final String TUTORIAL_CACHE_CONFIG =
          "<distributed-cache name=\"CACHE_NAME\" statistics=\"true\">\n"
@@ -104,12 +107,16 @@ public class TutorialsConnectorHelper {
 
    public static InfinispanContainer startInfinispanContainer(long millis) {
       try {
-         if (Version.getUnbrandedVersion().contains("SNAPSHOT")) {
-            // we are using an Infinispan Dev version, use the latest build of the image
-            INFINISPAN_CONTAINER = new InfinispanContainer("quay.io/infinispan/server:16.2");
-         } else {
-            INFINISPAN_CONTAINER = new InfinispanContainer();
+         String image = System.getProperty(INFINISPAN_IMAGE_PROPERTY);
+         if (image == null || image.isBlank()) {
+            if (Version.getUnbrandedVersion().contains("SNAPSHOT")) {
+               image = INFINISPAN_DEV_IMAGE;
+            } else {
+               image = "quay.io/infinispan/server:" + Version.getMajorMinor();
+            }
          }
+         System.out.println("Using Infinispan container image: " + image);
+         INFINISPAN_CONTAINER = new InfinispanContainer(image);
          INFINISPAN_CONTAINER.withUser(USER);
          INFINISPAN_CONTAINER.withPassword(PASSWORD);
          INFINISPAN_CONTAINER.start();
