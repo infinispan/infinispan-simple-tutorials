@@ -1,0 +1,104 @@
+= Spring AI Chat Memory with Infinispan
+:summary: Use Infinispan as a chat memory repository with Spring AI to persist conversations
+:mode: ai
+:topics: spring-ai,spring-boot,chat-memory
+:keywords: ai,spring-ai,chat-memory,conversation,persistence,spring-boot
+:duration: 10
+:source-dir: infinispan-ai/spring-ai/chat-memory
+
+== What You Will Learn
+
+How to use Infinispan as a Spring AI `ChatMemoryRepository` to persist chat conversations.
+Messages are stored in an indexed Infinispan cache, supporting retrieval by conversation ID, listing all conversations, and deletion.
+
+== Prerequisites
+
+* Java 17+
+* Docker or Podman (optional)
+
+You can start an Infinispan Server manually with Docker or Podman:
+
+[source,shell]
+----
+docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
+----
+
+TIP: You can replace `docker` with `podman` in the command above if you use Podman.
+
+TIP: If no server is running on `localhost:11222`, the application automatically starts an Infinispan container using Testcontainers.
+
+== Step 1: Add Dependencies
+
+Add the Infinispan Spring AI chat memory repository auto-configuration:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>spring-ai-autoconfigure-model-chat-memory-repository-infinispan</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>spring-ai-model-chat-memory-repository-infinispan</artifactId>
+</dependency>
+----
+
+The auto-configuration creates the `ChatMemoryRepository` bean, registers the Protobuf schema, and creates the indexed cache automatically.
+
+== Step 2: Configure the Connection
+
+In `application.properties`, configure the Infinispan connection:
+
+[source,properties]
+----
+include::src/main/resources/application.properties[tag=config]
+----
+
+== Step 3: Save Messages
+
+Inject the `ChatMemoryRepository` and save user and assistant messages to a conversation:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/ai/spring/chatmemory/ChatMemoryController.java[tag=save]
+----
+
+== Step 4: Retrieve Conversations
+
+List all conversation IDs or retrieve all messages for a specific conversation:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/ai/spring/chatmemory/ChatMemoryController.java[tag=retrieve]
+----
+
+== Step 5: Delete Conversations
+
+Remove all messages for a conversation:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/ai/spring/chatmemory/ChatMemoryController.java[tag=delete]
+----
+
+== Step 6: Run the Tutorial
+
+[source,bash]
+----
+mvn spring-boot:run
+----
+
+Then interact with the REST API:
+
+[source,bash]
+----
+curl -X POST "http://localhost:8080/conversations/chat-1?userMessage=What+is+Infinispan&assistantMessage=A+distributed+data+store"
+curl http://localhost:8080/conversations
+curl http://localhost:8080/conversations/chat-1
+curl -X DELETE http://localhost:8080/conversations/chat-1
+----
+
+== What's Next
+
+* Try link:/tutorials/ai-spring-ai-vector-store/[Spring AI Vector Store] to use Infinispan for semantic search
+* Try link:/tutorials/ai-langchain4j/[LangChain4j Embedding Store] for vector search without Spring AI
