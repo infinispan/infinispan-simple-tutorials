@@ -1,0 +1,110 @@
+= Spring AI Vector Store with Infinispan
+:summary: Use Infinispan as a vector store with Spring AI for semantic similarity search
+:mode: ai
+:topics: spring-ai,spring-boot,vector
+:keywords: ai,spring-ai,vector-store,embedding,semantic-search,similarity,spring-boot
+:duration: 10
+:source-dir: infinispan-ai/spring-ai/vector-store
+
+== What You Will Learn
+
+How to use Infinispan as a Spring AI vector store to store document embeddings and perform semantic similarity search.
+The auto-configuration handles schema registration and cache creation automatically.
+
+== Prerequisites
+
+* Java 17+
+* Docker or Podman (optional)
+
+You can start an Infinispan Server manually with Docker or Podman:
+
+[source,shell]
+----
+docker run -it --rm -p 11222:11222 -e USER=admin -e PASS=password quay.io/infinispan/server:latest
+----
+
+TIP: You can replace `docker` with `podman` in the command above if you use Podman.
+
+TIP: If no server is running on `localhost:11222`, the application automatically starts an Infinispan container using Testcontainers.
+
+== Step 1: Add Dependencies
+
+Add the Infinispan Spring AI vector store auto-configuration and a local embedding model:
+
+[source,xml]
+----
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>spring-ai-autoconfigure-vector-store-infinispan</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.infinispan</groupId>
+   <artifactId>spring-ai-infinispan-store</artifactId>
+</dependency>
+<dependency>
+   <groupId>org.springframework.ai</groupId>
+   <artifactId>spring-ai-transformers</artifactId>
+</dependency>
+----
+
+The `TransformersEmbeddingModel` runs locally using ONNX. No API keys or external services needed.
+
+== Step 2: Configure the Connection
+
+In `application.properties`, configure the Infinispan connection:
+
+[source,properties]
+----
+include::src/main/resources/application.properties[tag=config]
+----
+
+The vector store auto-configuration creates the cache and registers the Protobuf schema automatically.
+
+== Step 3: Provide an Embedding Model
+
+Define an `EmbeddingModel` bean. The auto-configuration uses it to convert text to vectors:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/ai/spring/vectorstore/Config.java[tag=config]
+----
+
+== Step 4: Store Documents
+
+Add documents with metadata to the vector store. Each document is automatically embedded and stored in Infinispan:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/ai/spring/vectorstore/VectorStoreController.java[tag=load]
+----
+
+== Step 5: Search by Semantic Similarity
+
+Query with natural language. The vector store finds semantically similar documents:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/ai/spring/vectorstore/VectorStoreController.java[tag=search]
+----
+
+== Step 6: Run the Tutorial
+
+[source,bash]
+----
+mvn spring-boot:run
+----
+
+Then load documents and search:
+
+[source,bash]
+----
+curl -X POST http://localhost:8080/load
+curl "http://localhost:8080/search?query=How+can+I+use+Infinispan+with+AI"
+----
+
+Results are ranked by cosine similarity. Documents about vector search and Spring AI integration will rank highest.
+
+== What's Next
+
+* Try link:/tutorials/ai-spring-ai-chat-memory/[Spring AI Chat Memory] to persist chat conversations in Infinispan
+* Try link:/tutorials/ai-langchain4j/[LangChain4j Embedding Store] for direct vector usage without Spring AI

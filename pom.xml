@@ -209,6 +209,7 @@
         <module>infinispan-ai/langchain4j</module>
         <module>infinispan-ai/quarkus-langchain4j</module>
         <module>infinispan-ai/vector-search</module>
+        <module>infinispan-ai/spring-ai</module>
     </modules>
 
     <profiles>
