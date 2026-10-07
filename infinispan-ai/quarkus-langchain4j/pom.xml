@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.infinispan.tutorial.simple</groupId>
-    <version>16.0.3</version>
+    <version>16.3.0</version>
     <artifactId>quarkus-langchain4j-infinispan-embedding-store</artifactId>
     <name>Infinispan Simple Tutorials: Quarkus LangChain4j RAG with Infinispan</name>
     <properties>
