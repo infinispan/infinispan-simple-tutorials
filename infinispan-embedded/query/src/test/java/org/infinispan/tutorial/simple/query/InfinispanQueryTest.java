@@ -29,5 +29,22 @@ public class InfinispanQueryTest {
 
         List<Person> people = InfinispanQuery.addDataAndPerformQuery();
         assertEquals(2, people.size());
+
+        // Update by query: set surname to 'Bard' for all Williams
+        int updated = InfinispanQuery.updateByQuery();
+        assertEquals(2, updated);
+        List<Person> bards = InfinispanQuery.cache
+              .<Person>query("from org.infinispan.tutorial.simple.query.Person where surname = 'Bard'")
+              .execute().list();
+        assertEquals(2, bards.size());
+
+        // Update by query with parameter: John -> Johnny
+        int updatedWithParam = InfinispanQuery.updateByQueryWithParameter();
+        assertEquals(1, updatedWithParam);
+        List<Person> johnnies = InfinispanQuery.cache
+              .<Person>query("from org.infinispan.tutorial.simple.query.Person where name = 'Johnny'")
+              .execute().list();
+        assertEquals(1, johnnies.size());
+        assertEquals("Milton", johnnies.get(0).surname);
     }
 }

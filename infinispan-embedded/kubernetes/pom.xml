@@ -5,7 +5,7 @@
     <artifactId>infinispan-simple-tutorials-kubernetes</artifactId>
     <parent>
         <relativePath>../../pom.xml</relativePath>
-        <version>16.2.1</version>
+        <version>16.0.3</version>
         <groupId>org.infinispan.tutorial.simple</groupId>
         <artifactId>infinispan-simple-tutorials</artifactId>
     </parent>
@@ -59,7 +59,7 @@
                 <plugin>
                     <groupId>org.eclipse.jkube</groupId>
                     <artifactId>kubernetes-maven-plugin</artifactId>
-                    <version>1.19.0</version>
+                    <version>1.20.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

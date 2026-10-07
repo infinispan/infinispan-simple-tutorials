@@ -1,0 +1,10 @@
+syntax = "proto3";
+package tutorial;
+option go_package = "infinispan.org/tutorials/go/query/proto";
+
+message Person {
+    string firstName = 1;
+    string lastName = 2;
+    int32 bornYear = 3;
+    string bornIn = 4;
+}

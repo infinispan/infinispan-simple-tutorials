@@ -1,0 +1,13 @@
+syntax = "proto3";
+package quickstart;
+option go_package = "infinispan.org/tutorials/go/vector-search/proto";
+
+message Beer {
+    string name = 1;
+    string style = 2;
+    string brewery = 3;
+    string country = 4;
+    double abv = 5;
+    string description = 6;
+    repeated float descriptionEmbedding = 7;
+}

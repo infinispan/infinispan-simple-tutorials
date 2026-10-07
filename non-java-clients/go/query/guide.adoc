@@ -24,9 +24,10 @@ go run ./query
 
 == Code Walkthrough
 
-=== Schema Registration
+=== Schema and Code Generation
 
-The example registers a `Person` schema with indexed fields for keyword and basic searches.
+The example uses a `proto/person.proto` file to generate a Go `Person` struct at build time with `protoc`.
+The same schema — with Infinispan indexing annotations — is registered on the server.
 
 [source,protobuf]
 ----
@@ -43,18 +44,31 @@ message Person {
 }
 ----
 
-=== Query All
+=== Creating a Typed Cache
+
+`TypedCache` with `ProtoStreamMarshaller` handles serialization using the generated protobuf type.
+No manual encoding or decoding is needed.
 
 [source,go]
 ----
-result, err := cache.Query(ctx, "from tutorial.Person")
+cache := hotrod.NewTypedCache[string, *pb.Person](client, "indexedPeopleCache").Build()
 ----
 
-=== Query with Parameters
+=== Query All (Typed)
 
 [source,go]
 ----
-result, err := cache.Query(ctx, "from tutorial.Person p where p.lastName = :lastName",
+results, err := cache.Query(ctx, "from tutorial.Person")
+for _, p := range results {
+    fmt.Printf("  %s %s\n", p.FirstName, p.LastName)
+}
+----
+
+=== Query with Named Parameters
+
+[source,go]
+----
+results, err := cache.Query(ctx, "from tutorial.Person p where p.lastName = :lastName",
     hotrod.WithQueryParam("lastName", "Granger"),
 )
 ----
@@ -63,7 +77,10 @@ result, err := cache.Query(ctx, "from tutorial.Person p where p.lastName = :last
 
 [source,go]
 ----
-result, err := cache.Query(ctx, "select p.firstName, p.lastName from tutorial.Person p where p.bornIn = 'London'")
+result, err := cache.QueryProjection(ctx, "select p.firstName, p.lastName from tutorial.Person p where p.bornIn = 'London'")
+for _, entry := range result.Entries {
+    fmt.Printf("  %s %s\n", entry.Projections[0], entry.Projections[1])
+}
 ----
 
 == Expected Output

@@ -1,0 +1,54 @@
+= Security and Authorization with the .NET Client
+:summary: Demonstrate cache authorization with the .NET Hot Rod client
+:mode: remote
+:topics: security,authorization
+:keywords: security,authorization,roles,dotnet,csharp
+:duration: 5
+:source-dir: non-java-clients/c#/security
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how Infinispan cache authorization works by creating a cache that requires a specific role and attempting to access it.
+
+== Prerequisites
+
+* A running Infinispan server with authorization enabled (default).
+* .NET 10 or later.
+
+== Running the Example
+
+[source,shell]
+----
+dotnet run --project security
+----
+
+== Code Walkthrough
+
+=== Creating a Secured Cache
+
+Create a cache with role-based authorization.
+Only users with the `deployer` role can access this cache.
+
+[source,csharp]
+----
+const string securedConfig = """
+    <distributed-cache name="secured">
+        <security>
+            <authorization roles="deployer"/>
+        </security>
+    </distributed-cache>
+    """;
+await admin.GetOrCreateCache("secured", securedConfig);
+----
+
+=== Demonstrating Authorization
+
+The `admin` user can write to a normal cache but not to the secured cache, because `admin` does not have the `deployer` role.
+
+== Expected Output
+
+[source]
+----
+Normal cache: put succeeded.
+Secured cache: put failed as expected: ...
+----

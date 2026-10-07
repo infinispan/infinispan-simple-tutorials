@@ -1,0 +1,12 @@
+syntax = "proto3";
+package tutorial;
+option go_package = "infinispan.org/tutorials/go/spatial-queries/proto";
+
+message Restaurant {
+    string name = 1;
+    string description = 2;
+    string address = 3;
+    double latitude = 4;
+    double longitude = 5;
+    float score = 6;
+}

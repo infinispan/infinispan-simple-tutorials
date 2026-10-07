@@ -20,6 +20,8 @@ public class InfinispanQuery {
       List<Person> matches = addDataAndPerformQuery();
       // Display results
       matches.forEach(person -> System.out.printf("Match: %s%n", person));
+      updateByQuery();
+      updateByQueryWithParameter();
       stopCacheManager();
    }
 
@@ -35,6 +37,24 @@ public class InfinispanQuery {
       return query.execute().list();
       // end::query[]
    }
+
+   // tag::update[]
+   static int updateByQuery() {
+      Query<Person> query = cache.query("UPDATE FROM org.infinispan.tutorial.simple.query.Person SET surname = 'Bard' WHERE name = 'William'");
+      int updated = query.executeStatement();
+      System.out.printf("Updated %d entries%n", updated);
+      return updated;
+   }
+
+   static int updateByQueryWithParameter() {
+      Query<Person> query = cache.query("UPDATE FROM org.infinispan.tutorial.simple.query.Person SET name = :newName WHERE name = :oldName");
+      query.setParameter("newName", "Johnny");
+      query.setParameter("oldName", "John");
+      int updated = query.executeStatement();
+      System.out.printf("Updated %d entries with parameter%n", updated);
+      return updated;
+   }
+   // end::update[]
 
    static EmbeddedCacheManager createCacheManagerAndCache() {
       // Create cache manager

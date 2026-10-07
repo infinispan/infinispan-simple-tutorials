@@ -1,0 +1,82 @@
+= Continuous Queries with the .NET Client
+:summary: Register a continuous query that pushes events when cache entries match an Ickle query
+:mode: remote
+:topics: querying,events,getting-started
+:keywords: continuous-query,ickle,protobuf,protostream,listener,dotnet,csharp
+:duration: 15
+:source-dir: non-java-clients/c#/continuous-query
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to register a continuous query on an Infinispan cache and receive real-time events when entries match an Ickle query predicate.
+
+== Prerequisites
+
+* A running Infinispan server.
+* .NET 10 or later.
+
+== Running the Example
+
+[source,shell]
+----
+dotnet run --project continuous-query
+----
+
+== Code Walkthrough
+
+=== Creating a Typed Cache
+
+The builder infers marshallers from the `InstaPost` type generated from `Protos/instapost.proto`.
+
+[source,csharp]
+----
+var cache = client.NewCache<InstaPost>("test")
+    .WithEncoding(MediaType.Protobuf)
+    .Build();
+----
+
+=== Setting Up the Typed Continuous Query
+
+`TypedContinuousQuery` auto-deserializes events using the cache's marshallers.
+The `Joining` event fires each time a matching entry is inserted.
+
+[source,csharp]
+----
+var cqParams = new Dictionary<string, object> { ["userName"] = "belen_esteban" };
+await using var cq = cache.TypedContinuousQuery(
+    "FROM tutorial.InstaPost p WHERE p.user = :userName", cqParams);
+----
+
+=== Consuming Typed Events
+
+Events are consumed asynchronously with typed values — no manual byte decoding needed.
+
+[source,csharp]
+----
+await foreach (var ev in cq.Events.ReadAllAsync())
+{
+    if (ev.Type == CQResultType.Joining)
+    {
+        Console.WriteLine($"@belen_esteban posted! #{ev.Value.Hashtag}");
+    }
+}
+----
+
+=== Generating Data
+
+The example inserts 100 random posts from a pool of users and hashtags.
+Posts by `belen_esteban` trigger continuous query events.
+
+== Expected Output
+
+[source]
+----
+Registered instapost.proto schema.
+Continuous query registered.
+@belen_esteban has posted again! Hashtag: #love
+@belen_esteban has posted again! Hashtag: #infinispan
+...
+
+Total posts: 100
+Total posts by @belen_esteban: <varies>
+----

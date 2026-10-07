@@ -77,8 +77,9 @@ func main() {
 	// Define a weak counter
 	fmt.Println("\n=== Weak Counter ===")
 	created, err = counters.Define(ctx, "weak-counter", &hotrod.CounterConfiguration{
-		Type:    hotrod.CounterWeak,
-		Storage: hotrod.StorageVolatile,
+		Type:             hotrod.CounterWeak,
+		Storage:          hotrod.StorageVolatile,
+		ConcurrencyLevel: 4,
 	})
 	if err != nil {
 		log.Fatalf("Define weak counter: %v", err)

@@ -34,7 +34,7 @@ func main() {
 	}
 	defer client.Close()
 
-	admin := client.Administration()
+	admin := client.Admin()
 
 	if err := admin.GetOrCreateCache(ctx, "testCache", testCacheConfig); err != nil {
 		log.Fatalf("Create testCache: %v", err)
@@ -67,7 +67,7 @@ func main() {
 
 	// Read 10,000 random entries from the regular cache
 	start := time.Now()
-	for i := 0; i < 10_000; i++ {
+	for range 10_000 {
 		key := []byte(fmt.Sprintf("%d", rand.Intn(20)+1))
 		testCache.Get(ctx, key)
 	}
@@ -82,7 +82,7 @@ func main() {
 	fmt.Printf("Time to complete 10,000 reads with near cache:       %v\n", time.Since(start))
 
 	// Clean up
-	if err := nearCache.Close(ctx); err != nil {
+	if err := nearCache.Close(); err != nil {
 		log.Fatalf("Close nearCache: %v", err)
 	}
 	if err := admin.RemoveCache(ctx, "testCache"); err != nil {

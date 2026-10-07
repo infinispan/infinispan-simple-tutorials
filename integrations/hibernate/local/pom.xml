@@ -5,14 +5,14 @@
    <artifactId>infinispan-simple-tutorials-hibernate-cache-local</artifactId>
    <parent>
       <relativePath>../../../pom.xml</relativePath>
-      <version>16.2.1</version>
+      <version>16.0.3</version>
       <groupId>org.infinispan.tutorial.simple</groupId>
       <artifactId>infinispan-simple-tutorials</artifactId>
    </parent>
    <name>Infinispan Simple Tutorials: Hibernate Cache Local</name>
 
    <properties>
-      <version.h2>2.4.240</version.h2>
+      <version.h2>2.5.252</version.h2>
    </properties>
 
    <build>

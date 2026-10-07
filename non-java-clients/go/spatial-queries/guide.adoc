@@ -24,7 +24,10 @@ go run ./spatial-queries
 
 == Code Walkthrough
 
-=== Defining Spatial Schemas
+=== Schema and Code Generation
+
+The example uses `proto/restaurant.proto` and `proto/trainroute.proto` to generate Go structs at build time with `protoc`.
+The same schemas — with Infinispan spatial annotations — are registered on the server.
 
 The `Restaurant` schema uses `@GeoPoint` with `@Latitude` and `@Longitude` annotations to create a composite spatial field called `location`.
 
@@ -65,49 +68,37 @@ message TrainRoute {
 }
 ----
 
-=== Within Circle
+=== Creating Typed Caches
 
-Find restaurants within a 100-meter radius of a point.
-
-[source,go]
-----
-cache.Query(ctx, "from tutorial.Restaurant r where r.location within circle(41.908470, 12.455633, 100)")
-----
-
-=== Within Box
-
-Find restaurants inside a bounding rectangle.
+Two `TypedCache` instances point to the same cache — one per entity type.
 
 [source,go]
 ----
-cache.Query(ctx, "from tutorial.Restaurant r where r.location within box(41.91, 12.45, 41.90, 12.46)")
+restaurantCache := hotrod.NewTypedCache[string, *pb.Restaurant](client, "spatialCache").Build()
+trainRouteCache := hotrod.NewTypedCache[string, *pb.TrainRoute](client, "spatialCache").Build()
 ----
 
-=== Within Polygon
+=== Within Circle (Typed)
 
-Find restaurants inside an arbitrary polygon.
+Find restaurants within a 100-meter radius. `Query()` returns typed `*pb.Restaurant` values.
 
 [source,go]
 ----
-cache.Query(ctx, "from tutorial.Restaurant r where r.location within polygon((41.91, 12.45), (41.91, 12.46), (41.90, 12.46), (41.90, 12.45))")
+results, err := cache.Query(ctx,
+    "from tutorial.Restaurant r where r.location within circle(41.908470, 12.455633, 100)")
+for _, r := range results {
+    fmt.Printf("  %s\n", r.Name)
+}
 ----
 
 === Distance Projection
 
-Project the distance from a reference point.
+Projection queries use `QueryProjection()` which returns raw column values.
 
 [source,go]
 ----
-cache.Query(ctx, "select r.name, distance(r.location, 41.908470, 12.455633) from tutorial.Restaurant r")
-----
-
-=== Order by Distance
-
-Sort results by proximity.
-
-[source,go]
-----
-cache.Query(ctx, "from tutorial.Restaurant r order by distance(r.location, 41.908470, 12.455633)")
+result, err := cache.QueryProjection(ctx,
+    "select r.name, distance(r.location, 41.908470, 12.455633) from tutorial.Restaurant r")
 ----
 
 == Expected Output

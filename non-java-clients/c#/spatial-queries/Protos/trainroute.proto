@@ -1,0 +1,12 @@
+syntax = "proto3";
+package tutorial;
+
+option csharp_namespace = "Tutorial";
+
+message TrainRoute {
+    string name = 1;
+    double departureLat = 2;
+    double departureLon = 3;
+    double arrivalLat = 4;
+    double arrivalLon = 5;
+}

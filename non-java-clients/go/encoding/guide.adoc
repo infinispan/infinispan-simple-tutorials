@@ -26,12 +26,13 @@ go run ./encoding
 
 === Text Cache
 
-Create a cache with `text/plain` encoding and use `PutRaw` and `GetRaw` with the appropriate media type.
+Create a cache with `text/plain` encoding by calling `WithEncoding` on the cache reference.
 
 [source,go]
 ----
-textCache.PutRaw(ctx, []byte("greeting"), []byte("Hello, Infinispan!"), codec.MediaIDTextPlain)
-val, found, err := textCache.GetRaw(ctx, []byte("greeting"), codec.MediaIDTextPlain)
+textCache := client.Cache("textCache").WithEncoding(hotrod.MediaTypeTextPlain)
+textCache.Put(ctx, []byte("greeting"), []byte("Hello, Infinispan!"))
+val, found, err := textCache.Get(ctx, []byte("greeting"))
 ----
 
 === JSON Cache
@@ -40,7 +41,19 @@ Create a cache with `application/json` encoding and store JSON documents.
 
 [source,go]
 ----
-jsonCache.PutRaw(ctx, []byte(`"name"`), []byte(`{"project": "infinispan"}`), codec.MediaIDJSON)
+jsonCache := client.Cache("jsonCache").WithEncoding(hotrod.MediaTypeJSON)
+jsonCache.Put(ctx, []byte(`"name"`), []byte(`{"project": "infinispan"}`))
+----
+
+=== Separate Key and Value Encodings
+
+When keys and values use different media types, use `WithKeyEncoding` and `WithValueEncoding`:
+
+[source,go]
+----
+cache := client.Cache("mixed").
+    WithKeyEncoding(hotrod.MediaTypeTextPlain).
+    WithValueEncoding(hotrod.MediaTypeJSON)
 ----
 
 == Expected Output

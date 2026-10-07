@@ -1,0 +1,68 @@
+= Schema Management with the .NET Client
+:summary: Register and manage Protobuf schemas using the .NET Hot Rod client
+:mode: remote
+:topics: schemas,protobuf
+:keywords: schema,protobuf,register,dotnet,csharp
+:duration: 5
+:source-dir: non-java-clients/c#/schemas
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to register and manage Protobuf schemas on the Infinispan server using the .NET Hot Rod client.
+
+== Prerequisites
+
+* A running Infinispan server.
+* .NET 10 or later.
+
+== Running the Example
+
+[source,shell]
+----
+dotnet run --project schemas
+----
+
+== Code Walkthrough
+
+=== Registering a Schema
+
+Use `CreateOrUpdate` to register a `.proto` schema on the server.
+Invalid schemas are rejected with an error.
+
+[source,csharp]
+----
+var schemas = client.Administration().Schemas();
+
+await schemas.CreateOrUpdate("greeting.proto", """
+    syntax = "proto2";
+    message Greeting {
+        required string name = 1;
+        optional string text = 2;
+    }
+    """);
+----
+
+=== Error Handling
+
+When you attempt to register an invalid schema, the server returns an error.
+
+[source,csharp]
+----
+try
+{
+    await schemas.CreateOrUpdate("invalid.proto", "not a valid .proto file");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Invalid schema rejected: {ex.Message}");
+}
+----
+
+== Expected Output
+
+[source]
+----
+Invalid schema rejected: ...
+Schema 'greeting.proto' registered.
+Schemas deleted.
+----

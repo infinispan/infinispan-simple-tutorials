@@ -29,7 +29,7 @@ func main() {
 	}
 	defer client.Close()
 
-	if err := client.Administration().GetOrCreateCache(ctx, "test", cacheConfig); err != nil {
+	if err := client.Admin().GetOrCreateCache(ctx, "test", cacheConfig); err != nil {
 		log.Fatalf("GetOrCreateCache: %v", err)
 	}
 	fmt.Println("Cache 'test' ready.")
@@ -51,7 +51,7 @@ func main() {
 	}
 
 	// Remove the cache
-	if err := client.Administration().RemoveCache(ctx, "test"); err != nil {
+	if err := client.Admin().RemoveCache(ctx, "test"); err != nil {
 		log.Fatalf("RemoveCache: %v", err)
 	}
 	fmt.Println("Cache removed.")

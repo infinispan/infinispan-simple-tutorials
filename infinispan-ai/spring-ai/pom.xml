@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <relativePath>../../pom.xml</relativePath>
+        <version>16.0.3</version>
+        <groupId>org.infinispan.tutorial.simple</groupId>
+        <artifactId>infinispan-simple-tutorials</artifactId>
+    </parent>
+
+    <artifactId>infinispan-simple-tutorials-spring-ai</artifactId>
+    <packaging>pom</packaging>
+    <name>Infinispan Simple Tutorials: Spring AI</name>
+
+    <modules>
+        <module>vector-store</module>
+        <module>chat-memory</module>
+    </modules>
+
+</project>

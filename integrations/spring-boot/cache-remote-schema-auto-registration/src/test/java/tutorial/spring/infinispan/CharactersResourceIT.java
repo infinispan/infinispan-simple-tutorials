@@ -17,7 +17,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class CharactersResourceIT {
 
    @Container
-   static InfinispanContainer infinispan = new InfinispanContainer();
+   static InfinispanContainer infinispan = new InfinispanContainer("quay.io/infinispan-test/server:main");
 
    @DynamicPropertySource
    static void infinispanProperties(DynamicPropertyRegistry registry) {

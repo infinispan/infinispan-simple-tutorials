@@ -1,0 +1,58 @@
+= Multimap Caches with the .NET Client
+:summary: Associate multiple values with a single key using the .NET Hot Rod client
+:mode: remote
+:topics: caching,multimap
+:keywords: multimap,put,get,dotnet,csharp
+:duration: 5
+:source-dir: non-java-clients/c#/multimap
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how to use multimap caches to associate multiple values with a single key.
+
+== Prerequisites
+
+* A running Infinispan server.
+* .NET 10 or later.
+
+== Running the Example
+
+[source,shell]
+----
+dotnet run --project multimap
+----
+
+== Code Walkthrough
+
+=== Storing Multiple Values
+
+Use `Put` to add multiple values under the same key.
+Each call appends a new value rather than replacing the existing one.
+
+[source,csharp]
+----
+await mmap.Put("2016", "Oihane");
+await mmap.Put("2016", "Elaia");
+----
+
+=== Retrieving All Values
+
+Use `Get` to retrieve all values associated with a key.
+
+[source,csharp]
+----
+var values = await mmap.Get("2016");
+----
+
+== Expected Output
+
+[source]
+----
+People born in 2016:
+  Oihane
+  Elaia
+  Iker
+  Argia
+
+Total people: 7
+----

@@ -33,6 +33,8 @@ public class InfinispanRemoteQuery {
       queryWithWhereStatementOnValues();
       queryByKey();
       queryWithProjection();
+      updateByQuery();
+      updateByQueryWithParameter();
       deleteByQuery();
 
       disconnect(false);
@@ -74,6 +76,26 @@ public class InfinispanRemoteQuery {
       // Print the results queryResultProjection
       System.out.println(queryResultProjection);
       return queryResultProjection;
+   }
+
+   static int updateByQuery() {
+      // Update all people born in London to 'Greater London'
+      System.out.println("== Update by query");
+      Query<Person> query = peopleCache.query("UPDATE FROM tutorial.Person SET bornIn = 'Greater London' WHERE bornIn = 'London'");
+      int updated = query.executeStatement();
+      System.out.println("UPDATE count:" + updated);
+      return updated;
+   }
+
+   static int updateByQueryWithParameter() {
+      // Update using a named parameter
+      System.out.println("== Update by query with parameter");
+      Query<Person> query = peopleCache.query("UPDATE FROM tutorial.Person SET lastName = :newName WHERE lastName = :oldName");
+      query.setParameter("newName", "Weasley");
+      query.setParameter("oldName", "Wesley");
+      int updated = query.executeStatement();
+      System.out.println("UPDATE count:" + updated);
+      return updated;
    }
 
    static List<Person> deleteByQuery() {

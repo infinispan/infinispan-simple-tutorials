@@ -1,0 +1,52 @@
+= Near Caching with the .NET Client
+:summary: Benchmark the performance of near caching vs remote reads with the .NET Hot Rod client
+:mode: remote
+:topics: caching,near-cache,performance
+:keywords: near-cache,benchmark,dotnet,csharp
+:duration: 5
+:source-dir: non-java-clients/c#/near-cache
+
+TIP: The source code for this tutorial is available on link:https://github.com/infinispan/infinispan-simple-tutorials/tree/main/{source-dir}[GitHub].
+
+This tutorial demonstrates how near caching improves read performance by keeping frequently accessed entries in client-side memory.
+
+== Prerequisites
+
+* A running Infinispan server.
+* .NET 10 or later.
+
+== Running the Example
+
+[source,shell]
+----
+dotnet run --project near-cache
+----
+
+== Code Walkthrough
+
+=== Enabling Near Caching
+
+Enable near caching on a cache instance with a maximum number of entries.
+The near cache is automatically invalidated when entries are modified on the server.
+
+[source,csharp]
+----
+var near = client.NewCache(new StringMarshaller(), new StringMarshaller(), "benchmark-near");
+await near.EnableNearCache(numEntries);
+----
+
+=== Benchmarking
+
+The example performs 10,000 random reads on both a regular cache and a near cache, then compares the elapsed time.
+
+== Expected Output
+
+[source]
+----
+Populated 20 entries in both caches.
+Remote cache: 10000 reads in 00:00:XX.XXX
+Near   cache: 10000 reads in 00:00:00.XXX
+Near cache is XXx faster.
+----
+
+The near cache reads are significantly faster because they are served from local memory without a network round-trip.

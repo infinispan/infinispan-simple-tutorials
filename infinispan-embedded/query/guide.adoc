@@ -1,14 +1,14 @@
 = Ickle Queries with Embedded Infinispan
-:summary: Run Ickle queries against indexed entities stored in an embedded Infinispan cache
+:summary: Run Ickle queries and update by query against indexed entities stored in an embedded Infinispan cache
 :mode: embedded
 :topics: querying,indexing
-:keywords: query,ickle,indexed,embedded,search
+:keywords: query,ickle,indexed,embedded,search,update
 :duration: 10
 :source-dir: infinispan-embedded/query
 
 == What You Will Learn
 
-How to annotate entities for indexing, configure an indexed cache, and execute Ickle queries to search for data in an embedded Infinispan cache.
+How to annotate entities for indexing, configure an indexed cache, execute Ickle queries to search for data, and use update by query to modify entries in an embedded Infinispan cache.
 
 == Prerequisites
 
@@ -61,7 +61,17 @@ Store some entries and query them using the Ickle query language:
 include::src/main/java/org/infinispan/tutorial/simple/query/InfinispanQuery.java[tag=query]
 ----
 
-== Step 5: Run the Tutorial
+== Step 5: Update Entries by Query
+
+Use `executeStatement()` to run UPDATE queries that modify entries matching a WHERE clause.
+You can use named parameters with `setParameter()` just like in SELECT queries:
+
+[source,java]
+----
+include::src/main/java/org/infinispan/tutorial/simple/query/InfinispanQuery.java[tag=update]
+----
+
+== Step 6: Run the Tutorial
 
 [source,bash]
 ----

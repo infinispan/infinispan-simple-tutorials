@@ -4,13 +4,13 @@
     <artifactId>infinispan-simple-tutorials-redis-client</artifactId>
     <parent>
         <relativePath>../../pom.xml</relativePath>
-        <version>16.2.1</version>
+        <version>16.0.3</version>
         <groupId>org.infinispan.tutorial.simple</groupId>
         <artifactId>infinispan-simple-tutorials</artifactId>
     </parent>
     <name>Infinispan Simple Tutorials: Redis Client</name>
     <properties>
-        <jedis.version>7.5.2</jedis.version>
+        <jedis.version>8.0.1</jedis.version>
     </properties>
     <build>
         <plugins>
