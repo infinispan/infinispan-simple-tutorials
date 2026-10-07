@@ -3,63 +3,134 @@ name: Release to Main
 on:
   workflow_dispatch:
     inputs:
-      dry_run:
-        description: 'Dry run (merge but do not push)'
+      release_version:
+        description: 'Release version (e.g., 16.3.0)'
+        required: true
+        type: string
+      next_dev_version:
+        description: 'Next development SNAPSHOT version (e.g., 16.4.0-SNAPSHOT). Leave empty to keep development unchanged.'
         required: false
-        default: 'false'
+        type: string
+      dry_run:
+        description: 'Dry run (do not push)'
+        required: false
+        default: false
         type: boolean
 
 jobs:
-  merge-to-main:
+  release-to-main:
     runs-on: ubuntu-latest
     steps:
+      - name: Validate inputs
+        run: |
+          if [[ ! "${{ inputs.release_version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "ERROR: release_version must be in format X.Y.Z (e.g., 16.3.0)"
+            exit 1
+          fi
+          if [[ -n "${{ inputs.next_dev_version }}" && ! "${{ inputs.next_dev_version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+-SNAPSHOT$ ]]; then
+            echo "ERROR: next_dev_version must be in format X.Y.Z-SNAPSHOT (e.g., 16.4.0-SNAPSHOT)"
+            exit 1
+          fi
+
       - name: Checkout
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract main branch version
-        id: main-version
-        run: |
-          git checkout main
-          MAIN_VERSION=$(grep -m1 '<version>' pom.xml | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
-          MAIN_PARENT_VERSION=$(grep -A1 'infinispan-build-configuration-parent' pom.xml | grep '<version>' | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
-          echo "project=$MAIN_VERSION" >> $GITHUB_OUTPUT
-          echo "parent=$MAIN_PARENT_VERSION" >> $GITHUB_OUTPUT
-          echo "Main project version: $MAIN_VERSION"
-          echo "Main parent version: $MAIN_PARENT_VERSION"
-
-      - name: Merge development into main
+      - name: Configure git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout main
-          git merge origin/development -m "Release: merge development into main"
 
-      - name: Restore main branch versions
+      - name: Replace main with development content
         run: |
-          MAIN_VERSION="${{ steps.main-version.outputs.project }}"
-          MAIN_PARENT_VERSION="${{ steps.main-version.outputs.parent }}"
-          DEV_VERSION=$(grep -m1 '<version>' pom.xml | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
-          DEV_PARENT_VERSION=$(grep -A1 'infinispan-build-configuration-parent' pom.xml | grep '<version>' | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
+          RELEASE_VERSION="${{ inputs.release_version }}"
+          MAJOR_MINOR=$(echo "$RELEASE_VERSION" | sed 's/\.[0-9]*$//')
 
-          echo "Replacing project version: $DEV_VERSION -> $MAIN_VERSION"
-          echo "Replacing parent version: $DEV_PARENT_VERSION -> $MAIN_PARENT_VERSION"
+          # Get the SNAPSHOT version from development before replacing
+          DEV_VERSION=$(git show origin/development:pom.xml | grep -m1 '<version>' | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
+          DEV_PARENT_VERSION=$(git show origin/development:pom.xml | grep -A1 'infinispan-build-configuration-parent' | grep '<version>' | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
+          echo "Development project version: $DEV_VERSION"
+          echo "Development parent version: $DEV_PARENT_VERSION"
 
-          # Replace SNAPSHOT versions with main versions in all pom.xml files
-          find . -name "pom.xml" -not -path "./.git/*" -exec sed -i "s|$DEV_VERSION|$MAIN_VERSION|g" {} +
-          find . -name "pom.xml" -not -path "./.git/*" -exec sed -i "s|$DEV_PARENT_VERSION|$MAIN_PARENT_VERSION|g" {} +
+          git checkout main
+
+          # Replace main tree entirely with development content
+          git rm -rf .
+          git checkout origin/development -- .
+
+          # Replace SNAPSHOT versions with release version in all pom.xml files
+          echo "Replacing project version: $DEV_VERSION -> $RELEASE_VERSION"
+          find . -name "pom.xml" -not -path "./.git/*" -exec sed -i "s|$DEV_VERSION|$RELEASE_VERSION|g" {} +
+
+          if [ "$DEV_PARENT_VERSION" != "$DEV_VERSION" ]; then
+            echo "Replacing parent version: $DEV_PARENT_VERSION -> $RELEASE_VERSION"
+            find . -name "pom.xml" -not -path "./.git/*" -exec sed -i "s|$DEV_PARENT_VERSION|$RELEASE_VERSION|g" {} +
+          fi
+
+          # Update pinned Infinispan server image tags in docker-compose and CI workflow files
+          echo "Updating pinned server image tags to $MAJOR_MINOR"
+          find . -not -path "./.git/*" \( -name "docker-compose*.yml" -o -name "docker-compose*.yaml" \) \
+            -exec sed -i "s|quay.io/infinispan/server:[0-9]*\.[0-9]*|quay.io/infinispan/server:$MAJOR_MINOR|g" {} +
+
+          find .github/workflows -name "*.yml" -not -path "./.git/*" \
+            -exec sed -i "s|quay.io/infinispan/server:[0-9]*\.[0-9]*|quay.io/infinispan/server:$MAJOR_MINOR|g" {} +
 
           git add -A
-          git diff --cached --quiet || git commit -m "chore: restore main branch versions ($MAIN_VERSION)"
+          git commit -m "Release $RELEASE_VERSION: replace main with development content"
 
-      - name: Push to main
-        if: ${{ inputs.dry_run != 'true' }}
-        run: git push origin main
+          echo "Main branch updated to $RELEASE_VERSION"
+          git log --oneline -3
+
+      - name: Bump development version
+        if: ${{ inputs.next_dev_version != '' }}
+        run: |
+          NEXT_DEV_VERSION="${{ inputs.next_dev_version }}"
+
+          git checkout development
+
+          CURRENT_DEV_VERSION=$(grep -m1 '<version>' pom.xml | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
+          CURRENT_DEV_PARENT_VERSION=$(grep -A1 'infinispan-build-configuration-parent' pom.xml | grep '<version>' | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
+
+          echo "Bumping development: $CURRENT_DEV_VERSION -> $NEXT_DEV_VERSION"
+          find . -name "pom.xml" -not -path "./.git/*" -exec sed -i "s|$CURRENT_DEV_VERSION|$NEXT_DEV_VERSION|g" {} +
+
+          if [ "$CURRENT_DEV_PARENT_VERSION" != "$CURRENT_DEV_VERSION" ]; then
+            echo "Bumping development parent: $CURRENT_DEV_PARENT_VERSION -> $NEXT_DEV_VERSION"
+            find . -name "pom.xml" -not -path "./.git/*" -exec sed -i "s|$CURRENT_DEV_PARENT_VERSION|$NEXT_DEV_VERSION|g" {} +
+          fi
+
+          git add -A
+          git diff --cached --quiet || git commit -m "chore: bump development to $NEXT_DEV_VERSION"
+
+          echo "Development branch updated to $NEXT_DEV_VERSION"
+
+      - name: Push changes
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          git checkout main
+          git push origin main
+
+          if [[ -n "${{ inputs.next_dev_version }}" ]]; then
+            git checkout development
+            git push origin development
+          fi
 
       - name: Dry run summary
-        if: ${{ inputs.dry_run == 'true' }}
+        if: ${{ inputs.dry_run == true }}
         run: |
-          echo "DRY RUN - not pushing. Merge result:"
-          git log --oneline -5
+          echo "=== DRY RUN - not pushing ==="
+          echo ""
+          echo "--- Main branch ---"
+          git checkout main
+          git log --oneline -3
+          echo ""
+          echo "--- Files with version changes ---"
+          git diff HEAD~1 --name-only
+          echo ""
+          if [[ -n "${{ inputs.next_dev_version }}" ]]; then
+            echo "--- Development branch ---"
+            git checkout development
+            git log --oneline -3
+          fi
