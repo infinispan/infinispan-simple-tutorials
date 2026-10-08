@@ -69,13 +69,13 @@ jobs:
             find . -name "pom.xml" -not -path "./.git/*" -exec sed -i "s|$DEV_PARENT_VERSION|$RELEASE_VERSION|g" {} +
           fi
 
-          # Update pinned Infinispan server image tags in docker-compose and CI workflow files
-          echo "Updating pinned server image tags to $MAJOR_MINOR"
-          find . -not -path "./.git/*" \( -name "docker-compose*.yml" -o -name "docker-compose*.yaml" \) \
+          # Update pinned Infinispan server image tags in docker-compose files only
+          echo "Updating docker-compose server image tags to $MAJOR_MINOR"
+          find . -not -path "./.git/*" -not -path "./.github/*" \( -name "docker-compose*.yml" -o -name "docker-compose*.yaml" \) \
             -exec sed -i "s|quay.io/infinispan/server:[0-9]*\.[0-9]*|quay.io/infinispan/server:$MAJOR_MINOR|g" {} +
 
-          find .github/workflows -name "*.yml" -not -path "./.git/*" \
-            -exec sed -i "s|quay.io/infinispan/server:[0-9]*\.[0-9]*|quay.io/infinispan/server:$MAJOR_MINOR|g" {} +
+          # Restore pull_requests.yml from main (do not modify CI workflow)
+          git checkout HEAD -- .github/workflows/pull_requests.yml
 
           git add -A
           git commit -m "Release $RELEASE_VERSION: replace main with development content"
