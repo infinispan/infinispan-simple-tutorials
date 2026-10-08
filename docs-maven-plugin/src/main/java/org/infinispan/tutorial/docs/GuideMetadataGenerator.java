@@ -118,11 +118,16 @@ public class GuideMetadataGenerator {
 
    private static final String NON_JAVA_CLIENTS_DIR = "non-java-clients";
 
+   private static final Map<String, String> LANGUAGE_LABELS = Map.of(
+         "csharp", "c#",
+         "cpp", "c++");
+
    private String deriveLanguage(Path guideFile) {
       Path relative = srcDir.relativize(guideFile.getParent());
       if (relative.getNameCount() >= 2
             && relative.getName(0).toString().equals(NON_JAVA_CLIENTS_DIR)) {
-         return relative.getName(1).toString();
+         String dirName = relative.getName(1).toString();
+         return LANGUAGE_LABELS.getOrDefault(dirName, dirName);
       }
       return "java";
    }
