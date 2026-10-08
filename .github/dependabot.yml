@@ -50,7 +50,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: nuget
-    directory: "/non-java-clients/c#"
+    directory: "/non-java-clients/csharp"
     schedule:
       interval: weekly
     target-branch: "development"
