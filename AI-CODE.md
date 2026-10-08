@@ -74,6 +74,7 @@ Each tutorial module follows the same structure:
 - `documentation/asciidoc/` -- AsciiDoc source for published tutorial docs
 - `docs-maven-plugin/` -- Custom Maven plugin that processes `guide.adoc` files from each tutorial into the website format
 - Guides are built with the `guides` Maven profile
+- Directory names become URL slugs on infinispan.org (e.g. `non-java-clients/csharp` becomes `/tutorials/non-java-clients-csharp/`). Never use `#`, `+`, or other URL-unsafe characters in directory names.
 
 ## CI
 
