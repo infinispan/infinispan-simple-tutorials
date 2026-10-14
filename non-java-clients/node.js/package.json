@@ -24,6 +24,6 @@
   },
   "dependencies": {
     "infinispan": "^0.16.3",
-    "protobufjs": "^8.8.0"
+    "protobufjs": "^8.8.1"
   }
 }
