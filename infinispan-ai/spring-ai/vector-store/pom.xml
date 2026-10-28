@@ -13,7 +13,7 @@
     <name>Infinispan Simple Tutorials: Spring AI Vector Store</name>
 
     <properties>
-        <spring-ai.version>2.0.1</spring-ai.version>
+        <spring-ai.version>2.0.2</spring-ai.version>
         <spring-ai-infinispan.version>1.0.0</spring-ai-infinispan.version>
     </properties>
 
