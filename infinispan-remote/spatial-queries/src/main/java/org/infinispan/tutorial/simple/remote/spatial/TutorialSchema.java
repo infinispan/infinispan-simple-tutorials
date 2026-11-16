@@ -1,6 +1,6 @@
 package org.infinispan.tutorial.simple.remote.spatial;
 
-import org.infinispan.commons.api.query.geo.LatLng;
+import org.infinispan.api.annotations.indexing.model.LatLng;
 import org.infinispan.protostream.GeneratedSchema;
 import org.infinispan.protostream.annotations.ProtoSchema;
 import org.infinispan.protostream.annotations.ProtoSyntax;

@@ -3,12 +3,12 @@ package org.infinispan.tutorial.simple.remote.spatial;
 import java.net.URI;
 import java.util.List;
 
+import org.infinispan.api.annotations.indexing.model.LatLng;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.commons.api.query.Query;
 import org.infinispan.commons.api.query.QueryResult;
-import org.infinispan.commons.api.query.geo.LatLng;
 import org.infinispan.tutorial.simple.connect.TutorialsConnectorHelper;
 
 /**
