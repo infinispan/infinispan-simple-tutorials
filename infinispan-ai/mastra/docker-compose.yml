@@ -1,0 +1,13 @@
+services:
+  infinispan:
+    image: quay.io/infinispan/server:latest
+    ports:
+      - "11222:11222"
+    environment:
+      - USER=admin
+      - PASS=password
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11222/rest/v2/cache-managers/default/health/status"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
